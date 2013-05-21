@@ -3,7 +3,7 @@
 
 #include <spc/time_series/base_time_series.h>
 #include <algorithm>
-namespace  ll {
+namespace  spc {
 
 using namespace std;
 template <typename ScalarT>
@@ -70,7 +70,5 @@ protected:
 };
 
 
-
-
-} //end namespace ll
+} //end namespace sp
 #endif

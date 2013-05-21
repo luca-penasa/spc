@@ -145,7 +145,7 @@ main(int argc, char *argv[])
 		//create two output filenames
 		//one for biggest cluster
 		//one for the clustered version of the cloud
-		std::string stripped_name = stripExtension(filename);
+        std::string stripped_name = spc::stripExtension(filename);
 		std::string biggest_outcloud_name = stripped_name + "_biggest_cluster.pcd";
 		std::string clustered_outcloud_name = stripped_name + "_clustered.pcd";
 		

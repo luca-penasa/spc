@@ -322,7 +322,7 @@ int main(int argc, char ** argv)
     print_info("Merging everything in a single file\n");
     auto all_fields = mergeAll(collected_fields); //merge all require too much memory, must be rewritten completely
 
-    savePCDBinaryCompressed( argv[pcd_indices[0]], all_fields);
+    spc::savePCDBinaryCompressed( argv[pcd_indices[0]], all_fields);
 
 
 

@@ -124,11 +124,11 @@ int main(int argc, char **argv)
     if (probabilites)
     {
         concatenateFields(sns_cloud_prob, out_cloud, full_cloud); //reusing full_cloud!
-        savePCDBinaryCompressed(argv[pcd_indices[1]], full_cloud);
+        spc::savePCDBinaryCompressed(argv[pcd_indices[1]], full_cloud);
     }
     else
     {
-        savePCDBinaryCompressed(argv[pcd_indices[1]], out_cloud);
+        spc::savePCDBinaryCompressed(argv[pcd_indices[1]], out_cloud);
     }
 
 

@@ -7,6 +7,9 @@
 
 using namespace std;
 
+namespace spc
+{
+
 //TODO the points outside of the region defined byt the interpolator input data are not interpolated at all. Implement that!
 template <typename T>
 class LinearInterpolator
@@ -103,3 +106,4 @@ private:
 };
 
 #endif // SMOOTHINTERPOLATOR_H
+} //close namespace

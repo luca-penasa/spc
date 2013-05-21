@@ -6,7 +6,7 @@
 #include <Eigen/Dense>
 
 
-namespace ll
+namespace spc
 {
 
 

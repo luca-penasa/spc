@@ -3,6 +3,8 @@
 
 #include "std_helpers.h"
 
+namespace spc
+{
 
 template <typename ScalarT>
 auto
@@ -105,6 +107,8 @@ get_product(const std::vector<ScalarT> &input1, const std::vector<ScalarT> &inpu
     return product;
 }
 
+
+} //end nspace
 #endif
 
 

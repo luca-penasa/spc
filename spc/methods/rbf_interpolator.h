@@ -5,7 +5,8 @@
 #include <Eigen/Dense>
 
 #include <vector>
-
+namespace spc
+{
 template<typename nType>
 class RBFInterpolator
 {
@@ -119,6 +120,6 @@ public:
 
 	
 };
-#include <spc/methods/rbf_interpolator.hpp>
-
+//#include <spc/methods/rbf_interpolator.hpp>
+} //end namespace
 #endif

@@ -3,7 +3,8 @@
 
 #include <spc/methods/rbf_interpolator.h>
 
-
+namespace spc
+{
 
 
 template<typename nType> nType
@@ -65,7 +66,7 @@ RBFInterpolator<nType>::computeNodes()
 }
 
 
-
+}
 #endif
 
 

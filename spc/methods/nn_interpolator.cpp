@@ -1,6 +1,7 @@
 #include <spc/methods/nn_interpolator.h>
 
-
+namespace spc
+{
 InterpolatorNN::InterpolatorNN()
 	{
 		reset();
@@ -56,3 +57,4 @@ InterpolatorNN::getNearestValue(const float &value)
 	}
 	
 	
+} //end namespace

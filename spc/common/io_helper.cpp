@@ -8,7 +8,8 @@ using namespace pcl;
 //using namespace boost;
 //using namespace std;
 
-
+namespace spc
+{
 int 
 loadCSVFile(const std::string &in_filename, sensor_msgs::PointCloud2 &output, const int x_id, const int y_id, const int z_id, const int i_id, const int k, const std::string s)
 {
@@ -221,3 +222,4 @@ int
 saveAsCSV(const std::string &filename, const std::string &separator, const std::vector<std::vector<double> > &columns, const int precision);
 
 
+} //end nspace

@@ -12,6 +12,9 @@
 #include <iostream>
 #include <fstream>
 
+namespace spc
+{
+
 int 
 loadCSVFile(const std::string &in_filename, sensor_msgs::PointCloud2 &output, 
 						const int x_id, const int y_id, const int z_id, const int i_id, 
@@ -27,5 +30,5 @@ saveAsCSV(const std::string &filename, const std::string &separator, const std::
 
 int
 savePCDBinaryCompressed(const std::string &filename, const sensor_msgs::PointCloud2 &cloud);
-
+}//end namespace
 #endif

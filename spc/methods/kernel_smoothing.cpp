@@ -2,8 +2,13 @@
 #include <spc/common/std_helpers.hpp>
 
 
+namespace spc
+{
+
+
+
 template<typename ScalarT>
-ll::KernelSmoothing<ScalarT>::KernelSmoothing() : weights_(0)
+KernelSmoothing<ScalarT>::KernelSmoothing() : weights_(0)
 {
 
     //defaults
@@ -18,7 +23,7 @@ ll::KernelSmoothing<ScalarT>::KernelSmoothing() : weights_(0)
 
 template<typename ScalarT>
 int
-ll::KernelSmoothing<ScalarT>::compute(GenericTimeSeries<ScalarT> *new_series)
+KernelSmoothing<ScalarT>::compute(GenericTimeSeries<ScalarT> *new_series)
 {
     new_x_ = new_series->getX();
     new_y_.resize(new_x_.size());
@@ -49,7 +54,7 @@ ll::KernelSmoothing<ScalarT>::compute(GenericTimeSeries<ScalarT> *new_series)
     new_series->setY(new_y_);
 
     return 1;
-};
+}
 
 
 
@@ -57,7 +62,7 @@ ll::KernelSmoothing<ScalarT>::compute(GenericTimeSeries<ScalarT> *new_series)
 
 template<typename ScalarT>
 void
-ll::KernelSmoothing<ScalarT>::gaussian(const vType &values, vType &gaussian_values)
+KernelSmoothing<ScalarT>::gaussian(const vType &values, vType &gaussian_values)
 {
 
     gaussian_values.resize(values.size());
@@ -70,7 +75,7 @@ ll::KernelSmoothing<ScalarT>::gaussian(const vType &values, vType &gaussian_valu
 
 template<typename ScalarT>
 int 
-ll::KernelSmoothing<ScalarT>::radiusSearch(const ScalarT &position, const ScalarT &radius, idvType &ids, vType &distances)
+KernelSmoothing<ScalarT>::radiusSearch(const ScalarT &position, const ScalarT &radius, idvType &ids, vType &distances)
 {
     bool sorted = true; //we are not interested in sorting depending on distances
     ScalarT epsilon = 0.0; // we want exact results
@@ -112,7 +117,7 @@ ll::KernelSmoothing<ScalarT>::radiusSearch(const ScalarT &position, const Scalar
 
 template<typename ScalarT>
 int
-ll::KernelSmoothing<ScalarT>::evaluateKS(const ScalarT &position, ScalarT &value, ScalarT &var)
+KernelSmoothing<ScalarT>::evaluateKS(const ScalarT &position, ScalarT &value, ScalarT &var)
 {
     //Note that gaussian kernel is not compactly supported,
     //we restrict the neighbors extraction to a compact region on x
@@ -207,10 +212,11 @@ ll::KernelSmoothing<ScalarT>::evaluateKS(const ScalarT &position, ScalarT &value
 
     return 1;
 
-};
+}
 
 template <typename ScalarT>
-void ll::KernelSmoothing<ScalarT>::getExternalWeightsForIds(const idvType ids, vType &weights)
+void
+KernelSmoothing<ScalarT>::getExternalWeightsForIds(const idvType ids, vType &weights)
 {
     weights.resize(ids.size());
 
@@ -222,5 +228,8 @@ void ll::KernelSmoothing<ScalarT>::getExternalWeightsForIds(const idvType ids, v
 
 ////////// INSTANTIATIONS
 
-template class ll::KernelSmoothing<float>;
-template class ll::KernelSmoothing<double>;
+template class KernelSmoothing<float>;
+template class KernelSmoothing<double>;
+
+
+} //closing namespaces

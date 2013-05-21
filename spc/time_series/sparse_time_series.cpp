@@ -1,7 +1,11 @@
 #include <spc/time_series/sparse_time_series.h>
 
+namespace spc
+{
+
+
 template <typename ScalarT>
-ll::SparseTimeSeries<ScalarT>::SparseTimeSeries(vector<ScalarT> x_, vector<ScalarT> y_)
+SparseTimeSeries<ScalarT>::SparseTimeSeries(vector<ScalarT> x_, vector<ScalarT> y_)
 {
     assert(x_.size() == y_.size()); //must have same size
     x = x_; y = y_;
@@ -9,5 +13,9 @@ ll::SparseTimeSeries<ScalarT>::SparseTimeSeries(vector<ScalarT> x_, vector<Scala
 
 
 ///// INSTANTIATIONS //////////
-template class ll::SparseTimeSeries<float>;
-template class ll::SparseTimeSeries<double>;
+template class SparseTimeSeries<float>;
+template class SparseTimeSeries<double>;
+
+
+
+}

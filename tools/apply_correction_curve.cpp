@@ -79,7 +79,7 @@ int main(int argc, char* argv[])
 
     std::string filename = full_in_path.filename().c_str();
 
-    filename = stripExtension(filename);
+    filename = spc::stripExtension(filename);
 
     ////////// PRINT INFOS //////////////////
     //TODO
@@ -96,7 +96,7 @@ int main(int argc, char* argv[])
 
     //load the time-series
     vector< vector<float> > tseries;
-    if (loadCSVTimeSeries(tseries_pathname, string(" "), tseries) < 0)
+    if (spc::loadCSVTimeSeries(tseries_pathname, string(" "), tseries) < 0)
     {
         print_error("Cannot find %s correction curve file\n", tseries_pathname.c_str());
         return -1;
@@ -147,7 +147,7 @@ int main(int argc, char* argv[])
     // TODO - you are going to detrend a cloud with min, max using a curve with min-max - could be risky.
 
     ///////// LINEAR INTERPOLATION ////////////////
-    LinearInterpolator<float> interpolator;
+    spc::LinearInterpolator<float> interpolator;
     interpolator.setXY(correction_i, step, min_d);
     interpolator.setNewX(distances);
     interpolator.setDegreeForOutOfBoundsInterpolator(1); //linear
@@ -168,7 +168,7 @@ int main(int argc, char* argv[])
         else
             save_fn = full_in_path.parent_path().c_str() + string("/") + filename + "_full_correction_curve.txt";
 
-        saveAsCSV(save_fn, " ", data, 10);
+        spc::saveAsCSV(save_fn, " ", data, 10);
 
 
     }
@@ -199,7 +199,7 @@ int main(int argc, char* argv[])
     else
         save_fn = full_in_path.parent_path().c_str() + string("/") + filename + "_distance_corrected.pcd";
 
-    savePCDBinaryCompressed(save_fn, *complete_out_cloud);
+    spc::savePCDBinaryCompressed(save_fn, *complete_out_cloud);
 
 //    std::cout << full_in_path.parent_path().c_str() + "/" + filename + "_distance_corrected.pcd" << std::endl;
 

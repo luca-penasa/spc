@@ -101,13 +101,13 @@ int main (int argc, char ** argv)
 
     pcl::console::print_highlight("Computing normals and eigenvalues\n");
     PointCloud<PointNormalEigs> eigenvalues_cloud;
-    ll::computeNormalsAndEigenvalues <pcl::PointXYZ, PointNormalEigs> (in_cloud, radius, n_threads, eigenvalues_cloud);
+    spc::computeNormalsAndEigenvalues <pcl::PointXYZ, PointNormalEigs> (in_cloud, radius, n_threads, eigenvalues_cloud);
     print_info("Finished in "); tt.toc_print(); print_info("\n");
 
 
     pcl::console::print_highlight("Computing indices\n");
     PointCloud<PointEigIndices> indices_cloud; //cloud for storing indices
-    ll::computeDispersionIndices(eigenvalues_cloud, indices_cloud, n_threads);
+    spc::computeDispersionIndices(eigenvalues_cloud, indices_cloud, n_threads);
 
     pcl::console::print_highlight("Saving results\n");
 
@@ -119,7 +119,7 @@ int main (int argc, char ** argv)
         if (find_switch(argc, argv, "-a"))
             savePCDFile(out_cloud_name, out_indices_sensor);
         else
-            savePCDBinaryCompressed(out_cloud_name, out_indices_sensor);
+            spc::savePCDBinaryCompressed(out_cloud_name, out_indices_sensor);
     }
     else
     {
@@ -132,7 +132,7 @@ int main (int argc, char ** argv)
         if (find_switch(argc, argv, "-a"))
             savePCDFile(out_cloud_name, out_indices_sensor);
         else
-            savePCDBinaryCompressed(out_cloud_name, out_all_sensor);
+            spc::savePCDBinaryCompressed(out_cloud_name, out_all_sensor);
 
     }
 

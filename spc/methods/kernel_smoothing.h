@@ -13,7 +13,7 @@
 //#include "GenericTimeSeries.h"
 #include <spc/time_series/equally_spaced_time_series.h>
 
-namespace ll
+namespace spc
 {
 
 
@@ -31,6 +31,8 @@ class KernelSmoothing
 
     //and for vector of indices
     typedef typename std::vector<int> idvType;
+
+
 
 
 public:
@@ -157,5 +159,5 @@ private: //methods
 
 
 
-} //end namespace ll
+} //end namespaces
 #endif

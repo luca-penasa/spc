@@ -1,11 +1,17 @@
 #ifndef SPC_NN_INTERPOLATOR_H
 #define SPC_NN_INTERPOLATOR_H
 
+
+
 #include <vector>
 #include <limits>
 #include <stdlib.h>
 #include <iostream>
 
+
+
+namespace spc
+{
 
 /** \brief A simple Nearest Neighbors interpolator.
  * \note Given two vectors x and y plus a vector of of x positions at which to evaluate the interpolator the class
@@ -154,6 +160,6 @@ private:
 	
 };
 
-
+} //close nspace
 
 #endif

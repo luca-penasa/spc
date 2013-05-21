@@ -87,14 +87,14 @@ int main(int argc, char* argv[])
 		
 		pcl::fromROSMsg(*in_sensor_cloud, *cloud);
 		//compute distances
-        computeDistanceFromOrigin(*cloud, *cloud_distances);
+        spc::computeDistanceFromOrigin(*cloud, *cloud_distances);
 		pcl::toROSMsg(*cloud_distances, *cloud_distances_sensor);
 		
 		merge = default_merge;
 		
 		if (merge == "yes")
 		{
-			std::string base_name = getBaseFileName(filenames[i].c_str());
+            std::string base_name = spc::getBaseFileName(filenames[i].c_str());
 			std::string out_name = base_name + "_WithDistances.pcd"; 
 			pcl::concatenateFields(*cloud_distances_sensor, *in_sensor_cloud, *out_sensor_cloud);
 			pcl::io::savePCDFile (out_name, *out_sensor_cloud, Eigen::Vector4f::Zero (),Eigen::Quaternionf::Identity (), is_binary);	
@@ -103,7 +103,7 @@ int main(int argc, char* argv[])
 		}
 		else if (merge == "no")
 		{
-			std::string base_name = getBaseFileName(filenames[i].c_str());
+            std::string base_name = spc::getBaseFileName(filenames[i].c_str());
 			std::string out_name = base_name + "_OnlyDistances.pcd";
 			pcl::io::savePCDFile (out_name, *cloud_distances_sensor, Eigen::Vector4f::Zero (),Eigen::Quaternionf::Identity (), is_binary);	
 			pcl::console::print_info("Saved as %s\n", out_name.c_str() );

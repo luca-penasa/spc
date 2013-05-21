@@ -41,7 +41,7 @@ POINT_CLOUD_REGISTER_POINT_STRUCT   (PointEigIndices,
                                      (float, id2, id2))
 
 
-namespace ll {
+namespace spc {
 
             inline void
             solvePlaneParametersEigen (const Eigen::Matrix3f &covariance_matrix,

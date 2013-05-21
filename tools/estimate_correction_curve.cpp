@@ -166,7 +166,7 @@ int main (int argc, char ** argv)
 
 
     //create the input tseries
-    ll::SparseTimeSeries<float> * in_data  = new ll::SparseTimeSeries<float>(distances, intensities);
+    spc::SparseTimeSeries<float> * in_data  = new spc::SparseTimeSeries<float>(distances, intensities);
 
 
 //    float min = get_min<float>(distances);
@@ -180,11 +180,11 @@ int main (int argc, char ** argv)
 //    print_info("MIN Distance %f, Max Distance %f, Requested Step %f \n", min, max, step);
 
 
-    ll::EquallySpacedTimeSeries<float> *  series = new ll::EquallySpacedTimeSeries<float>(in_data->getMinX(), in_data->getMaxX(), step);
+    spc::EquallySpacedTimeSeries<float> *  series = new spc::EquallySpacedTimeSeries<float>(in_data->getMinX(), in_data->getMaxX(), step);
 
     //now do the estimate of the trend, using kernelsmoothing
     //now initialize a kernelsmoothing object
-    ll::KernelSmoothing<float> ks;
+    spc::KernelSmoothing<float> ks;
     ks.setComputeVariance(0); //also compute the variance - support for variance computing is not complete!
     ks.setInput(in_data);
     ks.setBandwidth(bandwidth);
@@ -201,12 +201,12 @@ int main (int argc, char ** argv)
     //save some data for any future use
     vector< std::vector<float> > to_save = {series->getX(), series->getY()};
 
-    string basename = stripExtension(incloud_pathname);
+    string basename = spc::stripExtension(incloud_pathname);
     string out_name = basename + std::string("_correction_curve.txt");
 
 
     print_highlight("Saving the correction curve here: \n %s \n",  out_name.c_str());
-    saveAsCSV( out_name, std::string(" "), to_save);
+    spc::saveAsCSV( out_name, std::string(" "), to_save);
 
     return 1;
 }

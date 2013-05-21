@@ -6,6 +6,10 @@
 #include <string>
 
 
+namespace spc
+{
+
+
 /** \brief Remove extension from string representing a file name.
  * \param[in] file_name string filename 
  * \return the filename without extension
@@ -29,5 +33,5 @@ std::string
 addSubscript(const std::string &file_name, const std::string &text);
 
 
-
+} //end namespace
 #endif

@@ -1,19 +1,26 @@
 #include <spc/time_series/base_time_series.h>
 
+namespace spc {
+
+
 template <typename ScalarT>
-ll::GenericTimeSeries<ScalarT>::GenericTimeSeries(): y(0)
+GenericTimeSeries<ScalarT>::GenericTimeSeries(): y(0)
 {
 
 }
 
 template<typename ScalarT>
 auto
-ll::GenericTimeSeries<ScalarT>::getY() -> vector<ScalarT>
+GenericTimeSeries<ScalarT>::getY() -> vector<ScalarT>
 {
     return y;
 }
 
 
 ///INSTANTIATIONS
-template class ll::GenericTimeSeries<float>;
-template class ll::GenericTimeSeries<double>;
+template class GenericTimeSeries<float>;
+template class GenericTimeSeries<double>;
+
+
+}
+

@@ -5,8 +5,9 @@
 #include <algorithm>
 #include <limits>
 
-namespace ll
+namespace spc
 {
+
 using namespace std;
 template <typename ScalarT>
 ///
@@ -115,6 +116,7 @@ private:
 };
 
 
-}//end ll namespace
+
+}//end spc namespace
 
 #endif // EQUALLYSPACEDTIMESERIES_H

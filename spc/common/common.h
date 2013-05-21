@@ -13,7 +13,8 @@
 
 #include <Eigen/Core>
 
-
+namespace spc
+{
 
 template<typename nType> std::vector<nType> 
 subdivideRange(nType &start, nType &end, nType &step);
@@ -63,7 +64,7 @@ fill_nan_rbf(std::vector<nType> &x, std::vector<nType> &y)
 	std::vector<nType> y_stripped = erease_ids(y, nans_id);
 	
 	//now create a rbf interpolator
-	RBFInterpolator<nType> rbf;
+    spc::RBFInterpolator<nType> rbf;
 	rbf.setInputPoints(x_stripped);
 	rbf.setInputValues(y_stripped);
 	rbf.updateAll();
@@ -189,4 +190,6 @@ getLastNSortingIds(const std::vector<Stype> &v, const int N)
 
 }
 
+
+}//end namespace
 #endif

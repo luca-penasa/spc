@@ -3,7 +3,7 @@
 
 #include <Eigen/Dense>
 
-namespace ll
+namespace spc
 {
 
     template<typename ScalarT>

@@ -1,4 +1,6 @@
 #include <spc/common/common.h>
+namespace spc {
+
 
 template<class nType> std::vector<nType> 
 subdivideRange(nType &start, nType &end, nType &step)
@@ -16,7 +18,10 @@ subdivideRange(nType &start, nType &end, nType &step)
 	return result;
 	
 	
-};
+}
 
 template std::vector<float> subdivideRange<float>(float &start, float &end, float &step);
 template std::vector<double> subdivideRange<double>(double &start, double &end, double &step);
+
+
+} //end namespace

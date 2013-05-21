@@ -1,5 +1,6 @@
 #include "strings.h"
-
+namespace spc
+{
 std::string 
 stripExtension(const std::string& file_name)
 {
@@ -37,3 +38,5 @@ addSubscript(const std::string &file_name, const std::string &text)
 	std::string new_file_name = without_extension + text;
 	return new_file_name;
 }
+
+}//end nspace

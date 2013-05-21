@@ -1,6 +1,9 @@
 #include "geometry.h"
 #include <pcl/common/distances.h>
 
+namespace spc
+{
+
 template <typename PointT>
 void 
 computeDistanceFromOrigin(const pcl::PointCloud<PointT> &incloud, pcl::PointCloud<PointD> &outcloud)
@@ -26,3 +29,4 @@ computeDistanceFromOrigin(const pcl::PointCloud<PointT> &incloud, pcl::PointClou
 template void
 computeDistanceFromOrigin(const pcl::PointCloud<pcl::PointXYZ> &incloud, pcl::PointCloud<PointD> &outcloud);
 
+}

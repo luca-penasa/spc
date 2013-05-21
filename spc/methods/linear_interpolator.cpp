@@ -2,6 +2,8 @@
 #include <spc/common/common.h>
 #include <spc/methods/linear_interpolator.h>
 
+namespace spc
+{
 
 template<typename T>
 LinearInterpolator<T>::LinearInterpolator(): degree_(2)
@@ -132,8 +134,8 @@ LinearInterpolator<T>::evaluateInterpolatorForSegment(int &segment_id)
 //    std::transform(global_ids.begin(), global_ids.end(), tmp_x.begin(), [&](int id){return this->new_x_[id];});
 //    std::transform(global_ids.begin(), global_ids.end(), tmp_y.begin(), [&](int id){return this->new_y_[id];});
 
-//    auto tmp_x_e = ll::stdVectorToEigen(tmp_x);
-//    auto tmp_y_e = ll::stdVectorToEigen(tmp_y);
+//    auto tmp_x_e = spc::stdVectorToEigen(tmp_x);
+//    auto tmp_y_e = spc::stdVectorToEigen(tmp_y);
 
 ////    std::cout << "tmp_x_e" << std::endl;
 ////    std::cout << tmp_x_e << std::endl;
@@ -141,7 +143,7 @@ LinearInterpolator<T>::evaluateInterpolatorForSegment(int &segment_id)
 ////    std::cout << "tmp_y_e" << std::endl;
 ////    std::cout << tmp_y_e << std::endl;
 
-//    auto poly = ll::polyfit(tmp_x_e, tmp_y_e, n-1);
+//    auto poly = spc::polyfit(tmp_x_e, tmp_y_e, n-1);
 
 ////    std::cout << "poly" << std::endl;
 ////    std::cout << poly << std::endl;
@@ -153,11 +155,11 @@ LinearInterpolator<T>::evaluateInterpolatorForSegment(int &segment_id)
 
 
 
-//    auto to_evaluate_e = ll::stdVectorToEigen(to_evaluate);
+//    auto to_evaluate_e = spc::stdVectorToEigen(to_evaluate);
 
 
 
-//    auto values = ll::polyval(poly, to_evaluate_e);
+//    auto values = spc::polyval(poly, to_evaluate_e);
 
 
 //    //now put thes values back to their right place in new_y_
@@ -191,17 +193,17 @@ LinearInterpolator<T>::evaluateInterpolatorLowerPoints()
     for (auto &i: small_y)
         i = y_.at(nn++);
 
-    auto tmp_x_e = ll::stdVectorToEigen(small_x);
-    auto tmp_y_e = ll::stdVectorToEigen(small_y);
+    auto tmp_x_e = spc::stdVectorToEigen(small_x);
+    auto tmp_y_e = spc::stdVectorToEigen(small_y);
 
-    auto poly = ll::polyfit(tmp_x_e, tmp_y_e, n-1);
+    auto poly = spc::polyfit(tmp_x_e, tmp_y_e, n-1);
 
     //using this polynomial we evaluate all the points out of lower bound
     std::vector <T> x_to_evaluate(lower_points_.size()); //container
     std::transform(lower_points_.begin(), lower_points_.end(), x_to_evaluate.begin(), [&](int id){return this->new_x_[id];});
 
-    auto x_to_evaluate_e = ll::stdVectorToEigen(x_to_evaluate);
-    auto values = ll::polyval(poly, x_to_evaluate_e);
+    auto x_to_evaluate_e = spc::stdVectorToEigen(x_to_evaluate);
+    auto values = spc::polyval(poly, x_to_evaluate_e);
     std::cout << poly << std::endl;
 
 
@@ -228,17 +230,17 @@ LinearInterpolator<T>::evaluateInterpolatorUpperPoints()
     for (auto &i: small_y)
         i = y_.at(nn--);
 
-    auto tmp_x_e = ll::stdVectorToEigen(small_x);
-    auto tmp_y_e = ll::stdVectorToEigen(small_y);
+    auto tmp_x_e = spc::stdVectorToEigen(small_x);
+    auto tmp_y_e = spc::stdVectorToEigen(small_y);
 
-    auto poly = ll::polyfit(tmp_x_e, tmp_y_e, n-1);
+    auto poly = spc::polyfit(tmp_x_e, tmp_y_e, n-1);
 
     //using this polynomial we evaluate all the points out of lower bound
     std::vector <T> x_to_evaluate(upper_points_.size()); //container
     std::transform(upper_points_.begin(), upper_points_.end(), x_to_evaluate.begin(), [&](int id){return this->new_x_[id];});
 
-    auto x_to_evaluate_e = ll::stdVectorToEigen(x_to_evaluate);
-    auto values = ll::polyval(poly, x_to_evaluate_e);
+    auto x_to_evaluate_e = spc::stdVectorToEigen(x_to_evaluate);
+    auto values = spc::polyval(poly, x_to_evaluate_e);
     std::cout << poly << std::endl;
 
 
@@ -286,3 +288,4 @@ LinearInterpolator<T>::compute()
 template class LinearInterpolator<float>;
 template class LinearInterpolator<double>;
 
+}

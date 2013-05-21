@@ -6,8 +6,9 @@
 #include <vector>
 #include <assert.h>
 
-namespace ll
+namespace spc
 {
+
 ///
 /// \defgroup time_series Time Series Objects
 ///
@@ -97,5 +98,7 @@ protected:
 
 };
 
-} //end namespace ll
+
+
+} //end namespace spc
 #endif // GENERICTIMESERIES_H

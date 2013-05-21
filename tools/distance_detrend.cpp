@@ -32,7 +32,7 @@ int main(int argc, char *argv[])
 
 	//input cloud
     std::string infilename = argv[1];
-    std::string basename = stripExtension(infilename); //the filename without extension
+    std::string basename = spc::stripExtension(infilename); //the filename without extension
 
 	//load the cloud
 	sensor_msgs::PointCloud2::Ptr cloud  (new sensor_msgs::PointCloud2);
@@ -82,17 +82,17 @@ int main(int argc, char *argv[])
     } //we here have i and d for all the points in the downsampled cloud
 
 
-	float min = get_min(d_vector);
-	float max = get_max(d_vector);
+    float min = spc::get_min(d_vector);
+    float max = spc::get_max(d_vector);
     float step = 0.04; //every 4 cm get an estimate
 
     //the vector with distances at which to estimate the trend
-	std::vector<float> new_d = subdivideRange(min, max, step);
-    ll::EquallySpacedTimeSeries<float> * series = new ll::EquallySpacedTimeSeries<float>(step, min, new_d.size());
+    std::vector<float> new_d = spc::subdivideRange(min, max, step);
+    spc::EquallySpacedTimeSeries<float> * series = new spc::EquallySpacedTimeSeries<float>(step, min, new_d.size());
 
     //now do the estimate of the trend, using kernelsmoothing
 	//now initialize a kernelsmoothing object
-    ll::KernelSmoothing<float> ks;
+    spc::KernelSmoothing<float> ks;
     ks.setComputeVariance(1); //also compute the variance
 	ks.setXY(d_vector, i_vector);
 //	ks.setEvaluationPositions(new_d);
@@ -119,9 +119,9 @@ int main(int argc, char *argv[])
     tmp_out1.push_back(new_i);
 
     std::cout << "Saving the correction curve" << std::endl;
-    saveAsCSV(basename + voxelsize_string + bandwidth_string + std::string("_correction_curve.txt") , std::string(" "), tmp_out1);
+    spc::saveAsCSV(basename + voxelsize_string + bandwidth_string + std::string("_correction_curve.txt") , std::string(" "), tmp_out1);
 
-    fill_nan_rbf<float>(new_d, new_i ); //eventually fill-in nans using RBF interpolator
+    spc::fill_nan_rbf<float>(new_d, new_i ); //eventually fill-in nans using RBF interpolator
 
 
 
@@ -135,9 +135,9 @@ int main(int argc, char *argv[])
 	//put up a nnInterpolator class TODO finish to change to rbf interpolator
 
 
-    LinearInterpolator<float> interpolator;
+    spc::LinearInterpolator<float> interpolator;
 
-    float mymin =  get_min(new_d);
+    float mymin =  spc::get_min(new_d);
     float mystep =  step;
 
 

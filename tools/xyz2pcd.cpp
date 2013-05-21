@@ -166,7 +166,7 @@ int main(int argc, char *argv[] )
 		sensor_msgs::PointCloud2::Ptr cloud (new sensor_msgs::PointCloud2);
 		
 		//get the cloud
-		int status = loadCSVFile(filename, *cloud, x_column, y_column, z_column, int_column, skip_n_rows, separator);
+        int status = spc::loadCSVFile(filename, *cloud, x_column, y_column, z_column, int_column, skip_n_rows, separator);
 
 		if (status == -1)
 		{
@@ -175,7 +175,7 @@ int main(int argc, char *argv[] )
 		}
 		
 		//strip extension
-		string just_name = stripExtension(filename);
+        string just_name = spc::stripExtension(filename);
 		print_info("stripped name: %s\n", just_name.c_str());
 		
 		//change extension
