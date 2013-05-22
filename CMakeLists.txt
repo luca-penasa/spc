@@ -6,6 +6,8 @@ set(SPC_LIBRARIES CACHE INTERNAL "SPC libs" FORCE)
 
 option(BUILD_SPC_SHARED "Build spc library as a shared lib." ON)
 option(BUILD_TOOLS "Build the tools." ON)
+option(BUILD_MICMAC_RELATED "Build MICMAC-related code." ON)
+option(BUILD_PYTHON_WRAPPINGS "Build python interface for the library. Only some classes have been wrapped!" ON)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
@@ -33,3 +35,13 @@ add_subdirectory(${PROJECT_NAME_LOWER})
 if(BUILD_TOOLS)
     add_subdirectory(tools)
 endif()
+
+if(BUILD_MICMAC_RELATED)
+    add_subdirectory(external)
+    set(CULTURE_3D_BUILD_DIR "/home/luca/Code/culture3d/build" CACHE STRING "path where a culture3d build has been compiled is located. This is my default. you should change to your needs")
+    set(CULTURE_3D_SOURCE_DIR "/home/luca/Code/culture3d" CACHE STRING "path where culture 3d source resides. This is my default. Change o your needs")
+
+endif()
+
+
+

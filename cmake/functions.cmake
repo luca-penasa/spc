@@ -1,17 +1,17 @@
-function(spc_compile_and_link name files libs)
-    message("${name}")
+macro(spc_compile_and_link name files libs)
+#    message("${name}")
     if(BUILD_SPC_SHARED)
             add_library (${name} SHARED ${files})           
     else()
             add_library (${name} STATIC ${files})           
     endif()
     target_link_libraries(${name} ${libs})
-   spc_install_target_library_libs (${name})
+    spc_install_target_library_libs (${name})
 
     #update the variable keeping the libarires
 
     set(SPC_LIBRARIES ${SPC_LIBRARIES} ${name} CACHE INTERNAL "SPC libs")
-endfunction()
+endmacro()
 
 
 function(spc_add_library libname dependence)
