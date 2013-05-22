@@ -29,10 +29,7 @@ ENDIF()
 add_library(pyspc SHARED pymm.cpp pymm.h)
 target_link_libraries(pyspc ${Boost_LIBRARIES}  spc_micmac  boost_numpy )
 spc_install_target_library_libs(pyspc)
-#spc_install_target_library_headers(micmac pymm.h)
 
-#add_executable(${EXECUTABLE_PREFIX}2dto3d 2dto3d.cpp)
-#target_link_libraries(${EXECUTABLE_PREFIX}2dto3d mm )
 
 
 

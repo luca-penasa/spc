@@ -8,6 +8,7 @@ option(BUILD_SPC_SHARED "Build spc library as a shared lib." ON)
 option(BUILD_TOOLS "Build the tools." ON)
 option(BUILD_MICMAC_RELATED "Build MICMAC-related code." ON)
 option(BUILD_PYTHON_WRAPPINGS "Build python interface for the library. Only some classes have been wrapped!" ON)
+option(BUILD_SPC_DOC "Build SPC doc" OFF)
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 

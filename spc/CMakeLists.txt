@@ -10,3 +10,7 @@ endif()
 if(BUILD_MICMAC_RELATED)
    add_subdirectory(micmac)
 endif()
+
+if(BUILD_SPC_DOC)
+    add_subdirectory(doc)
+endif()

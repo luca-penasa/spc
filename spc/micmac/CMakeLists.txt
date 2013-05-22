@@ -28,13 +28,5 @@ set(additional_libraries ${X11_LIBRARIES} elise)
 spc_add_library(micmac "${additional_libraries}")
 
 
-#add_library(spc_pymm SHARED pymm.cpp pymm.h)
-#target_link_libraries(spc_pymm ${Boost_LIBRARIES}  spc_mm  boost_numpy )
-#spc_install_target_library_libs(spc_pymm)
-#spc_install_target_library_headers(micmac pymm.h)
-
-#add_executable(${EXECUTABLE_PREFIX}2dto3d 2dto3d.cpp)
-#target_link_libraries(${EXECUTABLE_PREFIX}2dto3d mm )
-
 
 
