@@ -19,10 +19,8 @@ computeDistanceFromOrigin(const pcl::PointCloud<PointT> &incloud, pcl::PointClou
 	outcloud.points.resize(outcloud.width * outcloud.height);
 	
 	//cycle on points and get distances
-	for (int i =0; i < incloud.size(); ++i)
-	{
-		outcloud.points[i].distance = pcl::euclideanDistance (incloud.points[i],	this_origin) ;
-	}
+	for (int i =0; i < incloud.size(); ++i)	
+        outcloud.points[i].distance = pcl::euclideanDistance (incloud.points[i], this_origin) ;
 }
 
 

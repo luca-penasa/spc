@@ -1,8 +1,10 @@
 #include <spc/methods/compute_eigen_indices.h>
+namespace spc
+{
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
     inline void
-    spc::solvePlaneParametersEigen (const Eigen::Matrix3f &covariance_matrix,
+    solvePlaneParametersEigen (const Eigen::Matrix3f &covariance_matrix,
                                        float &nx, float &ny, float &nz, float &lam0, float &lam1, float &lam2)
     {
         Eigen::Matrix3f eigen_vectors;
@@ -37,7 +39,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////
     template<typename PointInT>
     void
-    spc::computePointNormal (const pcl::PointCloud<PointInT> &cloud, const std::vector<int> &indices,
+    computePointNormal (const pcl::PointCloud<PointInT> &cloud, const std::vector<int> &indices,
                             float &nx, float &ny, float &nz, float &lam0, float &lam1, float &lam2)
     {
 
@@ -54,13 +56,13 @@
         }
 
         // Get the plane normal and surface curvature
-        spc::solvePlaneParametersEigen (covariance_matrix, nx, ny, nz, lam0, lam1, lam2);
+        solvePlaneParametersEigen (covariance_matrix, nx, ny, nz, lam0, lam1, lam2);
 
 
     }
 //////////////////////////////////////////////////////////////////////////////////////////////////////
     template <typename PointT> void
-    spc::flipNormal (const PointT &point, float vp_x, float vp_y, float vp_z,
+    flipNormal (const PointT &point, float vp_x, float vp_y, float vp_z,
                         float &nx, float &ny, float &nz)
     {
 
@@ -84,7 +86,7 @@
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
     template <typename PointInT>
-    void spc::computeEigIndices(const pcl::PointCloud<PointInT> &in_cloud,
+    void computeEigIndices(const pcl::PointCloud<PointInT> &in_cloud,
                            const int &point_id,
                            float &id_0,
                            float &id_1,
@@ -104,7 +106,7 @@
     }
 
     template <typename PointInT, typename PointOutT>
-    void spc::computeDispersionIndices(const pcl::PointCloud<PointInT> &in_cloud,
+    void computeDispersionIndices(const pcl::PointCloud<PointInT> &in_cloud,
                                       pcl::PointCloud<PointOutT> &out_cloud,
                                       const int &n_threads)
     {
@@ -112,7 +114,7 @@
         #pragma omp parallel for shared (out_cloud) num_threads(n_threads)
         for (int i = 0; i < in_cloud.size(); ++i)
         {
-            spc::computeEigIndices<PointNormalEigs>(in_cloud, i, out_cloud[i].id0, out_cloud[i].id1, out_cloud[i].id2);
+            computeEigIndices<PointNormalEigs>(in_cloud, i, out_cloud[i].id0, out_cloud[i].id1, out_cloud[i].id2);
         }
     }
 
@@ -120,7 +122,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////
     template<typename PointT>
     int
-    spc::computeCovMat(const pcl::PointCloud<PointT> &in_cloud,
+    computeCovMat(const pcl::PointCloud<PointT> &in_cloud,
                           const std::vector<int> &indices,
                           Eigen::Matrix3f &covmat)
     {
@@ -168,7 +170,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////
     template<typename PointInT, typename PointOutT>
     int
-    spc::computeNormalsAndEigenvalues(const typename pcl::PointCloud<PointInT>::Ptr &in_cloud,
+    computeNormalsAndEigenvalues(const typename pcl::PointCloud<PointInT>::Ptr &in_cloud,
                                     const float &radius,
                                     const int &n_threads,
                                     pcl::PointCloud<PointOutT> &out_cloud)
@@ -192,7 +194,7 @@
             flann.radiusSearch((*in_cloud)[i], radius, indices, distances);
 
             //estimate normal and eigenvalues
-            spc::computePointNormal(*in_cloud, indices,
+            computePointNormal(*in_cloud, indices,
                                out_cloud[i].normal_x,
                                out_cloud[i].normal_y,
                                out_cloud[i].normal_z,
@@ -200,7 +202,7 @@
                                out_cloud[i].lam1,
                                out_cloud[i].lam2);
 
-           spc::flipNormal<PointInT> ((*(in_cloud))[i], 0.0, 0.0, 0.0, out_cloud[i].normal_x, out_cloud[i].normal_y, out_cloud[i].normal_z);
+           flipNormal<PointInT> ((*(in_cloud))[i], 0.0, 0.0, 0.0, out_cloud[i].normal_x, out_cloud[i].normal_y, out_cloud[i].normal_z);
         }
 
         return 1;
@@ -209,7 +211,7 @@
 
 
     template int
-    spc::computeNormalsAndEigenvalues<pcl::PointXYZ, PointNormalEigs>(  const  pcl::PointCloud<pcl::PointXYZ>::Ptr &in_cloud,
+    computeNormalsAndEigenvalues<pcl::PointXYZ, PointNormalEigs>(  const  pcl::PointCloud<pcl::PointXYZ>::Ptr &in_cloud,
                                                     const float &radius,
                                                     const int &n_threads,
                                                     pcl::PointCloud<PointNormalEigs> &out_cloud);
@@ -217,6 +219,9 @@
 
 
     template void
-    spc::computeDispersionIndices(const pcl::PointCloud<PointNormalEigs> &in_cloud,
+    computeDispersionIndices(const pcl::PointCloud<PointNormalEigs> &in_cloud,
                                       pcl::PointCloud<PointEigIndices> &out_cloud,
                                       const int &n_threads);
+
+
+} //end nspace

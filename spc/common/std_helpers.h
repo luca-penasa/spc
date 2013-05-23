@@ -13,7 +13,8 @@
 
 #include <vector>
 
-
+namespace spc
+{
 
 
 /// SCALAR RETURNING
@@ -48,5 +49,8 @@ get_squared(const std::vector<ScalarT> &input) -> std::vector<ScalarT>;
 template <typename ScalarT>
 auto
 get_product(const std::vector<ScalarT> &input1, const std::vector<ScalarT> &input2) -> std::vector<ScalarT>;
+
+}//end nspace
+
 #endif
 

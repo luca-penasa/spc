@@ -44,6 +44,16 @@ POINT_CLOUD_REGISTER_POINT_STRUCT   (PointEigIndices,
 namespace spc {
 
             inline void
+                    ///
+                    /// \brief solvePlaneParametersEigen
+                    /// \param covariance_matrix
+                    /// \param nx
+                    /// \param ny
+                    /// \param nz
+                    /// \param lam0
+                    /// \param lam1
+                    /// \param lam2
+                    ///
             solvePlaneParametersEigen (const Eigen::Matrix3f &covariance_matrix,
                                        float &nx, float &ny, float &nz,
                                        float &lam0, float &lam1, float &lam2
@@ -52,6 +62,17 @@ namespace spc {
 
 
             template<typename PointInT>
+            ///
+            /// \brief computePointNormal
+            /// \param cloud
+            /// \param indices
+            /// \param nx
+            /// \param ny
+            /// \param nz
+            /// \param lam0
+            /// \param lam1
+            /// \param lam2
+            ///
             void
             computePointNormal (const pcl::PointCloud<PointInT> &cloud, const std::vector<int> &indices,
                                 float &nx, float &ny, float &nz,
@@ -59,6 +80,16 @@ namespace spc {
 
 
             template <typename PointT>
+            ///
+            /// \brief flipNormal
+            /// \param point
+            /// \param vp_x
+            /// \param vp_y
+            /// \param vp_z
+            /// \param nx
+            /// \param ny
+            /// \param nz
+            ///
             void
             flipNormal (const PointT &point, float vp_x, float vp_y, float vp_z,
                         float &nx, float &ny, float &nz);
@@ -66,6 +97,14 @@ namespace spc {
 
 
             template <typename PointT>
+            ///
+            /// \brief computeEigIndices
+            /// \param in_cloud
+            /// \param point_id
+            /// \param id_0
+            /// \param id_1
+            /// \param id_2
+            ///
             void
             computeEigIndices(const pcl::PointCloud<PointT> &in_cloud,
                               const int &point_id,
@@ -75,18 +114,39 @@ namespace spc {
 
 
             template <typename PointInT, typename PointOutT>
+            ///
+            /// \brief computeDispersionIndices
+            /// \param in_cloud
+            /// \param out_cloud
+            /// \param n_threads
+            ///
             void
             computeDispersionIndices(const pcl::PointCloud<PointInT> &in_cloud,
                                               pcl::PointCloud<PointOutT> &out_cloud,
                                               const int &n_threads);
 
             template<typename PointT>
-            int
+            ///
+            /// \brief computeCovMat
+            /// \param in_cloud
+            /// \param indices
+            /// \param covmat
+            /// \return
+            ///
+            int                    
             computeCovMat(const pcl::PointCloud<PointT> &in_cloud,
                           const std::vector<int> &indices,
                           Eigen::Matrix3f &covmat);
 
             template<typename PointInT, typename PointOutT>
+            ///
+            /// \brief computeNormalsAndEigenvalues
+            /// \param in_cloud
+            /// \param radius
+            /// \param n_threads
+            /// \param out_cloud
+            /// \return
+            ///
             int
             computeNormalsAndEigenvalues(const typename pcl::PointCloud<PointInT>::Ptr &in_cloud,
                                 const float &radius,

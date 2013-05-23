@@ -1,0 +1,2676 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="94.011505"
+   height="20.660053"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="icons.svg">
+  <defs
+     id="defs4">
+    <marker
+       inkscape:stockid="Arrow1Mstart"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Mstart"
+       style="overflow:visible">
+      <path
+         id="path3996"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt"
+         transform="scale(0.4) translate(10,0)" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Mend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Mend"
+       style="overflow:visible;">
+      <path
+         id="path3999"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;"
+         transform="scale(0.4) rotate(180) translate(10,0)" />
+    </marker>
+    <linearGradient
+       id="linearGradient4062">
+      <stop
+         id="stop4070"
+         offset="0"
+         style="stop-color:#ff9999;stop-opacity:0.49803922;" />
+      <stop
+         style="stop-color:#e9ff54;stop-opacity:1;"
+         offset="0.5"
+         id="stop4074" />
+      <stop
+         style="stop-color:#99ff99;stop-opacity:1;"
+         offset="1"
+         id="stop4066" />
+    </linearGradient>
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4062"
+       id="linearGradient4068"
+       x1="145.29607"
+       y1="1043.2157"
+       x2="140.21603"
+       y2="1034.1776"
+       gradientUnits="userSpaceOnUse" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="6.4726745"
+     inkscape:cx="4.037808"
+     inkscape:cy="2.5778817"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:snap-midpoints="false"
+     inkscape:snap-object-midpoints="true"
+     inkscape:snap-nodes="true"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1680"
+     inkscape:window-height="1008"
+     inkscape:window-x="0"
+     inkscape:window-y="24"
+     inkscape:window-maximized="1"
+     inkscape:snap-global="false"
+     inkscape:snap-bbox="true"
+     inkscape:object-nodes="true"
+     inkscape:snap-smooth-nodes="true"
+     inkscape:bbox-nodes="true"
+     inkscape:snap-bbox-edge-midpoints="true"
+     inkscape:object-paths="true">
+    <sodipodi:guide
+       orientation="1,0"
+       position="-26.711111,28.930964"
+       id="guide3069" />
+    <sodipodi:guide
+       orientation="0,1"
+       position="-0.44714716,10.476012"
+       id="guide3071" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="10.052853,20.976012"
+       id="guide3867" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="153.25968,3.7078954"
+       id="guide3902" />
+    <sodipodi:guide
+       orientation="1,0"
+       position="58.052849,20.975984"
+       id="guide3930" />
+    <sodipodi:guide
+       orientation="0,1"
+       position="64.454501,27.420474"
+       id="guide3098" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="squares"
+     style="display:none"
+     transform="translate(-37.191444,-0.48156374)">
+    <rect
+       style="color:#000000;fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3865"
+       width="21"
+       height="21"
+       x="36.744297"
+       y="0.16560371" />
+    <rect
+       transform="translate(0,-1031.3622)"
+       y="1031.5278"
+       x="60.744297"
+       height="21"
+       width="21"
+       id="rect3891"
+       style="color:#000000;fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       transform="translate(0,-1031.3622)"
+       y="1031.5278"
+       x="84.744293"
+       height="21"
+       width="21"
+       id="rect3924"
+       style="color:#000000;fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       style="color:#000000;fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3007"
+       width="21"
+       height="21"
+       x="110.61803"
+       y="0.16563202" />
+    <rect
+       y="0.16563202"
+       x="136.77252"
+       height="21"
+       width="21"
+       id="rect3018"
+       style="color:#000000;fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       style="color:#000000;fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3032"
+       width="21"
+       height="21"
+       x="164.4129"
+       y="0.16563202" />
+    <rect
+       y="0.16563202"
+       x="192.13766"
+       height="21"
+       width="21"
+       id="rect3100"
+       style="color:#000000;fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       y="0.16560371"
+       x="12.744297"
+       height="21"
+       width="21"
+       id="rect3250"
+       style="color:#000000;fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+  </g>
+  <g
+     inkscape:label="Livello 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-37.191444,-1031.8438)">
+    <text
+       transform="matrix(0,-0.74916906,1.3348122,0,0,0)"
+       sodipodi:linespacing="125%"
+       id="text5723"
+       y="78.38929"
+       x="-1403.751"
+       style="font-size:11.23753548px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#4e4e4b;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       xml:space="preserve"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109.3476"
+       inkscape:export-ydpi="109.3476"><tspan
+         y="78.38929"
+         x="-1403.751"
+         id="tspan5725"
+         sodipodi:role="line">GEO</tspan></text>
+    <path
+       style="fill:#eae385;fill-opacity:1;stroke:#ff0000;stroke-width:0.02109091;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 86.754988,1032.6664 c -0.408122,-0.012 -0.05706,0.8149 -0.06797,1.223 -0.04597,1.7199 -0.945348,3.7311 0.01069,5.1615 0.118546,0.1774 0.381287,0.206 0.590848,0.246 1.765611,0.3367 3.736092,0.6054 5.391463,-0.095 0.236816,-0.1002 0.487919,-0.2938 0.546847,-0.5441 0.07803,-0.3314 -0.292565,-0.6291 -0.326636,-0.9679 -0.04531,-0.4506 0.142992,-0.8959 0.169405,-1.348 0.04276,-0.7319 0.146956,-1.4851 -0.01826,-2.1994 -0.10698,-0.4625 -0.231524,-1.0045 -0.614726,-1.2847 -0.483353,-0.3535 -1.18183,-0.2071 -1.779257,-0.2477 -1.271234,-0.086 -2.593506,-0.3263 -3.822486,0.01 -0.02981,0.01 -0.05312,0.062 -0.07992,0.047 -2.02e-4,-10e-5 2.35e-4,-7e-4 2e-6,-7e-4 z"
+       id="path3881"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       sodipodi:nodetypes="aaaaaaaaaaaaaa" />
+    <path
+       style="fill:#df8f87;fill-opacity:1;stroke:#ff0000;stroke-width:0.02109091;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 86.754988,1039.2989 c -0.01057,0.4173 -0.120611,0.8363 -0.06797,1.2504 0.03384,0.2662 0.02632,0.6097 0.243456,0.7674 1.212602,0.8807 3.387798,0.9761 4.495826,-0.033 0.162372,-0.1479 0.09112,-0.4373 0.06627,-0.6555 -0.02049,-0.1799 -0.163806,-0.3336 -0.174808,-0.5144 -0.0168,-0.276 0.333986,-0.5896 0.169681,-0.812 -0.148361,-0.2008 -0.496419,-0.058 -0.745861,-0.069 -1.30099,-0.057 -2.650963,-0.327 -3.906678,0.018 -0.0298,0.01 -0.06462,0.02 -0.07992,0.047 -1.81e-4,3e-4 1.3e-5,7e-4 4e-6,0 z"
+       id="path3883"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       sodipodi:nodetypes="aaaaaaaaaaa" />
+    <path
+       style="fill:#9cbd86;fill-opacity:1;stroke:#ff0000;stroke-width:0.02109091;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 86.756002,1041.3184 c -0.408772,-0.011 -0.05796,0.816 -0.06898,1.2248 -0.04039,1.499 -0.816128,3.2475 0.01069,4.4985 0.117755,0.1782 0.379629,0.2095 0.588822,0.2525 1.753816,0.3602 3.594667,0.2221 5.371257,0 0.386678,-0.048 0.845447,-0.025 1.133086,-0.2878 0.340456,-0.3112 0.397118,-0.8482 0.459525,-1.3052 0.04777,-0.3498 0.153508,-0.7844 -0.07101,-1.0569 -0.190872,-0.2317 -0.5822,-0.1471 -0.870356,-0.2312 -0.305228,-0.089 -0.877287,0.027 -0.908904,-0.2895 -0.04574,-0.4577 0.829857,-0.4059 1.205959,-0.6707 0.232717,-0.1639 0.558308,-0.2907 0.642281,-0.5626 0.113439,-0.3674 -0.0034,-0.8585 -0.288091,-1.1169 -0.76915,-0.6983 -2.043181,-0.401 -3.078695,-0.4839 -1.344288,-0.1077 -2.742274,-0.3619 -4.04575,-0.016 -0.02968,0.01 -0.05321,0.061 -0.07983,0.046 -3.18e-4,-2e-4 3.63e-4,-0 -4e-6,-0 z"
+       id="path3885"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       sodipodi:nodetypes="aaaaaaaaaaaaaaaaa" />
+    <path
+       style="fill:#bec1fc;fill-opacity:1;stroke:#ff0000;stroke-width:0.02109091;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 89.076952,1047.2366 c -0.542007,0.5146 -1.678059,-0.4724 -2.242046,0.018 -0.253282,0.2202 -0.123797,0.6612 -0.147883,0.996 -0.06811,0.9467 -0.515251,2.0572 0.01069,2.8473 0.118284,0.1777 0.380537,0.2074 0.589839,0.2493 1.299127,0.26 3.078412,0.9568 3.974644,-0.019 0.147987,-0.1611 0.0049,-0.4431 -0.05254,-0.6542 -0.131603,-0.4834 -0.664694,-0.8515 -0.655729,-1.3524 0.0097,-0.5401 0.711829,-0.8938 0.758772,-1.432 0.01888,-0.2165 -0.02617,-0.4909 -0.200851,-0.6201 -0.545389,-0.4034 -1.537288,-0.4941 -2.03489,-0.033 -2.4e-5,0 1.8e-5,10e-5 -6e-6,10e-5 z"
+       id="path3887"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       sodipodi:nodetypes="aaaaaaaaaaaa" />
+    <path
+       sodipodi:open="true"
+       sodipodi:end="12.527331"
+       sodipodi:start="6.2485671"
+       transform="matrix(0.64574383,0,0,0.66524543,88.710658,1050.9074)"
+       d="m 52.278833,-5.8334269 c 0.05803,1.6262925 -1.253251,2.990321 -2.928825,3.0466429 -1.675574,0.056322 -3.080937,-1.2163909 -3.138966,-2.8426835 -0.05803,-1.6262926 1.253252,-2.9903211 2.928826,-3.0466429 1.670338,-0.056146 3.073239,1.2087186 3.138471,2.829665"
+       sodipodi:ry="2.9464285"
+       sodipodi:rx="3.0357144"
+       sodipodi:cy="-5.7314472"
+       sodipodi:cx="49.244938"
+       id="path3793"
+       style="color:#000000;fill:#93ba65;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/sift.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <path
+       sodipodi:open="true"
+       sodipodi:end="12.527331"
+       sodipodi:start="6.2485671"
+       transform="matrix(0.64574383,0,0,0.66524543,82.28994,1047.2959)"
+       d="m 52.278833,-5.8334269 c 0.05803,1.6262925 -1.253251,2.990321 -2.928825,3.0466429 -1.675574,0.056322 -3.080937,-1.2163909 -3.138966,-2.8426835 -0.05803,-1.6262926 1.253252,-2.9903211 2.928826,-3.0466429 1.670338,-0.056146 3.073239,1.2087186 3.138471,2.829665"
+       sodipodi:ry="2.9464285"
+       sodipodi:rx="3.0357144"
+       sodipodi:cy="-5.7314472"
+       sodipodi:cx="49.244938"
+       id="path3797"
+       style="color:#000000;fill:#dd2a2b;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.10000000000000001;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/sift.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#93ba65;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path3805"
+       sodipodi:cx="49.244938"
+       sodipodi:cy="-5.7314472"
+       sodipodi:rx="3.0357144"
+       sodipodi:ry="2.9464285"
+       d="m 52.278833,-5.8334269 c 0.05803,1.6262925 -1.253251,2.990321 -2.928825,3.0466429 -1.675574,0.056322 -3.080937,-1.2163909 -3.138966,-2.8426835 -0.05803,-1.6262926 1.253252,-2.9903211 2.928826,-3.0466429 1.670338,-0.056146 3.073239,1.2087186 3.138471,2.829665"
+       transform="matrix(0.64574383,0,0,0.66524543,84.296422,1041.1425)"
+       sodipodi:start="6.2485671"
+       sodipodi:end="12.527331"
+       sodipodi:open="true"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/sift.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#93ba65;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path3807"
+       sodipodi:cx="49.244938"
+       sodipodi:cy="-5.7314472"
+       sodipodi:rx="3.0357144"
+       sodipodi:ry="2.9464285"
+       d="m 52.278833,-5.8334269 c 0.05803,1.6262925 -1.253251,2.990321 -2.928825,3.0466429 -1.675574,0.056322 -3.080937,-1.2163909 -3.138966,-2.8426835 -0.05803,-1.6262926 1.253252,-2.9903211 2.928826,-3.0466429 1.670338,-0.056146 3.073239,1.2087186 3.138471,2.829665"
+       transform="matrix(-0.64574383,0,0,0.66524543,159.72764,1042.8814)"
+       sodipodi:start="6.2485671"
+       sodipodi:end="12.527331"
+       sodipodi:open="true"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/sift.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <path
+       sodipodi:open="true"
+       sodipodi:end="12.527331"
+       sodipodi:start="6.2485671"
+       transform="matrix(-0.64574383,0,0,0.66524543,158.52377,1048.4997)"
+       d="m 52.278833,-5.8334269 c 0.05803,1.6262925 -1.253251,2.990321 -2.928825,3.0466429 -1.675574,0.056322 -3.080937,-1.2163909 -3.138966,-2.8426835 -0.05803,-1.6262926 1.253252,-2.9903211 2.928826,-3.0466429 1.670338,-0.056146 3.073239,1.2087186 3.138471,2.829665"
+       sodipodi:ry="2.9464285"
+       sodipodi:rx="3.0357144"
+       sodipodi:cy="-5.7314472"
+       sodipodi:cx="49.244938"
+       id="path3809"
+       style="color:#000000;fill:#dd2a2b;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.10000000000000001;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/sift.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#dd2a2b;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.10000000000000001;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path3811"
+       sodipodi:cx="49.244938"
+       sodipodi:cy="-5.7314472"
+       sodipodi:rx="3.0357144"
+       sodipodi:ry="2.9464285"
+       d="m 52.278833,-5.8334269 c 0.05803,1.6262925 -1.253251,2.990321 -2.928825,3.0466429 -1.675574,0.056322 -3.080937,-1.2163909 -3.138966,-2.8426835 -0.05803,-1.6262926 1.253252,-2.9903211 2.928826,-3.0466429 1.670338,-0.056146 3.073239,1.2087186 3.138471,2.829665"
+       transform="matrix(-0.64574383,0,0,0.66524543,153.97575,1038.3336)"
+       sodipodi:start="6.2485671"
+       sodipodi:end="12.527331"
+       sodipodi:open="true"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/sift.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <path
+       sodipodi:open="true"
+       sodipodi:end="12.527331"
+       sodipodi:start="6.2485671"
+       transform="matrix(-0.64574383,0,0,0.66524543,153.03938,1044.3528)"
+       d="m 52.278833,-5.8334269 c 0.05803,1.6262925 -1.253251,2.990321 -2.928825,3.0466429 -1.675574,0.056322 -3.080937,-1.2163909 -3.138966,-2.8426835 -0.05803,-1.6262926 1.253252,-2.9903211 2.928826,-3.0466429 1.670338,-0.056146 3.073239,1.2087186 3.138471,2.829665"
+       sodipodi:ry="2.9464285"
+       sodipodi:rx="3.0357144"
+       sodipodi:cy="-5.7314472"
+       sodipodi:cx="49.244938"
+       id="path3813"
+       style="color:#000000;fill:#93ba65;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/sift.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path3904"
+       d="m 71.244295,1042.0278 0,-8.4822"
+       style="color:#000000;fill:#93ba65;fill-opacity:1;fill-rule:nonzero;stroke:#93ba65;stroke-width:3.20000005;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/save.png"
+       inkscape:export-xdpi="109.3476"
+       inkscape:export-ydpi="109.3476" />
+    <path
+       style="color:#000000;fill:#93ba65;fill-opacity:1;fill-rule:nonzero;stroke:#93ba65;stroke-width:3.20000005;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 71.244295,1050.51 0,-8.4822"
+       id="path3910"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/save.png"
+       inkscape:export-xdpi="109.3476"
+       inkscape:export-ydpi="109.3476" />
+    <path
+       style="color:#000000;fill:#93ba65;fill-opacity:1;fill-rule:nonzero;stroke:#93ba65;stroke-width:3.20000005;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 71.244295,1050.7858 -6.270568,-5.7122"
+       id="path3912"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/save.png"
+       inkscape:export-xdpi="109.3476"
+       inkscape:export-ydpi="109.3476" />
+    <path
+       sodipodi:nodetypes="cc"
+       inkscape:connector-curvature="0"
+       id="path3914"
+       d="m 71.244295,1050.7978 6.270568,-5.7122"
+       style="color:#000000;fill:#93ba65;fill-opacity:1;fill-rule:nonzero;stroke:#93ba65;stroke-width:3.20000005;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/save.png"
+       inkscape:export-xdpi="109.3476"
+       inkscape:export-ydpi="109.3476" />
+    <text
+       sodipodi:linespacing="125%"
+       id="text3906"
+       y="1050.4742"
+       x="72.226448"
+       style="font-size:15px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#4e4e4b;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       xml:space="preserve"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/save.png"
+       inkscape:export-xdpi="109.3476"
+       inkscape:export-ydpi="109.3476"><tspan
+         y="1050.4742"
+         x="72.226448"
+         id="tspan3908"
+         sodipodi:role="line">S</tspan></text>
+    <path
+       style="color:#000000;fill:url(#linearGradient4068);fill-opacity:1;stroke:#93ba65;stroke-width:0.37400001;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       d="m 142.93163,1045.7931 c 2.22559,0.4319 4.8298,-2.1385 5.20842,-4.3738 0.56098,-3.3119 -1.90748,-7.7922 -5.15239,-8.6603 -1.98785,-0.5318 -4.80475,1.0459 -5.38386,3.0205 -1.06405,3.6281 1.61614,9.2934 5.32783,10.0136 z"
+       id="path3977"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/normal_curvature.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       sodipodi:nodetypes="aaaaa" />
+    <g
+       id="g4056"
+       transform="matrix(0.93967903,-0.15370373,0.19332669,0.74708863,-192.41494,284.86766)"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/normal_curvature.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       style="stroke:#dd2a2b">
+      <path
+         inkscape:export-ydpi="109"
+         inkscape:export-xdpi="109"
+         inkscape:export-filename="/home/luca/Code/qPCL/icons/normal_curvature.png"
+         sodipodi:nodetypes="cc"
+         inkscape:connector-curvature="0"
+         id="path3979"
+         d="m 143.46272,1038.6541 11.75835,-4.8303"
+         style="color:#000000;fill:none;stroke:#dd2a2b;stroke-width:1.12123727999999989;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <g
+         style="stroke-width:2.28430556999999990;stroke-miterlimit:4;stroke-dasharray:none;stroke:#dd2a2b"
+         id="g3989"
+         transform="matrix(-0.13979917,-0.25365403,0.78930131,-0.29126207,-678.21405,1363.2327)">
+        <path
+           style="color:#000000;fill:#93ba65;fill-opacity:1;fill-rule:nonzero;stroke:#dd2a2b;stroke-width:2.28430556999999990;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+           d="m 71.244295,1070.7858 -6.270568,-5.7122"
+           id="path3991"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cc"
+           inkscape:export-filename="/home/luca/Code/qPCL/icons/save.png"
+           inkscape:export-xdpi="109.3476"
+           inkscape:export-ydpi="109.3476" />
+        <path
+           sodipodi:nodetypes="cc"
+           inkscape:connector-curvature="0"
+           id="path3993"
+           d="m 71.244295,1070.7978 6.270568,-5.7122"
+           style="color:#000000;fill:#93ba65;fill-opacity:1;fill-rule:nonzero;stroke:#dd2a2b;stroke-width:2.28430556999999990;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+           inkscape:export-filename="/home/luca/Code/qPCL/icons/save.png"
+           inkscape:export-xdpi="109.3476"
+           inkscape:export-ydpi="109.3476" />
+      </g>
+    </g>
+    <text
+       transform="scale(0.74916906,1.3348122)"
+       sodipodi:linespacing="125%"
+       id="text3036"
+       y="787.67712"
+       x="182.4646"
+       style="font-size:11.23753548px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#4e4e4b;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       xml:space="preserve"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/normal_curvature.png"
+       inkscape:export-xdpi="109.3476"
+       inkscape:export-ydpi="109.3476"><tspan
+         y="787.67712"
+         x="182.4646"
+         id="tspan3038"
+         sodipodi:role="line">N+C</tspan></text>
+    <path
+       inkscape:export-ydpi="109"
+       inkscape:export-xdpi="109"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/mls_smoothing.png"
+       sodipodi:nodetypes="caaac"
+       inkscape:connector-curvature="0"
+       id="path3054"
+       d="m 166.51947,1041.9288 c 0,0 0.0409,-4.2541 1.60183,-5.1391 1.95264,-1.1071 4.42719,2.3234 6.5457,1.5814 2.16958,-0.7598 1.94698,-5.165 4.22827,-5.4481 1.67847,-0.2083 3.99652,3.1263 3.99652,3.1263"
+       style="color:#000000;fill:none;stroke:#dd2a2b;stroke-width:0.95912564;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <text
+       inkscape:export-ydpi="109.3476"
+       inkscape:export-xdpi="109.3476"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/mls_smoothing.png"
+       xml:space="preserve"
+       style="font-size:11.23753548px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#4e4e4b;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       x="220.15051"
+       y="787.67712"
+       id="text3046"
+       sodipodi:linespacing="125%"
+       transform="scale(0.74916906,1.3348122)"><tspan
+         sodipodi:role="line"
+         id="tspan3048"
+         x="220.15051"
+         y="787.67712">MLS</tspan></text>
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#93ba65;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path3070"
+       sodipodi:cx="49.244938"
+       sodipodi:cy="-5.7314472"
+       sodipodi:rx="3.0357144"
+       sodipodi:ry="2.9464285"
+       d="m 52.278833,-5.8334269 c 0.05803,1.6262925 -1.253251,2.990321 -2.928825,3.0466429 -1.675574,0.056322 -3.080937,-1.2163909 -3.138966,-2.8426835 -0.05803,-1.6262926 1.253252,-2.9903211 2.928826,-3.0466429 1.670338,-0.056146 3.073239,1.2087186 3.138471,2.829665"
+       transform="matrix(0.32287192,0,0,0.33262272,163.86212,1038.1858)"
+       sodipodi:start="6.2485671"
+       sodipodi:end="12.527331"
+       sodipodi:open="true"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/mls_smoothing.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#93ba65;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path3072"
+       sodipodi:cx="49.244938"
+       sodipodi:cy="-5.7314472"
+       sodipodi:rx="3.0357144"
+       sodipodi:ry="2.9464285"
+       d="m 52.278833,-5.8334269 c 0.05803,1.6262925 -1.253251,2.990321 -2.928825,3.0466429 -1.675574,0.056322 -3.080937,-1.2163909 -3.138966,-2.8426835 -0.05803,-1.6262926 1.253252,-2.9903211 2.928826,-3.0466429 1.670338,-0.056146 3.073239,1.2087186 3.138471,2.829665"
+       transform="matrix(0.32287192,0,0,0.33262272,156.02121,1037.0869)"
+       sodipodi:start="6.2485671"
+       sodipodi:end="12.527331"
+       sodipodi:open="true"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/mls_smoothing.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <path
+       sodipodi:open="true"
+       sodipodi:end="12.527331"
+       sodipodi:start="6.2485671"
+       transform="matrix(0.32287192,0,0,0.33262272,150.38055,1037.5974)"
+       d="m 52.278833,-5.8334269 c 0.05803,1.6262925 -1.253251,2.990321 -2.928825,3.0466429 -1.675574,0.056322 -3.080937,-1.2163909 -3.138966,-2.8426835 -0.05803,-1.6262926 1.253252,-2.9903211 2.928826,-3.0466429 1.670338,-0.056146 3.073239,1.2087186 3.138471,2.829665"
+       sodipodi:ry="2.9464285"
+       sodipodi:rx="3.0357144"
+       sodipodi:cy="-5.7314472"
+       sodipodi:cx="49.244938"
+       id="path3074"
+       style="color:#000000;fill:#93ba65;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/mls_smoothing.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <path
+       sodipodi:open="true"
+       sodipodi:end="12.527331"
+       sodipodi:start="6.2485671"
+       transform="matrix(-0.32287192,0,0,0.33262272,184.72633,1041.1935)"
+       d="m 52.278833,-5.8334269 c 0.05803,1.6262925 -1.253251,2.990321 -2.928825,3.0466429 -1.675574,0.056322 -3.080937,-1.2163909 -3.138966,-2.8426835 -0.05803,-1.6262926 1.253252,-2.9903211 2.928826,-3.0466429 1.670338,-0.056146 3.073239,1.2087186 3.138471,2.829665"
+       sodipodi:ry="2.9464285"
+       sodipodi:rx="3.0357144"
+       sodipodi:cy="-5.7314472"
+       sodipodi:cx="49.244938"
+       id="path3076"
+       style="color:#000000;fill:#93ba65;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/mls_smoothing.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#93ba65;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path3078"
+       sodipodi:cx="49.244938"
+       sodipodi:cy="-5.7314472"
+       sodipodi:rx="3.0357144"
+       sodipodi:ry="2.9464285"
+       d="m 52.278833,-5.8334269 c 0.05803,1.6262925 -1.253251,2.990321 -2.928825,3.0466429 -1.675574,0.056322 -3.080937,-1.2163909 -3.138966,-2.8426835 -0.05803,-1.6262926 1.253252,-2.9903211 2.928826,-3.0466429 1.670338,-0.056146 3.073239,1.2087186 3.138471,2.829665"
+       transform="matrix(-0.32287192,0,0,0.33262272,191.38809,1034.6856)"
+       sodipodi:start="6.2485671"
+       sodipodi:end="12.527331"
+       sodipodi:open="true"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/mls_smoothing.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#93ba65;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path3082"
+       sodipodi:cx="49.244938"
+       sodipodi:cy="-5.7314472"
+       sodipodi:rx="3.0357144"
+       sodipodi:ry="2.9464285"
+       d="m 52.278833,-5.8334269 c 0.05803,1.6262925 -1.253251,2.990321 -2.928825,3.0466429 -1.675574,0.056322 -3.080937,-1.2163909 -3.138966,-2.8426835 -0.05803,-1.6262926 1.253252,-2.9903211 2.928826,-3.0466429 1.670338,-0.056146 3.073239,1.2087186 3.138471,2.829665"
+       transform="matrix(-0.32287192,0,0,0.33262272,199.01309,1034.7993)"
+       sodipodi:start="6.2485671"
+       sodipodi:end="12.527331"
+       sodipodi:open="true"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/mls_smoothing.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <text
+       inkscape:export-ydpi="109.3476"
+       inkscape:export-xdpi="109.3476"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/sift.png"
+       xml:space="preserve"
+       style="font-size:11.23753548px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#4e4e4b;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       x="147.55324"
+       y="786.98279"
+       id="text3017"
+       sodipodi:linespacing="125%"
+       transform="scale(0.74916908,1.3348122)"><tspan
+         sodipodi:role="line"
+         id="tspan3019"
+         x="147.55324"
+         y="786.98279">SIFT</tspan></text>
+    <text
+       transform="scale(0.74916906,1.3348122)"
+       sodipodi:linespacing="125%"
+       id="text3104"
+       y="787.67712"
+       x="257.1579"
+       style="font-size:11.23753548px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#4e4e4b;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       xml:space="preserve"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/sor_outlier_remover.png"
+       inkscape:export-xdpi="109.3476"
+       inkscape:export-ydpi="109.3476"><tspan
+         y="787.67712"
+         x="257.1579"
+         id="tspan3106"
+         sodipodi:role="line">SOR</tspan></text>
+    <path
+       inkscape:export-ydpi="109"
+       inkscape:export-xdpi="109"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/sor_outlier_remover.png"
+       sodipodi:open="true"
+       sodipodi:end="12.527331"
+       sodipodi:start="6.2485671"
+       transform="matrix(0.32287192,0,0,0.33262272,191.58692,1038.1858)"
+       d="m 52.278833,-5.8334269 c 0.05803,1.6262925 -1.253251,2.990321 -2.928825,3.0466429 -1.675574,0.056322 -3.080937,-1.2163909 -3.138966,-2.8426835 -0.05803,-1.6262926 1.253252,-2.9903211 2.928826,-3.0466429 1.670338,-0.056146 3.073239,1.2087186 3.138471,2.829665"
+       sodipodi:ry="2.9464285"
+       sodipodi:rx="3.0357144"
+       sodipodi:cy="-5.7314472"
+       sodipodi:cx="49.244938"
+       id="path3108"
+       style="color:#000000;fill:#93ba65;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+    <path
+       inkscape:export-ydpi="109"
+       inkscape:export-xdpi="109"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/sor_outlier_remover.png"
+       sodipodi:open="true"
+       sodipodi:end="12.527331"
+       sodipodi:start="6.2485671"
+       transform="matrix(0.32287192,0,0,0.33262272,183.74601,1037.0869)"
+       d="m 52.278833,-5.8334269 c 0.05803,1.6262925 -1.253251,2.990321 -2.928825,3.0466429 -1.675574,0.056322 -3.080937,-1.2163909 -3.138966,-2.8426835 -0.05803,-1.6262926 1.253252,-2.9903211 2.928826,-3.0466429 1.670338,-0.056146 3.073239,1.2087186 3.138471,2.829665"
+       sodipodi:ry="2.9464285"
+       sodipodi:rx="3.0357144"
+       sodipodi:cy="-5.7314472"
+       sodipodi:cx="49.244938"
+       id="path3110"
+       style="color:#000000;fill:#93ba65;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+    <path
+       inkscape:export-ydpi="109"
+       inkscape:export-xdpi="109"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/sor_outlier_remover.png"
+       sodipodi:type="arc"
+       style="color:#000000;fill:#93ba65;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path3112"
+       sodipodi:cx="49.244938"
+       sodipodi:cy="-5.7314472"
+       sodipodi:rx="3.0357144"
+       sodipodi:ry="2.9464285"
+       d="m 52.278833,-5.8334269 c 0.05803,1.6262925 -1.253251,2.990321 -2.928825,3.0466429 -1.675574,0.056322 -3.080937,-1.2163909 -3.138966,-2.8426835 -0.05803,-1.6262926 1.253252,-2.9903211 2.928826,-3.0466429 1.670338,-0.056146 3.073239,1.2087186 3.138471,2.829665"
+       transform="matrix(0.32287192,0,0,0.33262272,178.10535,1037.5974)"
+       sodipodi:start="6.2485671"
+       sodipodi:end="12.527331"
+       sodipodi:open="true" />
+    <path
+       inkscape:export-ydpi="109"
+       inkscape:export-xdpi="109"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/sor_outlier_remover.png"
+       sodipodi:type="arc"
+       style="color:#000000;fill:#93ba65;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path3114"
+       sodipodi:cx="49.244938"
+       sodipodi:cy="-5.7314472"
+       sodipodi:rx="3.0357144"
+       sodipodi:ry="2.9464285"
+       d="m 52.278833,-5.8334269 c 0.05803,1.6262925 -1.253251,2.990321 -2.928825,3.0466429 -1.675574,0.056322 -3.080937,-1.2163909 -3.138966,-2.8426835 -0.05803,-1.6262926 1.253252,-2.9903211 2.928826,-3.0466429 1.670338,-0.056146 3.073239,1.2087186 3.138471,2.829665"
+       transform="matrix(-0.32287192,0,0,0.33262272,212.45113,1041.1935)"
+       sodipodi:start="6.2485671"
+       sodipodi:end="12.527331"
+       sodipodi:open="true" />
+    <path
+       inkscape:export-ydpi="109"
+       inkscape:export-xdpi="109"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/sor_outlier_remover.png"
+       sodipodi:open="true"
+       sodipodi:end="12.527331"
+       sodipodi:start="6.2485671"
+       transform="matrix(-0.32287192,0,0,0.33262272,219.11289,1034.6856)"
+       d="m 52.278833,-5.8334269 c 0.05803,1.6262925 -1.253251,2.990321 -2.928825,3.0466429 -1.675574,0.056322 -3.080937,-1.2163909 -3.138966,-2.8426835 -0.05803,-1.6262926 1.253252,-2.9903211 2.928826,-3.0466429 1.670338,-0.056146 3.073239,1.2087186 3.138471,2.829665"
+       sodipodi:ry="2.9464285"
+       sodipodi:rx="3.0357144"
+       sodipodi:cy="-5.7314472"
+       sodipodi:cx="49.244938"
+       id="path3116"
+       style="color:#000000;fill:#93ba65;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+    <path
+       inkscape:export-ydpi="109"
+       inkscape:export-xdpi="109"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/sor_outlier_remover.png"
+       sodipodi:open="true"
+       sodipodi:end="12.527331"
+       sodipodi:start="6.2485671"
+       transform="matrix(-0.32287192,0,0,0.33262272,226.73789,1034.7993)"
+       d="m 52.278833,-5.8334269 c 0.05803,1.6262925 -1.253251,2.990321 -2.928825,3.0466429 -1.675574,0.056322 -3.080937,-1.2163909 -3.138966,-2.8426835 -0.05803,-1.6262926 1.253252,-2.9903211 2.928826,-3.0466429 1.670338,-0.056146 3.073239,1.2087186 3.138471,2.829665"
+       sodipodi:ry="2.9464285"
+       sodipodi:rx="3.0357144"
+       sodipodi:cy="-5.7314472"
+       sodipodi:cx="49.244938"
+       id="path3118"
+       style="color:#000000;fill:#93ba65;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#93ba65;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path3120"
+       sodipodi:cx="49.244938"
+       sodipodi:cy="-5.7314472"
+       sodipodi:rx="3.0357144"
+       sodipodi:ry="2.9464285"
+       d="m 52.278833,-5.8334269 c 0.05803,1.6262925 -1.253251,2.990321 -2.928825,3.0466429 -1.675574,0.056322 -3.080937,-1.2163909 -3.138966,-2.8426835 -0.05803,-1.6262926 1.253252,-2.9903211 2.928826,-3.0466429 1.670338,-0.056146 3.073239,1.2087186 3.138471,2.829665"
+       transform="matrix(0.32287192,0,0,0.33262272,185.58692,1040.1858)"
+       sodipodi:start="6.2485671"
+       sodipodi:end="12.527331"
+       sodipodi:open="true"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/sor_outlier_remover.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <path
+       inkscape:export-ydpi="109"
+       inkscape:export-xdpi="109"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/sor_outlier_remover.png"
+       sodipodi:open="true"
+       sodipodi:end="12.527331"
+       sodipodi:start="6.2485671"
+       transform="matrix(0.32287192,0,0,0.33262272,195.58692,1040.1858)"
+       d="m 52.278833,-5.8334269 c 0.05803,1.6262925 -1.253251,2.990321 -2.928825,3.0466429 -1.675574,0.056322 -3.080937,-1.2163909 -3.138966,-2.8426835 -0.05803,-1.6262926 1.253252,-2.9903211 2.928826,-3.0466429 1.670338,-0.056146 3.073239,1.2087186 3.138471,2.829665"
+       sodipodi:ry="2.9464285"
+       sodipodi:rx="3.0357144"
+       sodipodi:cy="-5.7314472"
+       sodipodi:cx="49.244938"
+       id="path3122"
+       style="color:#000000;fill:#93ba65;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       sodipodi:type="arc" />
+    <path
+       sodipodi:type="arc"
+       style="color:#000000;fill:#93ba65;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.1;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="path3124"
+       sodipodi:cx="49.244938"
+       sodipodi:cy="-5.7314472"
+       sodipodi:rx="3.0357144"
+       sodipodi:ry="2.9464285"
+       d="m 52.278833,-5.8334269 c 0.05803,1.6262925 -1.253251,2.990321 -2.928825,3.0466429 -1.675574,0.056322 -3.080937,-1.2163909 -3.138966,-2.8426835 -0.05803,-1.6262926 1.253252,-2.9903211 2.928826,-3.0466429 1.670338,-0.056146 3.073239,1.2087186 3.138471,2.829665"
+       transform="matrix(0.32287192,0,0,0.33262272,189.58692,1042.1858)"
+       sodipodi:start="6.2485671"
+       sodipodi:end="12.527331"
+       sodipodi:open="true"
+       inkscape:export-filename="/home/luca/Code/qPCL/icons/sor_outlier_remover.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <g
+       id="g3130"
+       transform="matrix(0.1410589,-0.1410589,0.1410589,0.1410589,48.10263,918.6007)"
+       style="stroke-width:2.50642395;stroke-miterlimit:4;stroke-dasharray:none">
+      <g
+         id="g3902"
+         transform="translate(-110.55461,-88.482412)"
+         inkscape:export-filename="/home/luca/Code/qPCL/icons/sor_outlier_remover.png"
+         inkscape:export-xdpi="109"
+         inkscape:export-ydpi="109">
+        <path
+           style="color:#000000;fill:none;stroke:#dd2a2b;stroke-width:2.50642395;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+           d="m 226.51947,1038.9891 16.37232,0"
+           id="path3126"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cc"
+           inkscape:export-filename="/home/luca/Code/qPCL/icons/mls_smoothing.png"
+           inkscape:export-xdpi="109"
+           inkscape:export-ydpi="109" />
+        <path
+           inkscape:export-ydpi="109"
+           inkscape:export-xdpi="109"
+           inkscape:export-filename="/home/luca/Code/qPCL/icons/mls_smoothing.png"
+           sodipodi:nodetypes="cc"
+           inkscape:connector-curvature="0"
+           id="path3128"
+           d="m 234.70563,1047.1753 0,-16.3724"
+           style="color:#000000;fill:none;stroke:#dd2a2b;stroke-width:2.50642395;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      </g>
+      <g
+         transform="translate(-87.514332,-56.92304)"
+         id="g3906"
+         inkscape:export-filename="/home/luca/Code/qPCL/icons/sor_outlier_remover.png"
+         inkscape:export-xdpi="109"
+         inkscape:export-ydpi="109">
+        <path
+           inkscape:export-ydpi="109"
+           inkscape:export-xdpi="109"
+           inkscape:export-filename="/home/luca/Code/qPCL/icons/mls_smoothing.png"
+           sodipodi:nodetypes="cc"
+           inkscape:connector-curvature="0"
+           id="path3908"
+           d="m 226.51947,1038.9891 16.37232,0"
+           style="color:#000000;fill:none;stroke:#dd2a2b;stroke-width:2.50642395;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+        <path
+           style="color:#000000;fill:none;stroke:#dd2a2b;stroke-width:2.50642395;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+           d="m 234.70563,1047.1753 0,-16.3724"
+           id="path3911"
+           inkscape:connector-curvature="0"
+           sodipodi:nodetypes="cc"
+           inkscape:export-filename="/home/luca/Code/qPCL/icons/mls_smoothing.png"
+           inkscape:export-xdpi="109"
+           inkscape:export-ydpi="109" />
+      </g>
+    </g>
+    <text
+       xml:space="preserve"
+       style="font-size:15px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#4e4e4b;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       x="37.373524"
+       y="1051.8834"
+       id="text3898"
+       sodipodi:linespacing="125%"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/icons/time_series.png"
+       inkscape:export-xdpi="199.43637"
+       inkscape:export-ydpi="199.43637"><tspan
+         sodipodi:role="line"
+         id="tspan3900"
+         x="37.373524"
+         y="1051.8834">TS</tspan></text>
+    <path
+       inkscape:connector-curvature="0"
+       id="path3850"
+       d="m 86.708912,1047.2865 5.027428,0"
+       style="fill:none;stroke:#000000;stroke-width:0.38612151;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.38612151;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 86.708912,1039.2585 5.027428,0"
+       id="path3852"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.38612151;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 86.708912,1041.2655 c 1.675809,0 4.017396,1.3372 5.027428,0 0.267412,-0.354 -0.40551,-0.8386 -0.364006,-1.2803 0.02534,-0.2697 0.242635,-0.4845 0.364006,-0.7267"
+       id="path3858"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       sodipodi:nodetypes="caac" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.38612151;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 91.73634,1041.2655 c 0.691773,0.1083 1.451842,0.1082 2.067688,0.4525 0.193402,0.1081 0.422181,0.2606 0.461181,0.4787 0.07828,0.4378 -0.215866,0.9126 -0.535315,1.222 -0.278546,0.2698 -0.826123,0.1392 -1.079938,0.4324 -0.08429,0.097 -0.160671,0.2673 -0.0908,0.3755 0.291045,0.4506 1.236624,-0.1126 1.581301,0.2984 0.323384,0.3856 0.09615,1.0127 0.01723,1.5097 -0.05502,0.3465 -0.06727,0.7731 -0.337426,0.997 -0.479886,0.3976 -1.229018,0.2298 -1.851511,0.2598 -0.07745,0 -0.154977,0 -0.232415,-0.01"
+       id="path3860"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       sodipodi:nodetypes="caaaaaaaaac" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.38624999;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 91.73634,1039.2585 c 0.469832,-0.1983 1.296864,-0.1984 1.549885,-0.7067 0.230861,-0.4638 -0.286369,-1.0015 -0.338056,-1.517 -0.0989,-0.9864 0.350415,-2.0263 0.05767,-2.9734 -0.159954,-0.5175 -0.467332,-1.064 -0.942762,-1.3235 -0.735517,-0.4015 -1.673327,-0.099 -2.511053,-0.1193 -0.947436,-0.023 -2.172982,-0.6701 -2.843109,0 -4.403366,4.4034 -4.403366,14.2785 0,18.6819 1.184976,1.185 4.19506,1.4545 5.027427,0 0.39508,-0.6904 -1.217676,-1.262 -1.208845,-2.0574 0.0085,-0.7666 0.837445,-1.2585 1.208847,-1.9566"
+       id="path3862"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       sodipodi:nodetypes="caaaaaaaaac" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.05;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 87.117677,1039.7049 2.68885,0"
+       id="path3893"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.05;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 87.495191,1040.262 2.580911,0"
+       id="path3895"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3897"
+       d="m 87.123746,1040.8183 2.580911,0"
+       style="fill:none;stroke:#000000;stroke-width:0.05;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.125;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 49.49622,6.1714013 6.274186,0"
+       id="path3905"
+       inkscape:connector-curvature="0"
+       transform="translate(37.191444,1031.8438)"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3907"
+       d="m 86.687664,1036.0152 6.274186,0"
+       style="fill:none;stroke:#000000;stroke-width:0.125;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.125;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 86.687664,1034.0152 6.274186,0"
+       id="path3909"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.125;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 89.64894,1034.0152 0.77837,-1.3966"
+       id="path3913"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.125;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 91.64894,1036.0152 0.77837,-1.3966"
+       id="path3917"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3919"
+       d="m 87.64894,1036.0152 0.77837,-1.3966"
+       style="fill:none;stroke:#000000;stroke-width:0.125;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.125;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 89.64894,1038.0152 0.77837,-1.3966"
+       id="path3921"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.125;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 86.65208,1042.4533 7.537899,0"
+       id="path3925"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3927"
+       d="m 86.65208,1044.4533 6.437118,0"
+       style="fill:none;stroke:#000000;stroke-width:0.125;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.125;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 86.65208,1046.4533 7.364091,0"
+       id="path3929"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.125;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 50.887002,9.4591191 0,1.1007819"
+       id="path3931"
+       inkscape:connector-curvature="0"
+       transform="translate(37.191444,1031.8438)"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3933"
+       d="m 90.078446,1041.3029 0,1.1008"
+       style="fill:none;stroke:#000000;stroke-width:0.125;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.125;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 92.078446,1041.3029 0,1.1008"
+       id="path3935"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       sodipodi:nodetypes="cc" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3937"
+       d="m 88.900417,1042.5111 0,1.8733"
+       style="fill:none;stroke:#000000;stroke-width:0.125;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <path
+       sodipodi:nodetypes="cc"
+       style="fill:none;stroke:#000000;stroke-width:0.125;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 90.900417,1042.5111 0,1.8733"
+       id="path3939"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3941"
+       d="m 89.88533,1044.5111 0,1.8733"
+       style="fill:none;stroke:#000000;stroke-width:0.125;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <path
+       sodipodi:nodetypes="cc"
+       style="fill:none;stroke:#000000;stroke-width:0.125;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 87.56789,1044.5111 0,1.8733"
+       id="path3943"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3945"
+       d="m 92.39589,1044.5111 0,1.8733"
+       style="fill:none;stroke:#000000;stroke-width:0.125;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <path
+       sodipodi:nodetypes="cc"
+       style="fill:none;stroke:#000000;stroke-width:0.125;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 91.215226,1046.5111 0,0.7399"
+       id="path3947"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3949"
+       d="m 91.215226,1046.5111 0,0.7399"
+       style="fill:none;stroke:#000000;stroke-width:0.125;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <path
+       sodipodi:nodetypes="cc"
+       style="fill:none;stroke:#000000;stroke-width:0.125;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 88.532446,1046.5111 0,0.7399"
+       id="path3951"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3953"
+       d="m 93.038794,1046.5111 0,0.7399"
+       style="fill:none;stroke:#000000;stroke-width:0.125;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <path
+       sodipodi:type="arc"
+       style="fill:#000000;fill-opacity:1;stroke:none"
+       id="path3955"
+       sodipodi:cx="50.826199"
+       sodipodi:cy="16.590679"
+       sodipodi:rx="0.10924492"
+       sodipodi:ry="0.10924492"
+       d="m 50.935443,16.590679 c 0,0.06033 -0.04891,0.109245 -0.109244,0.109245 -0.06034,0 -0.109245,-0.04891 -0.109245,-0.109245 0,-0.06033 0.04891,-0.109245 0.109245,-0.109245 0.06033,0 0.109244,0.04891 0.109244,0.109245 z"
+       transform="matrix(0.55805828,0,0,0.55805828,58.594866,1038.3082)"
+       inkscape:tile-cx="50.07514"
+       inkscape:tile-cy="15.935179"
+       inkscape:tile-w="0.21848984"
+       inkscape:tile-h="0.21848984"
+       inkscape:tile-x0="49.965895"
+       inkscape:tile-y0="15.825934"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(-0.05660901,0.36086597)"
+       id="use5383"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(-0.06458968,0.74532059)"
+       id="use5385"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(0.07735143,1.1222649)"
+       id="use5387"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(0.05825051,1.5370913)"
+       id="use5389"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(0.08040082,1.8856256)"
+       id="use5391"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(0.02131332,2.3452543)"
+       id="use5393"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(0.01847771,2.8114839)"
+       id="use5395"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(0.11411299,3.2344843)"
+       id="use5397"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(-0.08145034,3.5078231)"
+       id="use5399"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(0.44687854,0.04116479)"
+       id="use5407"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(0.32014691,0.34432998)"
+       id="use5409"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(0.38833793,0.71722735)"
+       id="use5411"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(0.46341638,1.1431093)"
+       id="use5413"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(0.45842781,1.5299571)"
+       id="use5415"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(0.41469699,1.9562318)"
+       id="use5417"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(0.34849547,2.435152)"
+       id="use5419"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(0.45320117,2.7259899)"
+       id="use5421"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(0.43418335,3.0779346)"
+       id="use5423"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(0.45186349,3.4670816)"
+       id="use5425"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(0.81984357,0.03218047)"
+       id="use5433"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(0.80899395,0.41855473)"
+       id="use5435"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(0.76979321,0.84017986)"
+       id="use5437"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(0.89055753,1.2071823)"
+       id="use5439"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(0.78877573,1.6379911)"
+       id="use5441"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(0.74714008,2.0640202)"
+       id="use5443"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(0.79745371,2.3994373)"
+       id="use5445"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(0.85151422,2.7947551)"
+       id="use5447"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(0.80592519,3.1954481)"
+       id="use5449"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(0.80785361,3.5695445)"
+       id="use5451"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(1.1894543,-0.03362037)"
+       id="use5459"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(1.2107952,0.30402622)"
+       id="use5461"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(1.1953532,0.69384213)"
+       id="use5463"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(1.2117963,1.0593837)"
+       id="use5465"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(1.1678907,1.5224557)"
+       id="use5467"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(1.1785072,1.9453057)"
+       id="use5469"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(1.1936516,2.3701105)"
+       id="use5471"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(1.1955676,2.7452542)"
+       id="use5473"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(1.2204914,3.1351946)"
+       id="use5475"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(1.1636971,3.5582441)"
+       id="use5477"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(1.5816466,0.08340805)"
+       id="use5485"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(1.5199738,0.36493983)"
+       id="use5487"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(1.574879,0.79782582)"
+       id="use5489"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(1.5983466,1.2714107)"
+       id="use5491"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(1.5551285,1.6378277)"
+       id="use5493"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(1.6390919,2.0331811)"
+       id="use5495"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(1.5825806,2.3851806)"
+       id="use5497"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(1.5033104,2.7490075)"
+       id="use5499"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(1.6543074,3.1361566)"
+       id="use5501"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(1.5244902,3.5487231)"
+       id="use5503"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(1.9215973,0.01296645)"
+       id="use5511"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(1.8763314,0.40532696)"
+       id="use5513"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(2.0295364,0.72900892)"
+       id="use5515"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(1.9559195,1.0821829)"
+       id="use5517"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(2.0381688,1.5400102)"
+       id="use5519"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(1.9780216,1.9040312)"
+       id="use5521"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(2.002324,2.3545385)"
+       id="use5523"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(1.858261,2.7750546)"
+       id="use5525"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(2.068874,3.0140227)"
+       id="use5527"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(1.9972933,3.4642113)"
+       id="use5529"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(2.290831,-0.01183615)"
+       id="use5537"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(2.3816838,0.37545154)"
+       id="use5539"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(2.4458564,0.73332081)"
+       id="use5541"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(2.3664913,1.2209442)"
+       id="use5543"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(2.3755096,1.5869416)"
+       id="use5545"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(2.4102208,1.9584043)"
+       id="use5547"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(2.367295,2.3131801)"
+       id="use5549"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(2.325546,2.695874)"
+       id="use5551"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(2.3159581,3.1756937)"
+       id="use5553"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(2.4187816,3.500139)"
+       id="use5555"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(2.679088,-0.09835187)"
+       id="use5563"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(2.7805381,0.3735698)"
+       id="use5565"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(2.7398184,0.88597796)"
+       id="use5567"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(2.7630872,1.2117287)"
+       id="use5569"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(2.7183759,1.5978531)"
+       id="use5571"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(2.7859803,2.039692)"
+       id="use5573"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(2.7194914,2.4832038)"
+       id="use5575"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(2.6871242,2.8559338)"
+       id="use5577"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(2.7975531,3.2037342)"
+       id="use5579"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(2.8485499,3.5864823)"
+       id="use5581"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(3.1283948,0.02965725)"
+       id="use5589"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(3.0583549,0.4777097)"
+       id="use5591"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(3.1607717,0.81270756)"
+       id="use5593"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(3.1596632,1.1273384)"
+       id="use5595"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(3.1224039,1.5025023)"
+       id="use5597"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(3.1414101,1.8655972)"
+       id="use5599"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(3.1351866,2.2821905)"
+       id="use5601"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(3.1132289,2.7887731)"
+       id="use5603"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(3.2855048,3.1358759)"
+       id="use5605"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(3.1740864,3.5124239)"
+       id="use5607"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(3.5015101,-0.09618183)"
+       id="use5615"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(3.5730109,0.3490282)"
+       id="use5617"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(3.5574907,0.76294753)"
+       id="use5619"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(3.5945103,1.1586795)"
+       id="use5621"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(3.579675,1.5495352)"
+       id="use5623"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(3.4964567,1.9427176)"
+       id="use5625"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(3.5332753,2.3173254)"
+       id="use5627"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(3.5011954,2.6766175)"
+       id="use5629"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(3.5959966,3.0990169)"
+       id="use5631"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(3.4897428,3.5463088)"
+       id="use5633"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(3.9111284,0.02648206)"
+       id="use5641"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(3.9823532,0.39971687)"
+       id="use5643"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(3.896919,0.84025663)"
+       id="use5645"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(3.9146181,2.8058559)"
+       id="use5655"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(4.0211614,3.184092)"
+       id="use5657"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(3.9744802,3.6427649)"
+       id="use5659"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(4.3430501,0.05492993)"
+       id="use5667"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <use
+       x="0"
+       y="0"
+       inkscape:tiled-clone-of="#path3955"
+       xlink:href="#path3955"
+       transform="translate(4.3224609,3.4862063)"
+       id="use5685"
+       width="94.011505"
+       height="20.660053"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path5719"
+       d="m 88.539299,1039.9888 2.580911,0"
+       style="fill:none;stroke:#000000;stroke-width:0.05;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.05;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 88.587639,1040.5352 2.580911,0"
+       id="path5721"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.png"
+       inkscape:export-xdpi="109"
+       inkscape:export-ydpi="109"
+       sodipodi:nodetypes="cc" />
+    <path
+       id="path3206"
+       style="fill:#8d91d0;stroke:#8d91d0;stroke-width:1.03791332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="m 39.396204,1039.6919 c 0.113904,-1.4323 1.539015,-5.2462 1.539015,-5.2462 0,0 0.897205,3.2252 1.902367,3.1252 1.263652,-0.1259 1.771042,-3.7623 1.771042,-3.7623 0,0 0.848457,1.5438 1.275932,3.2165 1.029367,0.8825 2.710198,0.7561 3.66914,-0.2569 0.526855,-0.5563 0.174043,-1.8452 0.559188,-2.5788 0.344076,-0.6555 1.454364,-1.4178 1.454364,-1.4178 0,0 0.406254,4.093 1.542856,4.0455 1.108348,-0.047 1.661356,-3.6045 1.661356,-3.6045 0,0 0.524949,0.9782 1.061926,1.7334 0.839526,1.1807 0.304704,3.1347 0.337469,4.7458 z"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="ccscccccccscc"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/icons/time_series.png"
+       inkscape:export-xdpi="199.43637"
+       inkscape:export-ydpi="199.43637" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.53427458;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 57.255615,1040.2887 c -0.231262,0 -19.46455,0 -19.46455,0"
+       id="path3212"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/icons/time_series.png"
+       inkscape:export-xdpi="199.43637"
+       inkscape:export-ydpi="199.43637" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.53427458;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       d="m 38.484851,1032.2015 0,9.5898"
+       id="path3982"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/icons/time_series.png"
+       inkscape:export-xdpi="199.43637"
+       inkscape:export-ydpi="199.43637" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.42741966;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow1Mend)"
+       d="m 43.225722,1038.521 8.2098,0"
+       id="path3984"
+       inkscape:connector-curvature="0"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/icons/time_series.png"
+       inkscape:export-xdpi="199.43637"
+       inkscape:export-ydpi="199.43637" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path4430"
+       d="m 42.083557,1038.951 0,-6.0318"
+       style="fill:none;stroke:#000000;stroke-width:0.2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow1Mend);marker-start:url(#Arrow1Mstart)"
+       inkscape:export-filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/icons/time_series.png"
+       inkscape:export-xdpi="199.43637"
+       inkscape:export-ydpi="199.43637" />
+    <text
+       inkscape:export-ydpi="199.43637"
+       inkscape:export-xdpi="199.43637"
+       inkscape:export-filename="/home/luca/Code/CC2/qCC/plugins/qGEO/icons/strat_pos.png"
+       sodipodi:linespacing="125%"
+       id="text3252"
+       y="1051.8834"
+       x="12.111485"
+       style="font-size:15px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#4e4e4b;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       xml:space="preserve"><tspan
+         y="1051.8834"
+         x="12.111485"
+         id="tspan3254"
+         sodipodi:role="line">SP</tspan></text>
+    <g
+       id="g4188"
+       transform="matrix(1,0,0,1.0530863,-0.87395933,-31.557722)"
+       inkscape:export-filename="/home/luca/Code/CC2/qCC/plugins/qGEO/icons/strat_pos.png"
+       inkscape:export-xdpi="199"
+       inkscape:export-ydpi="199">
+      <rect
+         ry="0.25400299"
+         transform="matrix(0.64372135,0.76525997,0.73256813,-0.68069372,0,0)"
+         y="-640.15698"
+         x="752.04236"
+         height="1.4877318"
+         width="11.499998"
+         id="rect3268"
+         style="color:#000000;fill:#ffd700;stroke:#000000;stroke-width:0.33316761;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10.43299961;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+      <rect
+         style="color:#000000;fill:#ffd700;stroke:#000000;stroke-width:0.33316761;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10.43299961;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         id="rect4050"
+         width="11.499998"
+         height="1.4877318"
+         x="721.20758"
+         y="-674.80096"
+         transform="matrix(-0.64372135,0.76525997,-0.73256813,-0.68069372,0,0)"
+         ry="0.25400299" />
+      <path
+         transform="matrix(0.64956773,0,0,-0.68270305,33.336111,1012.6069)"
+         d="m -16.222871,-9.2730541 c 0,0.1508357 -0.122276,0.2731123 -0.273112,0.2731123 -0.150836,0 -0.273112,-0.1222766 -0.273112,-0.2731123 0,-0.1508358 0.122276,-0.2731123 0.273112,-0.2731123 0.150836,0 0.273112,0.1222765 0.273112,0.2731123 z"
+         sodipodi:ry="0.2731123"
+         sodipodi:rx="0.2731123"
+         sodipodi:cy="-9.2730541"
+         sodipodi:cx="-16.495983"
+         id="path4052"
+         style="color:#000000;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10.43299961;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         sodipodi:type="arc" />
+      <rect
+         style="color:#000000;fill:#ffd700;stroke:#000000;stroke-width:0.33316761;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10.43299961;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         id="rect4054"
+         width="11.499998"
+         height="1.4877318"
+         x="954.47601"
+         y="-290.03638"
+         transform="matrix(0.31299502,0.94975477,0.93315558,-0.35947275,0,0)"
+         ry="0.25400299" />
+      <path
+         sodipodi:type="arc"
+         style="color:#000000;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10.43299961;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+         id="path4056"
+         sodipodi:cx="-16.495983"
+         sodipodi:cy="-9.2730541"
+         sodipodi:rx="0.2731123"
+         sodipodi:ry="0.2731123"
+         d="m -16.222871,-9.2730541 c 0,0.1508357 -0.122276,0.2731123 -0.273112,0.2731123 -0.150836,0 -0.273112,-0.1222766 -0.273112,-0.2731123 0,-0.1508358 0.122276,-0.2731123 0.273112,-0.2731123 0.150836,0 0.273112,0.1222765 0.273112,0.2731123 z"
+         transform="matrix(0.64956773,0,0,-0.68270305,39.726939,1005.0144)" />
+      <g
+         transform="matrix(0.6396832,0.76863867,-0.76863867,0.6396832,778.97999,356.94864)"
+         id="g4074">
+        <path
+           style="fill:none;stroke:#000000;stroke-width:0.27860877px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 15.063698,1004.1846 0,0.5576"
+           id="path4058"
+           inkscape:connector-curvature="0" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path4060"
+           d="m 16.31078,1004.1846 0,0.5576"
+           style="fill:none;stroke:#000000;stroke-width:0.27860877px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:0.27860877px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 17.557862,1004.1846 0,0.5576"
+           id="path4062"
+           inkscape:connector-curvature="0" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path4064"
+           d="m 18.804943,1004.1846 0,0.5576"
+           style="fill:none;stroke:#000000;stroke-width:0.27860877px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:0.27860877px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 20.052025,1004.1846 0,0.5576"
+           id="path4066"
+           inkscape:connector-curvature="0" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path4068"
+           d="m 21.299107,1004.1846 0,0.5576"
+           style="fill:none;stroke:#000000;stroke-width:0.27860877px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:0.27860877px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 22.546188,1004.1846 0,0.5576"
+           id="path4070"
+           inkscape:connector-curvature="0" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path4072"
+           d="m 23.79327,1004.1846 0,0.5576"
+           style="fill:none;stroke:#000000;stroke-width:0.27860877px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      </g>
+      <path
+         inkscape:connector-curvature="0"
+         id="path4088"
+         d="m 27.345659,1012.3373 0.428593,0.3567"
+         style="fill:none;stroke:#000000;stroke-width:0.27860877px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.27860877px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 26.547921,1013.2959 0.428593,0.3567"
+         id="path4090"
+         inkscape:connector-curvature="0" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path4092"
+         d="m 25.750184,1014.2545 0.428593,0.3566"
+         style="fill:none;stroke:#000000;stroke-width:0.27860877px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.27860877px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 24.952448,1015.213 0.428592,0.3567"
+         id="path4094"
+         inkscape:connector-curvature="0" />
+      <path
+         inkscape:connector-curvature="0"
+         id="path4096"
+         d="m 24.15471,1016.1716 0.428593,0.3567"
+         style="fill:none;stroke:#000000;stroke-width:0.27860877px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.27860877px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 23.356974,1017.1301 0.428593,0.3567"
+         id="path4098"
+         inkscape:connector-curvature="0" />
+      <g
+         inkscape:transform-center-y="-4.0258174"
+         inkscape:transform-center-x="1.7570377"
+         id="g4110"
+         transform="matrix(0.31011498,0.95069906,-0.95069906,0.31011498,980.11494,686.73377)">
+        <path
+           inkscape:connector-curvature="0"
+           id="path4112"
+           d="m 15.063698,1004.1846 0,0.5576"
+           style="fill:none;stroke:#000000;stroke-width:0.27860877px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:0.27860877px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 16.31078,1004.1846 0,0.5576"
+           id="path4114"
+           inkscape:connector-curvature="0" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path4116"
+           d="m 17.557862,1004.1846 0,0.5576"
+           style="fill:none;stroke:#000000;stroke-width:0.27860877px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:0.27860877px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 18.804943,1004.1846 0,0.5576"
+           id="path4118"
+           inkscape:connector-curvature="0" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path4120"
+           d="m 20.052025,1004.1846 0,0.5576"
+           style="fill:none;stroke:#000000;stroke-width:0.27860877px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:0.27860877px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 21.299107,1004.1846 0,0.5576"
+           id="path4122"
+           inkscape:connector-curvature="0" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path4124"
+           d="m 22.546188,1004.1846 0,0.5576"
+           style="fill:none;stroke:#000000;stroke-width:0.27860877px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           style="fill:none;stroke:#000000;stroke-width:0.27860877px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+           d="m 23.79327,1004.1846 0,0.5576"
+           id="path4126"
+           inkscape:connector-curvature="0" />
+      </g>
+    </g>
+  </g>
+</svg>

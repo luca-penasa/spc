@@ -9,6 +9,8 @@ option(BUILD_TOOLS "Build the tools." ON)
 option(BUILD_MICMAC_RELATED "Build MICMAC-related code." ON)
 option(BUILD_PYTHON_WRAPPINGS "Build python interface for the library. Only some classes have been wrapped!" ON)
 option(BUILD_SPC_DOC "Build SPC doc" OFF)
+option(BUILD_QGEO_CC_PLUGIN "Build SPC-based plugin for CloudCompare" ON)
+
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
@@ -41,8 +43,15 @@ if(BUILD_MICMAC_RELATED)
     add_subdirectory(external)
     set(CULTURE_3D_BUILD_DIR "/home/luca/Code/culture3d/build" CACHE STRING "path where a culture3d build has been compiled is located. This is my default. you should change to your needs")
     set(CULTURE_3D_SOURCE_DIR "/home/luca/Code/culture3d" CACHE STRING "path where culture 3d source resides. This is my default. Change o your needs")
-
 endif()
 
+
+if(BUILD_QGEO_CC_PLUGIN)
+    set(CC_BUILD_DIR "/home/luca/Code/CC_git_clean/build" CACHE STRING "Dir with CloudCompare build")
+    set(CC_SOURCE_DIR "/home/luca/Code/CC_git_clean" CACHE STRING "Dir with CloudCompare souces")
+    set(QGEO_INSTALL_DIR "/home/luca/apps/bin/plugins" CACHE STRING "Where to intall the qGEO plugin")
+add_subdirectory(qGEO)
+
+endif()
 
 

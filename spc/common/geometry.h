@@ -1,9 +1,11 @@
 #ifndef SPC_GEOMETRY_H
 #define SPC_GEOMETRY_H
+
+
 #include <pcl/point_cloud.h>
+
 //Specialize point types
 #include "point_types.h"
-
 namespace spc
 {
 /** \brief Compute distances from origin for a given cloud.
@@ -17,7 +19,8 @@ namespace spc
 
 template <typename PointT>
 void 
-computeDistanceFromOrigin(const pcl::PointCloud<PointT> &incloud, pcl::PointCloud<PointD> &outcloud);
+computeDistanceFromOrigin(const pcl::PointCloud<PointT> &incloud,
+                                                    pcl::PointCloud<PointD> &outcloud);
 
 } //end nspace
 #endif

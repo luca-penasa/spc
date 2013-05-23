@@ -1,0 +1,1147 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+   <FileVersion major="1" minor="6" />
+   <Project>
+      <Option title="geoutils" />
+      <Option makefile_is_custom="1" />
+      <Option compiler="gcc" />
+      <Option virtualFolders="CMake Files\;CMake Files\CC\;CMake Files\CC\triangle\;CMake Files\libs\;CMake Files\libs\CCFbo\;CMake Files\libs\Glew\;CMake Files\libs\qCC_db\;CMake Files\qCC\;CMake Files\qCC\plugins\;CMake Files\qCC\plugins\qEDL\;CMake Files\qCC\plugins\qSSAO\;CMake Files\qCC\plugins\qBlur\;CMake Files\qCC\plugins\qPCV\;CMake Files\qCC\plugins\qHPR\;CMake Files\qCC\plugins\qKinect\;CMake Files\qCC\plugins\qPoissonRecon\;CMake Files\qCC\plugins\qDummyPlugin\;CMake Files\qCC\plugins\qPCL\;CMake Files\qCC\plugins\qPCL\PclUtils\;CMake Files\qCC\plugins\qPCL\doc\;CMake Files\qCC\plugins\qGEO\;CMake Files\qCC\plugins\qGEO\geoutils\;CMake Files\qCC\plugins\qGEO\pcl_geology\;CMake Files\..\;CMake Files\..\..\;CMake Files\..\..\apps\;CMake Files\..\..\apps\share\;CMake Files\..\..\apps\share\pcl-1.6\;CMake Files\..\..\..\;CMake Files\..\..\..\..\;CMake Files\..\..\..\..\usr\;CMake Files\..\..\..\..\usr\lib64\;CMake Files\..\..\..\..\usr\lib64\vtk-5.8\;CMake Files\..\..\..\..\usr\lib64\vtk-5.8\CMake\;CMake Files\ccViewer\;" />
+      <Build>
+      <Target title="all">
+         <Option working_dir="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils" />
+         <Option type="4" />
+         <MakeCommands>
+            <Build command="/usr/bin/gmake -f &quot;/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils/Makefile&quot;  VERBOSE=1 all" />
+            <CompileFile command="/usr/bin/gmake -f &quot;/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/gmake -f &quot;/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/gmake -f &quot;/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="geoutils">
+         <Option output="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils/libgeoutils.a" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils" />
+         <Option object_output="./" />
+         <Option type="2" />
+         <Option compiler="gcc" />
+         <Compiler>
+            <Add option="-DQT_NO_DEBUG" />
+            <Add option="-DQT_OPENGL_LIB" />
+            <Add option="-DQT_GUI_LIB" />
+            <Add option="-DQT_CORE_LIB" />
+            <Add option="-DDISABLE_OPENNI" />
+            <Add option="-DDISABLE_OPENNI" />
+            <Add option="-DEIGEN_USE_NEW_STDVECTOR" />
+            <Add option="-DEIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET" />
+            <Add option="-Dqh_QHpointer" />
+            <Add directory="/home/luca/Code/CloudCompare2/CC/include" />
+            <Add directory="/home/luca/Code/CloudCompare2/libs/qCC_db" />
+            <Add directory="/home/luca/Code/CloudCompare2/qCC" />
+            <Add directory="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils" />
+            <Add directory="/home/luca/Code/CloudCompare2/qCC/plugins/qPCL/PclUtils/filters" />
+            <Add directory="/home/luca/apps/include/pcl-1.6" />
+            <Add directory="/include" />
+            <Add directory="/usr/include" />
+            <Add directory="/usr/include/boost-1_48" />
+            <Add directory="/usr/include/eigen3" />
+            <Add directory="/usr/include/qhull" />
+            <Add directory="/usr/include/qt4" />
+            <Add directory="/usr/include/qt4/QtCore" />
+            <Add directory="/usr/include/qt4/QtGui" />
+            <Add directory="/usr/include/qt4/QtOpenGL" />
+            <Add directory="/usr/include/vtk-5.8" />
+         </Compiler>
+         <MakeCommands>
+            <Build command="/usr/bin/gmake -f &quot;/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils/Makefile&quot;  VERBOSE=1 geoutils" />
+            <CompileFile command="/usr/bin/gmake -f &quot;/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/gmake -f &quot;/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/gmake -f &quot;/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      <Target title="geoutils/fast">
+         <Option output="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils/libgeoutils.a" prefix_auto="0" extension_auto="0" />
+         <Option working_dir="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils" />
+         <Option object_output="./" />
+         <Option type="2" />
+         <Option compiler="gcc" />
+         <Compiler>
+            <Add option="-DQT_NO_DEBUG" />
+            <Add option="-DQT_OPENGL_LIB" />
+            <Add option="-DQT_GUI_LIB" />
+            <Add option="-DQT_CORE_LIB" />
+            <Add option="-DDISABLE_OPENNI" />
+            <Add option="-DDISABLE_OPENNI" />
+            <Add option="-DEIGEN_USE_NEW_STDVECTOR" />
+            <Add option="-DEIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET" />
+            <Add option="-Dqh_QHpointer" />
+            <Add directory="/home/luca/Code/CloudCompare2/CC/include" />
+            <Add directory="/home/luca/Code/CloudCompare2/libs/qCC_db" />
+            <Add directory="/home/luca/Code/CloudCompare2/qCC" />
+            <Add directory="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils" />
+            <Add directory="/home/luca/Code/CloudCompare2/qCC/plugins/qPCL/PclUtils/filters" />
+            <Add directory="/home/luca/apps/include/pcl-1.6" />
+            <Add directory="/include" />
+            <Add directory="/usr/include" />
+            <Add directory="/usr/include/boost-1_48" />
+            <Add directory="/usr/include/eigen3" />
+            <Add directory="/usr/include/qhull" />
+            <Add directory="/usr/include/qt4" />
+            <Add directory="/usr/include/qt4/QtCore" />
+            <Add directory="/usr/include/qt4/QtGui" />
+            <Add directory="/usr/include/qt4/QtOpenGL" />
+            <Add directory="/usr/include/vtk-5.8" />
+         </Compiler>
+         <MakeCommands>
+            <Build command="/usr/bin/gmake -f &quot;/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils/Makefile&quot;  VERBOSE=1 geoutils/fast" />
+            <CompileFile command="/usr/bin/gmake -f &quot;/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils/Makefile&quot;  VERBOSE=1 &quot;$file&quot;" />
+            <Clean command="/usr/bin/gmake -f &quot;/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils/Makefile&quot;  VERBOSE=1 clean" />
+            <DistClean command="/usr/bin/gmake -f &quot;/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils/Makefile&quot;  VERBOSE=1 clean" />
+         </MakeCommands>
+      </Target>
+      </Build>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils/ComputeTimeSeries.cpp">
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils/ComputeTimeSeries.h">
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/CMakeInclude.cmake">
+          <Option virtualFolder="CMake Files\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/CMakeExternalLibs.cmake">
+          <Option virtualFolder="CMake Files\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/LiblasSupport.cmake">
+          <Option virtualFolder="CMake Files\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/XIOTSupport.cmake">
+          <Option virtualFolder="CMake Files\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/CC/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\CC\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/CC/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\CC\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/CC/triangle/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\CC\triangle\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/CC/triangle/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\CC\triangle\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/CC/triangle/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\CC\triangle\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/libs/CCFbo/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\libs\CCFbo\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/libs/CCFbo/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\libs\CCFbo\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/libs/Glew/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\libs\Glew\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/libs/Glew/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\libs\Glew\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/libs/qCC_db/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\libs\qCC_db\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/libs/qCC_db/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\libs\qCC_db\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/icones.qrc">
+          <Option virtualFolder="CMake Files\qCC\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/icones.qrc">
+          <Option virtualFolder="CMake Files\qCC\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/icones.qrc">
+          <Option virtualFolder="CMake Files\qCC\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/icones.qrc">
+          <Option virtualFolder="CMake Files\qCC\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/CMakePluginTpl.cmake">
+          <Option virtualFolder="CMake Files\qCC\plugins\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/CMakePluginTpl.cmake">
+          <Option virtualFolder="CMake Files\qCC\plugins\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/CMakePluginTpl.cmake">
+          <Option virtualFolder="CMake Files\qCC\plugins\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/CMakePluginTpl.cmake">
+          <Option virtualFolder="CMake Files\qCC\plugins\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/CMakePluginTpl.cmake">
+          <Option virtualFolder="CMake Files\qCC\plugins\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/CMakePluginTpl.cmake">
+          <Option virtualFolder="CMake Files\qCC\plugins\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/CMakePluginTpl.cmake">
+          <Option virtualFolder="CMake Files\qCC\plugins\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/CMakePluginTpl.cmake">
+          <Option virtualFolder="CMake Files\qCC\plugins\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qEDL/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qEDL\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qEDL/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qEDL\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qEDL/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qEDL\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qSSAO/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qSSAO\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qSSAO/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qSSAO\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qSSAO/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qSSAO\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qBlur/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qBlur\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qBlur/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qBlur\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qBlur/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qBlur\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qPCV/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qPCV\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qPCV/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qPCV\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qPCV/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qPCV\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qHPR/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qHPR\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qHPR/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qHPR\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qHPR/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qHPR\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qKinect/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qKinect\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qKinect/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qKinect\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qKinect/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qKinect\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qPoissonRecon/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qPoissonRecon\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qPoissonRecon/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qPoissonRecon\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qPoissonRecon/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qPoissonRecon\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qDummyPlugin/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qDummyPlugin\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qDummyPlugin/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qDummyPlugin\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qDummyPlugin/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qDummyPlugin\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qPCL/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qPCL\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qPCL/qPCL.qrc">
+          <Option virtualFolder="CMake Files\qCC\plugins\qPCL\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qPCL/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qPCL\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qPCL/qPCL.qrc">
+          <Option virtualFolder="CMake Files\qCC\plugins\qPCL\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qPCL/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qPCL\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qPCL/qPCL.qrc">
+          <Option virtualFolder="CMake Files\qCC\plugins\qPCL\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qPCL/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qPCL\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qPCL/qPCL.qrc">
+          <Option virtualFolder="CMake Files\qCC\plugins\qPCL\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qPCL/PclUtils/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qPCL\PclUtils\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qPCL/PclUtils/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qPCL\PclUtils\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qPCL/PclUtils/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qPCL\PclUtils\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qPCL/PclUtils/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qPCL\PclUtils\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qPCL/PclUtils/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qPCL\PclUtils\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qPCL/doc/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qPCL\doc\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qPCL/doc/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qPCL\doc\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qPCL/doc/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qPCL\doc\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qPCL/doc/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qPCL\doc\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qGEO\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.qrc">
+          <Option virtualFolder="CMake Files\qCC\plugins\qGEO\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qGEO\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.qrc">
+          <Option virtualFolder="CMake Files\qCC\plugins\qGEO\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qGEO\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.qrc">
+          <Option virtualFolder="CMake Files\qCC\plugins\qGEO\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qGEO\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/qGEO.qrc">
+          <Option virtualFolder="CMake Files\qCC\plugins\qGEO\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qGEO\geoutils\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qGEO\geoutils\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qGEO\geoutils\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qGEO\geoutils\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qGEO\geoutils\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/pcl_geology/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qGEO\pcl_geology\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/pcl_geology/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qGEO\pcl_geology\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/pcl_geology/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qGEO\pcl_geology\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/pcl_geology/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qGEO\pcl_geology\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/qCC/plugins/qGEO/pcl_geology/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\qCC\plugins\qGEO\pcl_geology\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../apps/share/pcl-1.6/PCLConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\apps\share\pcl-1.6\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigVersion.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfig.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/VTKConfigQt.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/UseVTK.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/CMake/vtkMakeInstantiator.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\CMake\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/CMake/vtkMakeInstantiator.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\CMake\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/CMake/vtkMakeInstantiator.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\CMake\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/CMake/vtkMakeInstantiator.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\CMake\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/CMake/vtkMakeInstantiator.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\CMake\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/CMake/vtkMakeInstantiator.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\CMake\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/CMake/vtkMakeInstantiator.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\CMake\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/CMake/vtkMakeInstantiator.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\CMake\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/CMake/vtkMakeInstantiator.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\CMake\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/CMake/vtkMakeInstantiator.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\CMake\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/CMake/vtkMakeInstantiator.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\CMake\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/CMake/vtkMakeInstantiator.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\CMake\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/CMake/vtkMakeInstantiator.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\CMake\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/CMake/vtkMakeInstantiator.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\CMake\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/CMake/vtkMakeInstantiator.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\CMake\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/CMake/vtkMakeInstantiator.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\CMake\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/CMake/vtkMakeInstantiator.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\CMake\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/CMake/vtkMakeInstantiator.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\CMake\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/CMake/vtkMakeInstantiator.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\CMake\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/CMake/vtkMakeInstantiator.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\CMake\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/CMake/vtkMakeInstantiator.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\CMake\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/CMake/vtkMakeInstantiator.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\CMake\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/../../../../usr/lib64/vtk-5.8/CMake/vtkMakeInstantiator.cmake">
+          <Option virtualFolder="CMake Files\..\..\..\..\usr\lib64\vtk-5.8\CMake\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/ccViewer/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\ccViewer\" />
+      </Unit>
+      <Unit filename="/home/luca/Code/CloudCompare2/ccViewer/CMakeLists.txt">
+          <Option virtualFolder="CMake Files\ccViewer\" />
+      </Unit>
+   </Project>
+</CodeBlocks_project_file>

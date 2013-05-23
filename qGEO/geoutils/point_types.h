@@ -3,7 +3,6 @@
 
 #include <pcl/point_types.h>
 
-
 struct PointD //point strucure with just a distance value
 {
 	float distance;
@@ -35,8 +34,6 @@ POINT_CLOUD_REGISTER_POINT_STRUCT (PointIntDist,           // here we assume a X
 (float, distance, distance)
 (float, intensity, intensity)
 )
-
-
 
 #endif
 
