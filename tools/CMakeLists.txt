@@ -1,5 +1,9 @@
 set(MY_TOOLS_PREFIX "spc_")
 
+if(BUILD_MICMAC_RELATED)
+    link_directories(${CULTURE_3D_BUILD_DIR}/src)
+endif()
+
 
 
 find_package(PCL REQUIRED)
@@ -11,14 +15,8 @@ include_directories(${VTK_INCLUDE_DIRS})
 include_directories(/usr/include/eigen3/)
 # include_directories(${LIDARLIB_SOURCE_DIR})
 
+message("${SPC_LIBRARIES}")
 
-# find_package(VTK REQUIRED)
-# include(${VTK_USE_FILE})
-
-# find_package(ITK REQUIRED)
-# include(${ITK_USE_FILE})
-
-# spc_add_executable(try_nan try_nan.cpp)
 
 spc_add_executable(${MY_TOOLS_PREFIX}bilateral bilateral.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}bilateral ${PCL_LIBRARIES})
@@ -88,7 +86,8 @@ spc_add_executable(${MY_TOOLS_PREFIX}estimate_correction_curve estimate_correcti
 target_link_libraries(${MY_TOOLS_PREFIX}estimate_correction_curve ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 spc_add_executable(${MY_TOOLS_PREFIX}apply_correction_curve apply_correction_curve.cpp)
-target_link_libraries(${MY_TOOLS_PREFIX}apply_correction_curve ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
+target_link_libraries(${MY_TOOLS_PREFIX}apply_correction_curve ${PCL_LIBRARIES} spc_time_series spc_common spc_methods ${VTK_LIBRARIES})
+
 
 
 spc_add_executable(${MY_TOOLS_PREFIX}merge_clouds_with_config merge_clouds_with_config.cpp)
@@ -111,7 +110,3 @@ target_link_libraries(${MY_TOOLS_PREFIX}merge_classification_results ${PCL_LIBRA
 
 spc_add_executable(${MY_TOOLS_PREFIX}subset_from_geometry subset_from_geometry.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}subset_from_geometry ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
-
-
-# install (FILES "${PROJECT_BINARY_DIR}/TutorialConfig.h"
-# DESTINATION include)

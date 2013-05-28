@@ -19,7 +19,6 @@ ComputeStratigraphicPosition::ComputeStratigraphicPosition(): BaseFilter(FilterD
                                                                                               ":/toolbar/icons/strat_pos.png") )
 {
     m_dialog = 0;
-
 }
 
 int

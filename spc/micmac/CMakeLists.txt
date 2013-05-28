@@ -1,5 +1,5 @@
 
-link_directories(${CULTURE_3D_BUILD_DIR}/src)
+
 include_directories("${CULTURE_3D_SOURCE_DIR}/include")
 include_directories(${CULTURE_3D_BUILD_DIR}/include)
 
@@ -13,6 +13,7 @@ include_directories(${CMAKE_SOURCE_DIR}/external/Boost.NumPy)
 
 
 FIND_PACKAGE(Boost 1.45.0)
+
 IF(Boost_FOUND)
   INCLUDE_DIRECTORIES("${Boost_INCLUDE_DIRS}")
   SET(Boost_USE_STATIC_LIBS OFF)
@@ -23,7 +24,7 @@ IF(Boost_FOUND)
 ELSEIF(NOT Boost_FOUND)
   MESSAGE(FATAL_ERROR "Unable to find correct Boost version. Did you set BOOST_ROOT?")
 ENDIF()
-
+link_directories(${CULTURE_3D_BUILD_DIR}/src)
 set(additional_libraries ${X11_LIBRARIES} elise)
 spc_add_library(micmac "${additional_libraries}")
 

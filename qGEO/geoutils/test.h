@@ -2,7 +2,7 @@
 #define Q_GEO_PLUGIN_TEST_HEADER
 
 #include <qPCL/PclUtils/filters/BaseFilter.h>
-#include <ccCurvePlotterDlg.h>
+#include <dialogs/ccCurvePlotterDlg.h>
 
 //class QDialog;
 

@@ -35,14 +35,17 @@ CMAKE_COMMAND = /usr/bin/cmake
 # The command to remove a file.
 RM = /usr/bin/cmake -E remove -f
 
+# Escaping for special characters.
+EQUALS = =
+
 # The program to use to edit the cache.
 CMAKE_EDIT_COMMAND = /usr/bin/ccmake
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/luca/Code/CloudCompare2
+CMAKE_SOURCE_DIR = /home/luca/Code/spc-git
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/luca/Code/CloudCompare2
+CMAKE_BINARY_DIR = /home/luca/Code/spc-git
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -110,14 +113,14 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/luca/Code/CloudCompare2 && $(CMAKE_COMMAND) -E cmake_progress_start /home/luca/Code/CloudCompare2/CMakeFiles /home/luca/Code/CloudCompare2/qCC/plugins/qGEO/geoutils/CMakeFiles/progress.marks
-	cd /home/luca/Code/CloudCompare2 && $(MAKE) -f CMakeFiles/Makefile2 qCC/plugins/qGEO/geoutils/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/luca/Code/CloudCompare2/CMakeFiles 0
+	cd /home/luca/Code/spc-git && $(CMAKE_COMMAND) -E cmake_progress_start /home/luca/Code/spc-git/CMakeFiles /home/luca/Code/spc-git/qGEO/geoutils/CMakeFiles/progress.marks
+	cd /home/luca/Code/spc-git && $(MAKE) -f CMakeFiles/Makefile2 qGEO/geoutils/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/luca/Code/spc-git/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/luca/Code/CloudCompare2 && $(MAKE) -f CMakeFiles/Makefile2 qCC/plugins/qGEO/geoutils/clean
+	cd /home/luca/Code/spc-git && $(MAKE) -f CMakeFiles/Makefile2 qGEO/geoutils/clean
 .PHONY : clean
 
 # The main clean target
@@ -126,39 +129,63 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/luca/Code/CloudCompare2 && $(MAKE) -f CMakeFiles/Makefile2 qCC/plugins/qGEO/geoutils/preinstall
+	cd /home/luca/Code/spc-git && $(MAKE) -f CMakeFiles/Makefile2 qGEO/geoutils/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/luca/Code/CloudCompare2 && $(MAKE) -f CMakeFiles/Makefile2 qCC/plugins/qGEO/geoutils/preinstall
+	cd /home/luca/Code/spc-git && $(MAKE) -f CMakeFiles/Makefile2 qGEO/geoutils/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/luca/Code/CloudCompare2 && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/luca/Code/spc-git && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
-qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/rule:
-	cd /home/luca/Code/CloudCompare2 && $(MAKE) -f CMakeFiles/Makefile2 qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/rule
-.PHONY : qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/rule
+qGEO/geoutils/CMakeFiles/geoutils.dir/rule:
+	cd /home/luca/Code/spc-git && $(MAKE) -f CMakeFiles/Makefile2 qGEO/geoutils/CMakeFiles/geoutils.dir/rule
+.PHONY : qGEO/geoutils/CMakeFiles/geoutils.dir/rule
 
 # Convenience name for target.
-geoutils: qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/rule
+geoutils: qGEO/geoutils/CMakeFiles/geoutils.dir/rule
 .PHONY : geoutils
 
 # fast build rule for target.
 geoutils/fast:
-	cd /home/luca/Code/CloudCompare2 && $(MAKE) -f qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/build
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/build
 .PHONY : geoutils/fast
+
+ComputeStratigraphicPosition.o: ComputeStratigraphicPosition.cpp.o
+.PHONY : ComputeStratigraphicPosition.o
+
+# target to build an object file
+ComputeStratigraphicPosition.cpp.o:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/ComputeStratigraphicPosition.cpp.o
+.PHONY : ComputeStratigraphicPosition.cpp.o
+
+ComputeStratigraphicPosition.i: ComputeStratigraphicPosition.cpp.i
+.PHONY : ComputeStratigraphicPosition.i
+
+# target to preprocess a source file
+ComputeStratigraphicPosition.cpp.i:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/ComputeStratigraphicPosition.cpp.i
+.PHONY : ComputeStratigraphicPosition.cpp.i
+
+ComputeStratigraphicPosition.s: ComputeStratigraphicPosition.cpp.s
+.PHONY : ComputeStratigraphicPosition.s
+
+# target to generate assembly for a file
+ComputeStratigraphicPosition.cpp.s:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/ComputeStratigraphicPosition.cpp.s
+.PHONY : ComputeStratigraphicPosition.cpp.s
 
 ComputeTimeSeries.o: ComputeTimeSeries.cpp.o
 .PHONY : ComputeTimeSeries.o
 
 # target to build an object file
 ComputeTimeSeries.cpp.o:
-	cd /home/luca/Code/CloudCompare2 && $(MAKE) -f qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/ComputeTimeSeries.cpp.o
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/ComputeTimeSeries.cpp.o
 .PHONY : ComputeTimeSeries.cpp.o
 
 ComputeTimeSeries.i: ComputeTimeSeries.cpp.i
@@ -166,7 +193,7 @@ ComputeTimeSeries.i: ComputeTimeSeries.cpp.i
 
 # target to preprocess a source file
 ComputeTimeSeries.cpp.i:
-	cd /home/luca/Code/CloudCompare2 && $(MAKE) -f qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/ComputeTimeSeries.cpp.i
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/ComputeTimeSeries.cpp.i
 .PHONY : ComputeTimeSeries.cpp.i
 
 ComputeTimeSeries.s: ComputeTimeSeries.cpp.s
@@ -174,15 +201,63 @@ ComputeTimeSeries.s: ComputeTimeSeries.cpp.s
 
 # target to generate assembly for a file
 ComputeTimeSeries.cpp.s:
-	cd /home/luca/Code/CloudCompare2 && $(MAKE) -f qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/ComputeTimeSeries.cpp.s
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/ComputeTimeSeries.cpp.s
 .PHONY : ComputeTimeSeries.cpp.s
+
+ccStructuredReferenceImage.o: ccStructuredReferenceImage.cpp.o
+.PHONY : ccStructuredReferenceImage.o
+
+# target to build an object file
+ccStructuredReferenceImage.cpp.o:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/ccStructuredReferenceImage.cpp.o
+.PHONY : ccStructuredReferenceImage.cpp.o
+
+ccStructuredReferenceImage.i: ccStructuredReferenceImage.cpp.i
+.PHONY : ccStructuredReferenceImage.i
+
+# target to preprocess a source file
+ccStructuredReferenceImage.cpp.i:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/ccStructuredReferenceImage.cpp.i
+.PHONY : ccStructuredReferenceImage.cpp.i
+
+ccStructuredReferenceImage.s: ccStructuredReferenceImage.cpp.s
+.PHONY : ccStructuredReferenceImage.s
+
+# target to generate assembly for a file
+ccStructuredReferenceImage.cpp.s:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/ccStructuredReferenceImage.cpp.s
+.PHONY : ccStructuredReferenceImage.cpp.s
+
+dialogs/ComputeStratigraphicPositionDlg.o: dialogs/ComputeStratigraphicPositionDlg.cpp.o
+.PHONY : dialogs/ComputeStratigraphicPositionDlg.o
+
+# target to build an object file
+dialogs/ComputeStratigraphicPositionDlg.cpp.o:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/dialogs/ComputeStratigraphicPositionDlg.cpp.o
+.PHONY : dialogs/ComputeStratigraphicPositionDlg.cpp.o
+
+dialogs/ComputeStratigraphicPositionDlg.i: dialogs/ComputeStratigraphicPositionDlg.cpp.i
+.PHONY : dialogs/ComputeStratigraphicPositionDlg.i
+
+# target to preprocess a source file
+dialogs/ComputeStratigraphicPositionDlg.cpp.i:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/dialogs/ComputeStratigraphicPositionDlg.cpp.i
+.PHONY : dialogs/ComputeStratigraphicPositionDlg.cpp.i
+
+dialogs/ComputeStratigraphicPositionDlg.s: dialogs/ComputeStratigraphicPositionDlg.cpp.s
+.PHONY : dialogs/ComputeStratigraphicPositionDlg.s
+
+# target to generate assembly for a file
+dialogs/ComputeStratigraphicPositionDlg.cpp.s:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/dialogs/ComputeStratigraphicPositionDlg.cpp.s
+.PHONY : dialogs/ComputeStratigraphicPositionDlg.cpp.s
 
 dialogs/ComputeTimeSeriesDlg.o: dialogs/ComputeTimeSeriesDlg.cpp.o
 .PHONY : dialogs/ComputeTimeSeriesDlg.o
 
 # target to build an object file
 dialogs/ComputeTimeSeriesDlg.cpp.o:
-	cd /home/luca/Code/CloudCompare2 && $(MAKE) -f qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/dialogs/ComputeTimeSeriesDlg.cpp.o
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/dialogs/ComputeTimeSeriesDlg.cpp.o
 .PHONY : dialogs/ComputeTimeSeriesDlg.cpp.o
 
 dialogs/ComputeTimeSeriesDlg.i: dialogs/ComputeTimeSeriesDlg.cpp.i
@@ -190,7 +265,7 @@ dialogs/ComputeTimeSeriesDlg.i: dialogs/ComputeTimeSeriesDlg.cpp.i
 
 # target to preprocess a source file
 dialogs/ComputeTimeSeriesDlg.cpp.i:
-	cd /home/luca/Code/CloudCompare2 && $(MAKE) -f qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/dialogs/ComputeTimeSeriesDlg.cpp.i
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/dialogs/ComputeTimeSeriesDlg.cpp.i
 .PHONY : dialogs/ComputeTimeSeriesDlg.cpp.i
 
 dialogs/ComputeTimeSeriesDlg.s: dialogs/ComputeTimeSeriesDlg.cpp.s
@@ -198,15 +273,63 @@ dialogs/ComputeTimeSeriesDlg.s: dialogs/ComputeTimeSeriesDlg.cpp.s
 
 # target to generate assembly for a file
 dialogs/ComputeTimeSeriesDlg.cpp.s:
-	cd /home/luca/Code/CloudCompare2 && $(MAKE) -f qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/dialogs/ComputeTimeSeriesDlg.cpp.s
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/dialogs/ComputeTimeSeriesDlg.cpp.s
 .PHONY : dialogs/ComputeTimeSeriesDlg.cpp.s
+
+dialogs/FastCloudSelectionDlg.o: dialogs/FastCloudSelectionDlg.cpp.o
+.PHONY : dialogs/FastCloudSelectionDlg.o
+
+# target to build an object file
+dialogs/FastCloudSelectionDlg.cpp.o:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/dialogs/FastCloudSelectionDlg.cpp.o
+.PHONY : dialogs/FastCloudSelectionDlg.cpp.o
+
+dialogs/FastCloudSelectionDlg.i: dialogs/FastCloudSelectionDlg.cpp.i
+.PHONY : dialogs/FastCloudSelectionDlg.i
+
+# target to preprocess a source file
+dialogs/FastCloudSelectionDlg.cpp.i:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/dialogs/FastCloudSelectionDlg.cpp.i
+.PHONY : dialogs/FastCloudSelectionDlg.cpp.i
+
+dialogs/FastCloudSelectionDlg.s: dialogs/FastCloudSelectionDlg.cpp.s
+.PHONY : dialogs/FastCloudSelectionDlg.s
+
+# target to generate assembly for a file
+dialogs/FastCloudSelectionDlg.cpp.s:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/dialogs/FastCloudSelectionDlg.cpp.s
+.PHONY : dialogs/FastCloudSelectionDlg.cpp.s
+
+dialogs/moc_ComputeStratigraphicPositionDlg.o: dialogs/moc_ComputeStratigraphicPositionDlg.cxx.o
+.PHONY : dialogs/moc_ComputeStratigraphicPositionDlg.o
+
+# target to build an object file
+dialogs/moc_ComputeStratigraphicPositionDlg.cxx.o:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/dialogs/moc_ComputeStratigraphicPositionDlg.cxx.o
+.PHONY : dialogs/moc_ComputeStratigraphicPositionDlg.cxx.o
+
+dialogs/moc_ComputeStratigraphicPositionDlg.i: dialogs/moc_ComputeStratigraphicPositionDlg.cxx.i
+.PHONY : dialogs/moc_ComputeStratigraphicPositionDlg.i
+
+# target to preprocess a source file
+dialogs/moc_ComputeStratigraphicPositionDlg.cxx.i:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/dialogs/moc_ComputeStratigraphicPositionDlg.cxx.i
+.PHONY : dialogs/moc_ComputeStratigraphicPositionDlg.cxx.i
+
+dialogs/moc_ComputeStratigraphicPositionDlg.s: dialogs/moc_ComputeStratigraphicPositionDlg.cxx.s
+.PHONY : dialogs/moc_ComputeStratigraphicPositionDlg.s
+
+# target to generate assembly for a file
+dialogs/moc_ComputeStratigraphicPositionDlg.cxx.s:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/dialogs/moc_ComputeStratigraphicPositionDlg.cxx.s
+.PHONY : dialogs/moc_ComputeStratigraphicPositionDlg.cxx.s
 
 dialogs/moc_ComputeTimeSeriesDlg.o: dialogs/moc_ComputeTimeSeriesDlg.cxx.o
 .PHONY : dialogs/moc_ComputeTimeSeriesDlg.o
 
 # target to build an object file
 dialogs/moc_ComputeTimeSeriesDlg.cxx.o:
-	cd /home/luca/Code/CloudCompare2 && $(MAKE) -f qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/dialogs/moc_ComputeTimeSeriesDlg.cxx.o
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/dialogs/moc_ComputeTimeSeriesDlg.cxx.o
 .PHONY : dialogs/moc_ComputeTimeSeriesDlg.cxx.o
 
 dialogs/moc_ComputeTimeSeriesDlg.i: dialogs/moc_ComputeTimeSeriesDlg.cxx.i
@@ -214,7 +337,7 @@ dialogs/moc_ComputeTimeSeriesDlg.i: dialogs/moc_ComputeTimeSeriesDlg.cxx.i
 
 # target to preprocess a source file
 dialogs/moc_ComputeTimeSeriesDlg.cxx.i:
-	cd /home/luca/Code/CloudCompare2 && $(MAKE) -f qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/dialogs/moc_ComputeTimeSeriesDlg.cxx.i
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/dialogs/moc_ComputeTimeSeriesDlg.cxx.i
 .PHONY : dialogs/moc_ComputeTimeSeriesDlg.cxx.i
 
 dialogs/moc_ComputeTimeSeriesDlg.s: dialogs/moc_ComputeTimeSeriesDlg.cxx.s
@@ -222,63 +345,39 @@ dialogs/moc_ComputeTimeSeriesDlg.s: dialogs/moc_ComputeTimeSeriesDlg.cxx.s
 
 # target to generate assembly for a file
 dialogs/moc_ComputeTimeSeriesDlg.cxx.s:
-	cd /home/luca/Code/CloudCompare2 && $(MAKE) -f qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/dialogs/moc_ComputeTimeSeriesDlg.cxx.s
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/dialogs/moc_ComputeTimeSeriesDlg.cxx.s
 .PHONY : dialogs/moc_ComputeTimeSeriesDlg.cxx.s
 
-kernel_smoothing.o: kernel_smoothing.cpp.o
-.PHONY : kernel_smoothing.o
+dialogs/moc_FastCloudSelectionDlg.o: dialogs/moc_FastCloudSelectionDlg.cxx.o
+.PHONY : dialogs/moc_FastCloudSelectionDlg.o
 
 # target to build an object file
-kernel_smoothing.cpp.o:
-	cd /home/luca/Code/CloudCompare2 && $(MAKE) -f qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/kernel_smoothing.cpp.o
-.PHONY : kernel_smoothing.cpp.o
+dialogs/moc_FastCloudSelectionDlg.cxx.o:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/dialogs/moc_FastCloudSelectionDlg.cxx.o
+.PHONY : dialogs/moc_FastCloudSelectionDlg.cxx.o
 
-kernel_smoothing.i: kernel_smoothing.cpp.i
-.PHONY : kernel_smoothing.i
-
-# target to preprocess a source file
-kernel_smoothing.cpp.i:
-	cd /home/luca/Code/CloudCompare2 && $(MAKE) -f qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/kernel_smoothing.cpp.i
-.PHONY : kernel_smoothing.cpp.i
-
-kernel_smoothing.s: kernel_smoothing.cpp.s
-.PHONY : kernel_smoothing.s
-
-# target to generate assembly for a file
-kernel_smoothing.cpp.s:
-	cd /home/luca/Code/CloudCompare2 && $(MAKE) -f qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/kernel_smoothing.cpp.s
-.PHONY : kernel_smoothing.cpp.s
-
-lidarlib.o: lidarlib.cpp.o
-.PHONY : lidarlib.o
-
-# target to build an object file
-lidarlib.cpp.o:
-	cd /home/luca/Code/CloudCompare2 && $(MAKE) -f qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/lidarlib.cpp.o
-.PHONY : lidarlib.cpp.o
-
-lidarlib.i: lidarlib.cpp.i
-.PHONY : lidarlib.i
+dialogs/moc_FastCloudSelectionDlg.i: dialogs/moc_FastCloudSelectionDlg.cxx.i
+.PHONY : dialogs/moc_FastCloudSelectionDlg.i
 
 # target to preprocess a source file
-lidarlib.cpp.i:
-	cd /home/luca/Code/CloudCompare2 && $(MAKE) -f qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/lidarlib.cpp.i
-.PHONY : lidarlib.cpp.i
+dialogs/moc_FastCloudSelectionDlg.cxx.i:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/dialogs/moc_FastCloudSelectionDlg.cxx.i
+.PHONY : dialogs/moc_FastCloudSelectionDlg.cxx.i
 
-lidarlib.s: lidarlib.cpp.s
-.PHONY : lidarlib.s
+dialogs/moc_FastCloudSelectionDlg.s: dialogs/moc_FastCloudSelectionDlg.cxx.s
+.PHONY : dialogs/moc_FastCloudSelectionDlg.s
 
 # target to generate assembly for a file
-lidarlib.cpp.s:
-	cd /home/luca/Code/CloudCompare2 && $(MAKE) -f qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/lidarlib.cpp.s
-.PHONY : lidarlib.cpp.s
+dialogs/moc_FastCloudSelectionDlg.cxx.s:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/dialogs/moc_FastCloudSelectionDlg.cxx.s
+.PHONY : dialogs/moc_FastCloudSelectionDlg.cxx.s
 
 moc_ComputeTimeSeries.o: moc_ComputeTimeSeries.cxx.o
 .PHONY : moc_ComputeTimeSeries.o
 
 # target to build an object file
 moc_ComputeTimeSeries.cxx.o:
-	cd /home/luca/Code/CloudCompare2 && $(MAKE) -f qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/moc_ComputeTimeSeries.cxx.o
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/moc_ComputeTimeSeries.cxx.o
 .PHONY : moc_ComputeTimeSeries.cxx.o
 
 moc_ComputeTimeSeries.i: moc_ComputeTimeSeries.cxx.i
@@ -286,7 +385,7 @@ moc_ComputeTimeSeries.i: moc_ComputeTimeSeries.cxx.i
 
 # target to preprocess a source file
 moc_ComputeTimeSeries.cxx.i:
-	cd /home/luca/Code/CloudCompare2 && $(MAKE) -f qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/moc_ComputeTimeSeries.cxx.i
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/moc_ComputeTimeSeries.cxx.i
 .PHONY : moc_ComputeTimeSeries.cxx.i
 
 moc_ComputeTimeSeries.s: moc_ComputeTimeSeries.cxx.s
@@ -294,8 +393,104 @@ moc_ComputeTimeSeries.s: moc_ComputeTimeSeries.cxx.s
 
 # target to generate assembly for a file
 moc_ComputeTimeSeries.cxx.s:
-	cd /home/luca/Code/CloudCompare2 && $(MAKE) -f qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qCC/plugins/qGEO/geoutils/CMakeFiles/geoutils.dir/moc_ComputeTimeSeries.cxx.s
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/moc_ComputeTimeSeries.cxx.s
 .PHONY : moc_ComputeTimeSeries.cxx.s
+
+moc_qtHelper.o: moc_qtHelper.cxx.o
+.PHONY : moc_qtHelper.o
+
+# target to build an object file
+moc_qtHelper.cxx.o:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/moc_qtHelper.cxx.o
+.PHONY : moc_qtHelper.cxx.o
+
+moc_qtHelper.i: moc_qtHelper.cxx.i
+.PHONY : moc_qtHelper.i
+
+# target to preprocess a source file
+moc_qtHelper.cxx.i:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/moc_qtHelper.cxx.i
+.PHONY : moc_qtHelper.cxx.i
+
+moc_qtHelper.s: moc_qtHelper.cxx.s
+.PHONY : moc_qtHelper.s
+
+# target to generate assembly for a file
+moc_qtHelper.cxx.s:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/moc_qtHelper.cxx.s
+.PHONY : moc_qtHelper.cxx.s
+
+moc_test.o: moc_test.cxx.o
+.PHONY : moc_test.o
+
+# target to build an object file
+moc_test.cxx.o:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/moc_test.cxx.o
+.PHONY : moc_test.cxx.o
+
+moc_test.i: moc_test.cxx.i
+.PHONY : moc_test.i
+
+# target to preprocess a source file
+moc_test.cxx.i:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/moc_test.cxx.i
+.PHONY : moc_test.cxx.i
+
+moc_test.s: moc_test.cxx.s
+.PHONY : moc_test.s
+
+# target to generate assembly for a file
+moc_test.cxx.s:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/moc_test.cxx.s
+.PHONY : moc_test.cxx.s
+
+qtHelper.o: qtHelper.cpp.o
+.PHONY : qtHelper.o
+
+# target to build an object file
+qtHelper.cpp.o:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/qtHelper.cpp.o
+.PHONY : qtHelper.cpp.o
+
+qtHelper.i: qtHelper.cpp.i
+.PHONY : qtHelper.i
+
+# target to preprocess a source file
+qtHelper.cpp.i:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/qtHelper.cpp.i
+.PHONY : qtHelper.cpp.i
+
+qtHelper.s: qtHelper.cpp.s
+.PHONY : qtHelper.s
+
+# target to generate assembly for a file
+qtHelper.cpp.s:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/qtHelper.cpp.s
+.PHONY : qtHelper.cpp.s
+
+test.o: test.cpp.o
+.PHONY : test.o
+
+# target to build an object file
+test.cpp.o:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/test.cpp.o
+.PHONY : test.cpp.o
+
+test.i: test.cpp.i
+.PHONY : test.i
+
+# target to preprocess a source file
+test.cpp.i:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/test.cpp.i
+.PHONY : test.cpp.i
+
+test.s: test.cpp.s
+.PHONY : test.s
+
+# target to generate assembly for a file
+test.cpp.s:
+	cd /home/luca/Code/spc-git && $(MAKE) -f qGEO/geoutils/CMakeFiles/geoutils.dir/build.make qGEO/geoutils/CMakeFiles/geoutils.dir/test.cpp.s
+.PHONY : test.cpp.s
 
 # Help Target
 help:
@@ -310,24 +505,48 @@ help:
 	@echo "... install/strip"
 	@echo "... list_install_components"
 	@echo "... rebuild_cache"
+	@echo "... ComputeStratigraphicPosition.o"
+	@echo "... ComputeStratigraphicPosition.i"
+	@echo "... ComputeStratigraphicPosition.s"
 	@echo "... ComputeTimeSeries.o"
 	@echo "... ComputeTimeSeries.i"
 	@echo "... ComputeTimeSeries.s"
+	@echo "... ccStructuredReferenceImage.o"
+	@echo "... ccStructuredReferenceImage.i"
+	@echo "... ccStructuredReferenceImage.s"
+	@echo "... dialogs/ComputeStratigraphicPositionDlg.o"
+	@echo "... dialogs/ComputeStratigraphicPositionDlg.i"
+	@echo "... dialogs/ComputeStratigraphicPositionDlg.s"
 	@echo "... dialogs/ComputeTimeSeriesDlg.o"
 	@echo "... dialogs/ComputeTimeSeriesDlg.i"
 	@echo "... dialogs/ComputeTimeSeriesDlg.s"
+	@echo "... dialogs/FastCloudSelectionDlg.o"
+	@echo "... dialogs/FastCloudSelectionDlg.i"
+	@echo "... dialogs/FastCloudSelectionDlg.s"
+	@echo "... dialogs/moc_ComputeStratigraphicPositionDlg.o"
+	@echo "... dialogs/moc_ComputeStratigraphicPositionDlg.i"
+	@echo "... dialogs/moc_ComputeStratigraphicPositionDlg.s"
 	@echo "... dialogs/moc_ComputeTimeSeriesDlg.o"
 	@echo "... dialogs/moc_ComputeTimeSeriesDlg.i"
 	@echo "... dialogs/moc_ComputeTimeSeriesDlg.s"
-	@echo "... kernel_smoothing.o"
-	@echo "... kernel_smoothing.i"
-	@echo "... kernel_smoothing.s"
-	@echo "... lidarlib.o"
-	@echo "... lidarlib.i"
-	@echo "... lidarlib.s"
+	@echo "... dialogs/moc_FastCloudSelectionDlg.o"
+	@echo "... dialogs/moc_FastCloudSelectionDlg.i"
+	@echo "... dialogs/moc_FastCloudSelectionDlg.s"
 	@echo "... moc_ComputeTimeSeries.o"
 	@echo "... moc_ComputeTimeSeries.i"
 	@echo "... moc_ComputeTimeSeries.s"
+	@echo "... moc_qtHelper.o"
+	@echo "... moc_qtHelper.i"
+	@echo "... moc_qtHelper.s"
+	@echo "... moc_test.o"
+	@echo "... moc_test.i"
+	@echo "... moc_test.s"
+	@echo "... qtHelper.o"
+	@echo "... qtHelper.i"
+	@echo "... qtHelper.s"
+	@echo "... test.o"
+	@echo "... test.i"
+	@echo "... test.s"
 .PHONY : help
 
 
@@ -339,6 +558,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/luca/Code/CloudCompare2 && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/luca/Code/spc-git && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

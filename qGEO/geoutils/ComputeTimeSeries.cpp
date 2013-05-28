@@ -8,9 +8,9 @@
 
 #include <ccConsole.h>
 #include <ccProgressDialog.h>
-#include "GenericProgressCallback.h"
+#include <GenericProgressCallback.h>
 
-#include <ccCurvePlotterDlg.h>
+#include <dialogs/ccCurvePlotterDlg.h>
 
 #include <spc/methods/linear_interpolator.h>
 #include <spc/time_series/sparse_time_series.h>

@@ -5,19 +5,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fopenmp -fPIC" )
     include(${CC_SOURCE_DIR}/CMakeInclude.cmake)
     include(${CC_SOURCE_DIR}/CMakeExternalLibs.cmake)
 
-#we need qwt ############
-  find_path ( QWT_INCLUDE_DIR qwt_plot.h /usr/include/qwt6 )
-  find_library ( QWT_LIBRARIES NAMES qwt6) #explicit look for qwt6
 
-  include ( FindPackageHandleStandardArgs )
-  find_package_handle_standard_args( QWT DEFAULT_MSG QWT_LIBRARIES QWT_INCLUDE_DIR )
-
-  if (${QWT_FOUND})
-    mark_as_advanced(QWT_LIBRARIES QWT_INCLUDE_DIR )
-    add_definitions( -DCC_QWT_SUPPORT )
-    include_directories(${QWT_INCLUDE_DIR})
-  endif()
-#################
 
 
     set(CC_PLUGINS_SOURCE_DIR "${CC_SOURCE_DIR}/qCC/plugins")
@@ -30,6 +18,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fopenmp -fPIC" )
     include_directories(${CMAKE_CURRENT_BINARY_DIR}/geoutils)
     include_directories(${CMAKE_CURRENT_BINARY_DIR}/geoutils/dialogs)
     include_directories(${CMAKE_CURRENT_BINARY_DIR})
+    include_directories(${SPC_BUILD_INCLUDE_DIRS})
 
 
     include_directories(${CC_SOURCE_DIR}/libs/qCC_db/)
@@ -47,6 +36,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fopenmp -fPIC" )
     include_directories(${CC_PLUGINS_SOURCE_DIR}) # in this way we can get acces to headers from other plugins
     include_directories(${CC_SOURCE_DIR}/CC/include/)
     #include_directories(${QGEO_PLUGIN_DLL_BINARY_DIR}/geoutils) #for including moc'ed headers
+
     include_directories(geoutils)
     #include_directories(${QPCL_PLUGIN_DLL_SOURCE_DIR}/../) #for accessing other plugins headers
 
@@ -57,6 +47,20 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fopenmp -fPIC" )
                                              ${CC_PLUGINS_SOURCE_DIR}/qPCL/PclUtils/utils/sm2cc.cpp)
 
 
+    file( GLOB header_list *.h)
+    file( GLOB source_list *.cpp)
+    file( GLOB ui_list *.ui )
+    file( GLOB qrc_list *.qrc )
+    file( GLOB rc_list *.rc )
+
+    # find Qt mocable files
+    find_mocable_files( mocable_list ${header_list} )
+    qt4_wrap_cpp( moc_list ${mocable_list} )
+    QT4_WRAP_UI( generated_ui_list ${ui_list} )
+    QT4_ADD_RESOURCES( generated_qrc_list ${qrc_list} )
+
+    add_library( ${PROJECT_NAME} SHARED ${CC_PLUGIN_CUSTOM_SOURCE_LIST} ${header_list} ${source_list} ${moc_list} ${generated_ui_list} ${generated_qrc_list})
+
 
   #pcl
   find_package(PCL REQUIRED)
@@ -66,10 +70,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fopenmp -fPIC" )
 
 
 
-  include( ${CC_PLUGINS_SOURCE_DIR}/CMakePluginTpl.cmake )
+  #include( ${CC_PLUGINS_SOURCE_DIR}/CMakePluginTpl.cmake )
+  target_link_libraries(${PROJECT_NAME} PclUtils geoutils ${QWT_LIBRARIES} spc_visualization spc_time_series spc_methods ${QT_LIBRARIES})
 
-
-    message(${QGEO_INSTALL_DIR})
-
-  target_link_libraries(${PROJECT_NAME} PclUtils geoutils ${Qwt6_Qt4_LIBRARY} )
-  install(TARGETS ${PROJECT_NAME} DESTINATION /home/luca/bin/plugins)
+  install(TARGETS ${PROJECT_NAME} DESTINATION ${QGEO_INSTALL_DIR})

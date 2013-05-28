@@ -1,10 +1,10 @@
 #ifndef COMPUTETIMESERIES_H
 #define COMPUTETIMESERIES_H
 
-#include <ccCurvePlotterDlg.h>
+#include <dialogs/ccCurvePlotterDlg.h>
 #include <qPCL/PclUtils/filters/BaseFilter.h>
 #include <spc/methods/kernel_smoothing.h>
-#include "dialogs/ComputeTimeSeriesDlg.h"
+#include <dialogs/ComputeTimeSeriesDlg.h>
 
 
 

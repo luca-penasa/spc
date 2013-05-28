@@ -47,4 +47,4 @@ QT4_ADD_RESOURCES( generated_qrc_list ${qrc_list} )
 
 add_library( ${PROJECT_NAME} STATIC ${header_list} ${source_list} ${moc_list} ${generated_ui_list} ${generated_qrc_list} ${rc_list})
 
-target_link_libraries(${PROJECT_NAME} ${PCL_LIBRARIES} ${QT_LIBRARIES} ${QWT_LIBRARY} ${Qwt6_Qt4_LIBRARY} ${VTK_LIBRARIES} spc_time_series spc_methods spc_geology )
+target_link_libraries(${PROJECT_NAME} ${PCL_LIBRARIES} ${QT_LIBRARIES} ${QWT_LIBRARY} ${Qwt6_Qt4_LIBRARY} ${VTK_LIBRARIES} spc_time_series spc_methods spc_geology spc_visualization )

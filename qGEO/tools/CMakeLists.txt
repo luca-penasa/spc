@@ -30,5 +30,5 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 
 
 
-add_executable(test test.cpp )
+#add_executable(test test.cpp )
 #target_link_libraries(test_cloud2image  QCC_DB_DLL CC_DLL geoutils ${VTK_LIBRARIES})

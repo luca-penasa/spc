@@ -14,6 +14,16 @@ POINT_CLOUD_REGISTER_POINT_STRUCT (PointD,           // here we assume a XYZ + "
 (float, distance, distance)
 )
 
+struct PointScalar //point strucure with just a distance value
+{
+    float scalar;
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW   // make sure our new allocators are aligned
+} EIGEN_ALIGN16;                    // enforce SSE padding for correct memory alignment
+
+POINT_CLOUD_REGISTER_POINT_STRUCT (PointScalar,           // here we assume a XYZ + "test" (as fields)
+(float, scalar, scalar)
+)
+
 struct PointI //point strucure with just a distance value
 {
 	float intensity;
