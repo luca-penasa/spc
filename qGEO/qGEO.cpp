@@ -2,8 +2,6 @@
 
 
 #include <ccPointCloud.h>
-
-
 #include <qPCL/PclUtils/filters/BaseFilter.h>
 #include <ComputeTimeSeries.h>
 #include <ComputeStratigraphicPosition.h>

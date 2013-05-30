@@ -38,7 +38,7 @@ std::vector<float> getComboItemAsStdFloatVector(ComboItemDescriptor desc, const 
 
 
 
-void qPCLComboBox::addItemsFromFieldsCloud(const ccPointCloud * cloud)
+void ScalarFieldsComboBox::addItemsFromFieldsCloud(const ccPointCloud * cloud)
 {
 
     const int n = cloud->getNumberOfScalarFields();
@@ -58,7 +58,7 @@ void qPCLComboBox::addItemsFromFieldsCloud(const ccPointCloud * cloud)
     }
 }
 
-void qPCLComboBox::addItemsXYZ()
+void ScalarFieldsComboBox::addItemsXYZ()
 {
     QStringList list;
     list.reserve(3);
@@ -81,7 +81,7 @@ void qPCLComboBox::addItemsXYZ()
     }
 }
 
-void qPCLComboBox::addItemsRGB(bool add_also_composite)
+void ScalarFieldsComboBox::addItemsRGB(bool add_also_composite)
 {
 
     QStringList list;

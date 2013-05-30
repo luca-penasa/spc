@@ -2,10 +2,16 @@
 #include <pcl/features/normal_3d.h>
 #include <spc/common/point_types.h>
 #include <pcl/search/flann_search.h>
+#include <pcl/search/impl/flann_search.hpp>
+#include <pcl/search/impl/search.hpp>
 #include <algorithm>
 #include <spc/common/common.h>
 
 #include <pcl/filters/extract_indices.h>
+
+//forced instantiation
+template class pcl::search::FlannSearch<PointScalar>;
+template class pcl::search::Search<PointScalar>;
 
 struct PointScalarPointRep: public pcl::PointRepresentation<PointScalar>
 {

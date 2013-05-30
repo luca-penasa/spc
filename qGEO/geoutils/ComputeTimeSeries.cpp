@@ -15,6 +15,8 @@
 #include <spc/methods/linear_interpolator.h>
 #include <spc/time_series/sparse_time_series.h>
 
+#include <spc/methods/time_series_generator.h>
+#include <qPCL/PclUtils/utils/cc2sm.h>
 
 
 //#include <lidarlib.h>
@@ -39,6 +41,13 @@ int ComputeTimeSeries::compute()
   
     ComboItemDescriptor x_desc = m_dialog->comboScalars->itemData(sf_x).value<ComboItemDescriptor>();
     ComboItemDescriptor y_desc = m_dialog->comboScalars_2->itemData(sf_y).value<ComboItemDescriptor>();
+
+    sensor_msgs::PointCloud2::Ptr sens_cloud (new sensor_msgs::PointCloud2);
+    cc2smReader conv;
+    conv.setInputCloud(cloud);
+    conv.getAsSM(*sens_cloud);
+
+
     
     
     vType x = getComboItemAsStdFloatVector(x_desc, cloud); //strat pos, normally

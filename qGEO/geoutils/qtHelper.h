@@ -28,12 +28,12 @@ struct ComboItemDescriptor
 std::vector<float> getComboItemAsStdFloatVector(ComboItemDescriptor desc, const ccPointCloud * cloud);
 
 
-class qPCLComboBox: public QComboBox
+class ScalarFieldsComboBox: public QComboBox
 {
   Q_OBJECT
   
 public:
-  qPCLComboBox(QWidget * parent = 0) : QComboBox(parent) {};
+  ScalarFieldsComboBox(QWidget * parent = 0) : QComboBox(parent) {};
   
   void addItemsFromFieldsCloud(const ccPointCloud * cloud);
   

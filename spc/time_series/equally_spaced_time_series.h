@@ -1,5 +1,5 @@
 #ifndef SPC_EQUALLY_SPACED_TIME_SERIES_H
-#define SP_EQUALLY_SPACED_TIME_SERIES_H
+#define SPC_EQUALLY_SPACED_TIME_SERIES_H
 
 #include <spc/time_series/base_time_series.h>
 #include <algorithm>

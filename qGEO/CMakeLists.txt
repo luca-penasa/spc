@@ -43,9 +43,6 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fopenmp -fPIC" )
     add_subdirectory(geoutils)
     add_subdirectory(tools)
 
-    list(APPEND CC_PLUGIN_CUSTOM_SOURCE_LIST ${CC_PLUGINS_SOURCE_DIR}/qPCL/PclUtils/utils/cc2sm.cpp
-                                             ${CC_PLUGINS_SOURCE_DIR}/qPCL/PclUtils/utils/sm2cc.cpp)
-
 
     file( GLOB header_list *.h)
     file( GLOB source_list *.cpp)
@@ -59,7 +56,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fopenmp -fPIC" )
     QT4_WRAP_UI( generated_ui_list ${ui_list} )
     QT4_ADD_RESOURCES( generated_qrc_list ${qrc_list} )
 
-    add_library( ${PROJECT_NAME} SHARED ${CC_PLUGIN_CUSTOM_SOURCE_LIST} ${header_list} ${source_list} ${moc_list} ${generated_ui_list} ${generated_qrc_list})
+    add_library( ${PROJECT_NAME} SHARED ${header_list} ${source_list} ${moc_list} ${generated_ui_list} ${generated_qrc_list})
 
 
   #pcl
@@ -71,6 +68,6 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fopenmp -fPIC" )
 
 
   #include( ${CC_PLUGINS_SOURCE_DIR}/CMakePluginTpl.cmake )
-  target_link_libraries(${PROJECT_NAME} PclUtils geoutils ${QWT_LIBRARIES} spc_visualization spc_time_series spc_methods ${QT_LIBRARIES})
+  target_link_libraries(${PROJECT_NAME} PclUtils geoutils ${QWT_LIBRARIES} ${SPC_LIBRARIES} ${QT_LIBRARIES})
 
   install(TARGETS ${PROJECT_NAME} DESTINATION ${QGEO_INSTALL_DIR})

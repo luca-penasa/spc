@@ -2,6 +2,7 @@ add_subdirectory(time_series)
 add_subdirectory(common)
 add_subdirectory(geology)
 add_subdirectory(methods)
+add_subdirectory(io)
 
 if (BUILD_PYTHON_WRAPPINGS)
     add_subdirectory(python_interface)

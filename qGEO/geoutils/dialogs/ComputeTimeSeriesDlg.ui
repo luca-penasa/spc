@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>453</width>
-    <height>553</height>
+    <height>557</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -37,7 +37,7 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="qPCLComboBox" name="comboScalars"/>
+       <widget class="ScalarFieldsComboBox" name="comboScalars"/>
       </item>
       <item row="1" column="0">
        <widget class="QLabel" name="label_5">
@@ -45,9 +45,6 @@
          <string>Second Field (Y)</string>
         </property>
        </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="qPCLComboBox" name="comboScalars_2"/>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label_2">
@@ -89,6 +86,9 @@
          <double>0.020000000000000</double>
         </property>
        </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="ScalarFieldsComboBox" name="comboScalars_2"/>
       </item>
      </layout>
     </widget>
@@ -297,7 +297,7 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>qPCLComboBox</class>
+   <class>ScalarFieldsComboBox</class>
    <extends>QComboBox</extends>
    <header>qtHelper.h</header>
   </customwidget>

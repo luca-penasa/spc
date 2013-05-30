@@ -49,6 +49,7 @@ if(BUILD_MICMAC_RELATED)
     add_subdirectory(external)
     set(CULTURE_3D_BUILD_DIR "/home/luca/Code/culture3d/build" CACHE STRING "path where a culture3d build has been compiled is located. This is my default. you should change to your needs")
     set(CULTURE_3D_SOURCE_DIR "/home/luca/Code/culture3d" CACHE STRING "path where culture 3d source resides. This is my default. Change o your needs")
+    link_directories(${CULTURE_3D_BUILD_DIR}/src)
 endif()
 
 #qgeo plugin for cloud compare??

@@ -24,7 +24,7 @@ IF(Boost_FOUND)
 ELSEIF(NOT Boost_FOUND)
   MESSAGE(FATAL_ERROR "Unable to find correct Boost version. Did you set BOOST_ROOT?")
 ENDIF()
-link_directories(${CULTURE_3D_BUILD_DIR}/src)
+    link_directories(${CULTURE_3D_BUILD_DIR}/src)
 set(additional_libraries ${X11_LIBRARIES} elise)
 spc_add_library(micmac "${additional_libraries}")
 
