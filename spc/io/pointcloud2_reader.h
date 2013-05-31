@@ -3,7 +3,9 @@
 
 #include <sensor_msgs/PointCloud2.h>
 
-
+#ifdef QGEO
+#include <ccPointCloud.h>
+#endif
 namespace spc
 {
 
@@ -23,14 +25,29 @@ public:
 
     PointCloud2Reader(sensor_msgs::PointCloud2::Ptr in_cloud) {setInputCloud(in_cloud);}
 
-    void setInputCloud(sensor_msgs::PointCloud2::Ptr in_cloud) {in_cloud_ = in_cloud;}
+#ifdef QGEO
+    PointCloud2Reader(ccPointCloud * in_cloud) {setInputCloud(in_cloud);}
+#endif
+
+    void setInputCloud(sensor_msgs::PointCloud2::Ptr in_cloud) {resetInputs(); in_cloud_ = in_cloud;}
+
+#ifdef QGEO
+    void setInputCloud(ccPointCloud * in_cloud) {resetInputs(); in_cloud_cc_ = in_cloud;}
+#endif
 
     void setIndices(std::vector<int> indices) {indices_ = indices;}
 
+#ifdef QGEO
+    void resetInputs() {in_cloud_ = boost::shared_ptr<sensor_msgs::PointCloud2>(); in_cloud_cc_ = 0;}
+#else
+    void resetInputs() {in_cloud_ = boost::shared_ptr<sensor_msgs::PointCloud2>();}
+#endif
     template <typename ScalarT>
     auto getScalarFieldAsStdVector(std::string &field_name) -> std::vector<ScalarT> * ;
 
-     std::vector<rgb_type> getRGB();
+    std::vector<rgb_type> getRGB();
+
+    size_t getNumberOfPoints();
 
 
 
@@ -38,7 +55,7 @@ private:
 
      void fillIndicesIfNeeded()
      {
-         size_t n_points = in_cloud_->width * in_cloud_->height;
+         size_t n_points = this->getNumberOfPoints();
          if (indices_.size() == 0)
          {
              //we fill in the vector with all the ids!
@@ -50,6 +67,9 @@ private:
 
     sensor_msgs::PointCloud2::Ptr in_cloud_;
 
+#ifdef QGEO
+    ccPointCloud * in_cloud_cc_;
+#endif
     std::vector<int> indices_;
 };
 

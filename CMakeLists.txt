@@ -36,8 +36,6 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/functions.cmake)
 # includes starts from here
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-# the main libraries
-add_subdirectory(${PROJECT_NAME_LOWER})
 
 #also tools if needed
 if(BUILD_TOOLS)
@@ -58,15 +56,21 @@ if(BUILD_QGEO_CC_PLUGIN)
     set(CC_SOURCE_DIR "/home/luca/Code/CC_git_clean" CACHE STRING "Dir with CloudCompare souces")
     set(QGEO_INSTALL_DIR "/home/luca/apps/bin/plugins" CACHE STRING "Where to intall the qGEO plugin")
 
-    find_package(Qt4 REQUIRED)
+    add_definitions(-DQGEO)
+
+    find_package(Qt4 4 COMPONENTS REQUIRED)
+    set(QT_USE_QTOPENGL TRUE)
     include(${QT_USE_FILE})
     add_definitions(${QT_DEFINITIONS})
+    include_directories(${QT_QTOPENGL_INCLUDE_DIR})
+
+
 
     #we need qwt ############
     find_path( QWT_INCLUDE_DIR qwt_plot.h /usr/include/qwt6 )
     find_library( QWT_LIBRARIES NAMES qwt6) #explicit look for qwt6
 
-    include ( FindPackageHandleStandardArgs )
+    include( FindPackageHandleStandardArgs )
     find_package_handle_standard_args( QWT DEFAULT_MSG QWT_LIBRARIES QWT_INCLUDE_DIR )
 
     if(QWT_FOUND)
@@ -74,7 +78,22 @@ if(BUILD_QGEO_CC_PLUGIN)
       include_directories(${QWT_INCLUDE_DIR})
     endif()
 
-    add_subdirectory(qGEO)
+
+    include_directories(${CC_SOURCE_DIR}/libs/qCC_db)
+    include_directories(${CC_SOURCE_DIR}/CC/include)
+
+    find_package(Qt4 REQUIRED)
+    include(${QT_USE_FILE})
+    add_definitions(${QT_DEFINITIONS})
+
 endif()
 
+
+
+# the main libraries
+add_subdirectory(spc)
+
+if(BUILD_QGEO_CC_PLUGIN) ##qGEO will use various things defined after spc
+    add_subdirectory(qGEO)
+endif()
 

@@ -4,6 +4,7 @@
 #include <ui_ComputeTimeSeriesDlg.h>
 #include <ccPointCloud.h>
 #include <spc/methods/kernel_smoothing.h>
+#include <dialogs/ccCurvePlotterDlg.h>
 
 class ComputeTimeSeriesDlg : public QDialog, public Ui::ComputeTimeSeriesDialog
 {
@@ -17,21 +18,21 @@ public:
     int getSFIdA() const { return this->comboScalars->currentIndex(); }
     int getSFIdB() const { return this->comboScalars_2->currentIndex(); }
 
-    bool getProduceRandomizedSeries() const { return this->groupBoxRandomized->isChecked(); }
-    bool getProduceCrossRandomizedSeries() const { return this->groupBoxCrossRandomized->isChecked(); }
 
     bool getAppendPlot() const {return this->checkBoxAppendPlot->isChecked();}
 
     void updateComboScalars(const ccPointCloud * cloud);
 
-    bool getIterativeReweighting() const {return this->groupBoxIterativeReweighting->isChecked();}
-    int getNReweightingIterations() const {return this->spinBoxNReweightingIterations->value();}
+    void setPlotWindow(ccCurvePlotterDlg * plotter) {m_plotter = plotter;}
+    ccCurvePlotterDlg * gePlotWindow() {return m_plotter;}
+
 
 public slots:
 
     void accept() { done(1); }
 
-
+private:
+    ccCurvePlotterDlg * m_plotter;
 
 
 };

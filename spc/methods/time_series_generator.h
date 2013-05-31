@@ -3,6 +3,7 @@
 
 #include <sensor_msgs/PointCloud2.h>
 #include <spc/time_series/equally_spaced_time_series.h>
+#include <spc/io/pointcloud2_reader.h>
 
 namespace spc
 {
@@ -19,13 +20,13 @@ public:
     ///
     /// \brief TimeSeriesGenerator def constructor
     ///
-    TimeSeriesGenerator() {}
+    TimeSeriesGenerator() {f_min = 0 ; f_max = 0;}
 
     ///
     /// \brief setInputCloud
-    /// \param in_cloud
+    /// \param in_cloud is a sensor msgs cloud
     ///
-    void setInputCloud(sensor_msgs::PointCloud2::Ptr in_cloud) {in_cloud_ = in_cloud;}
+    void setInputReader(spc::PointCloud2Reader * reader) {in_reader_ = reader;}
 
     ///
     /// \brief setBandwidth
@@ -70,12 +71,16 @@ public:
     ///
     int compute();
 
+    ///
+    /// \brief setFixedMinMax permits to create a bunch of ts all with the same extension - where nothing can said you'll find nans
+    /// \param min minx value of the time series
+    /// \param max maxx value of the time series
+    ///
+    void setFixedMinMax(ScalarT min, ScalarT max) {f_min = min; f_max=max;}
+
 
 private:
-    ///
-    /// \brief in_cloud_ the input cloud
-    ///
-    sensor_msgs::PointCloud2::Ptr in_cloud_;
+    PointCloud2Reader * in_reader_;
 
     ///
     /// \brief sampling_step_
@@ -116,6 +121,16 @@ private:
     /// \brief y_data
     ///
     std::vector<ScalarT> y_data;
+
+    ///
+    /// \brief f_min
+    ///
+    ScalarT f_min;
+
+    ///
+    /// \brief f_max
+    ///
+    ScalarT f_max;
 
 };
 

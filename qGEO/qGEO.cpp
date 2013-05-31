@@ -5,6 +5,8 @@
 #include <qPCL/PclUtils/filters/BaseFilter.h>
 #include <ComputeTimeSeries.h>
 #include <ComputeStratigraphicPosition.h>
+#include <split_point_cloud.h>
+#include <plot_2d.h>
 #include <test.h>
 
 
@@ -49,10 +51,10 @@ void qGEO::getActions(QActionGroup& group)
     if (m_filters.empty())
     {
         //ADD FILTERS
-        addFilter( new ComputeStratigraphicPosition() );
-        addFilter( new ComputeTimeSeries() );
-//        addFilter( new Test());
-
+        addFilter( new ComputeStratigraphicPosition(this) );
+        addFilter( new ComputeTimeSeries(this));
+        addFilter(new SplitPointCloud(this));
+        addFilter(new Plot2D(this));
     }
 
     for (std::vector<BaseFilter*>::const_iterator it = m_filters.begin(); it != m_filters.end(); ++it)
@@ -80,6 +82,21 @@ int qGEO::addFilter(BaseFilter * filter)
     connect(filter, SIGNAL(newErrorMessage(QString)),       this,   SLOT(handleErrorMessage(QString)));
 
     return 1;
+}
+
+ccCurvePlotterDlg * qGEO::getCurrentPlotter()
+{
+    Plot2D * example_class = new Plot2D;
+    //cycle on all enabled filters:
+    for (auto  f: m_filters)
+    {
+        if (typeid(*f) == typeid(*example_class))
+        {
+            //do a cast
+            Plot2D * plot = dynamic_cast<Plot2D *>( f );
+            return plot->getPlot();
+        }
+    }
 }
 
 void qGEO::onNewSelection(const ccHObject::Container& selectedEntities)

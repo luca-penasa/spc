@@ -14,7 +14,7 @@
    height="20.660053"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.3.1 r9886"
+   inkscape:version="0.48.4 r9939"
    sodipodi:docname="icons.svg">
   <defs
      id="defs4">
@@ -76,9 +76,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="6.4726745"
-     inkscape:cx="4.037808"
-     inkscape:cy="2.5778817"
+     inkscape:zoom="12.945349"
+     inkscape:cx="-16.138425"
+     inkscape:cy="15.843871"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -91,8 +91,8 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:window-width="1680"
-     inkscape:window-height="1008"
+     inkscape:window-width="1600"
+     inkscape:window-height="851"
      inkscape:window-x="0"
      inkscape:window-y="24"
      inkscape:window-maximized="1"
@@ -204,6 +204,13 @@
        width="21"
        id="rect3250"
        style="color:#000000;fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+    <rect
+       style="color:#000000;fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+       id="rect3241"
+       width="21"
+       height="21"
+       x="-13.255703"
+       y="0.16560371" />
   </g>
   <g
      inkscape:label="Livello 1"
@@ -2672,5 +2679,39 @@
            inkscape:connector-curvature="0" />
       </g>
     </g>
+    <path
+       inkscape:connector-curvature="0"
+       id="path3321"
+       style="font-size:15px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#4e4e4b;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       d="m 6.9708595,1051.2828 c -0.5175876,0.2686 -1.0571379,0.4712 -1.6186523,0.6079 -0.5615313,0.1368 -1.1474682,0.2051 -1.7578125,0.2051 -1.8212939,0 -3.26416358,-0.5078 -4.3286133,-1.5234 -1.0644544,-1.0205 -1.5966804,-2.4024 -1.5966797,-4.1455 -7e-7,-1.7481 0.5322253,-3.1299 1.5966797,-4.1455 1.06444972,-1.0205 2.5073194,-1.5308 4.3286133,-1.5308 0.6103443,0 1.1962812,0.068 1.7578125,0.2051 0.5615144,0.1367 1.1010647,0.3394 1.6186523,0.6079 l 0,2.2632 c -0.5224704,-0.3565 -1.0376066,-0.6177 -1.5454101,-0.7837 -0.5078205,-0.166 -1.042488,-0.249 -1.6040039,-0.249 -1.0058653,0 -1.7968801,0.3222 -2.3730469,0.9668 -0.57617584,0.6445 -0.86426148,1.5332 -0.86425782,2.666 -3.66e-6,1.1279 0.28808198,2.0141 0.86425782,2.6587 0.5761668,0.6445 1.3671816,0.9668 2.3730469,0.9668 0.5615159,0 1.0961834,-0.083 1.6040039,-0.2491 0.5078035,-0.166 1.0229397,-0.4272 1.5454101,-0.7836 l 0,2.2631"
+       inkscape:export-filename="/home/luca/Code/spc-git/qGEO/icons/split_cloud.png"
+       inkscape:export-xdpi="100.01"
+       inkscape:export-ydpi="100.01" />
+    <path
+       inkscape:connector-curvature="0"
+       d="m -0.3219681,1041.0679 c 2.0828732,-1.4178 2.8885722,-2.7121 3.3116704,-2.4081 0.3307209,0.2376 0.040068,0.4892 0.9337882,1.0623 0.858124,0.5503 2.0898625,0.1267 2.6218166,-0.728 0.5912255,-0.8126 0.5735341,-2.108 -0.2836723,-2.7348 -0.8250425,-0.6849 -2.1567535,-0.534 -2.8344656,0.2894 -0.8780214,0.904 -1.6424623,2.2403 -3.6640535,2.8955 l -1.5516356,0.5031 -6.333089,4.416 c -0.7453987,0.5974 -1.3943937,1.5155 -1.1351906,2.7052 l 8.9348648,-6.0005 z m 5.7928079,-1.9558 c -1.0991189,0.5155 -2.3525005,-0.4915 -1.9623141,-1.5675 0.2994604,-1.0114 1.8285368,-1.4801 2.5200341,-0.5923 0.6109128,0.6679 0.1946995,1.8068 -0.55772,2.1598 z"
+       id="path48999"
+       sodipodi:nodetypes="cccccczcccccccc"
+       style="fill:#cd8282;stroke:#000000;stroke-width:0.27808714;stroke-miterlimit:4;stroke-opacity:1;marker-start:none"
+       inkscape:export-filename="/home/luca/Code/spc-git/qGEO/icons/split_cloud.png"
+       inkscape:export-xdpi="100.01"
+       inkscape:export-ydpi="100.01" />
+    <path
+       inkscape:connector-curvature="0"
+       id="path3319"
+       style="font-size:15px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#4e4e4b;fill-opacity:1;stroke:none;font-family:Sans;-inkscape-font-specification:Sans Bold"
+       d="m -4.9016991,1041.2926 0,2.3145 c -0.6005943,-0.2686 -1.1865312,-0.4712 -1.7578125,-0.608 -0.5712957,-0.1367 -1.1108459,-0.205 -1.6186523,-0.205 -0.6738331,0 -1.1718794,0.093 -1.4941406,0.2783 -0.3222695,0.1855 -0.4834025,0.4736 -0.4833985,0.8642 -4e-6,0.293 0.107418,0.5225 0.3222657,0.6885 0.2197223,0.1612 0.6152298,0.3003 1.1865234,0.4175 l 1.2011719,0.2417 c 1.2158127,0.2441 2.0800697,0.6152 2.5927734,1.1133 0.5126859,0.498 0.7690333,1.206 0.769043,2.124 -9.7e-6,1.2061 -0.3588961,2.1045 -1.0766602,2.6953 -0.7128985,0.586 -1.804206,0.8789 -3.2739258,0.8789 -0.693364,0 -1.3891641,-0.066 -2.0874024,-0.1977 -0.698245,-0.1319 -1.396486,-0.3272 -2.094726,-0.586 l 0,-2.3803 c 0.69824,0.3711 1.372067,0.6518 2.021484,0.8422 0.654293,0.1856 1.2841751,0.2784 1.8896483,0.2784 0.6152287,0 1.0864197,-0.1026 1.4135743,-0.3076 0.3271416,-0.2051 0.4907156,-0.4981 0.4907226,-0.879 -7e-6,-0.3417 -0.1123115,-0.6054 -0.336914,-0.791 -0.219733,-0.1855 -0.6616271,-0.3515 -1.3256836,-0.498 l -1.0913086,-0.2417 c -1.093753,-0.2344 -1.894534,-0.6079 -2.402344,-1.1206 -0.502931,-0.5127 -0.754395,-1.2036 -0.754394,-2.0728 -1e-6,-1.0888 0.351561,-1.9262 1.054687,-2.5122 0.703122,-0.5859 1.713864,-0.8789 3.0322267,-0.8789 0.6005802,0 1.2182554,0.046 1.8530274,0.1392 0.634758,0.088 1.2914956,0.2221 1.9702148,0.4028"
+       inkscape:export-filename="/home/luca/Code/spc-git/qGEO/icons/split_cloud.png"
+       inkscape:export-xdpi="100.01"
+       inkscape:export-ydpi="100.01" />
+    <path
+       inkscape:connector-curvature="0"
+       d="m -2.1850031,1039.9123 c 1.1339908,-2.2501 2.3121117,-3.2177 1.9555504,-3.5975 -0.27870957,-0.297 -0.4902318,0.024 -1.1750976,-0.7873 -0.657518,-0.779 -0.3981208,-2.0554 0.3798994,-2.6944 0.728529,-0.6922 2.015075,-0.8436 2.7483785,-0.076 0.7866933,0.7287 0.8107228,2.0687 0.08287,2.848 -0.7818211,0.9885 -2.006934,1.9207 -2.39297703,4.0105 l -0.29625902,1.6041 -3.55218605,6.8549 c -0.4950275,0.817 -1.3205774,1.5802 -2.5340297,1.4784 l 4.7838508,-9.6412 z m 1.1837378,-5.9984 c -0.3677504,1.1569 0.7941791,2.2682 1.8101003,1.7411 0.9637455,-0.4285 1.228926,-2.0061 0.2584864,-2.5758 -0.7418376,-0.5185 -1.81680587,0.043 -2.0685867,0.8347 z"
+       id="path49000"
+       sodipodi:nodetypes="cccccczcccccccc"
+       style="fill:#cd8282;stroke:#000000;stroke-width:0.27808714;stroke-miterlimit:4;stroke-opacity:1;marker-start:none"
+       inkscape:export-filename="/home/luca/Code/spc-git/qGEO/icons/split_cloud.png"
+       inkscape:export-xdpi="100.01"
+       inkscape:export-ydpi="100.01" />
   </g>
 </svg>

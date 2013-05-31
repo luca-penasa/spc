@@ -17,7 +17,7 @@ class ComputeTimeSeries: public BaseFilter
     typedef std::vector<nType> vType;
 
 public:
-    ComputeTimeSeries();
+    ComputeTimeSeries(ccPluginInterface * parent_plugin = 0);
 
     //compute gaussian weights on a single numeric value
     inline nType
@@ -30,11 +30,13 @@ protected:
    int compute();
    int openInputDialog();
    int openOutputDialog();
+
+   virtual int checkSelected();
+
    ComputeTimeSeriesDlg * m_dialog;
    ccCurvePlotterDlg * m_plot_dialog;
 
-   vType last_x;
-   vType last_y;
+   std::vector<spc::EquallySpacedTimeSeries<float> > computed_series;
 
 };
 

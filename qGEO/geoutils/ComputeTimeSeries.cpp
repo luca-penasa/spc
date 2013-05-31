@@ -10,194 +10,102 @@
 #include <ccProgressDialog.h>
 #include <GenericProgressCallback.h>
 
+#include <ccHObjectCaster.h>
+
 #include <dialogs/ccCurvePlotterDlg.h>
 
 #include <spc/methods/linear_interpolator.h>
 #include <spc/time_series/sparse_time_series.h>
 
 #include <spc/methods/time_series_generator.h>
-#include <qPCL/PclUtils/utils/cc2sm.h>
-
-
-//#include <lidarlib.h>
+#include <spc/io/pointcloud2_reader.h>
+#include <spc/methods/cloud_slicer.h>
 
 #include <math.h>
 
-ComputeTimeSeries::ComputeTimeSeries() : BaseFilter(FilterDescription(   "Compute Time Series",
+#include <qGEO/qGEO.h>
+
+ComputeTimeSeries::ComputeTimeSeries(ccPluginInterface *parent_plugin) : BaseFilter(FilterDescription(   "Compute Time Series",
                                                                          "Compute Time Series",
                                                                          "Build a time series that describe how some scalar change along a given direction/stratigraphic position",
-                                                                         ":/toolbar/icons/time_series.png")), m_dialog(0), m_plot_dialog(0)
+                                                                         ":/toolbar/icons/time_series.png"), parent_plugin), m_dialog(0), m_plot_dialog(0)
 {
+}
+
+int ComputeTimeSeries::checkSelected()
+{
+    //In most of the cases we just need 1 CC_POINT_CLOUD
+    if (m_selected.empty())
+        return -11;
+
+    ccHObject::Container entities;
+    getAllEntitiesOfType(CC_POINT_CLOUD, entities);
+
+    if (entities.empty())
+        return -11;
+
+    return 1;
 }
 
 int ComputeTimeSeries::compute()
 {
-    ccPointCloud* cloud = getSelectedEntityAsCCPointCloud();
-    if (!cloud) //just to be sure
-      return -1;
-    
+    computed_series.clear();
+
+    ccHObject::Container entities;
+    getSelectedEntitiesThatAreCCPointCloud(entities);
+
     int sf_x = m_dialog->getSFIdA();
     int sf_y = m_dialog->getSFIdB();
-  
+
     ComboItemDescriptor x_desc = m_dialog->comboScalars->itemData(sf_x).value<ComboItemDescriptor>();
     ComboItemDescriptor y_desc = m_dialog->comboScalars_2->itemData(sf_y).value<ComboItemDescriptor>();
 
-    sensor_msgs::PointCloud2::Ptr sens_cloud (new sensor_msgs::PointCloud2);
-    cc2smReader conv;
-    conv.setInputCloud(cloud);
-    conv.getAsSM(*sens_cloud);
+    std::string x_fname = x_desc.name.toStdString();
+    std::string y_fname = y_desc.name.toStdString();
 
 
-    
-    
-    vType x = getComboItemAsStdFloatVector(x_desc, cloud); //strat pos, normally
-    vType y = getComboItemAsStdFloatVector(y_desc, cloud);
-    
-        
 
-    float x_min = *min_element(x.begin(), x.end());
-    float x_max = *max_element(x.begin(), x.end());
     float step = m_dialog->getStep();
-
-    spc::EquallySpacedTimeSeries<nType> * series = new  spc::EquallySpacedTimeSeries<nType>(x_min, x_max, step);
-    auto new_x = series->getX();
-
-    spc::SparseTimeSeries<nType> *orig_data = new spc::SparseTimeSeries<nType>(x,y);
-
     float bandwidth = m_dialog->getBandwidth();
 
-    spc::KernelSmoothing<nType> * ks = new spc::KernelSmoothing<nType>;
-
-    ks->setInput(orig_data);
-    ks->setBandwidth(bandwidth);
-//    ks->setEvaluationPositions(new_x);
-    ks->setUseWeights(false);
-    ks->compute(series);
-    vType new_y = series->getY();
-
-
-    ccScalarField * field1 = new ccScalarField;
-    field1->resize(cloud->size());
-    field1->setName("intial model_int");
-
-
-    spc::LinearInterpolator<nType> interpolator;
-    interpolator.setNewX(x);
-    interpolator.setXY(new_y, step, x_min);
-    interpolator.compute();
-    vType model_int_init = interpolator.getNewY(); //intensities from the model
-
-    for (int i = 0; i < cloud->size(); ++i)
+    //pre compute min max of the field, so we can build time series all with the same extension!
+    float overall_max, overall_min;
+    for (ccHObject *obj: entities)
     {
-        field1->setValue(i, model_int_init[i]);
+        ccPointCloud * cloud = ccHObjectCaster().ToPointCloud(obj);
+        int sf_id = cloud->getScalarFieldIndexByName(x_fname.c_str());
+        CCLib::ScalarField * field = cloud->getScalarField(sf_id);
+        float max =  field->getMax();
+        float min = field->getMin();
+        if (max > overall_max)
+            max = overall_max;
+
+        if (min < overall_min)
+            min = overall_min;
     }
 
-    field1->computeMinAndMax();
+    for (ccHObject *obj: entities)
+    {
+        ccPointCloud * cloud = ccHObjectCaster().ToPointCloud(obj);
+        spc::PointCloud2Reader * reader = new spc::PointCloud2Reader(cloud);
 
-    cloud->addScalarField(field1);
+        spc::TimeSeriesGenerator<float> generator;
+        generator.setInputReader(reader);
+        generator.setFixedMinMax(overall_min, overall_max);
+        generator.setBandwidth(bandwidth);
+        generator.setSamplingStep(step);
+        generator.setXFieldName(x_fname);
+        generator.setYFieldName(y_fname);
 
+        generator.compute();
 
-
-
-    if (m_dialog->getIterativeReweighting())
-    { //we redo the same thing more times using weights!
-        //but extract as vType the scalar field representing Stratigraphic Position, for each point in cloud
-
-        for (size_t iteration = 0 ; iteration < m_dialog->getNReweightingIterations(); ++iteration )
-        {
-
-
-            std::cout << "initial new_y:!" << std::endl;
-            for (int i = 100; i < 120; ++i)
-                std::cout << new_y[i] << std::endl;
-
-            vType model_int;
-            //we use a nn_intepolator to get the int value for each point
-            spc::LinearInterpolator<nType> interpolator;
-            interpolator.setNewX(x);
-            interpolator.setXY(new_y, step, x_min);
-            interpolator.compute();
-            model_int = interpolator.getNewY(); //intensities from the model
-
-            ccScalarField * field2 = new ccScalarField;
-            field2->resize(cloud->size());
-            field2->setName("after model_int");
-
-            for (int i = 0; i < cloud->size(); ++i)
-            {
-                field2->setValue(i, model_int[i]);
-            }
-
-            field2->computeMinAndMax();
-
-            cloud->addScalarField(field2);
-
-
-
-
-            std::cout << "model_int:!" << std::endl;
-            for (int i = 0; i < 10; ++i)
-                std::cout << model_int[i] << std::endl;
-
-
-
-            //convert compute the difference
-            vType diff = spc::get_difference(y, model_int);
-
-
-            float iter_bandwidth = 20;
-            std::transform(diff.begin(), diff.end(), diff.begin(), [&](nType d) -> nType { return std::abs(d)/iter_bandwidth ; }  );
-
-            //transform diffs to weights
-            std::transform(diff.begin(), diff.end(), diff.begin(), [&](nType d) -> nType { return gaussian(d) ; }  );
-
-            ccScalarField * field = new ccScalarField;
-            field->resize(cloud->size());
-            field->setName("weights");
-
-
-
-
-            for (int i = 0; i < cloud->size(); ++i)
-            {
-                field->setValue(i, diff[i]);
-            }
-
-            field->computeMinAndMax();
-
-            cloud->addScalarField(field);
-
-
-            std::cout << "data:!" << std::endl;
-            for (int i = 0; i < 10; ++i)
-                std::cout << diff[i] << std::endl;
-
-
-            spc::KernelSmoothing<nType> * ks2 = new spc::KernelSmoothing<nType>;
-
-            ks2->setXY(x, y);
-            ks2->setBandwidth(bandwidth);
-//            ks2->setEvaluationPositions(new_x);
-            ks2->setWeights(diff);
-            ks2->setUseWeights(true);
-            ks2->compute(series);
-            new_y = series->getY();
-
-            std::cout << "final new_y:!" << std::endl;
-            for (int i = 100; i < 120; ++i)
-                std::cout << new_y[i] << std::endl;
-
-        }
-
+        computed_series.push_back(generator.getOutputSeries());
     }
-
-    //save last plots
-    last_x = new_x;
-    last_y = new_y;
-        
     return 1;
 
 }
+
+
 
 
 int ComputeTimeSeries::openInputDialog()
@@ -206,6 +114,10 @@ int ComputeTimeSeries::openInputDialog()
         m_dialog = new ComputeTimeSeriesDlg;
 
     ccPointCloud * cloud = getSelectedEntityAsCCPointCloud();
+
+    if (!cloud)
+        return -1;
+
     m_dialog->updateComboScalars(cloud);
 
     return m_dialog->exec() ? 1 : 0;
@@ -213,18 +125,27 @@ int ComputeTimeSeries::openInputDialog()
 
 int ComputeTimeSeries::openOutputDialog()
 {
-    if (!m_plot_dialog )
-        m_plot_dialog = new ccCurvePlotterDlg;
+
+    qGEO * plugin = static_cast<qGEO *>(getParentPlugin());
+
+    ccCurvePlotterDlg * plotter = plugin->getCurrentPlotter();
+
+    if (!plotter)
+        return -1;
+
     else if (!m_dialog->getAppendPlot())
-        m_plot_dialog->clearPlot();
+        plotter->clearPlot();
 
 
-    m_plot_dialog->addCurve<float>(last_x, last_y);
+    for (auto series: computed_series)
+    {
+        if (series.getY().size() != 0)
+            plotter->addCurve<float>(&series);
+    }
 
-    m_plot_dialog->show();
-    m_plot_dialog->raise();
 
-    return 1;
+    plotter->show();
+    plotter->raise();
 
 }
 

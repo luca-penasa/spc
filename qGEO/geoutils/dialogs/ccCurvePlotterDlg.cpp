@@ -79,7 +79,14 @@ ccCurvePlotterDlg::nextColor()
     return QColor(Qt::GlobalColor(m_current_color)) ;
 }
 
-
+template <typename sType>
+void
+ccCurvePlotterDlg::addCurve(spc::GenericTimeSeries<sType> * tseries)
+{
+    auto x = tseries->getX();
+    auto y = tseries->getY();
+    this->addCurve<sType>(x,y);
+}
 
 template <class sType>
 void
@@ -227,7 +234,7 @@ void ccCurvePlotterDlg::saveCurve()
 
 }
 
-
+//instantiatinos!!
 template
 void
 ccCurvePlotterDlg::addCurve<float>(std::vector< float >&x, std::vector< float > &y);
@@ -236,3 +243,10 @@ template
 void
 ccCurvePlotterDlg::addCurve<double>(std::vector< double >&x, std::vector< double > &y);
 
+template
+void
+ccCurvePlotterDlg::addCurve<float>(spc::GenericTimeSeries<float> * tseries);
+
+template
+void
+ccCurvePlotterDlg::addCurve<double>(spc::GenericTimeSeries<double> * tseries);

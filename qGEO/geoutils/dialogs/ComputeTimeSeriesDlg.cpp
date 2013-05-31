@@ -4,21 +4,20 @@ ComputeTimeSeriesDlg::ComputeTimeSeriesDlg(QWidget* parent) : QDialog(parent), U
 {
     setupUi(this);
 
-    this->groupBoxRandomized->setChecked(false);
-    this->groupBoxCrossRandomized->setChecked(false);
-    this->groupBoxIterativeReweighting->setChecked(false);
+
+    this->lineEditBasename->setEnabled(false);
+
 }
 
 
 void ComputeTimeSeriesDlg::updateComboScalars(const ccPointCloud *cloud)
 {
-    comboScalars->clear();
-    comboScalars->addItemsXYZ();
+    comboScalars->clear();    
     comboScalars->addItemsFromFieldsCloud(cloud);
     
-    comboScalars_2->clear();
-    comboScalars_2->addItemsXYZ();
+    comboScalars_2->clear();    
     comboScalars_2->addItemsFromFieldsCloud(cloud);
+
 
 }
 

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>453</width>
-    <height>557</height>
+    <width>486</width>
+    <height>312</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -19,8 +19,18 @@
   <property name="windowTitle">
    <string>Compute Time Series</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="2" column="0">
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="standardButtons">
+      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
     <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
       <string>Basic Settings</string>
@@ -93,42 +103,7 @@
      </layout>
     </widget>
    </item>
-   <item>
-    <widget class="QGroupBox" name="groupBoxIterativeReweighting">
-     <property name="title">
-      <string>Iterative Reweighting</string>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-     <layout class="QFormLayout" name="formLayout_5">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_4">
-        <property name="text">
-         <string>Number of iterations</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QSpinBox" name="spinBoxNReweightingIterations">
-        <property name="maximum">
-         <number>1000</number>
-        </property>
-        <property name="singleStep">
-         <number>1</number>
-        </property>
-        <property name="value">
-         <number>5</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
+   <item row="1" column="0">
     <widget class="QGroupBox" name="groupBox">
      <property name="title">
       <string>Plot Options</string>
@@ -140,157 +115,28 @@
       <item row="0" column="0">
        <widget class="QCheckBox" name="checkBoxAppendPlot">
         <property name="text">
-         <string>Append curve to Existing Plots (keep existing)</string>
+         <string>Append curve(s) to existing plot</string>
         </property>
         <property name="checked">
          <bool>true</bool>
         </property>
        </widget>
       </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBoxRandomized">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="title">
-      <string>Produce Randomized Series</string>
-     </property>
-     <property name="flat">
-      <bool>false</bool>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-     <layout class="QFormLayout" name="formLayout">
-      <item row="0" column="0">
-       <widget class="QLabel" name="labelNRealizations">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>N Realizations</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QSpinBox" name="spinBoxNRealizations">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="maximum">
-         <number>1000000</number>
-        </property>
-        <property name="value">
-         <number>10000</number>
-        </property>
-       </widget>
-      </item>
       <item row="1" column="0">
-       <widget class="QLabel" name="labelNPoints">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
+       <widget class="QCheckBox" name="checkBoxSaveAsFile">
         <property name="text">
-         <string>N Points For 
- Each Realization</string>
+         <string>Save as file(s) with basename:</string>
         </property>
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QSpinBox" name="spinBoxNPoints">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="maximum">
-         <number>100000000</number>
-        </property>
-        <property name="value">
-         <number>1000000</number>
+       <widget class="QLineEdit" name="lineEditBasename">
+        <property name="text">
+         <string>Time Series</string>
         </property>
        </widget>
       </item>
      </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QGroupBox" name="groupBoxCrossRandomized">
-     <property name="enabled">
-      <bool>true</bool>
-     </property>
-     <property name="title">
-      <string>Produce Randomized Cross Series For Noise Estimation</string>
-     </property>
-     <property name="checkable">
-      <bool>true</bool>
-     </property>
-     <property name="checked">
-      <bool>true</bool>
-     </property>
-     <layout class="QFormLayout" name="formLayout_2">
-      <item row="0" column="0">
-       <widget class="QLabel" name="labelCrossNRealizations">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>N Realizations</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QSpinBox" name="spinBoxCrossNRealizisations">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="maximum">
-         <number>1000000</number>
-        </property>
-        <property name="value">
-         <number>10000</number>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="labelCrossNPoints">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="text">
-         <string>N Points For 
- Each Realization</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QSpinBox" name="spinBoxCrossNPoints">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="maximum">
-         <number>100000000</number>
-        </property>
-        <property name="value">
-         <number>1000000</number>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <widget class="QDialogButtonBox" name="buttonBox">
-     <property name="orientation">
-      <enum>Qt::Horizontal</enum>
-     </property>
-     <property name="standardButtons">
-      <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-     </property>
     </widget>
    </item>
   </layout>
@@ -333,6 +179,22 @@
     <hint type="destinationlabel">
      <x>157</x>
      <y>118</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>checkBoxSaveAsFile</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>lineEditBasename</receiver>
+   <slot>setEnabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>112</x>
+     <y>238</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>392</x>
+     <y>240</y>
     </hint>
    </hints>
   </connection>

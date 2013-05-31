@@ -11,7 +11,8 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fopenmp -fPIC" )
     set(CC_PLUGINS_SOURCE_DIR "${CC_SOURCE_DIR}/qCC/plugins")
     set(CC_PLUGINS_BUILD_DIR "${CC_BUILD_DIR}/qCC/plugins")
 
-   link_directories(${CC_BUILD_DIR}/lib)
+    link_directories(${CC_BUILD_DIR}/lib)
+
 
 
     #for mocketized files
@@ -60,10 +61,10 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fopenmp -fPIC" )
 
 
   #pcl
-  find_package(PCL REQUIRED)
-  include_directories(${PCL_INCLUDE_DIRS})
-  link_directories(${PCL_LIBRARY_DIRS})
-  add_definitions(${PCL_DEFINITIONS})
+#  find_package(PCL REQUIRED)
+#  include_directories(${PCL_INCLUDE_DIRS})
+#  link_directories(${PCL_LIBRARY_DIRS})
+#  add_definitions(${PCL_DEFINITIONS})
 
 
 

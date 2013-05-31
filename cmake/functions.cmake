@@ -12,6 +12,7 @@ macro(spc_compile_and_link name files libs)
 
     set(SPC_LIBRARIES ${SPC_LIBRARIES} ${name} CACHE INTERNAL "SPC libs")
     set(SPC_BUILD_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR} CACHE INTERNAL "SPC include dirs at build time")
+    message("${SPC_LIBRARIES}")
 endmacro()
 
 

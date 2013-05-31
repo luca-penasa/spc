@@ -14,7 +14,7 @@ SerializedTimeSeriesGenerator<ScalarT>::compute()
         generator.setBandwidth(bandwidth_);
         generator.setIndices(id_list);
         generator.setSamplingStep(sampling_step_);
-        generator.setInputCloud(in_cloud_);
+        generator.setInputReader(in_reader_);
         generator.setXFieldName(x_field_name_);
         generator.setYFieldName(y_field_name_);
         if (!generator.compute())

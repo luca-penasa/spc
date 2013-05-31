@@ -13,10 +13,11 @@
 
 #include <pcl/io/pcd_io.h>
 
-ComputeStratigraphicPosition::ComputeStratigraphicPosition(): BaseFilter(FilterDescription(   "Compute Stratigraphic Position",
+ComputeStratigraphicPosition::ComputeStratigraphicPosition(ccPluginInterface * parent_plugin): BaseFilter(FilterDescription(   "Compute Stratigraphic Position",
                                                                                               "Compute Stratigraphic Position",
                                                                                               "For each point of the cloud compute its stratigraphic position",
-                                                                                              ":/toolbar/icons/strat_pos.png") )
+                                                                                              ":/toolbar/icons/strat_pos.png")
+                                                                                                          , parent_plugin)
 {
     m_dialog = 0;
 }

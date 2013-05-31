@@ -5,6 +5,7 @@
 #include <pcl/common/eigen.h>
 #include <pcl/point_types.h>
 #include <sensor_msgs/PointCloud2.h>
+#include <spc/io/pointcloud2_reader.h>
 
 namespace spc
 {
@@ -14,13 +15,10 @@ namespace spc
 class CloudSerializedSlicerOnField
 {
 public:   
-    CloudSerializedSlicerOnField();
+    CloudSerializedSlicerOnField() {}
 
     void
-    setInputCloud(sensor_msgs::PointCloud2 * in_cloud) {in_cloud_ = in_cloud;}
-
-    std::vector<sensor_msgs::PointCloud2::Ptr>
-    getSlicedClouds() {return all_small_clouds_;}
+    setInputReader(spc::PointCloud2Reader * reader) {in_reader_ = reader;}
 
     void
     setSliceWidth(float slice_width) {slice_width_ = slice_width;}
@@ -31,21 +29,21 @@ public:
     void
     setFieldName(std::string field_name) ;
 
+    std::vector<std::vector<int> >
+    getOutputIndices() {return all_indices_;}
+
     int compute();
 
 
 private:
-    sensor_msgs::PointCloud2 * in_cloud_;
+    spc::PointCloud2Reader * in_reader_;
     float slice_width_;
     float slice_step_;
     int field_id_;
     std::string field_name_;
 
     std::vector<std::vector<int>> all_indices_;
-    std::vector<sensor_msgs::PointCloud2::Ptr> all_small_clouds_;
 
-    int
-    updateSecondaryAttributes();
 };
 
 

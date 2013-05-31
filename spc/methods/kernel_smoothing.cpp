@@ -39,7 +39,7 @@ KernelSmoothing<ScalarT>::compute(GenericTimeSeries<ScalarT> *new_series)
     {
 
         evaluateKS(new_x_[i], value, variance);
-        std::cout << new_x_[i] << std::endl;
+//        std::cout << new_x_[i] << std::endl;
         //check if value is nan
         if (!std::isnan(value))
             new_y_nans_[i] = false;

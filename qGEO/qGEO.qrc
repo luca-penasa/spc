@@ -3,5 +3,7 @@
         <file>qGEO.png</file>
         <file>icons/time_series.png</file>
         <file>icons/strat_pos.png</file>
+        <file>icons/split_cloud.png</file>
+        <file>icons/plot_dlg.png</file>
     </qresource>
 </RCC>

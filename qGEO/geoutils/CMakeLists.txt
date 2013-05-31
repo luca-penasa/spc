@@ -15,11 +15,6 @@ include_directories(${CMAKE_CURRENT_BINARY_DIR})
 include_directories(${CMAKE_CURRENT_BINARY_DIR}/dialogs)
 
 
-
-
-
-
-
 find_package(PCL REQUIRED)
 include_directories(${PCL_INCLUDE_DIRS})
 link_directories(${PCL_LIBRARY_DIRS})
@@ -44,6 +39,8 @@ find_mocable_files( mocable_list ${header_list} )
 qt4_wrap_cpp( moc_list ${mocable_list} )
 QT4_WRAP_UI( generated_ui_list ${ui_list} )
 QT4_ADD_RESOURCES( generated_qrc_list ${qrc_list} )
+
+#set(additional_sources ${CC_SOURCE_DIR}/qCC/plugins/qPCL/PclUtils/filters/BaseFilter.cpp)
 
 add_library( ${PROJECT_NAME} STATIC ${header_list} ${source_list} ${moc_list} ${generated_ui_list} ${generated_qrc_list} ${rc_list})
 

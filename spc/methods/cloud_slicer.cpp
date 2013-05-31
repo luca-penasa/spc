@@ -25,42 +25,37 @@ struct PointScalarPointRep: public pcl::PointRepresentation<PointScalar>
 namespace spc
 {
 
-
-CloudSerializedSlicerOnField::CloudSerializedSlicerOnField()
-{
-}
-
-
-int CloudSerializedSlicerOnField::updateSecondaryAttributes()
-{
-
-    //get the index of the field
-    field_id_ = pcl::getFieldIndex(*in_cloud_, field_name_);
-    if (field_id_ == -1)
-    {
-        pcl::console::print_error("Error. You must specify a valid field name to be used\n");
-        return (-1);
-    }
-}
-
 int
 CloudSerializedSlicerOnField::compute()
 {
-    updateSecondaryAttributes();
 
-    //we transform the whole cloud to a simple cloud with just a X coordinate
-    int point_step = in_cloud_->point_step;
-    sensor_msgs::PointField field = in_cloud_->fields.at(field_id_);
-    sensor_msgs::PointCloud2::Ptr in_cloud_ptr = boost::make_shared<sensor_msgs::PointCloud2> (*in_cloud_);
-    int field_offset = field.offset;
+    if (!in_reader_)
+    {
+        pcl::console::print_error("Specify a valid reader!");
+        return -1;
+    }
+
+    std::vector<float> * sf = in_reader_->getScalarFieldAsStdVector<float>(field_name_);
+
+    if (!sf)
+    {
+        pcl::console::print_error("Specify a valid scalar field name!");
+        return -1;
+    }
+
 
     pcl::PointCloud<PointScalar>::Ptr scalar_cloud (new pcl::PointCloud<PointScalar>);
-    scalar_cloud->resize(in_cloud_->width * in_cloud_->height);
+    scalar_cloud->resize(sf->size());
 
-    for (int i = 0; i < in_cloud_->width * in_cloud_->height; ++i )
+
+
+    for (int i = 0 ; i < sf->size(); ++i)
     {
-        memcpy(&scalar_cloud->at(i).scalar, in_cloud_->data.data() + i * point_step + field_offset, sizeof(float));
+        PointScalar p;
+        p.scalar = sf->at(i);
+        scalar_cloud->at(i) = p;
     }
+
 
     pcl::search::FlannSearch<PointScalar> search_tree;
     PointScalarPointRep::Ptr rep (new PointScalarPointRep);
@@ -78,7 +73,7 @@ CloudSerializedSlicerOnField::compute()
     auto intervals = subdivideRange<float>( min.scalar, max.scalar, slice_step_);
 
     std::vector<std::vector<int>> all_indices;
-    std::vector<sensor_msgs::PointCloud2::Ptr> all_small_clouds;
+
 
     for (auto pos: intervals)
     {
@@ -87,16 +82,7 @@ CloudSerializedSlicerOnField::compute()
         PointScalar point;
         point.scalar = pos;
         search_tree.radiusSearch(point, (double) slice_width_ / 2.0f, indices, dist);
-        all_indices_.push_back(indices);
-
-        pcl::ExtractIndices<sensor_msgs::PointCloud2> filter;
-        filter.setInputCloud(in_cloud_ptr);
-        filter.setIndices(boost::make_shared<std::vector<int>> (indices));
-
-        sensor_msgs::PointCloud2::Ptr small_cloud (new sensor_msgs::PointCloud2);
-        filter.filter(*small_cloud);
-
-        all_small_clouds_.push_back(small_cloud);
+        all_indices_.push_back(indices);       
     }
 
 

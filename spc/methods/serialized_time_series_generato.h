@@ -3,6 +3,7 @@
 
 #include <spc/methods/cloud_slicer.h>
 #include <spc/time_series/equally_spaced_time_series.h>
+#include <spc/io/pointcloud2_reader.h>
 
 namespace spc
 {
@@ -17,7 +18,7 @@ public:
 public:
     SerializedTimeSeriesGenerator() {};
 
-    void setInputCloud(sensor_msgs::PointCloud2::Ptr in_cloud) {in_cloud_ = in_cloud;}
+    void setInputReader(spc::PointCloud2Reader * reader) {in_reader_ = reader;}
 
     void setIndices(IndicesContainer all_indices) {all_indices_ = all_indices;}
 
@@ -43,7 +44,8 @@ public:
     auto getOutput() -> std::vector<EquallySpacedTimeSeries<ScalarT> > {return output_;}
 
 private:
-    sensor_msgs::PointCloud2::Ptr in_cloud_ ;
+//    sensor_msgs::PointCloud2::Ptr in_cloud_ ;
+    spc::PointCloud2Reader * in_reader_;
     IndicesContainer all_indices_;
     ScalarT sampling_step_;
     ScalarT bandwidth_;

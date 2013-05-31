@@ -24,6 +24,8 @@
 
 #include <ui_curvePlotterDlg.h>
 
+#include <spc/time_series/base_time_series.h>
+
 class QwtPlot;
 class QwtPlotCurve;
 
@@ -35,6 +37,9 @@ public:
 
     template <class sType>
     void addCurve(std::vector<sType> &x, std::vector<sType> &y);
+
+    template <typename sType>
+    void addCurve(spc::GenericTimeSeries<sType> * tseries);
 
 
     void callReplot();

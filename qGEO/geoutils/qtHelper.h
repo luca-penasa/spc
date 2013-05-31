@@ -20,6 +20,8 @@ struct ComboItemDescriptor
   allowed_types type; 
   
   friend std::ostream& operator<<(std::ostream& stream,ComboItemDescriptor ob);
+
+
 };
 
 

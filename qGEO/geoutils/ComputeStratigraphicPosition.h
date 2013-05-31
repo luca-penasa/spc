@@ -37,7 +37,8 @@ class ComputeStratigraphicPosition : public BaseFilter
 public:
 
    typedef ComputeStratigraphicPositionDlg::method_type method_type;
-    ComputeStratigraphicPosition();
+
+    ComputeStratigraphicPosition(ccPluginInterface * parent_plugin = 0);
 
 public:
     int compute() ;
