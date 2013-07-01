@@ -40,6 +40,8 @@ public:
 
     double getSP () {return ui->force_sp->value();}
 
+    bool getCrossSPCheckBox () {return ui->checkBoxNormalToStrata->isChecked();}
+
 private slots:
 
     void setMethod(int method);

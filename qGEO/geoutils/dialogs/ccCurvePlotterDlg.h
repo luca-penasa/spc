@@ -24,10 +24,11 @@
 
 #include <ui_curvePlotterDlg.h>
 
-#include <spc/time_series/base_time_series.h>
+#include <spc/time_series/equally_spaced_time_series.h>
 
 class QwtPlot;
 class QwtPlotCurve;
+
 
 class ccCurvePlotterDlg : public QDialog, Ui::CurvePlotterDialog
 {
@@ -35,11 +36,10 @@ class ccCurvePlotterDlg : public QDialog, Ui::CurvePlotterDialog
 public:
     ccCurvePlotterDlg(QWidget *parent=0);
 
-    template <class sType>
-    void addCurve(std::vector<sType> &x, std::vector<sType> &y);
 
-    template <typename sType>
-    void addCurve(spc::GenericTimeSeries<sType> * tseries);
+    void addCurve(std::vector<float> &x, std::vector<float> &y);
+
+    void addCurve(spc::EquallySpacedTimeSeries<float> &tseries);
 
 
     void callReplot();
@@ -59,6 +59,10 @@ protected:
 
     std::vector<QwtPlotCurve *> m_curves;
     std::vector<QVector<QPointF> *> m_vectors;
+
+
+    std::vector<spc::EquallySpacedTimeSeries<float>> m_series; //save all as copies
+
 
     int m_current_color;
 };

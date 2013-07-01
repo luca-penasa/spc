@@ -18,6 +18,8 @@ SplitPointCloud::openInputDialog()
 {
     if (!m_dialog)
         m_dialog = new SplitPointCloudDlg(0);
+    else
+        m_dialog->comboScalar->clear();
 
     ccPointCloud * cloud = getSelectedEntityAsCCPointCloud();
 

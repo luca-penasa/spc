@@ -127,7 +127,12 @@ std::vector< PointCloud2Reader::rgb_type > PointCloud2Reader::getRGB()
     return rgb_out;
 }
 
+//FORCED INSTANTATIONS
+template
+auto PointCloud2Reader::getScalarFieldAsStdVector(std::string &field_name) -> std::vector<float> *;
 
+template
+auto PointCloud2Reader::getScalarFieldAsStdVector(std::string &field_name) -> std::vector<double> *;
 
 
 } //end nspace

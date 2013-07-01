@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>315</width>
-    <height>358</height>
+    <height>401</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -131,6 +131,23 @@ p, li { white-space: pre-wrap; }
          </widget>
         </item>
        </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="title">
+      <string>Options</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QCheckBox" name="checkBoxNormalToStrata">
+        <property name="text">
+         <string>Normal to the stratigraphy
+with cloud best fit</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

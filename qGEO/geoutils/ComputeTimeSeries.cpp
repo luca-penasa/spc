@@ -54,8 +54,13 @@ int ComputeTimeSeries::compute()
     ccHObject::Container entities;
     getSelectedEntitiesThatAreCCPointCloud(entities);
 
+    std::cout << "We got n " << entities.size() << std::endl;
+
     int sf_x = m_dialog->getSFIdA();
     int sf_y = m_dialog->getSFIdB();
+
+    std::cout << "id1 " << sf_x << std::endl;
+    std::cout << "id2 " << sf_y << std::endl;
 
     ComboItemDescriptor x_desc = m_dialog->comboScalars->itemData(sf_x).value<ComboItemDescriptor>();
     ComboItemDescriptor y_desc = m_dialog->comboScalars_2->itemData(sf_y).value<ComboItemDescriptor>();
@@ -63,13 +68,17 @@ int ComputeTimeSeries::compute()
     std::string x_fname = x_desc.name.toStdString();
     std::string y_fname = y_desc.name.toStdString();
 
+    std::cout << "x name " << x_fname << std::endl;
+    std::cout << "y name " << y_fname << std::endl;
+
 
 
     float step = m_dialog->getStep();
     float bandwidth = m_dialog->getBandwidth();
 
     //pre compute min max of the field, so we can build time series all with the same extension!
-    float overall_max, overall_min;
+    float overall_max = -1e100;
+    float overall_min = 1e100;
     for (ccHObject *obj: entities)
     {
         ccPointCloud * cloud = ccHObjectCaster().ToPointCloud(obj);
@@ -78,11 +87,15 @@ int ComputeTimeSeries::compute()
         float max =  field->getMax();
         float min = field->getMin();
         if (max > overall_max)
-            max = overall_max;
+            overall_max = max;
 
         if (min < overall_min)
-            min = overall_min;
+            overall_min = min;
     }
+
+
+    std::cout << "x min " << overall_min << std::endl;
+    std::cout << "x max " << overall_max << std::endl;
 
     for (ccHObject *obj: entities)
     {
@@ -102,10 +115,7 @@ int ComputeTimeSeries::compute()
         computed_series.push_back(generator.getOutputSeries());
     }
     return 1;
-
 }
-
-
 
 
 int ComputeTimeSeries::openInputDialog()
@@ -140,12 +150,14 @@ int ComputeTimeSeries::openOutputDialog()
     for (auto series: computed_series)
     {
         if (series.getY().size() != 0)
-            plotter->addCurve<float>(&series);
+            plotter->addCurve(series);
     }
 
 
     plotter->show();
     plotter->raise();
+
+    return 1;
 
 }
 

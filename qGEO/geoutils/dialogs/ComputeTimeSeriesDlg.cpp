@@ -4,9 +4,6 @@ ComputeTimeSeriesDlg::ComputeTimeSeriesDlg(QWidget* parent) : QDialog(parent), U
 {
     setupUi(this);
 
-
-    this->lineEditBasename->setEnabled(false);
-
 }
 
 

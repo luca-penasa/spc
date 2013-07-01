@@ -18,6 +18,8 @@ if(BUILD_SPC_DOC)
     add_subdirectory(doc)
 endif()
 
-
+if(SWIG_WRAPPINGS)
+    add_subdirectory(wrappings)
+endif()
 
 

@@ -16,10 +16,10 @@ namespace spc
 template <typename ScalarT>
 class StratigraphicNormalModel: public StratigraphicModelBase<ScalarT>
 {
-
+public:
     typedef Eigen::Matrix<ScalarT, 3, 1> Vector3;
 
-public:
+
     //constructor
     StratigraphicNormalModel();
 

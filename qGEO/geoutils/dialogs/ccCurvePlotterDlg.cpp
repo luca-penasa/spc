@@ -34,6 +34,12 @@
 
 #include "ccCurvePlotterDlg.h"
 
+#include <spc/io/time_series_writer.h>
+
+#include <boost/make_shared.hpp>
+
+
+
 
 ccCurvePlotterDlg::ccCurvePlotterDlg(QWidget* parent): QDialog(parent), Ui::CurvePlotterDialog()
 {
@@ -69,6 +75,8 @@ ccCurvePlotterDlg::ccCurvePlotterDlg(QWidget* parent): QDialog(parent), Ui::Curv
     m_current_color = 6;
 };
 
+
+
 QColor
 ccCurvePlotterDlg::nextColor()
 {
@@ -79,18 +87,18 @@ ccCurvePlotterDlg::nextColor()
     return QColor(Qt::GlobalColor(m_current_color)) ;
 }
 
-template <typename sType>
 void
-ccCurvePlotterDlg::addCurve(spc::GenericTimeSeries<sType> * tseries)
-{
-    auto x = tseries->getX();
-    auto y = tseries->getY();
-    this->addCurve<sType>(x,y);
+ccCurvePlotterDlg::addCurve(spc::EquallySpacedTimeSeries<float> &tseries)
+{   
+    m_series.push_back(tseries);
+
+    std::vector<float> x = tseries.getX();
+    std::vector<float> y = tseries.getY();
+    this->addCurve(x,y);
 }
 
-template <class sType>
 void
-ccCurvePlotterDlg::addCurve(std::vector<sType> &x, std::vector<sType> &y)
+ccCurvePlotterDlg::addCurve(std::vector<float> &x, std::vector<float> &y)
 {
     QwtPlotCurve * curve = new QwtPlotCurve;
     //curve->setRawSamples(&x[0], &y[0], x.size());
@@ -105,10 +113,11 @@ ccCurvePlotterDlg::addCurve(std::vector<sType> &x, std::vector<sType> &y)
             continue;
 
         QPointF point;
-        point.setX( (sType) x[i]);
-        point.setY( (sType) y[i]);
+        point.setX( x[i]);
+        point.setY( y[i]);
         series->push_back(point);
     }
+
 
     curve->attach(m_plot);
     m_curves.push_back(curve);
@@ -116,11 +125,11 @@ ccCurvePlotterDlg::addCurve(std::vector<sType> &x, std::vector<sType> &y)
 
     curve->setSamples(*series);
 
-    double x_min = *std::min_element(x.begin(), x.end());
-    double x_max = *std::max_element(x.begin(), x.end());
+    double x_min = curve->minXValue();
+    double x_max = curve->maxXValue();
 
-    double y_min = *std::min_element(y.begin(), y.end());
-    double y_max = *std::max_element(y.begin(), y.end());
+    double y_min = curve->minYValue();
+    double y_max = curve->maxYValue();
 
     // axes
     m_plot->setAxisTitle(m_plot->xBottom, "x -->" );
@@ -148,6 +157,7 @@ ccCurvePlotterDlg::clearPlot()
         m_plot->detachItems(item_id);
 
     callReplot();
+    m_series.clear();
 
     m_current_color = 6;
 
@@ -159,6 +169,8 @@ ccCurvePlotterDlg::clearPlot()
 void
 ccCurvePlotterDlg::exportDocument()
 {
+
+
 #ifndef QT_NO_PRINTER
     QString fileName = "plot.pdf";
 #else
@@ -217,36 +229,37 @@ void ccCurvePlotterDlg::saveCurve()
                 this, "Save Curve", filename,
                 filter.join(";;"), NULL);
 
-    std::ofstream file;
+    QFileInfo info = QFileInfo(filename);
+    QString basename = info.baseName();
+    QString path = info.absoluteDir().absolutePath();
 
-    if (!filename.isEmpty() & m_vectors.size() != 0)
+
+    int n_series = m_series.size();
+
+    if (!basename.isEmpty() & m_series.size() != 0)
     {
-        //for now only the last one
-        QVector<QPointF> * vector = m_vectors[m_vectors.size()-1];
-        file.open (filename.toStdString().c_str());
-        for (size_t i = 0; i < vector->size(); ++i)
+        spc::TimeSeriesWriter<float> writer;
+        writer.setASCIIPrecision(6);
+        writer.setSeparator(" ");
+
+        int count = 0;
+        for (spc::EquallySpacedTimeSeries<float> &series : m_series)
         {
-            QPointF point = vector->at(i);
-            file << point.x() << " " << point.y() << "\n";
+            if (n_series == 1)
+                filename = path + QDir::separator() + basename + QString(".txt");
+            else
+                filename = path + QDir::separator() + basename + QString("_%1.txt").arg(count++);
+
+
+            spc::GenericTimeSeries<float> * tmp_ptr = &series;
+
+            writer.setInputSeries(tmp_ptr);
+            writer.setFilename(filename.toStdString());
+            writer.writeAsciiAsSparse();
         }
-        file.close();
     }
 
 }
 
-//instantiatinos!!
-template
-void
-ccCurvePlotterDlg::addCurve<float>(std::vector< float >&x, std::vector< float > &y);
 
-template
-void
-ccCurvePlotterDlg::addCurve<double>(std::vector< double >&x, std::vector< double > &y);
 
-template
-void
-ccCurvePlotterDlg::addCurve<float>(spc::GenericTimeSeries<float> * tseries);
-
-template
-void
-ccCurvePlotterDlg::addCurve<double>(spc::GenericTimeSeries<double> * tseries);

@@ -15,9 +15,6 @@ include_directories(${VTK_INCLUDE_DIRS})
 include_directories(/usr/include/eigen3/)
 # include_directories(${LIDARLIB_SOURCE_DIR})
 
-message("${SPC_LIBRARIES}")
-
-
 spc_add_executable(${MY_TOOLS_PREFIX}bilateral bilateral.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}bilateral ${PCL_LIBRARIES})
 
@@ -70,8 +67,10 @@ target_link_libraries(${MY_TOOLS_PREFIX}ptx2pcd ${PCL_LIBRARIES} ${SPC_LIBRARIES
 #spc_add_executable(initial_align initial_align.cpp initial_align.h)
 #target_link_libraries(initial_align ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
-spc_add_executable(${MY_TOOLS_PREFIX}euclidean_cluster euclidean_cluster.cpp)
-target_link_libraries(${MY_TOOLS_PREFIX}euclidean_cluster ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
+#disabled for now -> it need pcl compiled with the segmentation module activated
+#spc_add_executable(${MY_TOOLS_PREFIX}euclidean_cluster euclidean_cluster.cpp)
+#target_link_libraries(${MY_TOOLS_PREFIX}euclidean_cluster ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
+
 
 spc_add_executable(${MY_TOOLS_PREFIX}compute_presence_curve compute_presence_curve.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}compute_presence_curve ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
@@ -86,7 +85,7 @@ spc_add_executable(${MY_TOOLS_PREFIX}estimate_correction_curve estimate_correcti
 target_link_libraries(${MY_TOOLS_PREFIX}estimate_correction_curve ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 spc_add_executable(${MY_TOOLS_PREFIX}apply_correction_curve apply_correction_curve.cpp)
-target_link_libraries(${MY_TOOLS_PREFIX}apply_correction_curve ${PCL_LIBRARIES} spc_time_series spc_common spc_methods ${VTK_LIBRARIES})
+target_link_libraries(${MY_TOOLS_PREFIX}apply_correction_curve ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 
 
@@ -110,3 +109,22 @@ target_link_libraries(${MY_TOOLS_PREFIX}merge_classification_results ${PCL_LIBRA
 
 spc_add_executable(${MY_TOOLS_PREFIX}subset_from_geometry subset_from_geometry.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}subset_from_geometry ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
+
+spc_add_executable(mm_match_keypoints mm_match_keypoints.cpp)
+target_link_libraries(mm_match_keypoints ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
+
+
+spc_add_executable(mm_match_keypoints_new mm_match_keypoints_new.cpp)
+target_link_libraries(mm_match_keypoints_new ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES} flann)
+
+
+set(files  mm_keypoints_to_txt.cpp fileIO.h fileIO.cpp)
+spc_add_executable(mm_keypoints_to_txt "${files}")
+target_link_libraries(mm_keypoints_to_txt ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES} flann)
+
+spc_add_executable(mm_test test.cpp)
+
+
+set(files  flannMatcher.cpp fileIO.h fileIO.cpp)
+spc_add_executable(mm_flannMatcher "${files}")
+target_link_libraries(mm_flannMatcher flann)

@@ -83,6 +83,23 @@ public:
     virtual auto getMaxX() -> ScalarT const = 0;
 
 
+//    template <typename NScalarT>
+//    GenericTimeSeries& operator=(const GenericTimeSeries<NScalarT> & new_series)
+//    {
+//        this->y.clear();
+//        this->y(new_series.getY().begin(), new_series.getY().end());
+//        return *this;
+
+//    }
+
+//    template<typename NScalarT>
+//    GenericTimeSeries& operator()(const GenericTimeSeries<NScalarT> & new_series)
+//    {
+//        *this = new_series;
+//        return *this;
+//    }
+
+
 
 
 protected:

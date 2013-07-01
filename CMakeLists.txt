@@ -10,6 +10,7 @@ option(BUILD_MICMAC_RELATED "Build MICMAC-related code." ON)
 option(BUILD_PYTHON_WRAPPINGS "Build python interface for the library. Only some classes have been wrapped!" ON)
 option(BUILD_SPC_DOC "Build SPC doc" OFF)
 option(BUILD_QGEO_CC_PLUGIN "Build SPC-based plugin for CloudCompare" ON)
+option(SWIG_WRAPPINGS "Use swigs to generate wrappings for some methods" ON)
 
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
@@ -28,7 +29,7 @@ add_definitions(${PCL_DEFINITIONS})
 
 # Standard set of flags for c++
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fopenmp -fPIC")
-set(CMAKE_BUILD_TYPE DEBUG) #force it to debug for now
+#set(CMAKE_BUILD_TYPE DEBUG) #force it to debug for now
 
 #add custom functions and macros
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/functions.cmake)
@@ -37,10 +38,7 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/functions.cmake)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 
-#also tools if needed
-if(BUILD_TOOLS)
-    add_subdirectory(tools)
-endif()
+
 
 #micmac lib part
 if(BUILD_MICMAC_RELATED)
@@ -95,5 +93,10 @@ add_subdirectory(spc)
 
 if(BUILD_QGEO_CC_PLUGIN) ##qGEO will use various things defined after spc
     add_subdirectory(qGEO)
+endif()
+
+#also tools if needed
+if(BUILD_TOOLS)
+    add_subdirectory(tools)
 endif()
 

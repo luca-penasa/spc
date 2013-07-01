@@ -106,6 +106,25 @@ ComputeStratigraphicPosition::compute()
     }
     } //end sw
 
+    //if normal to strata checkbox is toggled, compute an alternative normal
+    if (m_dialog->getCrossSPCheckBox())
+    {
+        spc::StratigraphicNormalModel<float>::Vector3 normal = model.getNormal(); //get back the normal from model
+        //we need to compute the cloud's best fit
+        ccPlane * plane = in_cloud->fitPlane();
+        CCVector3 N(plane->getGLTransformation().getColumn(2));
+        spc::StratigraphicNormalModel<float>::Vector3 cloud_normal;
+        cloud_normal(0) = N[0];
+        cloud_normal(1) = N[1];
+        cloud_normal(2) = N[2];
+
+        //cross product between the two
+        auto new_normal = cloud_normal.cross(normal);
+
+        model.setNormal(new_normal(0),new_normal(1),new_normal(2));
+        model.setModelIntercept(0.0f); //just to be sure!
+    }
+
     ccScalarField * sp_field = new ccScalarField;
     sp_field->reserve(in_cloud->size());
     for (int i = 0; i < in_cloud->size(); ++i)
