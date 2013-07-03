@@ -78,7 +78,7 @@ SplitPointCloud::compute()
                 selected->addPointIndex(id.at(i));
 
 
-            ccPointCloud * new_cloud = new ccPointCloud(selected, cloud);
+            ccPointCloud * new_cloud =  ccPointCloud::From(selected);
             container->addChild(new_cloud);
         }
     }

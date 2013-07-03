@@ -110,21 +110,4 @@ target_link_libraries(${MY_TOOLS_PREFIX}merge_classification_results ${PCL_LIBRA
 spc_add_executable(${MY_TOOLS_PREFIX}subset_from_geometry subset_from_geometry.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}subset_from_geometry ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
-spc_add_executable(mm_match_keypoints mm_match_keypoints.cpp)
-target_link_libraries(mm_match_keypoints ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
-
-spc_add_executable(mm_match_keypoints_new mm_match_keypoints_new.cpp)
-target_link_libraries(mm_match_keypoints_new ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES} flann)
-
-
-set(files  mm_keypoints_to_txt.cpp fileIO.h fileIO.cpp)
-spc_add_executable(mm_keypoints_to_txt "${files}")
-target_link_libraries(mm_keypoints_to_txt ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES} flann)
-
-spc_add_executable(mm_test test.cpp)
-
-
-set(files  flannMatcher.cpp fileIO.h fileIO.cpp)
-spc_add_executable(mm_flannMatcher "${files}")
-target_link_libraries(mm_flannMatcher flann)

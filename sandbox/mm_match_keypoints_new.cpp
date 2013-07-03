@@ -9,109 +9,15 @@
 
 #include <sys/stat.h>
 
+#include "keypoint_extraction.h"
+#include "mm_matches.h"
+
+
 using namespace std;
 
 
 
 
-struct Keypoint
-{
-public:
-    typedef shared_ptr<Keypoint> Ptr;
-    Keypoint() {}
-
-    float x_,y_, scale_, orient_;
-    //    unsigned char * descriptor_ptr_;
-};
-
-class Keypoints
-{
-public:
-
-    typedef shared_ptr<Keypoints> Ptr;
-
-    Keypoints (size_t desc_size = 128)
-    {
-        descriptor_size_ = desc_size;
-    }
-
-    size_t getNumberOfKeypoints()
-    {
-        return keypoints_.size();
-    }
-
-    int getSizeOfFeature()
-    {
-        return descriptor_size_;
-    }
-
-    template <typename ScalarT>
-    auto getAllDescriptorAsStdVector() -> vector<ScalarT>
-    {
-        size_t len = descriptor_size_ * getNumberOfKeypoints();
-        vector<ScalarT> fdesc (len);
-
-        for (int i = 0; i < len; ++i)
-            fdesc.at(i) = (ScalarT) descriptors_.at(i);
-
-
-        return fdesc;
-    }
-
-
-    //    vector<unsigned char> getAllDescriptorAsCharVector()
-    //    {
-    //        return descriptors_;
-    //    }
-
-    //    vector<float> getAllDescriptorAsFloatVector()
-    //    {
-    //        vector<float> fdesc (descriptors_.size());
-    //        size_t i = 0;
-    //        for (unsigned char d : descriptors_)
-    //            fdesc.at(i) = (float) d;
-    //        return fdesc;
-    //    }
-
-    Keypoint::Ptr getKeypoint(int id)
-    {
-        if (id >= keypoints_.size())
-            cout << "Wrong keypoint required!" << endl;
-        return keypoints_.at(id);
-    }
-
-    void pushBack(Keypoint::Ptr point)
-    {
-        keypoints_.push_back(point);
-    }
-
-    //    void resize(size_t n)
-    //    {
-    //        keypoints_.resize(n);
-    //        descriptors_.resize(n*descriptor_size_);
-    //    }
-
-
-
-    Keypoints extractIndices(vector<int> ids)
-    {
-        Keypoints new_keys;
-        for (auto i : ids)
-        {
-            new_keys.pushBack(this->getKeypoint(i));
-        }
-        return new_keys;
-    }
-
-
-    string filename_;
-    vector <Keypoint::Ptr> keypoints_;
-
-    //the actual container of the descriptors values!
-    vector<unsigned char> descriptors_;
-
-    size_t descriptor_size_;
-};
 
 bool fexists(string filename)
 {
@@ -120,97 +26,6 @@ bool fexists(string filename)
 }
 
 
-class KeypointsReader
-{
-public:
-    KeypointsReader ( string filename ): file_(filename, std::ios::in|std::ios::binary),
-        keys_(new Keypoints)
-    {
-        filename_ = filename;
-
-    }
-
-    void readHeader()
-    {
-        file_.seekg(0); //sure is at beginning
-        file_.read(reinterpret_cast<char *> (&n_keys_), sizeof(int));
-        file_.read(reinterpret_cast<char *> (&feat_size_), sizeof(int));
-        keys_->descriptor_size_ = feat_size_;
-        //        keys_->resize(n_keys_);
-    }
-
-    void readKeypoints()
-    {
-        keys_->descriptors_.resize(n_keys_ * feat_size_);
-
-        //be sure file is at the right position
-        file_.seekg(2*sizeof(int)); // is the end of the header!
-        float x, y, scale, orient;
-
-        keys_->descriptor_size_ = feat_size_;
-
-
-        for (int i = 0; i < n_keys_; ++i)
-        {
-            Keypoint::Ptr key (new Keypoint);
-            file_.read(reinterpret_cast<char*>(&key->x_), sizeof(float));
-            file_.read(reinterpret_cast<char*>(&key->y_), sizeof(float));
-            file_.read(reinterpret_cast<char*>(&key->scale_), sizeof(float));
-            file_.read(reinterpret_cast<char*>(&key->orient_), sizeof(float));
-            file_.read(reinterpret_cast<char*>((&keys_->descriptors_[0]) + i * feat_size_), sizeof(char) * feat_size_);
-
-            //            key->descriptor_ptr_ = (&keys_->descriptors_[0]) + i * feat_size_;
-
-            keys_->pushBack(key);
-        }
-
-        file_.close();
-    }
-
-    void read()
-    {
-        readHeader();
-        readKeypoints();
-    }
-
-    Keypoints::Ptr getKeypoints()
-    {
-        return keys_;
-    }
-
-
-
-    string filename_;
-    ifstream file_;
-
-    int n_keys_, feat_size_;
-    Keypoints::Ptr keys_;
-
-};
-
-
-class Match
-{
-
-public:
-
-    typedef shared_ptr <Match> Ptr;
-    Match() {}
-
-    Match(int idA, int idB) {idA_ = idA; idB_ = idB;}
-
-    int idA_, idB_;
-};
-
-class Matches
-{
-
-public:
-    typedef shared_ptr <Matches> Ptr;
-    Matches() {}
-
-    vector<Match::Ptr> matches_;
-};
 
 
 
@@ -274,10 +89,61 @@ public:
         flann_descriptors_ = flann::Matrix<ScalarT>(&desc_as_v_[0], keypoints_->getNumberOfKeypoints(), keypoints_->getSizeOfFeature());
 
         flann::KDTreeIndexParams params(4);
+//        flann::AutotunedIndexParams params;
 
 
         index_ = flannIndexTypePtr( new flannIndexType(flann_descriptors_, params) );
 //        index_ = flannIndexTypePtr( new flannIndexType(flann_descriptors_, flann::AutotunedIndexParams()) );
+    }
+
+    vector<vector<Match> > getMatchesMulti(Keypoints::Ptr points, int nn)
+    {
+        last_query_ = points->getAllDescriptorAsStdVector<ScalarT>();
+        flann::Matrix<ScalarT> query_flann (&last_query_[0], points->getNumberOfKeypoints(), points->getSizeOfFeature());
+
+        vector<int> ids(points->getNumberOfKeypoints() * nn);
+        vector<float> dists(points->getNumberOfKeypoints() * nn);
+
+        flann::Matrix<int> flann_ids (ids.data(), points->getNumberOfKeypoints(), nn);
+        flann::Matrix<float> flann_dists(dists.data(), points->getNumberOfKeypoints(), nn);
+
+
+        cout << "data points: " << this->keypoints_->keypoints_.size() ;
+        cout << " query points: " << points->getNumberOfKeypoints() << endl;
+
+
+        clock_t begin, end;
+        begin = clock();
+
+//        spars.cores = 3;
+        index_->knnSearch(query_flann, flann_ids, flann_dists, nn, flann::SearchParams(128));
+
+        end = clock();
+        double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+        cout << time_spent << endl;
+
+
+        vector<vector<Match> > matches;
+
+
+        //filtering!
+        for (int i = 0; i < points->getNumberOfKeypoints() ; ++i)
+        {
+            vector<Match> this_matches;
+            for (int j=0; j < nn; ++j)
+            {
+                Match match(ids.at(i*nn+j), i);
+                match.distance_ = dists.at(i*nn + j);
+                this_matches.push_back(match);
+            }
+
+            matches.push_back(this_matches);
+
+
+        }
+
+        cout << "Got " << matches.size() << " matches!" << endl;
+        return matches;
     }
 
     Matches::Ptr getMatches(Keypoints::Ptr points, float ratio = 0.3)
@@ -300,11 +166,8 @@ public:
         clock_t begin, end;
         begin = clock();
 
-
-
 //        spars.cores = 3;
         index_->knnSearch(query_flann, flann_ids, flann_dists, nn, flann::SearchParams(128));
-
 
         end = clock();
         double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
@@ -324,6 +187,8 @@ public:
             }
 
         }
+
+        cout << "Got " << matches->matches_.size() << " matches!" << endl;
         return matches;
     }
 
@@ -351,6 +216,8 @@ public:
 
     vector<ScalarT> desc_as_v_;
     vector<ScalarT> last_query_;
+
+    vector<vector<Keypoint> > matches_;
 
 };
 
@@ -450,6 +317,60 @@ int main(int argc, char ** argv)
     for (int i = 1; i < argc; ++i)
         filenames.push_back(argv[i]);
 
+//    KeypointsReader reader(filenames.at(0));
+//    KeypointsReader reader2(filenames.at(1));
+
+//    reader.read();
+//    reader2.read();
+
+
+    KeypointsExtractor extractor;
+    extractor.scale_ = 0.5;
+    extractor.setFilename(filenames.at(0));
+    extractor.loadImage();
+    extractor.compute();
+    Keypoints::Ptr keys = extractor.getDescriptors();
+
+    KeypointsExtractor extractor2;
+    extractor2.scale_ = 0.5;
+    extractor2.setFilename(filenames.at(1));
+    extractor2.loadImage();
+    extractor2.compute();
+    Keypoints::Ptr keys2 = extractor2.getDescriptors();
+
+//    Keypoints pt = *keys;
+//    for (int i = 0;  pt.getNumberOfKeypoints(); ++i)
+//    {
+//        for (int j = 0; j < 128; ++j)
+//        {
+//            cout << (int)pt.descriptors_.at(i*128+j) << " ";
+//        }
+//        cout << endl;
+
+//    }
+
+//    Keypoints::Ptr keys = reader.getKeypoints();
+//    Keypoints::Ptr keys2 = reader2.getKeypoints();
+
+
+
+
+    FlannIndex<unsigned char> index;
+    index.setInputKeypoints(keys);
+    index.buildIndex();
+
+    vector<vector<Match> > matches  = index.getMatchesMulti(keys2, 2);
+
+    MatchesFilter filter;
+    filter.setFilterType(MatchesFilter::FIRST_NEAREST);
+    filter.setInputMatches(matches);
+
+    vector<Match> good_matches;
+
+    filter.filter(good_matches, 0.1);
+
+    cout << "Found " << good_matches.size() << " good matches" << endl;
+
     /////////////////////////////// ONE TEST
 //    string filename = filenames.at(0);
 //            string filename2 = filenames.at(1);
@@ -502,11 +423,11 @@ int main(int argc, char ** argv)
 
 
 
-    Matcher<unsigned char>  matcher;
-    matcher.setFilenames(filenames);
-    matcher.updateFinders();
+//    Matcher<unsigned char>  matcher;
+//    matcher.setFilenames(filenames);
+//    matcher.updateFinders();
 
-    matcher.updateMatches();
+//    matcher.updateMatches();
 
 
     //    vector<int> ids;
