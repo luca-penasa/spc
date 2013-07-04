@@ -43,7 +43,7 @@ macro(spc_add_library libname dependence)
     spc_compile_and_link(spc_${libname} "${sources}" "${libs}")
 
     set(all_heads ${@libname@_HEADERS} ${@libname@_IMPLS})
-    spc_install_target_library_headers (${libname} "${all_heads}")
+    spc_install_target_library_headers(${libname} "${all_heads}")
 
 endmacro()
 
@@ -65,7 +65,7 @@ endmacro()
 
 macro(spc_add_executable name codefiles)
     add_executable(${name} ${codefiles})
-    install (TARGETS ${name} DESTINATION bin)
+    install(TARGETS ${name} DESTINATION bin)
 endmacro()
 
 macro(spc_install_target_library_headers libname headers)

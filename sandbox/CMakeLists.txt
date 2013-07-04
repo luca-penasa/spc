@@ -22,12 +22,6 @@ spc_add_executable(${MY_TOOLS_PREFIX}match_keypoints mm_match_keypoints.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}match_keypoints ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 
-
-set(files  mm_match_keypoints_new mm_match_keypoints_new.cpp keypoint_extraction.h mm_matches.h)
-spc_add_executable(${MY_TOOLS_PREFIX}match_keypoints_new "${files}")
-target_link_libraries(${MY_TOOLS_PREFIX}match_keypoints_new ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES} flann  ${OpenCV_LIBS})
-
-
 set(files  mm_keypoints_to_txt.cpp fileIO.h fileIO.cpp)
 spc_add_executable(${MY_TOOLS_PREFIX}keypoints_to_txt "${files}")
 target_link_libraries(${MY_TOOLS_PREFIX}keypoints_to_txt ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES} flann)
@@ -44,3 +38,5 @@ target_link_libraries(${MY_TOOLS_PREFIX}flannMatcher flann)
 set(files  mm_read_keypoints.cpp)
 spc_add_executable(${MY_TOOLS_PREFIX}read_keypoints "${files}")
 target_link_libraries(${MY_TOOLS_PREFIX}read_keypoints ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES} flann)
+
+add_subdirectory(ties)

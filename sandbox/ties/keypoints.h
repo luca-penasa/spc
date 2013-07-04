@@ -14,26 +14,42 @@
 #include <iostream>
 #include <fstream>
 
+#include <sstream>
+
 #include <limits>
 
 #include <memory>
 #include <opencv2/core/types_c.h>
 
-#include "mm_matches.h"
+#include "matches.h"
+
+
 
 using namespace std;
+
+///
+/// \brief The Keypoint struct
+///
 struct Keypoint
 {
 public:
     typedef shared_ptr<Keypoint> Ptr;
-    Keypoint() {}
+    Keypoint()
+    {
+        x_ = numeric_limits<float>::quiet_NaN();
+        y_ = numeric_limits<float>::quiet_NaN();
+        orient_ = numeric_limits<float>::quiet_NaN();
+        scale_ = numeric_limits<float>::quiet_NaN();
+    }
 
     float x_,y_, scale_, orient_;
-    //    unsigned char * descriptor_ptr_;
+
 };
 
 
-
+///
+/// \brief The Keypoints class
+///
 class Keypoints
 {
 public:
@@ -100,6 +116,65 @@ public:
     size_t descriptor_size_;
 };
 
+///
+/// \brief The KeypointsWriter class
+///
+class KeypointsWriter
+{
+public:
+    KeypointsWriter() {}
+
+
+    void setFilename(string fname)
+    {
+        filename_ = fname;
+    }
+
+    void setKeypoints(Keypoints::Ptr keys)
+    {
+        keys_ = keys;
+    }
+
+    int write()
+    {
+        Keypoints keys = *keys_;
+        std::ofstream binaryFile(filename_.c_str(), std::ios::out|std::ios::binary|std::ios::trunc);
+        int sz = keys.getNumberOfKeypoints();
+        int szDesc = keys.getSizeOfFeature();
+
+        binaryFile.write((char*) &sz ,sizeof(int));
+        binaryFile.write((char*) &szDesc, sizeof(int));
+
+        for (int i = 0; i < sz; ++i) {
+
+            Keypoint k = *keys.getKeypoint(i);
+
+            binaryFile.write(reinterpret_cast<char*>(&k.x_), sizeof(float));
+            binaryFile.write(reinterpret_cast<char*>(&k.y_), sizeof(float));
+            binaryFile.write(reinterpret_cast<char*>(&k.orient_), sizeof(float));
+            binaryFile.write(reinterpret_cast<char*>(&k.scale_), sizeof(float));
+
+            //also the descriptors must be written !
+            for (int j = 0; j < szDesc; ++j) {
+              unsigned char elem = keys.descriptors_.at(i*szDesc + j) ;
+              binaryFile.write(reinterpret_cast<char*>(&elem), sizeof(char));
+            }
+        }
+
+        binaryFile.close();
+        //TODO: handle error return value
+        return 1;
+    }
+
+ string filename_;
+
+ Keypoints::Ptr keys_;
+};
+
+
+///
+/// \brief The KeypointsReader class
+///
 class KeypointsReader
 {
 public:
@@ -168,12 +243,38 @@ public:
 
 };
 
+
+bool compare_cv_keys_xy(const cv::KeyPoint &a, const cv::KeyPoint &b)
+{
+
+    if (a.pt.x == b.pt.x)
+    {
+        return (a.pt.y > b.pt.y);
+    }
+    else
+    {
+        return (a.pt.x > b.pt.x);
+    }
+}
+
+bool are_equal_cv_keys_xy(const cv::KeyPoint &a, const cv::KeyPoint &b)
+{
+
+    return ((a.pt.x == b.pt.x) & (a.pt.y == b.pt.y));
+}
+
+
+
+///
+/// \brief The KeypointsExtractor class
+///
 class KeypointsExtractor
 {
 public:
 
     void setFilename (const string filename)
     {
+        remove_duplicates_ = true;
         filename_ = filename;       
         scale_ = 0.3;
     }
@@ -188,33 +289,88 @@ public:
     {
         cout <<  "computing descriptors... ";
 
-        int minHessian = 400;
-
         cv::SIFT detector;
         cv::SIFT extractor;
 
-//        cv::FlannBasedMatcher matcher;
-
         detector.detect(image_low_, cv_keypoints_);
+
+        cout << "detected: " << cv_keypoints_.size() << " keys" << endl;
+
         extractor.compute(image_low_, cv_keypoints_, descriptors_);
         cout << "computed!" << endl;
 
+
+        if (remove_duplicates_)
+        {
+//            removeDuplicates();
+        }
+
         cout << descriptors_.cols << " per " << descriptors_.rows << endl;
 
-        cout << "desc "<< *descriptors_.size.p << endl;
+        cout << "Found "<< *descriptors_.size.p << endl;
 
-//        cout << "type " << descriptors_.type();
+    }
 
-//        for (int i = 0; i < descriptors_.rows; ++i)
-//        {
-//            for (int j = 0; i < descriptors_.cols; ++j)
-//            {
-//                float el = descriptors_.at<float>(i,j);
-//                cout << el << " ";
-//            }
 
-//            cout << endl;
-//        }
+
+    void removeDuplicates()
+    {
+        typedef std::pair<cv::KeyPoint, cv::Mat>  pairT;
+        cout << "here" << endl;
+
+        vector<pairT> pairs;
+        for (int i = 0 ; i < cv_keypoints_.size() ; ++i)
+        {
+            pairT pair(cv_keypoints_[i], descriptors_.row(i));
+            pairs.push_back(pair);
+        }
+
+
+        struct sort_pred {
+            bool operator()(const pairT &a, const pairT &b)
+            {
+                if (a.first.pt.x == b.first.pt.x)
+                {
+                    return (a.first.pt.y > b.first.pt.y);
+                }
+                else
+                {
+                    return (a.first.pt.x > b.first.pt.x);
+                }
+            }
+        };
+
+        struct eq_pred {
+            bool operator() (const pairT &a, const pairT & b)
+            {
+                return ((a.first.pt.x == b.first.pt.x) & (a.first.pt.y == b.first.pt.y));
+            }
+        };
+
+
+        //now we sort the pair vector with a custom rule!
+        std::sort(pairs.begin(), pairs.end(), sort_pred());
+
+        //now remove duplicates
+        pairs.erase(std::unique(pairs.begin(), pairs.end(), eq_pred()), pairs.end());
+
+        cout << "SORTED AND EREASED" << endl;
+
+        //put back descriptors and keypoints int the original places
+        cv::Mat new_descs;
+        vector<cv::KeyPoint> new_keys;
+
+        for (pairT p: pairs)
+        {
+            new_descs.push_back(p.second);
+            new_keys.push_back(p.first);
+        }
+
+
+        cv_keypoints_ = new_keys;
+        descriptors_ = new_descs;
+
+
     }
 
     Keypoints::Ptr getDescriptors()
@@ -237,6 +393,7 @@ public:
                 float el = descriptors_.at<float>(i,j);
 
 //                cout << i << " " << j;
+                //we force all de
                 keys->descriptors_.at(i*descriptors_.cols + j) = (unsigned char) el;
             }
 
@@ -254,7 +411,15 @@ public:
         return keys;
     }
 
+    void setScale(float scale)
+    {
+        scale_= scale;
+    }
 
+    void setRemoveDuplicates(bool flag)
+    {
+        remove_duplicates_ = flag;
+    }
 
 
     typedef shared_ptr<KeypointsExtractor> Ptr;
@@ -265,12 +430,14 @@ public:
 
     vector<cv::KeyPoint> cv_keypoints_;
 
+    bool remove_duplicates_; //some alghorithms - ie SIFT - put out more than one keypoint with the same x,y (but with different scale for example)
 
-
-    double scale_;
+    float scale_;
 };
 
-
+///
+/// \brief The MatchesFilter class
+///
 class MatchesFilter
 {
 
@@ -355,6 +522,149 @@ public:
 
     vector<vector<Match> > in_matches_;
     FILTER_TYPE filter_type_;
+
+};
+
+///
+/// \brief The MatchXY class
+/// NOT USE THIS CLASS FOR OTHER PORPUSES THAN SORTING AND CLEANING FROM DUPLICATES!
+/// it features an uncommon operator overloading that may lead to misunderstandings!
+///
+class MatchXY
+{
+public:
+    MatchXY () {}
+
+    MatchXY(float xa, float ya, float xb,float yb)
+    {
+        xA_ = xa;
+        yA_ = ya;
+        xB_ = xb;
+        yB_ = yb;
+    }
+
+    float xA_, yA_, xB_, yB_;
+
+};
+
+const bool operator< (const MatchXY &a, const MatchXY &b )
+{
+    if (a.xA_ == b.xA_)
+    {
+        return (a.yA_ > b.yA_);
+    }
+    else
+    {
+        return (a.xA_ > b.xA_);
+    }
+}
+
+const bool operator== (const MatchXY & a, const MatchXY &b)
+{
+    return ((a.xA_ == b.xA_) & (a.yA_ == b.yA_));
+}
+
+
+///
+/// \brief The MatchesWriter class
+///
+class MatchesWriter
+{
+public:
+    MatchesWriter() {filter_duplicates_ = true;}
+
+
+    void setFilename(string fname)
+    {
+        filename_ = fname;
+    }
+
+
+    void setMatchesAndKeypoints(vector<Match>  matches, Keypoints keysA, Keypoints keysB)
+    {
+        keysA_ = keysA;
+        keysB_ = keysB;
+        matches_ = matches;
+
+        toXYMatches();
+        if (filter_duplicates_)
+        {
+            filterDuplicates();
+        }
+    }
+
+    void toXYMatches()
+    {
+        for (Match m: matches_)
+        {
+            MatchXY mxy;
+            float xa, ya, xb, yb;
+
+            int ida, idb;
+
+            ida = m.idA_;
+            idb = m.idB_;
+
+
+            Keypoint keya = *(keysA_.keypoints_.at(ida) );
+            Keypoint keyb = *(keysB_.keypoints_.at(idb) );
+
+            mxy.xA_ = keya.x_;
+            mxy.yA_ = keya.y_;
+            mxy.xB_ = keyb.x_;
+            mxy.yB_ = keyb.y_;
+
+            matches_xy_.push_back(mxy);
+
+        }
+
+    }
+
+    void filterDuplicates()
+    {
+        // we should implement a better filter.
+        // the problem here is that sift gives out more than a keypoint with a x,y coord couple.
+        // we could keep (not the firs as we do here) but the match that exibit the lower distance in the feature space!
+
+        //now we sort the pair vector with a custom rule!
+        std::sort(matches_xy_.begin(), matches_xy_.end());
+
+        //now remove duplicates
+        matches_xy_.erase(std::unique(matches_xy_.begin(), matches_xy_.end()), matches_xy_.end());
+
+    }
+
+    int write()
+    {
+        stringstream s_stream;
+
+        ofstream out(filename_.c_str());
+
+        for (MatchXY m : matches_xy_)
+        {
+
+            s_stream.precision(6);
+
+            s_stream << m.xA_  << " " << m.yA_ << " " << m.xB_ << " " << m.yB_ << endl;
+        }
+
+        out << s_stream.str();
+        out.close();
+
+
+        return 1;
+    }
+
+
+
+    string filename_ ;
+
+    std::vector<Match>  matches_;
+    vector<MatchXY> matches_xy_;
+    Keypoints keysA_;
+    Keypoints keysB_;
+
+    bool filter_duplicates_;
 };
 
 #endif // KEYPOINT_EXTRACTION_H
