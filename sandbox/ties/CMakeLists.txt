@@ -1,15 +1,6 @@
 set(MY_TOOLS_PREFIX "sb_")
 
 
-
-
-find_package(PCL REQUIRED)
-include_directories(${PCL_INCLUDE_DIRS})
-
-find_package(VTK REQUIRED)
-include_directories(${VTK_INCLUDE_DIRS})
-
-include_directories(/usr/include/eigen3/)
 # include_directories(${LIDARLIB_SOURCE_DIR})
 
 find_package( OpenCV REQUIRED )
