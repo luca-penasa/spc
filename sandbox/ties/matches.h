@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <vector>
+#include <iostream>
 
 
 using namespace std;
@@ -31,126 +32,38 @@ public:
 
 };
 
-//class Matches
-//{
-
-//public:
-//    typedef shared_ptr <Matches> Ptr;
-//    Matches() {}
-
-//    vector<Match::Ptr> matches_;
-//};
 
 ///
-/// \brief The ImageMatchesMask class
+/// \brief The MatchXY class
+/// NOT USE THIS CLASS FOR OTHER PORPUSES THAN SORTING AND CLEANING FROM DUPLICATES!
+/// it features an uncommon operator overloading that may lead to misunderstandings!
 ///
-class ImageMatchesMask
+class MatchXY
 {
 public:
-    ImageMatchesMask() {}
+    MatchXY () {}
 
-    void setNumberOfImages(size_t n)
+    MatchXY(float xa, float ya, float xb,float yb, float distance)
     {
-        n_images_ = n;
-        mask_.assign(n_images_ * n_images_, false);
+        xA_ = xa;
+        yA_ = ya;
+        xB_ = xb;
+        yB_ = yb;
+        distance_ = distance; //feature space distance for this match
     }
 
-    void setElement(int i, int j, bool val)
-    {
-        mask_.at(i*n_images_ + j) = val;
-    }
-
-    bool getElement(int i, int j)
-    {
-        return mask_.at(i*n_images_ + j);
-    }
-
-    void setUpperTriangularNoDiagonal()
-    {
-        for (int i = 0; i < n_images_ ; ++i)
-            for (int j = 0; j < i; ++j)
-                mask_.at(i*n_images_ + j) = true;
-
-
-    }
-
-
-
-    vector<bool> mask_;
-
-    size_t n_images_;
+    float xA_, yA_, xB_, yB_, distance_;
 
 };
 
-///
-/// \brief The ImageMatchesMatrix class
-///
-class ImageMatchesMatrix
-{
-public:
-    ImageMatchesMatrix(size_t n_images) {
-        work_in_mirror_ = true;
-        setNumberOfImages(n_images);
-    }
+const bool operator_minor_on_A (const MatchXY &a, const MatchXY &b );
 
-    vector<Match> getMatches(int ida, int idb)
-    {
-        return matches_.at(ida*n_images_ + idb);
-    }
+const bool operator_equal_on_A (const MatchXY & a, const MatchXY &b);
 
-    void setMatches(vector<Match> matches, int ida, int idb)
-    {
-        //simple checks
-        if (ida == idb)
-        {
-            cout << "not really smart to set a match with itself!" << endl;
-        }
+const bool operator_minor_on_B (const MatchXY &a, const MatchXY &b );
 
-        matches_.at(ida*n_images_ + idb) = matches;
+const bool operator_equal_on_B (const MatchXY & a, const MatchXY &b);
 
-        if (work_in_mirror_)
-        {
-            vector<Match> inverted = matches;
-            for (Match &m: inverted)
-                m.switchIDS();
-
-
-            matches_.at(idb*n_images_ + ida) = inverted;
-        }
-    }
-
-    void setWorkInMirror(bool mirror)
-    {
-        work_in_mirror_ = mirror;
-    }
-
-    void setNumberOfImages(size_t number)
-    {
-        n_images_ = number;
-        matches_.resize(n_images_ * n_images_);
-    }
-
-    bool existsMatch(int ida, int idb)
-    {
-        vector<Match> match = getMatches(ida, idb);
-        if (match.size() == 0)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
-    }
-
-
-    size_t n_images_;
-    bool work_in_mirror_;
-
-    vector< vector<Match> > matches_;
-
-    vector<string> filenames_;
-};
 
 
 
