@@ -32,9 +32,9 @@ public:
 
     bool existsMatch(int ida, int idb);
 
-
-
+private:
     size_t n_images_;
+
     bool work_in_mirror_;
 
     vector< vector<Match> > matches_;

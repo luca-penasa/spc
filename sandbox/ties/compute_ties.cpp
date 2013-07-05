@@ -81,7 +81,7 @@ int test_simple_match_2_images_and_save(vector<string> filenames)
 {
 
     KeypointsExtractor extractor;
-    extractor.scale_ = 0.5;
+    extractor.setScale( 0.5 );
     extractor.setFilename(filenames.at(0));
     extractor.loadImage();
     extractor.compute();
@@ -100,7 +100,7 @@ int test_simple_match_2_images_and_save(vector<string> filenames)
 
 
     KeypointsExtractor extractor2;
-    extractor2.scale_ = 0.5;
+    extractor2.setScale( 0.5 );
     extractor2.setFilename(filenames.at(1));
     extractor2.loadImage();
     extractor2.compute();
@@ -164,7 +164,7 @@ int main(int argc, char ** argv)
     matcher.updateKeypoints();
     matcher.updateFinders();
     matcher.updateMatches();
-    matcher.writeOutHomolFiles(string("Homol_my"));
+    matcher.writeOutHomolFiles();
 
 
         return 1;

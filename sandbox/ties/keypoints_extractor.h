@@ -21,21 +21,17 @@ using namespace std;
 class KeypointsExtractor
 {
 public:
-
     void setFilename (const string filename);
 
     void loadImage();
 
-
     void compute();
-
 
     Keypoints::Ptr getDescriptors();
 
-
     void setScale(float scale);
 
-
+private:
     typedef shared_ptr<KeypointsExtractor> Ptr;
 
     string filename_;
@@ -43,7 +39,6 @@ public:
     cv::Mat image_, image_low_, descriptors_;
 
     vector<cv::KeyPoint> cv_keypoints_;
-
 
     float scale_;
 };

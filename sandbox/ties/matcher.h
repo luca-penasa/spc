@@ -17,8 +17,6 @@ using namespace std;
 template <typename ScalarT>
 class Matcher
 {
-
-
 public:
 
     typedef  FlannIndex<ScalarT> FlannIndexType;
@@ -28,28 +26,23 @@ public:
 
     void setFilenames(vector<string> fnames);
 
-
     void updateFinders();
-
-
 
     void updateMatches();
 
-
     void updateKeypoints();
-
-
 
     void setCacheDir(string dir);
 
-
     void setMatchingMask(ImageMatchesMask &mask);
 
+    void writeOutHomolFiles();
 
+    void setOutputDirectory(string out_dir) {out_dir_ = out_dir;}
 
-    void writeOutHomolFiles(string main_dir_name);
+private:
 
-
+    string out_dir_;
 
     vector<string> filenames_;
 
@@ -62,10 +55,6 @@ public:
     string cache_dir_;
 
     ImageMatchesMask mask_;
-
-
-
-
 };
 
 

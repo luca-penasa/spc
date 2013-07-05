@@ -6,15 +6,15 @@
 
 #include <string>
 #include <vector>
-#include <iostream>
-#include <fstream>
+//#include <iostream>
+//#include <fstream>
 
-#include <sstream>
+//#include <sstream>
 
 #include <limits>
 
 #include <memory>
-#include <opencv2/core/types_c.h>
+//#include <opencv2/core/types_c.h>
 
 #include "matches.h"
 

@@ -3,7 +3,10 @@
 
 //STD
 #include <vector>
-//#include <string>
+#include <string>
+#include <iostream>
+
+#include "helpers.h"
 
 using namespace std;
 ///
@@ -14,7 +17,17 @@ class ImageMatchesMask
 public:
     ImageMatchesMask() {}
 
-    void setNumberOfImages(size_t n);
+    void setNumberOfImages(size_t n)
+    {
+        n_images_ = n;
+        mask_.assign(n_images_ * n_images_, false);
+    }
+
+
+    void setImageNames(vector<string> names)
+    {
+        images_names_ = names;
+    }
 
 
     void setElement(int i, int j, bool val);
@@ -25,10 +38,15 @@ public:
 
     void setUpperTriangularNoDiagonal();
 
+    void setFromMissingMatchFiles(string directory);
 
+
+private:
     vector<bool> mask_;
 
     size_t n_images_;
+
+    vector<string> images_names_;
 
 };
 

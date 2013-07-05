@@ -15,6 +15,7 @@ Matcher<ScalarT>::Matcher() : image_matrix_(0)
 
     //ensure all the dirs are setted up
     cache_dir_ = "cache/tiepoints/";
+    out_dir_ = "Homol";
 
     mkdir("cache/", S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
     //make sure this dir exists
@@ -31,7 +32,8 @@ void Matcher<ScalarT>::setFilenames(vector<string> fnames)
 {
     filenames_ = fnames;
     mask_.setNumberOfImages(fnames.size());
-    mask_.setUpperTriangularNoDiagonal(); //this is the default behavior
+    mask_.setImageNames(filenames_);
+    mask_.setFromMissingMatchFiles(out_dir_); //this is the default behavior
     image_matrix_ = ImageMatchesMatrix(fnames.size());
 }
 
@@ -154,7 +156,7 @@ void Matcher<ScalarT>::updateKeypoints()
 
             KeypointsExtractor extractor;
             extractor.setFilename(file);
-            extractor.setScale(0.3);
+            extractor.setScale(0.5);
             extractor.loadImage();
             extractor.compute();
 
@@ -187,11 +189,10 @@ void Matcher<ScalarT>::setMatchingMask(ImageMatchesMask &mask)
 }
 
 template <typename ScalarT>
-
-void Matcher<ScalarT>::writeOutHomolFiles(string main_dir_name)
+void Matcher<ScalarT>::writeOutHomolFiles()
 {
 
-    main_dir_name += "/" ; //be sure it ends like that
+    string main_dir_name = out_dir_ + "/";
 
     mkdir(main_dir_name.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 
@@ -210,7 +211,7 @@ void Matcher<ScalarT>::writeOutHomolFiles(string main_dir_name)
         for (int j =0 ; j < filenames_.size(); j++)
         {
 
-            if (i != j)
+            if ((i != j) & (mask_.getElement(i,j)))
             {
 
                 string nameb = filenames_.at(j);
@@ -218,17 +219,16 @@ void Matcher<ScalarT>::writeOutHomolFiles(string main_dir_name)
                 cout << "WRITE " << namea << " vs " << nameb << endl;
                 vector<Match> matches = image_matrix_.getMatches(i, j);
 
-                if (matches.size() != 0)
-                {
-                    Keypoints::Ptr keyb = keypoints_.at(j);
+
+                Keypoints::Ptr keyb = keypoints_.at(j);
 
 
-                    string this_dat_filename = this_pict_dir_name + nameb + ".txt";
-                    MatchesWriter w;
-                    w.setFilename(this_dat_filename);
-                    w.setMatchesAndKeypoints(matches, *keya, *keyb);
-                    w.write();
-                }
+                string this_dat_filename = this_pict_dir_name + nameb + ".txt";
+                MatchesWriter w;
+                w.setFilename(this_dat_filename);
+                w.setMatchesAndKeypoints(matches, *keya, *keyb);
+                w.write();
+
             }
         }
     }
