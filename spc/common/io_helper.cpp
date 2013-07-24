@@ -111,7 +111,7 @@ loadCSVFile(const std::string &in_filename, sensor_msgs::PointCloud2 &output, co
 	cloud->is_dense = false;
 	cloud->points.resize(cloud->width * cloud->height);
 	
-	toROSMsg(*cloud, output);
+    toROSMsg(*cloud, output);
 	
 }
 

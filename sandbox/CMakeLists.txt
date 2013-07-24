@@ -39,4 +39,20 @@ set(files  mm_read_keypoints.cpp)
 spc_add_executable(${MY_TOOLS_PREFIX}read_keypoints "${files}")
 target_link_libraries(${MY_TOOLS_PREFIX}read_keypoints ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES} flann)
 
-add_subdirectory(ties)
+
+#spc_add_executable(${MY_TOOLS_PREFIX}example_nurbs_fitting_closed_curve example_nurbs_fitting_closed_curve.cpp)
+#target_link_libraries(${MY_TOOLS_PREFIX}example_nurbs_fitting_closed_curve  ${PCL_LIBRARIES})
+
+#spc_add_executable(${MY_TOOLS_PREFIX}example_nurbs_fitting_curve2d example_nurbs_fitting_curve2d.cpp)
+#target_link_libraries(${MY_TOOLS_PREFIX}example_nurbs_fitting_curve2d  ${PCL_LIBRARIES})
+
+
+#spc_add_executable(${MY_TOOLS_PREFIX}example_nurbs_fitting_surface example_nurbs_fitting_surface.cpp)
+#target_link_libraries(${MY_TOOLS_PREFIX}example_nurbs_fitting_surface  ${PCL_LIBRARIES})
+
+
+spc_add_executable(${MY_TOOLS_PREFIX}compute_keypoints compute_keypoints.cpp)
+target_link_libraries(${MY_TOOLS_PREFIX}compute_keypoints  ${SPC_LIBRARIES})
+
+
+#add_subdirectory(ties)

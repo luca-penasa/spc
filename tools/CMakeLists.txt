@@ -82,10 +82,10 @@ spc_add_executable(${MY_TOOLS_PREFIX}compute_normals_eigenvalues compute_normals
 target_link_libraries(${MY_TOOLS_PREFIX}compute_normals_eigenvalues ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 spc_add_executable(${MY_TOOLS_PREFIX}estimate_correction_curve estimate_correction_curve.cpp)
-target_link_libraries(${MY_TOOLS_PREFIX}estimate_correction_curve ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
+target_link_libraries(${MY_TOOLS_PREFIX}estimate_correction_curve pcl_search ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 spc_add_executable(${MY_TOOLS_PREFIX}apply_correction_curve apply_correction_curve.cpp)
-target_link_libraries(${MY_TOOLS_PREFIX}apply_correction_curve ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
+target_link_libraries(${MY_TOOLS_PREFIX}apply_correction_curve pcl_search ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 
 

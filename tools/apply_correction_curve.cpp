@@ -4,6 +4,8 @@
 #include <pcl/console/print.h>
 #include <pcl/console/time.h>
 
+#include <boost/filesystem.hpp>
+
 #include <spc/common/common.h>
 #include <spc/common/strings.h>
 #include <spc/common/io_helper.h>

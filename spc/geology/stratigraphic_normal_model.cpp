@@ -29,6 +29,7 @@ StratigraphicNormalModel<ScalarT>::setNormalFromSingleCloud(pcl::PointCloud<pcl:
     float c;
     pcl::computePointNormal(*one_plane_cloud, n, c);
 
+
     std::cout << n << std::endl;
     normal = n.segment(0,3);
 
@@ -37,6 +38,9 @@ StratigraphicNormalModel<ScalarT>::setNormalFromSingleCloud(pcl::PointCloud<pcl:
 
 
     normalizeModel();
+
+    intercept = n(3);
+    pcl::console::print_value("%f", n(3));
 
     return 1;
 }

@@ -4,7 +4,7 @@
 #include <pcl/point_cloud.h>
 #include <pcl/common/eigen.h>
 #include <pcl/point_types.h>
-#include <sensor_msgs/PointCloud2.h>
+//#include <pcl/PCLPointCloud2.h>
 #include <spc/io/pointcloud2_reader.h>
 
 namespace spc

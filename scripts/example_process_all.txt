@@ -1,0 +1,13 @@
+files=$(ls *.jpg)
+
+for f in $files
+do
+	filename=$(basename "$f")
+	extension="${filename##*.}"
+	filename="${filename%.*}"
+	mm3d Malt GeomImage $f Ext Master=AUTO
+	mm3d nuage2ply MM-Malt-Img-${filename}/NuageImProf_STD-MALT_Etape_8.xml Out=${filename}.ply Attr=${f}
+done
+
+
+

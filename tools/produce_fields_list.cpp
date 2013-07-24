@@ -7,6 +7,8 @@
 #include <spc/common/strings.h>
 #include <spc/common/io_helper.h>
 
+#include <boost/filesystem.hpp>
+
 #include <spc/methods/linear_interpolator.h>
 
 #include <math.h>

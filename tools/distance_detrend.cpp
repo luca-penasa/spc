@@ -13,6 +13,8 @@
 #include <spc/common/strings.h>
 #include <spc/common/point_types.h>
 
+#include <boost/lexical_cast.hpp>
+
 
 void printHelp()
 {

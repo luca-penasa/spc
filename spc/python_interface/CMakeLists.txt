@@ -1,6 +1,8 @@
 
 link_directories(${CULTURE_3D_BUILD_DIR}/src)
 include_directories("${CULTURE_3D_SOURCE_DIR}/include")
+include_directories("${CULTURE_3D_SOURCE_DIR}/src/uti_image/Ann")
+
 include_directories(${CULTURE_3D_BUILD_DIR}/include)
 
 find_package(X11)

@@ -45,7 +45,7 @@ loadCloud (const std::string &filename, sensor_msgs::PointCloud2 &cloud)
 
 
 void
-compute (const sensor_msgs::PointCloud2::ConstPtr &input,sensor_msgs::PointCloud2::Ptr &output, const double sigma_r, const double sigma_s)
+compute (const sensor_msgs::PointCloud2::ConstPtr &input, sensor_msgs::PointCloud2::Ptr &output, const double sigma_r, const double sigma_s)
 {
   TicToc tt;
   tt.tic ();

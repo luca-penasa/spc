@@ -223,5 +223,10 @@ namespace spc
                                       pcl::PointCloud<PointEigIndices> &out_cloud,
                                       const int &n_threads);
 
+    template
+    int
+    computeCovMat(const pcl::PointCloud<pcl::PointXYZI> &in_cloud,
+                  const std::vector<int> &indices,
+                  Eigen::Matrix3f &covmat);
 
 } //end nspace

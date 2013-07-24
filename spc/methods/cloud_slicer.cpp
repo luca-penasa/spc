@@ -3,7 +3,7 @@
 #include <spc/common/point_types.h>
 #include <pcl/search/flann_search.h>
 #include <pcl/search/impl/flann_search.hpp>
-#include <pcl/search/impl/search.hpp>
+//#include <pcl/search/impl/search.hpp>
 #include <algorithm>
 #include <spc/common/common.h>
 

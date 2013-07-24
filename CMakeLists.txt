@@ -12,7 +12,6 @@ option(BUILD_SPC_DOC "Build SPC doc" OFF)
 option(BUILD_QGEO_CC_PLUGIN "Build SPC-based plugin for CloudCompare" ON)
 option(SWIG_WRAPPINGS "Use swigs to generate wrappings for some methods" ON)
 
-
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 #we always need eigen
@@ -22,13 +21,14 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 #                -DEIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET)
 
 #PCL!
-find_package(PCL 1.3 REQUIRED)
+find_package(PCL 1.6 EXACT REQUIRED)
 include_directories(${PCL_INCLUDE_DIRS})
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
 
 # Standard set of flags for c++
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fopenmp -fPIC")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fopenmp -fPIC -lpthread -lgcc_s")
+
 #set(CMAKE_BUILD_TYPE DEBUG) #force it to debug for now
 
 #add custom functions and macros

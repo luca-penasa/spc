@@ -1,6 +1,8 @@
 #include <spc/io/pointcloud2_reader.h>
 #include <pcl/io/io.h>
 
+#include <sensor_msgs/PointField.h>
+
 namespace spc
 {
 
@@ -26,6 +28,7 @@ auto PointCloud2Reader::getScalarFieldAsStdVector(std::string &field_name) -> st
 
         //now we get all the infos about this field
         sensor_msgs::PointField field = in_cloud_->fields.at(id);
+
 
         size_t offset = field.offset;
         size_t point_step = in_cloud_->point_step;

@@ -1,0 +1,219 @@
+#!/usr/bin/python
+
+import matplotlib.image as mpimg
+import numpy as np
+import sys
+import gc
+import copy
+
+debug = True
+
+
+def estimate_step(x, y, factor = 100000):
+    nx, av = moving_average(x, y, factor)
+    nx, av = subsample(nx, av, factor)
+    dx, dy = differentiate(nx, av)
+    outliers = get_outliers(dx, dy)
+    return outliers
+
+class StairStepModel():
+    def __init__(self):
+        self.x_pos = 0.0
+        self.avg_before = 0.0
+        self.avg_after = 0.0
+        self.subsample_initial = 100000
+        
+    def setPars(self, array):
+        self.x_pos = array[0]
+        self.avg_before = array[1]
+        self.avg_after = array[2]
+        
+    def getValue(self, x):
+        x = np.array(x, ndmin=1)
+        result = copy.deepcopy(x)
+        result[x <= self.x_pos] = self.avg_before
+        result[x > self.x_pos] = self.avg_after
+        return result
+    
+    def setData(self, x, y):
+        self.x = x
+        self.y = y
+    
+    def getResidual(self):
+        forecast = self.getValue(self.x)
+        res = forecast - self.y
+
+        res[ (self.x > self.x_pos + self.subsample_initial) ] = 0.0
+        res[ (self.x < self.x_pos - self.subsample_initial) ] = 0.0
+        
+        overall_res = np.sum(res ** 2)
+        
+        return overall_res
+    
+    def initializeParameters(self):
+        out = estimate_step(self.x, self.y, self.subsample_initial)[0]
+        self.x_pos = out
+        before = np.mean(self.y[(self.x < out) & (self.x > out - self.subsample_initial)])
+        after = np.mean(self.y[(self.x > out) & (self.x < out + self.subsample_initial)])
+        self.avg_after = after
+        self.avg_before = before
+    
+    def __call__(self, parameters):
+        self.setPars(parameters)
+        return self.getResidual()
+        
+    def optimizeModel(self):
+        from scipy.optimize import minimize        
+        minimize (self, np.array([self.x_pos, self.avg_before, self.avg_after]), method='CG')
+        
+    def getCorrectedValues(self):
+        forecast = self.getValue(self.x)
+        
+        return self.y - forecast
+        
+
+
+def main(argv):
+    file = argv[0]
+    if 'i' not in globals():
+        global i, t
+        i = loadintensity(file)
+        t = np.arange(len(i))
+        
+        
+    finished = False
+    begin_downsample = 100000
+    downsample = begin_downsample
+    a = t
+    b = i
+    while not finished:
+        print ("moving average at " + str(downsample))
+        nx, av = moving_average(a, b, downsample)
+        if debug:
+            figure()
+            plot(nx, av)
+            show()
+            raw_input()
+        
+        print("subsampling")
+        nx, av = subsample(nx, av, downsample)        
+        if debug:
+            plot(nx, av)
+            show()
+            raw_input()
+            
+                    
+        print("Differentiating")
+        dx, dav = differentiate(nx, av)
+        if debug:
+            figure()
+            plot(dx, dav)
+            show()
+            raw_input()  
+        
+        print("finding outliers")
+        outs = get_outliers(dx, dav)
+        old_outs = copy.deepcopy(outs)
+        
+        if debug:
+            print(" vlines: " + str(outs[0]) + " " + str(np.min(dav)) + " " + str(np.max(dav)))
+            vlines(outs[0], np.min(dav), np.max(dav))
+            draw()
+            raw_input()
+            
+            
+        print outs
+        if len(outs) > 1:
+            print("Found more than one outlier! STOPPING")
+            outs = old_outs
+            finished = True
+            
+        a, b = extract_slice(t, i, outs[0], downsample * 5)
+        
+        
+        
+        downsample = np.floor(downsample / 10)
+     
+    print ("Estimating correction...") 
+    sep = outs[0]
+    
+    piece_before = i[t < sep]
+    piece_after = i[t > sep]
+    
+    avg_before = np.mean(i[t < sep][-1: -1-begin_downsample])  
+    avg_after = np.mean(i[t > sep])
+    
+    print("avg_before: " + str(avg_before))
+    print("avg_after: " + str(avg_after))
+    
+    print("compensating...")
+    
+    import copy
+    global new_i
+    new_i = copy.deepcopy(i)
+    
+    new_i [t> sep] = i[t> sep] + ( - avg_after + avg_before)
+    
+    if debug:
+        figure()
+        plot(t, new_i, ".")
+        show()
+    
+    
+    
+    
+    
+
+    
+def moving_average(x, y, n=3) :
+    ret = np.cumsum(y, dtype=float)
+    res = (ret[n - 1:] - ret[:1 - n]) / n
+    new_x = x + n/2
+    new_x = new_x[:len(res)]
+    return new_x, res 
+    
+    
+def subsample(x, y, n):
+    return x[::n], y[::n]
+
+def differentiate(x, y):
+    demi_step = (x[1] - x[0])/2    
+    newx = demi_step + x
+    newy = np.diff(y)
+    newx = newx[0:len(newy)]
+    return newx, newy
+
+def get_outliers(x, y, nstd=2):
+    avg = np.mean(y)
+    std = np.std(y)
+    
+    upbound = avg + nstd * std
+    lowbound = avg - nstd * std
+    
+    qua = (y <= lowbound ) | (y > upbound)
+    return x[qua]
+
+def extract_slice(x, y, center, width):
+    demiwidth = width / 2
+    these = ((x >= center - demiwidth ) & (x < center + demiwidth))
+    
+    return x[these], y[these]
+
+    
+
+
+
+def loadintensity(filename):
+    file = open(filename)
+    i = []
+    for line in file:
+        i.append(float(line.split(" ")[3]))
+        
+    i = np.array(i)
+    return i
+    
+
+if __name__ == "__main__":
+    #main(sys.argv[1:])
+    pass
+ 
