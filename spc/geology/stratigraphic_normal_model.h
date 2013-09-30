@@ -7,65 +7,44 @@
 #include <pcl/point_types.h>
 
 #include <Eigen/Dense>
-
 #include <spc/geology/stratigraphic_model_base.h>
+#include <spc/geology/geologic_plane.h>
 
 namespace spc
 {
-
-template <typename ScalarT>
-class StratigraphicNormalModel: public StratigraphicModelBase<ScalarT>
+///
+/// \brief The StratigraphicNormalModel class is the same of a GeologicPlane, but
+/// with an additional stratigraphic shift associtated to it. This enable you to compute stratigraphic
+/// positions, so it inheriths from StratigraphicModelBase. It models stratigraphy with a single
+/// normal which is constant for all the 3d space (outcrop). it also have an associated stratigraphic
+/// position that is fixed for a given StratigraphicNormalModel.
+///
+class StratigraphicNormalModel: public GeologicPlane, public StratigraphicModelBase
 {
 public:
-    typedef Eigen::Matrix<ScalarT, 3, 1> Vector3;
+    //! smart pointer type
+    typedef typename boost::shared_ptr<StratigraphicNormalModel> Ptr;
 
-
-    //constructor
+    //! constructor
     StratigraphicNormalModel();
 
-    //! set the stratigraphic normal
-    void setNormal(ScalarT x, ScalarT y, ScalarT z) {normal(0) = x; normal(1)=y; normal(2)=z; normalizeModel();}
+    //! set a stratigraphi shift
+    /**
+     * setStratigraphicShift a point that will lay on the plane rapresented by this model
+     * will have this value as stratigraphic position.
+     */
+    void setStratigraphicShift(float sp) {stratigraphic_shift_ = sp;}
 
-    //! set normal using a point cloud of points laying on a plane
-    int setNormalFromSingleCloud(pcl::PointCloud<pcl::PointXYZ> * one_plane_cloud, ScalarT &rms);
+    //! get back model-associated strat pos
+    float getStratigraphicShift() const {return stratigraphic_shift_;}
 
-    //! set the intercept of the model
-    void setModelIntercept(ScalarT intercept) {intercept = intercept;}
-
-    //////////////////////////////////// GETTERS
-
-    //! get back the normal
-    Vector3 getNormal() {return normal;}
-
-    void getNormal(ScalarT &x, ScalarT &y, ScalarT &z) {x = normal(0); y=normal(1); z=normal(2);}
-
-    //! get back model intercept
-    ScalarT getModelIntercept() {return intercept;}
+    /// from StratigraphicModelBase
+    virtual float getStratigraphicPosition(const Eigen::Vector3f point);
+    virtual Eigen::Vector3f getStratigraphicNormal(const Eigen::Vector3f point);
 
 private:
-
-
-    //! the normal of the model
-    Vector3  normal;
-
-    //! the intercept of the model
-    ScalarT intercept;
-public:
-    //! get the stratigraphic position for a point
-    inline ScalarT getSPAt(const ScalarT &x, const ScalarT &y, const ScalarT &z) const
-    {
-        Vector3 point;
-        point(0) = x; point(1) = y; point(2) = z;
-        return point.dot(normal) + intercept;
-    }
-
-    inline ScalarT getSPAt(const ScalarT * p) const
-    {
-        return getSPAt(*p, *(p+1), *(p+2));
-    }
-
-    void normalizeModel() {normal = normal/normal.norm();}
-
+    //! the stratigraphic shift for this normal measure
+    float stratigraphic_shift_;
 
 };
 

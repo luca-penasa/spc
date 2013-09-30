@@ -9,9 +9,14 @@
 #include <ccPlane.h>
 
 #include <spc/geology/stratigraphic_normal_model.h>
+#include <spc/geology/stratigraphic_evaluator.h>
+
 #include <qPCL/PclUtils/utils/cc2sm.h>
 
 #include <pcl/io/pcd_io.h>
+
+
+#include <spc/geology/normal_estimator.h>
 
 ComputeStratigraphicPosition::ComputeStratigraphicPosition(ccPluginInterface * parent_plugin): BaseFilter(FilterDescription(   "Compute Stratigraphic Position",
                                                                                               "Compute Stratigraphic Position",
@@ -61,13 +66,14 @@ ComputeStratigraphicPosition::compute()
     }
 
 
+    spc::StratigraphicNormalModel model;
 
-    spc::StratigraphicNormalModel<float> model;
 
     switch(m_parameters.method)
     {
     case (ComputeStratigraphicPositionDlg::GIVE_NORMAL):
     {
+
 
         float x,y,z;
         x= m_parameters.normal_vector.x;
@@ -75,7 +81,7 @@ ComputeStratigraphicPosition::compute()
         z= m_parameters.normal_vector.z;
 
         model.setNormal(x,y,z);
-        model.setModelIntercept(m_parameters.model_intercept);
+        model.setStratigraphicShift(m_parameters.model_intercept);
 
         ccConsole::Print("Using normal: %f, %f, %f", x,y,z);
         break;
@@ -88,18 +94,23 @@ ComputeStratigraphicPosition::compute()
         cc2smReader conv;
         conv.setInputCloud(m_parameters.cloud);
         sensor_msgs::PointCloud2 sm_cloud = conv.getXYZ();
-        pcl::PointCloud<pcl::PointXYZ> * pcl_cloud  =new pcl::PointCloud<pcl::PointXYZ>;
+        pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_cloud  (new pcl::PointCloud<pcl::PointXYZ>);
         pcl::fromROSMsg(sm_cloud, *pcl_cloud);
 
         float rms;
-        model.setNormalFromSingleCloud(pcl_cloud, rms);
+        //get an estimate of the normal
+        spc::NormalEstimator estimator;
+        estimator.addPlanarCloud(pcl_cloud);
+        estimator.estimateNormalAsAverage();
+
+        model = estimator.getNormalModel();
 
         ccConsole::Print("Fitted stratigraphic model with RMS: %f", rms);
 
-        float x,y,z;
-        model.getNormal(x,y,z);
-        ccConsole::Print("Fitted normal: %f, %f, %f", x,y,z);
-        model.setModelIntercept(m_parameters.sp_value);
+        Eigen::Vector3f n = model.getNormal();
+
+        ccConsole::Print("Fitted normal: %f, %f, %f", n(0),n(1),n(2));
+        model.setStratigraphicShift(m_parameters.sp_value);
         break;
 
 
@@ -109,11 +120,11 @@ ComputeStratigraphicPosition::compute()
     //if normal to strata checkbox is toggled, compute an alternative normal
     if (m_dialog->getCrossSPCheckBox())
     {
-        spc::StratigraphicNormalModel<float>::Vector3 normal = model.getNormal(); //get back the normal from model
+        Eigen::Vector3f normal = model.getNormal(); //get back the normal from model
         //we need to compute the cloud's best fit
         ccPlane * plane = in_cloud->fitPlane();
         CCVector3 N(plane->getGLTransformation().getColumn(2));
-        spc::StratigraphicNormalModel<float>::Vector3 cloud_normal;
+        Eigen::Vector3f cloud_normal;
         cloud_normal(0) = N[0];
         cloud_normal(1) = N[1];
         cloud_normal(2) = N[2];
@@ -121,17 +132,22 @@ ComputeStratigraphicPosition::compute()
         //cross product between the two
         auto new_normal = cloud_normal.cross(normal);
 
-        model.setNormal(new_normal(0),new_normal(1),new_normal(2));
-        model.setModelIntercept(0.0f); //just to be sure!
+        model.setNormal(new_normal);
+        model.setStratigraphicShift(0.0f); //just to be sure!
     }
 
+    ///NOTE we should use here a stratigraphic evaluator class to evaluate the scalar field!
     ccScalarField * sp_field = new ccScalarField;
     sp_field->reserve(in_cloud->size());
     for (int i = 0; i < in_cloud->size(); ++i)
     {
         CCVector3 p;
         in_cloud->getPoint(i, p);
-        float pos = model.getSPAt(p.u);
+
+        Eigen::Vector3f eigp (p[0], p[1], p[2]);
+
+        float pos = model.getStratigraphicPosition(eigp);
+
         sp_field->setValue(i, pos);
     }
 

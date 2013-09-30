@@ -5,6 +5,7 @@
 #include <qPCL/PclUtils/filters/BaseFilter.h>
 #include <ComputeTimeSeries.h>
 #include <ComputeStratigraphicPosition.h>
+#include <fitGeologicalOrientation.h>
 #include <split_point_cloud.h>
 #include <plot_2d.h>
 #include <test.h>
@@ -54,6 +55,7 @@ void qGEO::getActions(QActionGroup& group)
         addFilter( new ComputeStratigraphicPosition(this) );
         addFilter( new ComputeTimeSeries(this));
         addFilter(new SplitPointCloud(this));
+        addFilter(new FitGeologicalOrientation(this));
         addFilter(new Plot2D(this));
     }
 

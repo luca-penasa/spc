@@ -6,6 +6,7 @@ set(SPC_LIBRARIES CACHE INTERNAL "SPC libs" FORCE)
 
 option(BUILD_SPC_SHARED "Build spc library as a shared lib." ON)
 option(BUILD_TOOLS "Build the tools." ON)
+option(BUILD_SANDBOX_TOOLS "Build sandbox tools." OFF)
 option(BUILD_MICMAC_RELATED "Build MICMAC-related code." ON)
 option(BUILD_PYTHON_WRAPPINGS "Build python interface for the library. Only some classes have been wrapped!" ON)
 option(BUILD_SPC_DOC "Build SPC doc" OFF)
@@ -27,7 +28,9 @@ link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
 
 # Standard set of flags for c++
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fopenmp -fPIC -lpthread -lgcc_s")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fopenmp -fPIC -lpthread -lgcc_s")
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++0x -fopenmp -fPIC -lpthread")
 
 #set(CMAKE_BUILD_TYPE DEBUG) #force it to debug for now
 
@@ -100,5 +103,10 @@ if(BUILD_TOOLS)
     add_subdirectory(tools)
 endif()
 
-add_subdirectory(sandbox)
+#also tools if needed
+if(BUILD_SANDBOX_TOOLS)
+    add_subdirectory(sandbox)
+endif()
+
+#add_subdirectory(sandbox)
 

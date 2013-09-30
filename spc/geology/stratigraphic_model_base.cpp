@@ -3,14 +3,13 @@
 namespace spc
 {
 
-template <typename ScalarT>
-StratigraphicModelBase<ScalarT>::StratigraphicModelBase()
+
+StratigraphicModelBase::StratigraphicModelBase()
 {
 }
 
 
 /// INST
 
-template class StratigraphicModelBase<float>;
-template class StratigraphicModelBase<double>;
+
 } //end nspace

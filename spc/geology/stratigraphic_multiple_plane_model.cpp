@@ -2,12 +2,14 @@
 
 //namespace spc
 //{
-//StratigraphicMultiplePlanesModel::ccStratigraphicMultiplePlanesModel()
+
+//template <typename ScalarT>
+//StratigraphicMultiplePlanesModel<ScalarT>::StratigraphicMultiplePlanesModel()
 //{
 //}
 
-
-//spc::ScalarT StratigraphicMultiplePlanesModel::getAverageSPForReferenceCloud(int id)
+//template<typename ScalarT>
+//ScalarT StratigraphicMultiplePlanesModel<ScalarT>::getAverageSPForReferenceCloud(int id)
 //{
 
 //    std::vector<double> predicted_sp = getPredictedSPForReferenceCloud(id);
@@ -21,10 +23,11 @@
 //    return average;
 //}
 
-//std::vector<double>
-//StratigraphicMultiplePlanesModel::getAverageSPForAllClouds()
+//template<typename ScalarT>
+//std::vector<ScalarT>
+//StratigraphicMultiplePlanesModel<ScalarT>::getAverageSPForAllClouds()
 //{
-//    std::vector<double> averages;
+//    std::vector<ScalarT> averages;
 //    averages.resize(m_reference_clouds.size());
 //    for (int i = 0; i < m_reference_clouds.size(); ++i)
 //    {
@@ -33,10 +36,11 @@
 
 //}
 
-//std::vector<double>
-//StratigraphicMultiplePlanesModel::getPredictedSPForReferenceCloud(int id)
+//template <typename ScalarT>
+//std::vector<ScalarT>
+//StratigraphicMultiplePlanesModel<ScalarT>::getPredictedSPForReferenceCloud(int id)
 //{
-//    std::vector<double> predicted_sp;
+//    std::vector<ScalarT> predicted_sp;
 //    ccPointCloud * cloud = m_reference_clouds.at(id);
 //    int n_points = cloud->size();
 

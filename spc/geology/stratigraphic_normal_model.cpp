@@ -11,43 +11,21 @@
 namespace spc
 {
 
-template<typename ScalarT>
-StratigraphicNormalModel<ScalarT>::StratigraphicNormalModel(): intercept(0)
+StratigraphicNormalModel::StratigraphicNormalModel(): GeologicPlane(), stratigraphic_shift_(0.0f)
 {
-    //default
-    normal(0) = 0;
-    normal(1) = 0;
-    normal(2) = 1; //default is vertical, on z
+    //nothing for now
 }
 
-template<typename ScalarT>
-int
-StratigraphicNormalModel<ScalarT>::setNormalFromSingleCloud(pcl::PointCloud<pcl::PointXYZ> *one_plane_cloud, ScalarT &rms)
+float StratigraphicNormalModel::getStratigraphicPosition(const Eigen::Vector3f point)
 {
-
-    Eigen::Vector4f n;
-    float c;
-    pcl::computePointNormal(*one_plane_cloud, n, c);
-
-
-    std::cout << n << std::endl;
-    normal = n.segment(0,3);
-
-    if(normal(2) < 0.0)
-        normal *= -1.0; //always with a positive 'Z' by default!
-
-
-    normalizeModel();
-
-    intercept = n(3);
-    pcl::console::print_value("%f", n(3));
-
-    return 1;
+    float dist = this->getDistanceFromOrigin();
+    return point.dot(getNormal()) - dist + stratigraphic_shift_ ;
 }
 
-/////INSTANTATIONS
+Eigen::Vector3f StratigraphicNormalModel::getStratigraphicNormal(const Eigen::Vector3f point)
+{
+    return getNormal();
+}
 
-template class StratigraphicNormalModel<float>;
-//template class StratigraphicNormalModel<double>;
 
 }//end nspace
