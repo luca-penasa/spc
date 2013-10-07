@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 2.8)
 project(geoutils)
 
 #lidarlib
-include_directories(/home/luca/apps/include)
+include_directories(/home/luca/apps/include) #why so hardcoded??
 link_directories(/home/luca/apps/lib)
 
 include_directories( ${CC_DLL_SOURCE_DIR}/include )
@@ -28,8 +28,8 @@ add_definitions(${VTK_DEFINITIONS})
 
 include_directories( ${Qwt6_INCLUDE_DIR} )
 
-file( GLOB header_list *.h dialogs/*.h)
-file( GLOB source_list *.cpp dialogs/*.cpp)
+file( GLOB header_list *.h dialogs/*.h ccOutOfCore/*.h)
+file( GLOB source_list *.cpp dialogs/*.cpp ccOutOfCore/*.cpp)
 file( GLOB ui_list *.ui dialogs/*.ui)
 file( GLOB qrc_list *.qrc )
 file( GLOB rc_list *.rc )
@@ -40,7 +40,6 @@ qt4_wrap_cpp( moc_list ${mocable_list} )
 QT4_WRAP_UI( generated_ui_list ${ui_list} )
 QT4_ADD_RESOURCES( generated_qrc_list ${qrc_list} )
 
-#set(additional_sources ${CC_SOURCE_DIR}/qCC/plugins/qPCL/PclUtils/filters/BaseFilter.cpp)
 
 add_library( ${PROJECT_NAME} STATIC ${header_list} ${source_list} ${moc_list} ${generated_ui_list} ${generated_qrc_list} ${rc_list})
 

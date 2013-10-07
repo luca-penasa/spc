@@ -3,6 +3,7 @@
 
 #include <spc/geology/stratigraphic_normal_model.h>
 #include <spc/geology/normal_estimator_base.h>
+#include <spc/geology/geologic_plane.h>
 #include <Eigen/Core>
 
 #include <pcl/point_cloud.h>
@@ -49,7 +50,7 @@ using namespace Eigen;
 /// estimates only ONE normal, as average of the normals, or as non-linear optimization of the normal
 /// using all the different planes.
 ///
-class NormalEstimator: public NormalEstimatorBase
+class NormalEstimator
 {
 public:
     NormalEstimator();
@@ -91,6 +92,20 @@ public:
         planar_clouds_.push_back(planar_cloud);
     }
 
+    bool getStratigraphicPositionForCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, float &sp)
+    {
+        for (int i = 0 ; i < planar_clouds_.size(); ++i)
+        {
+            if (cloud == planar_clouds_.at(i))
+            {
+                sp = stratigraphic_positions_.at(i);
+                return true;
+            }
+        }
+
+        return false; // only if we reach the end without a valid match
+    }
+
     ///
     /// \brief estimateNormalAsAverage permits to estimate a normal as average of a series
     /// of planes represented by clouds
@@ -115,6 +130,8 @@ public:
     GeologicPlane::Ptr
     fromSingleCloud(pcl::PointCloud<pcl::PointXYZ>::Ptr one_plane_cloud, float &rms);
 
+
+
     void estimateStratigraphicPositionsOfPlanes();
 
     void computeSquaredErrors();
@@ -126,7 +143,7 @@ public:
     //! set of input clouds, each is a plane in 3d
     std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr > planar_clouds_;
 
-    //! the model e need to estimate - actually the normal plus the strat pos.
+    //! the model we need to estimate - actually the normal plus the strat pos.
     StratigraphicNormalModel model_;
 
     /////// USED IN AVERAGE MODE //////////////

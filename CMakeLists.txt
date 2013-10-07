@@ -95,7 +95,7 @@ endif()
 add_subdirectory(spc)
 
 if(BUILD_QGEO_CC_PLUGIN) ##qGEO will use various things defined after spc
-    add_subdirectory(qGEO)
+    add_subdirectory(qGEO)    
 endif()
 
 #also tools if needed

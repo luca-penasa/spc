@@ -8,15 +8,16 @@
 #include <ccConsole.h>
 #include <ccPlane.h>
 
-#include <spc/geology/stratigraphic_normal_model.h>
+//#include <spc/geology/stratigraphic_normal_model.h>
 #include <spc/geology/stratigraphic_evaluator.h>
 
 #include <qPCL/PclUtils/utils/cc2sm.h>
 
 #include <pcl/io/pcd_io.h>
 
-
-#include <spc/geology/normal_estimator.h>
+#include <spc/geology/single_plane_model_from_one_cloud_estimator.h>
+//#include <spc/geology/normal_estimator.h>
+#include <spc/geology/single_plane_stratigraphic_model.h>
 
 ComputeStratigraphicPosition::ComputeStratigraphicPosition(ccPluginInterface * parent_plugin): BaseFilter(FilterDescription(   "Compute Stratigraphic Position",
                                                                                               "Compute Stratigraphic Position",
@@ -66,7 +67,9 @@ ComputeStratigraphicPosition::compute()
     }
 
 
-    spc::StratigraphicNormalModel model;
+    spc::SinglePlaneStratigraphicModel::Ptr model = spc::SinglePlaneStratigraphicModel::Ptr( new spc::SinglePlaneStratigraphicModel);
+
+//    spc::SinglePlaneModelFromOneCloudEstimator estimator;
 
 
     switch(m_parameters.method)
@@ -75,15 +78,22 @@ ComputeStratigraphicPosition::compute()
     {
 
 
+//        Vector4f pars;
+//        pars(3) = m_parameters.model_intercept;
+
         float x,y,z;
         x= m_parameters.normal_vector.x;
         y= m_parameters.normal_vector.y;
         z= m_parameters.normal_vector.z;
 
-        model.setNormal(x,y,z);
-        model.setStratigraphicShift(m_parameters.model_intercept);
+        Vector4f pars(x,y,z, m_parameters.model_intercept);
 
-        ccConsole::Print("Using normal: %f, %f, %f", x,y,z);
+
+        model->setParameters(pars);
+//        model.setNormal(x,y,z);
+//        model.setStratigraphicShift(m_parameters.model_intercept);
+
+        ccConsole::Print("Using normal: %f, %f, %f", pars(0), pars(1), pars(2));
         break;
 
     }
@@ -97,20 +107,20 @@ ComputeStratigraphicPosition::compute()
         pcl::PointCloud<pcl::PointXYZ>::Ptr pcl_cloud  (new pcl::PointCloud<pcl::PointXYZ>);
         pcl::fromROSMsg(sm_cloud, *pcl_cloud);
 
+
+
         float rms;
         //get an estimate of the normal
-        spc::NormalEstimator estimator;
-        estimator.addPlanarCloud(pcl_cloud);
-        estimator.estimateNormalAsAverage();
+        spc::SinglePlaneModelFromOneCloudEstimator estimator;
+        estimator.setInputCloud(pcl_cloud);
+        estimator.estimate(*model);
 
-        model = estimator.getNormalModel();
+        Vector3f n = model->getUnitNormal();
 
-        ccConsole::Print("Fitted stratigraphic model with RMS: %f", rms);
 
-        Eigen::Vector3f n = model.getNormal();
 
         ccConsole::Print("Fitted normal: %f, %f, %f", n(0),n(1),n(2));
-        model.setStratigraphicShift(m_parameters.sp_value);
+
         break;
 
 
@@ -120,9 +130,9 @@ ComputeStratigraphicPosition::compute()
     //if normal to strata checkbox is toggled, compute an alternative normal
     if (m_dialog->getCrossSPCheckBox())
     {
-        Eigen::Vector3f normal = model.getNormal(); //get back the normal from model
+        Eigen::Vector3f normal = model->getUnitNormal(); //get back the normal from model
         //we need to compute the cloud's best fit
-        ccPlane * plane = in_cloud->fitPlane();
+        ccPlane * plane = ccPlane::Fit( in_cloud );
         CCVector3 N(plane->getGLTransformation().getColumn(2));
         Eigen::Vector3f cloud_normal;
         cloud_normal(0) = N[0];
@@ -132,8 +142,7 @@ ComputeStratigraphicPosition::compute()
         //cross product between the two
         auto new_normal = cloud_normal.cross(normal);
 
-        model.setNormal(new_normal);
-        model.setStratigraphicShift(0.0f); //just to be sure!
+        model->setUnitNormal(new_normal);
     }
 
     ///NOTE we should use here a stratigraphic evaluator class to evaluate the scalar field!
@@ -146,7 +155,7 @@ ComputeStratigraphicPosition::compute()
 
         Eigen::Vector3f eigp (p[0], p[1], p[2]);
 
-        float pos = model.getStratigraphicPosition(eigp);
+        float pos = model->getStratigraphicPosition(eigp);
 
         sp_field->setValue(i, pos);
     }

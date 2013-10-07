@@ -25,7 +25,7 @@ public:
     typedef typename boost::shared_ptr<GeologicPlane> Ptr;
 
     //! constructor
-    GeologicPlane();
+    GeologicPlane(Vector3f normal = Vector3f(0,0,1), Vector3f center = Vector3f(0,0,0));
 
     //! set the stratigraphic normal
     void setNormal(float x, float y, float z) {normal_(0) = x; normal_(1)=y; normal_(2)=z; normalize();}
@@ -37,13 +37,13 @@ public:
     void setPosition(float x, float y, float z) {position_(0) = x; position_(1)=y; position_(2)=z;}
 
     //! set a spatial position for this measure via a single eigen vector
-    void setPosition(Vector3f v) {position_ = v;}
+    void setPosition(Vector3f v) { position_ = v; }
 
     //////////////////////////////////// GETTERS
 
     //! the distance of this measure from the origin (0.0, 0.0, 0.0) along the normal
     /**
-     * Is like to get the "d" parameter in ax + by + cz + d = 0
+     * Is like to get the "d" parameter in ax + by + cz + d = 0 (in normal hessian form)
      */
     float getDistanceFromOrigin() const ;
 
@@ -57,6 +57,11 @@ public:
     float getPointToPlaneDistance(const Vector3f &point) const
     {
         return point.dot(normal_) - getDistanceFromOrigin();
+    }
+
+    Vector3f projectOnPlane(const Vector3f &point) const
+    {
+        return point - getNormal() * getPointToPlaneDistance(point);
     }
 
     //// OPERATORS AND USEFUL METHODS
@@ -78,7 +83,7 @@ public:
     static GeologicPlane::Ptr fromStandardEq(const Vector4f pars);
 
 
-private:
+protected:
     //! normal of the plane
     Vector3f normal_;
 

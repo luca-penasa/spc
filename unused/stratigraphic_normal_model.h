@@ -39,10 +39,21 @@ public:
     float getStratigraphicShift() const {return stratigraphic_shift_;}
 
     /// from StratigraphicModelBase
-    virtual float getStratigraphicPosition(const Eigen::Vector3f point);
-    virtual Eigen::Vector3f getStratigraphicNormal(const Eigen::Vector3f point);
+    virtual float getStratigraphicPosition(const Vector3f &point);
 
-private:
+    virtual Vector3f getStratigraphicNormal(const Vector3f &point);
+
+
+    //! get a GeologicPlane from the model
+    /**
+     * the model is made with a plane in space, from which the stratigraphic position
+     * is evaluated as "distance from that plane". This method permits to get other planes
+     * rather than the one defining the model itself.
+     */
+
+    GeologicPlane::Ptr getGeologicPlaneAtStratigraphicPosition(const float sp, const pcl::PointCloud<pcl::PointXYZ> &cloud ) const;
+
+protected:
     //! the stratigraphic shift for this normal measure
     float stratigraphic_shift_;
 

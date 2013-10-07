@@ -3,7 +3,7 @@
 namespace spc
 {
 
-GeologicPlane::GeologicPlane()
+GeologicPlane::GeologicPlane(Vector3f normal /*= Vector3f(0,0,1)*/, Vector3f center /* = Vector3f(0,0,0)*/)
 {
     normal_.setZero();
     normal_(2) = 1.0;
@@ -32,9 +32,7 @@ GeologicPlane::Ptr GeologicPlane::fromStandardEq(const Vector4f pars)
 
 float GeologicPlane::getDistanceFromOrigin() const
 {
-//    this->normalize(); //be sure it is normalized
     Eigen::Vector3f c = this->getPosition();
-//        std::cout << c << " n: " << this->getNormal() << std::endl;
     return c.dot(this->getNormal()); //project the center on the normal and get the distance
 }
 

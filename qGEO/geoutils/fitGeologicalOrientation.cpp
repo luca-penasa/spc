@@ -1,9 +1,10 @@
 #include "fitGeologicalOrientation.h"
 #include <qPCL/PclUtils/utils/cc2sm.h>
 
-#include <spc/geology/normal_estimator.h>
+#include <spc/geology/single_plane_model_from_multi_cloud_estimator.h>
+#include <spc/geology/single_plane_stratigraphic_model.h>
 
-#include <ccPlaneOrientation.h>
+#include <ccOutOfCore/ccOrientation.h>
 
 #include <ccArrow.h>
 
@@ -29,13 +30,11 @@ FitGeologicalOrientation::compute()
     ccHObject::Container entities;
     this->getSelectedEntitiesThatAreCCPointCloud(entities);
 
-    spc::NormalEstimator estimator;
-
-    for (int i = 0 ; i < entities.size(); ++i)
+    //convert them to pcl point clouds
+    std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> clouds;
+    for (auto ent: entities)
     {
-
-
-        ccPointCloud * cloud = ccHObjectCaster::ToPointCloud( entities[i] );
+        ccPointCloud * cloud = ccHObjectCaster::ToPointCloud( ent );
 
         cc2smReader reader;
         reader.setInputCloud(cloud);
@@ -45,16 +44,25 @@ FitGeologicalOrientation::compute()
 
         pcl::fromROSMsg(sm_cloud, *pcl_cloud);
 
-        estimator.addPlanarCloud(pcl_cloud);
+        clouds.push_back(pcl_cloud);
 
-        std::cout << "adding cloud with points: " << pcl_cloud->size() << std::endl;
+    }
 
+    //set up an estimator
+    spc::SinglePlaneModelFromMultiCloudEstimator estimator;
+
+    for (auto cloud: clouds) //add the single clouds
+    {
+        estimator.addInputCloud(cloud);
+
+        std::cout << "adding cloud with points: " << cloud->size() << std::endl;
     }
 
     std::cout << "starting opimization" << std::endl;
 
+    spc::SinglePlaneStratigraphicModel model;
 
-    int status = estimator.estimateNormalAsNonlinearOpt();
+    int status = estimator.estimate(model);
 
     if (status == 0)
     {
@@ -64,30 +72,45 @@ FitGeologicalOrientation::compute()
 
     std::cout << "ended optimizing" << std::endl;
 
-    spc::StratigraphicNormalModel model = estimator.getNormalModel();
+    Vector3f n = model.getUnitNormal();
+
+    std::vector<float> sps = estimator.getStratigraphicPositionsOfClouds();
+
+    //now for each entity we send back a ccPlaneOrientation for visualizing the result
+    for (int i= 0; i < clouds.size(); ++i)
+    {
+
+        //each cloud will have the same normal but different centers
+
+        //get the center
+        Vector4f centroid;
+        pcl::compute3DCentroid(*(clouds.at(i)), centroid);
+
+        Vector3f c = centroid.segment(0,3);
+
+        CCVector3 cc (c(0), c(1), c(2));
+        CCVector3 cn (n(0), n(1), n(2));
+
+        ccOrientation * orientation = new ccOrientation (cc, cn, 0.05f);
+
+        orientation->setName("Orientation");
+
+        orientation->setVisible(true);
+
+        newEntity(orientation);
+    }
 
 
-    Eigen::Vector3f n = model.getNormal();
-    Eigen::Vector3f c = model.getPosition();
+//    //we also store the used cloud in a group, child of the orientation.
+//    ccHObject * folder = new ccHObject;
+//    folder->setName("Fitted clouds");
+//    folder->setEnabled(false);
+//    for (auto ent: entities)
+//        folder->addChild( ccHObjectCaster::ToGenericPointCloud(ent)->clone() );
 
-    CCVector3 cn = CCVector3(n(0), n(1), n(2));
-    CCVector3 cc = CCVector3(c(0), c(1), c(2));
+//    orientation->addChild(folder);
 
-    ccPlaneOrientation * orientation = new ccPlaneOrientation(cc, cn, 0.05);
-
-    orientation->setVisible(true);
-
-
-    //we also store the used cloud in a group, child of the orientation.
-    ccHObject * folder = new ccHObject;
-    folder->setName("Fitted clouds");
-    for (auto ent: entities)
-        folder->addChild( ccHObjectCaster::ToGenericPointCloud(ent)->clone() );
-
-    orientation->addChild(folder);
-
-    newEntity(orientation);
-
+    return 1;
 }
 
 int FitGeologicalOrientation::checkSelected()
