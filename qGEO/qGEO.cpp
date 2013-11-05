@@ -5,15 +5,17 @@
 #include <qPCL/PclUtils/filters/BaseFilter.h>
 #include <ComputeTimeSeries.h>
 #include <ComputeStratigraphicPosition.h>
-#include <fitGeologicalOrientation.h>
+#include <FitGeologicalOrientation.h>
+#include <EvaluateStratigraphicPosition.h>
+#include <Properties.h>
+#include <define2dselection.h>
+#include <SetUpNewSeries.h>
 #include <split_point_cloud.h>
 #include <plot_2d.h>
 #include <test.h>
 
 
-qGEO::qGEO()
-	: m_toolbar(0)
-	, m_menu(0)
+qGEO::qGEO(): m_menu(0)
 {
 }
 
@@ -56,7 +58,11 @@ void qGEO::getActions(QActionGroup& group)
         addFilter( new ComputeTimeSeries(this));
         addFilter(new SplitPointCloud(this));
         addFilter(new FitGeologicalOrientation(this));
+        addFilter(new EvaluateStratigraphicPosition(this));
         addFilter(new Plot2D(this));
+        addFilter(new Properties(this));
+        addFilter(new Define2DSelection(this));
+        addFilter(new SetUpNewSeries(this));
     }
 
     for (std::vector<BaseFilter*>::const_iterator it = m_filters.begin(); it != m_filters.end(); ++it)
@@ -88,7 +94,8 @@ int qGEO::addFilter(BaseFilter * filter)
 
 ccCurvePlotterDlg * qGEO::getCurrentPlotter()
 {
-    Plot2D * example_class = new Plot2D;
+    Plot2D * example_class = new Plot2D; // this is only an instance for testing
+                                         // the typeid in the for...
     //cycle on all enabled filters:
     for (auto  f: m_filters)
     {

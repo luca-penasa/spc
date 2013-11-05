@@ -1,10 +1,11 @@
-#include "fitGeologicalOrientation.h"
+#include "FitGeologicalOrientation.h"
 #include <qPCL/PclUtils/utils/cc2sm.h>
 
 #include <spc/geology/single_plane_model_from_multi_cloud_estimator.h>
 #include <spc/geology/single_plane_stratigraphic_model.h>
 
 #include <ccOutOfCore/ccOrientation.h>
+#include <ccOutOfCore/ccSinglePlaneStratigraphicModel.h>
 
 #include <ccArrow.h>
 
@@ -26,6 +27,9 @@ FitGeologicalOrientation::FitGeologicalOrientation(ccPluginInterface * parent_pl
 int
 FitGeologicalOrientation::compute()
 {
+    ccHObject::Container ents;
+
+
 
     ccHObject::Container entities;
     this->getSelectedEntitiesThatAreCCPointCloud(entities);
@@ -64,6 +68,11 @@ FitGeologicalOrientation::compute()
 
     int status = estimator.estimate(model);
 
+    //we got a model return it as a ccObject
+    ccSinglePlaneStratigraphicModel * ccmodel = new ccSinglePlaneStratigraphicModel(model);
+    ccmodel->setName(QString("Single Plane Stratigraphic Model"));
+    newEntity(ccmodel);
+
     if (status == 0)
     {
         std::cout << "NOT CONVERGED!" << std::endl;
@@ -76,7 +85,7 @@ FitGeologicalOrientation::compute()
 
     std::vector<float> sps = estimator.getStratigraphicPositionsOfClouds();
 
-    //now for each entity we send back a ccPlaneOrientation for visualizing the result
+    //now for each entity we send back a ccOrientation for visualizing the result
     for (int i= 0; i < clouds.size(); ++i)
     {
 
@@ -115,8 +124,9 @@ FitGeologicalOrientation::compute()
 
 int FitGeologicalOrientation::checkSelected()
 {
-    ccHObject::Container ents;
-    this->getSelectedEntitiesThatAreCCPointCloud(ents);
+    ccHObject::Container ents, planes, polys;
+    getSelectedEntitiesThatAre(CC_POINT_CLOUD, ents);
+
     if (ents.size() > 0)
         return 1;
     else

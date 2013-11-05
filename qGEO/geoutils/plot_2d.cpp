@@ -24,7 +24,6 @@ int Plot2D::openOutputDialog()
     else
     {
         m_dialog->setVisible(true);
-//        m_dialog->raise();
     }
     return 1;
 }

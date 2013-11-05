@@ -6,5 +6,9 @@
         <file>icons/split_cloud.png</file>
         <file>icons/plot_dlg.png</file>
         <file>icons/stratigraphic_normal.png</file>
+        <file>icons/ev_sp.png</file>
+        <file>icons/test1.png</file>
+        <file>icons/test2.png</file>
+        <file>icons/new_series.png</file>
     </qresource>
 </RCC>

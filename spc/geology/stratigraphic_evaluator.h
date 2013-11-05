@@ -15,9 +15,9 @@ class StratigraphicEvaluator
 public:
     StratigraphicEvaluator();
 
-    void setInputModel(const StratigraphicModelBase::Ptr model)
+    void setInputModel(StratigraphicModelBase * model)
     {
-        //ensure the indices vector is clear
+        //ensure also the indices vector is clear
         model_ = model;
         indices_.clear();
     }
@@ -40,24 +40,29 @@ public:
         }
 
         std::vector<float> out;
-        out.reserve(indices_.size());
+        out.resize(indices_.size());
 
         //now perform computations
-#pragma omp parallel for shared (out)
+//#pragma omp parallel for shared (out)
         for (int i = 0 ; i < indices_.size(); ++i)
         {
             int id = indices_.at(i);
             pcl::PointXYZ point = in_cloud_->at(id);
             Eigen::Vector3f p(point.x, point.y, point.z);
 
-            out[i] = model_->getStratigraphicPosition(p);
+            out.at(i) = model_->getStratigraphicPosition(p);
+
         }
 
-        output_ = out;
+
+        output_ = out; //do a copy
 
         return 1; //to confirm everything is fine
+    }
 
-
+    std::vector<float> getOutput()
+    {
+        return output_;
     }
 
 private:
@@ -65,7 +70,7 @@ private:
     /// \brief model_ is a pointer to a stratigraphic model that implements the virtual methods of
     /// a StratigraphicModelBase
     ///
-    StratigraphicModelBase::Ptr model_;
+    StratigraphicModelBase * model_;
 
 
     //! \brief in_cloud_ is the input cluod on which to compute stratigraphic positions
@@ -76,7 +81,7 @@ private:
     std::vector<int> indices_;
 
 
-    //! \brief output_ it the results of all computatinos
+    //! \brief output_ it the results of all computations
     std::vector<float> output_;
 
 

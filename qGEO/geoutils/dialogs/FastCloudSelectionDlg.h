@@ -3,6 +3,8 @@
 
 #include <QDialog>
 
+#include <ccHObject.h>
+
 class ccHObject;
 
 namespace Ui {
@@ -17,16 +19,23 @@ public:
     explicit FastCloudSelectionDlg(QWidget *parent = 0);
     ~FastCloudSelectionDlg();
 
-    void updateList(std::vector<ccHObject *> list);
+    void updateList(ccHObject::Container list);
 
-    int getSelectedObjectIndex() {return m_selected_object;}
+    int getSelectedObjectIndex() {return m_selected_object_id;}
+
+    ccHObject * getSelectedObject() const
+    {
+        return m_current_list.at(m_selected_object_id);
+    }
 
 private slots:
     void readSelection();
     
 private:
     Ui::FastCloudSelectionDlg *ui;
-    int m_selected_object;
+    int m_selected_object_id;
+
+    ccHObject::Container m_current_list;
 };
 
 #endif // FASTCLOUDSELECTIONDLG_H

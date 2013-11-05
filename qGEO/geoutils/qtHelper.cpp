@@ -178,3 +178,39 @@ QString suggestIncrementalName(QString name)
     return name + QString("_") + QString(1);
 
 }
+
+
+ObjectSelectionComboBox *ObjectSelectionComboBox::fromContainer(ccHObject::Container &cont)
+{
+    ObjectSelectionComboBox * combo = new ObjectSelectionComboBox;
+
+    for (int i = 0; i < cont.size() ; i++)
+    {
+        ccHObject * object = cont.at(i);
+
+        //put in a qVariant
+        QVariant data;
+        data.setValue( (void *) object);
+        QString name = object->getName();
+
+        combo->addItem(name, data);
+    }
+
+    return combo;
+}
+
+
+void ObjectSelectionComboBox::addObjects(ccHObject::Container &cont)
+{
+    for (int i = 0; i < cont.size() ; i++)
+    {
+        ccHObject * object = cont.at(i);
+
+        //put in a qVariant
+        QVariant data;
+        data.setValue( (void *) object);
+        QString name = object->getName();
+
+        this->addItem(name, data);
+    }
+}

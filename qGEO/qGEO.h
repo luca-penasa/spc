@@ -59,6 +59,8 @@ public:
     //! for now only one plotter at a time is possible!
     ccCurvePlotterDlg * getCurrentPlotter();
 
+
+
 public slots:
 	//! Handles new entity
 	void handleNewEntity(ccHObject*);
@@ -71,8 +73,6 @@ public slots:
 	
 
 protected:
-	//! Toolbar
-	QToolBar* m_toolbar;
 
 	//! Menu
     QMenu* m_menu;

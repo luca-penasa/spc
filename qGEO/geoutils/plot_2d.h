@@ -13,7 +13,9 @@ public:
     virtual int compute();
 
     int checkSelected() {return 1;}
+
     int openOutputDialog() ;
+
     ccCurvePlotterDlg * getPlot() {return m_dialog;}
 
 private:

@@ -10,7 +10,7 @@ FastCloudSelectionDlg::FastCloudSelectionDlg(QWidget *parent) :
     ui(new Ui::FastCloudSelectionDlg)
 {
 
-    m_selected_object = -1;
+    m_selected_object_id = -1;
     ui->setupUi(this);
 
     connect(this, SIGNAL(accepted()) , this, SLOT(readSelection()) );
@@ -23,13 +23,17 @@ FastCloudSelectionDlg::~FastCloudSelectionDlg()
 }
 
 void
-FastCloudSelectionDlg::updateList(std::vector<ccHObject *> list)
-{
-    ui->objects_list->reset();
+FastCloudSelectionDlg::updateList(ccHObject::Container list)
+{    
+//    ui->objects_list->reset();
+
+    ui->objects_list->clear();
     for (int i = 0; i < list.size(); ++i)
     {
         ui->objects_list->addItem(list.at(i)->getName());
     }
+
+    m_current_list = list;
 }
 
 void
@@ -45,7 +49,7 @@ FastCloudSelectionDlg::readSelection()
        return;
    }
 
-   m_selected_object = selected_items.at(0).row();
+   m_selected_object_id = selected_items.at(0).row();
 
 }
 
