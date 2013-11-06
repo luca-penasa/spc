@@ -4,10 +4,10 @@
 #include <dialogs/ccProperties.h>
 
 
-#define MY_CC_OBJECT_BIT                    0x1000000
-#define MY_CC_SINGLE_PLANE_MODEL_BIT        0x2000000
-#define MY_CC_ORIENTATION_BIT               0x4000000
-#define MY_CC_STRAT_MODEL_BIT               0x8000000
+#define MY_CC_OBJECT_BIT                    0x10000001
+#define MY_CC_SINGLE_PLANE_MODEL_BIT        0x10000002
+#define MY_CC_ORIENTATION_BIT               0x10000004
+#define MY_CC_STRAT_MODEL_BIT               0x10000008
 
 enum MY_CC_CLASS_ENUM {
     MY_CC_OBJECT                 = MY_CC_OBJECT_BIT,
