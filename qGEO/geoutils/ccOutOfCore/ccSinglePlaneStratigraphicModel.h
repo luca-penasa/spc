@@ -16,9 +16,11 @@ public:
 
     ccSinglePlaneStratigraphicModel(const spc::SinglePlaneStratigraphicModel model);
 
+    virtual QString getName() {return QString("SinglePlaneStratigraphicModel");}
+
 
     //! Returns class ID
-    virtual CC_CLASS_ENUM getClassID() const {return static_cast<CC_CLASS_ENUM> (MY_CC_SINGLE_PLANE_MODEL);}
+    virtual CC_CLASS_ENUM getClassID() const { static_cast<CC_CLASS_ENUM> (MY_CC_SINGLE_PLANE_MODEL);}
 };
 
 #endif // CCSINGLEPLANENORMALMODEL_H

@@ -56,13 +56,13 @@ class ObjectSelectionComboBox: public QComboBox
 public:
     ObjectSelectionComboBox(QWidget * parent =0): QComboBox(parent), m_has_none(false) {}
 
-    static ObjectSelectionComboBox * fromContainer(ccHObject::Container &cont);
+    static ObjectSelectionComboBox * fromContainer(ccHObject::Container &cont, bool none);
 
     void addObjects(ccHObject::Container & cont);
 
-    void setHasNone(bool has) {m_has_none = has;}
+    void setNone(bool has) {m_has_none = has;}
 
-    bool getHasNone() const {return m_has_none;}
+    bool hasNone() const {return m_has_none;}
 
 private:
     bool m_has_none;

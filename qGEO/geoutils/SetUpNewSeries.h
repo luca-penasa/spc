@@ -18,7 +18,7 @@ protected:
     virtual int checkSelected();
 
 private:
-    AddNewSeries * m_dialog;
+    AddNewSeriesDlg * m_dialog;
 
 };
 

@@ -1,36 +1,60 @@
 #include "AddNewSeries.h"
 #include "ui_AddNewSeries.h"
 
-AddNewSeries::AddNewSeries(QWidget *parent) :
+AddNewSeriesDlg::AddNewSeriesDlg(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AddNewSeries)
 {
     ui->setupUi(this);
+    ui->comboArea->setNone(true); //area may be none!
+
 }
 
-AddNewSeries::~AddNewSeries()
+AddNewSeriesDlg::~AddNewSeriesDlg()
 {
     delete ui;
 }
 
-void AddNewSeries::setInputModels(ccHObject::Container &objects)
+void AddNewSeriesDlg::setInputModels(ccHObject::Container &objects)
 {
     ui->comboModel->clear();
     ui->comboModel->addObjects(objects);
 }
 
-void AddNewSeries::setInputClouds(ccHObject::Container &objects)
+void AddNewSeriesDlg::setInputClouds(ccHObject::Container &objects)
 {
     ui->comboCloud->clear();
     ui->comboCloud->addObjects(objects);
-
-
 }
 
-void AddNewSeries::setInputAreas(ccHObject::Container &objects)
+void AddNewSeriesDlg::setInputAreas(ccHObject::Container &objects)
 {
     ui->comboArea->clear();
     ui->comboArea->addObjects(objects);
+}
 
+ccHObject *AddNewSeriesDlg::getSelectedModel() const
+{
+    return getBackObjectFromCombo(ui->comboModel);
 
+}
+
+ccHObject *AddNewSeriesDlg::getSelectedCloud() const
+{
+    return getBackObjectFromCombo(ui->comboCloud);
+}
+
+ccHObject *AddNewSeriesDlg::getSelectedArea() const
+{
+    return getBackObjectFromCombo(ui->comboArea);
+}
+
+ccHObject *AddNewSeriesDlg::getBackObjectFromCombo(const QComboBox *combo) const
+{
+
+    QVariant data = combo->itemData(combo->currentIndex());
+
+    ccHObject * object = static_cast<ccHObject *> (data.data());
+
+    return object;
 }

@@ -3,17 +3,19 @@
 
 #include <QDialog>
 #include <ccHObject.h>
+#include <QComboBox>
+
 namespace Ui {
 class AddNewSeries;
 }
 
-class AddNewSeries : public QDialog
+class AddNewSeriesDlg : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit AddNewSeries(QWidget *parent = 0);
-    ~AddNewSeries();
+    explicit AddNewSeriesDlg(QWidget *parent = 0);
+    ~AddNewSeriesDlg();
 
     void setInputModels(ccHObject::Container &objects);
 
@@ -21,10 +23,19 @@ public:
 
     void setInputAreas(ccHObject::Container &objects);
 
+    ccHObject * getSelectedModel() const;
+
+    ccHObject * getSelectedCloud() const;
+
+    ccHObject * getSelectedArea() const;
+
+
+
 
 private:
     Ui::AddNewSeries *ui;
 
+    ccHObject * getBackObjectFromCombo(const QComboBox * combo) const;
 
 };
 

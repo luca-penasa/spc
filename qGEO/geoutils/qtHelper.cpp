@@ -180,9 +180,10 @@ QString suggestIncrementalName(QString name)
 }
 
 
-ObjectSelectionComboBox *ObjectSelectionComboBox::fromContainer(ccHObject::Container &cont)
+ObjectSelectionComboBox *ObjectSelectionComboBox::fromContainer(ccHObject::Container &cont, bool none)
 {
     ObjectSelectionComboBox * combo = new ObjectSelectionComboBox;
+    combo->setNone(none);
 
     for (int i = 0; i < cont.size() ; i++)
     {
@@ -195,6 +196,10 @@ ObjectSelectionComboBox *ObjectSelectionComboBox::fromContainer(ccHObject::Conta
 
         combo->addItem(name, data);
     }
+
+    if ( combo->hasNone() )
+        combo->addItem("None");
+
 
     return combo;
 }
@@ -213,4 +218,7 @@ void ObjectSelectionComboBox::addObjects(ccHObject::Container &cont)
 
         this->addItem(name, data);
     }
+
+    if (this->hasNone())
+        this->addItem("None");
 }

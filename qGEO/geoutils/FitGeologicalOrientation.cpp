@@ -73,6 +73,8 @@ FitGeologicalOrientation::compute()
     ccmodel->setName(QString("Single Plane Stratigraphic Model"));
     newEntity(ccmodel);
 
+    std::cout <<"asking clasid " << ccmodel->getClassID() << std::endl;
+
     if (status == 0)
     {
         std::cout << "NOT CONVERGED!" << std::endl;
@@ -106,7 +108,7 @@ FitGeologicalOrientation::compute()
 
         orientation->setVisible(true);
 
-        newEntity(orientation);
+        newEntity(orientation);        
     }
 
 
