@@ -2,7 +2,6 @@
 #include <dialogs/ComputeStratigraphicPositionDlg.h>
 
 //tmp
-//#include <iostream>
 #include <qtHelper.h>
 
 #include <ccConsole.h>
@@ -15,9 +14,8 @@
 
 #include <pcl/io/pcd_io.h>
 
-#include <spc/geology/single_plane_model_from_one_cloud_estimator.h>
-//#include <spc/geology/normal_estimator.h>
-#include <spc/geology/single_plane_stratigraphic_model.h>
+#include <spc/estimators/attitude_estimator.h>
+
 
 ComputeStratigraphicPosition::ComputeStratigraphicPosition(ccPluginInterface * parent_plugin): BaseFilter(FilterDescription(   "Compute Stratigraphic Position",
                                                                                               "Compute Stratigraphic Position",
@@ -67,7 +65,7 @@ ComputeStratigraphicPosition::compute()
     }
 
 
-    spc::SinglePlaneStratigraphicModel::Ptr model = spc::SinglePlaneStratigraphicModel::Ptr( new spc::SinglePlaneStratigraphicModel);
+    spc::SingleAttitudeModel::Ptr model = spc::SingleAttitudeModel::Ptr( new spc::SingleAttitudeModel);
 
 //    spc::SinglePlaneModelFromOneCloudEstimator estimator;
 
@@ -86,12 +84,10 @@ ComputeStratigraphicPosition::compute()
         y= m_parameters.normal_vector.y;
         z= m_parameters.normal_vector.z;
 
-        Vector4f pars(x,y,z, m_parameters.model_intercept);
+        Vector3f pars(x,y,z);
 
 
-        model->setParameters(pars);
-//        model.setNormal(x,y,z);
-//        model.setStratigraphicShift(m_parameters.model_intercept);
+        model->setNormal(pars);
 
         ccConsole::Print("Using normal: %f, %f, %f", pars(0), pars(1), pars(2));
         break;
@@ -111,8 +107,8 @@ ComputeStratigraphicPosition::compute()
 
         float rms;
         //get an estimate of the normal
-        spc::SinglePlaneModelFromOneCloudEstimator estimator;
-        estimator.setInputCloud(pcl_cloud);
+        spc::AttitudeEstimator estimator;
+        estimator.addInputCloud(pcl_cloud);
         estimator.estimate(*model);
 
         Vector3f n = model->getUnitNormal();
@@ -142,7 +138,7 @@ ComputeStratigraphicPosition::compute()
         //cross product between the two
         auto new_normal = cloud_normal.cross(normal);
 
-        model->setUnitNormal(new_normal);
+        model->setNormal(new_normal);
     }
 
     ///NOTE we should use here a stratigraphic evaluator class to evaluate the scalar field!

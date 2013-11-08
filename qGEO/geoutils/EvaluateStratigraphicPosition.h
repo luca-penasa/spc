@@ -4,7 +4,7 @@
 #include <qPCL/PclUtils/filters/BaseFilter.h>
 #include <dialogs/FastCloudSelectionDlg.h>
 
-#include <spc/geology/single_plane_stratigraphic_model.h>
+#include <spc/stratigraphy/single_attitude_model.h>
 
 #include <ccOutOfCore/ccSinglePlaneStratigraphicModel.h>
 
@@ -25,7 +25,7 @@ protected:
 private:
     FastCloudSelectionDlg * m_dialog;
 
-    ccSinglePlaneStratigraphicModel * m_model;
+    ccSingleAttitudeModel * m_model;
 };
 
 #endif // EVALUATESTRATIGRAPHICPOSITION_H

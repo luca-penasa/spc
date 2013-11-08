@@ -1,19 +1,29 @@
 #include "ccSinglePlaneStratigraphicModel.h"
 
-ccSinglePlaneStratigraphicModel::ccSinglePlaneStratigraphicModel()
+ccSingleAttitudeModel::ccSingleAttitudeModel()
 {
+    QVariant var(QString("A stratigrahic model"));
+
+    setMetaData(QString("[qGEO][ccSinglePlaneStratigraphicModel]"), var);
+
 }
 
-ccSinglePlaneStratigraphicModel::ccSinglePlaneStratigraphicModel(const Vector3f normal, const float dist)
-{
-    setUnitNormal(normal);
-    setD(dist);
-}
+//ccSingleAttitudeModel::ccSingleAttitudeModel(const Vector3f normal, const float dist)
+//{
+//    QVariant var(QString("A stratigrahic model"));
 
-ccSinglePlaneStratigraphicModel::ccSinglePlaneStratigraphicModel(const spc::SinglePlaneStratigraphicModel model)
+//    setMetaData(QString("[qGEO][ccSinglePlaneStratigraphicModel]"), var);
+//    setNormal(normal);
+//    setD(dist);
+//}
+
+ccSingleAttitudeModel::ccSingleAttitudeModel(const spc::SingleAttitudeModel model)
 {
-    setUnitNormal(model.getUnitNormal());
-    setD(model.getD());
+    QVariant var(QString("A stratigrahic model"));
+
+    setMetaData(QString("[qGEO][ccSinglePlaneStratigraphicModel]"), var);
+    setNormal(model.getUnitNormal());
+//    setD(model.getD());
 }
 
 

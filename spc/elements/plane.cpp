@@ -1,23 +1,34 @@
 #include <spc/elements/plane.h>
-
+using namespace Eigen;
 namespace spc
 {
 
-Plane::Plane() : normal_(0,0,1), distance_(0.0f)
+Plane::Plane()
 {
-
 }
 
 
-Plane::Plane(const Vector4f parameters)
+
+Plane::Plane(const Vector3f normal, const Vector3f point)
 {
-      setPlaneParameters(parameters);
+    setNormal(normal);
+    setPosition(point);
 }
 
-Plane::Plane(const Vector3f n, const float d)
+
+float Plane::distanceTo(const Vector3f &point) const
 {
-    setUnitNormal(n);
-    setD(d);
+    return getUnitNormal().dot(point) + getP();
 }
+
+float Plane::getP() const
+{
+    return  - getUnitNormal().dot(position_);
+}
+
+
+
+
+
 
 }//end nspace

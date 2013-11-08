@@ -1,7 +1,7 @@
 #include "EvaluateStratigraphicPosition.h"
 
-#include <ccOutOfCore/ccMyCCHObject.h>
-#include <ccOutOfCore/ccAdditionalCaster.h>
+//#include <ccOutOfCore/ccMyCCHObject.h>
+//#include <ccOutOfCore/ccAdditionalCaster.h>
 
 #include <qPCL/PclUtils/utils/cc2sm.h>
 
@@ -24,7 +24,7 @@ EvaluateStratigraphicPosition::EvaluateStratigraphicPosition(ccPluginInterface *
 int EvaluateStratigraphicPosition::compute()
 {
 
-    m_model = static_cast <ccSinglePlaneStratigraphicModel *> (m_dialog->getSelectedObject());
+    m_model = static_cast <ccSingleAttitudeModel *> (m_dialog->getSelectedObject());
 
     //now get the selected cloud (we are sure at least one exists - see checkSelected)
 
@@ -90,7 +90,7 @@ int EvaluateStratigraphicPosition::openInputDialog()
         m_dialog= new FastCloudSelectionDlg;
 
     ccHObject::Container selected;
-    getAllEntitiesOfType(static_cast<CC_CLASS_ENUM> (MY_CC_SINGLE_PLANE_MODEL), selected);
+    getAllEntitiesThatHaveMetaData(QString("[qGEO][ccSinglePlaneStratigraphicModel]"), selected);
 
     m_dialog->updateList(selected);
 

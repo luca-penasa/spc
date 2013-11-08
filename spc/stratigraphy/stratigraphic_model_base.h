@@ -42,18 +42,7 @@ public:
     //! \param cloud
     //! \return a vector of stratigraphic positions computed according this model
     //!
-    virtual std::vector<float> getStratigraphicPositions(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
-    {
-       std::vector<float> out;
-       for (pcl::PointXYZ p: *cloud)
-       {
-           pcl::PointXYZ point;
-           out.push_back(getStratigraphicPosition(Vector3f(p.x, p.y, p.z)));
-       }
-
-       return out;
-
-    }
+    virtual std::vector<float> getStratigraphicPositions(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
 
     //!
     //! \brief getStratigraphicPositions as getStratigraphicPosition but for a whole cloud!
@@ -61,18 +50,7 @@ public:
     //! \param indices the indices for which to compute the sp
     //! \return a vector of stratigraphic positions computed according this model
     //!
-    virtual std::vector<float> getStratigraphicPositions(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, const std::vector<int> &indices)
-    {
-       std::vector<float> out;
-       for (int id : indices)
-       {
-           pcl::PointXYZ p = cloud->at(id);
-           out.push_back(getStratigraphicPosition(Vector3f(p.x, p.y, p.z)));
-       }
-
-       return out;
-
-    }
+    virtual std::vector<float> getStratigraphicPositions(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, const std::vector<int> &indices);
 
     //!
     //! \brief getStratigraphicNormal get the normal for a given point in 3d
@@ -80,17 +58,6 @@ public:
     //! \return the normal for that point
     //!
     virtual Vector3f getStratigraphicNormal(const Vector3f &point) = 0;
-
-
-    ///! set the parameters for this model
-    virtual void setParameters(const VectorXf &parameters)
-    {
-        pars_ = parameters;
-    }
-
-
-protected:
-    VectorXf pars_;
 
 };
 

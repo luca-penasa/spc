@@ -1,17 +1,16 @@
 #include "FitGeologicalOrientation.h"
 #include <qPCL/PclUtils/utils/cc2sm.h>
 
-#include <spc/geology/single_plane_model_from_multi_cloud_estimator.h>
-#include <spc/geology/single_plane_stratigraphic_model.h>
 
-#include <ccOutOfCore/ccOrientation.h>
 #include <ccOutOfCore/ccSinglePlaneStratigraphicModel.h>
 
 #include <ccArrow.h>
 
 #include <ccHObjectCaster.h>
 
+#include <ccOutOfCore/ccAttitude.h>
 
+#include <spc/estimators/attitude_estimator.h>
 
 
 
@@ -53,7 +52,7 @@ FitGeologicalOrientation::compute()
     }
 
     //set up an estimator
-    spc::SinglePlaneModelFromMultiCloudEstimator estimator;
+    spc::AttitudeEstimator estimator;
 
     for (auto cloud: clouds) //add the single clouds
     {
@@ -64,16 +63,14 @@ FitGeologicalOrientation::compute()
 
     std::cout << "starting opimization" << std::endl;
 
-    spc::SinglePlaneStratigraphicModel model;
+    spc::SingleAttitudeModel model;
 
     int status = estimator.estimate(model);
 
     //we got a model return it as a ccObject
-    ccSinglePlaneStratigraphicModel * ccmodel = new ccSinglePlaneStratigraphicModel(model);
-    ccmodel->setName(QString("Single Plane Stratigraphic Model"));
+    ccSingleAttitudeModel * ccmodel = new ccSingleAttitudeModel(model);
+    ccmodel->setName(QString("Single Attitude Stratigraphic Model"));
     newEntity(ccmodel);
-
-    std::cout <<"asking clasid " << ccmodel->getClassID() << std::endl;
 
     if (status == 0)
     {
@@ -102,7 +99,7 @@ FitGeologicalOrientation::compute()
         CCVector3 cc (c(0), c(1), c(2));
         CCVector3 cn (n(0), n(1), n(2));
 
-        ccOrientation * orientation = new ccOrientation (cc, cn, 0.05f);
+        ccAttitude * orientation = new ccAttitude (cc, cn);
 
         orientation->setName("Orientation");
 

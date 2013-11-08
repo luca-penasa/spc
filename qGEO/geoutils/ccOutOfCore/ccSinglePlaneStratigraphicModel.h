@@ -3,24 +3,20 @@
 
 #include "ccHObject.h"
 
-#include <spc/geology/single_plane_stratigraphic_model.h>
+#include <spc/stratigraphy/single_attitude_model.h>
 
-#include "ccMyCCHObject.h"
+//#include "ccMyCCHObject.h"
 
-class ccSinglePlaneStratigraphicModel:  public ccHObject, public spc::SinglePlaneStratigraphicModel
+class ccSingleAttitudeModel:  public ccHObject, public spc::SingleAttitudeModel
 {
 public:
-    ccSinglePlaneStratigraphicModel();
+    ccSingleAttitudeModel();
 
-    ccSinglePlaneStratigraphicModel(const Vector3f normal, const float dist);
+//    ccSingleAttitudeModel(const Vector3f normal, const float dist);
 
-    ccSinglePlaneStratigraphicModel(const spc::SinglePlaneStratigraphicModel model);
+    ccSingleAttitudeModel(const spc::SingleAttitudeModel model);
 
     virtual QString getName() {return QString("SinglePlaneStratigraphicModel");}
-
-
-    //! Returns class ID
-    virtual CC_CLASS_ENUM getClassID() const { static_cast<CC_CLASS_ENUM> (MY_CC_SINGLE_PLANE_MODEL);}
 };
 
 #endif // CCSINGLEPLANENORMALMODEL_H

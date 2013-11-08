@@ -3,12 +3,14 @@
 
 #include <dialogs/AddNewSeries.h>
 
-#include <ccOutOfCore/ccMyCCHObject.h>
-#include <ccOutOfCore/ccAdditionalCaster.h>
+//#include <ccOutOfCore/ccMyCCHObject.h>
+//#include <ccOutOfCore/ccAdditionalCaster.h>
 
-#include <spc/geology/stratigraphic_model_base.h>
+//#include <spc/geology/stratigraphic_model_base.h>
 
 #include <ccHObjectCaster.h>
+
+#include <iostream>
 
 SetUpNewSeries::SetUpNewSeries(ccPluginInterface * parent_plugin): BaseFilter(FilterDescription(   "Add a new time series",
                                                                                                    "Add a new time series",
@@ -38,37 +40,37 @@ int SetUpNewSeries::compute()
 
 
 
-    spc::StratigraphicModelBase * model;
-    std::cout <<"a" << std::endl;
+//    spc::StratigraphicModelBase * model;
+//    std::cout <<"a" << std::endl;
 
-    std::cout << mod_obj->getClassID() << std::endl;
-    std::cout <<"b" << std::endl;
-
-
-
-    if (mod_obj->isA( static_cast<CC_CLASS_ENUM>(MY_CC_SINGLE_PLANE_MODEL)) )//in a future we will have other models
-    {
-
-        std::cout << "here we are" << std::endl;
-
-
-        ccSinglePlaneStratigraphicModel * mo = ccAdditionalCaster::ToCCSinglePlaneStatigraphicModel( mod_obj );
-        model = static_cast<spc::StratigraphicModelBase *> (mo);
-    }
-    else
-        return -1; //just to be sure
+//    std::cout << mod_obj->getClassID() << std::endl;
+//    std::cout <<"b" << std::endl;
 
 
 
-    //get also the clou and the area
-    ccPointCloud * cloud = ccHObjectCaster::ToPointCloud( m_dialog->getSelectedCloud() );
-    cc2DRubberbandLabel * area = ccHObjectCaster::To2DRubberbandLabel(m_dialog->getSelectedArea());
+//    if (mod_obj->isA( static_cast<CC_CLASS_ENUM>(MY_CC_SINGLE_PLANE_MODEL)) )//in a future we will have other models
+//    {
 
-    if (!cloud )
-        return -1;
+//        std::cout << "here we are" << std::endl;
 
-    if (!area)
-        ccLog::Warning("No area selected. using the whole cloud!");
+
+//        ccSinglePlaneStratigraphicModel * mo = ccAdditionalCaster::ToCCSinglePlaneStatigraphicModel( mod_obj );
+//        model = static_cast<spc::StratigraphicModelBase *> (mo);
+//    }
+//    else
+//        return -1; //just to be sure
+
+
+
+//    //get also the clou and the area
+//    ccPointCloud * cloud = ccHObjectCaster::ToPointCloud( m_dialog->getSelectedCloud() );
+//    cc2DRubberbandLabel * area = ccHObjectCaster::To2DRubberbandLabel(m_dialog->getSelectedArea());
+
+//    if (!cloud )
+//        return -1;
+
+//    if (!area)
+//        ccLog::Warning("No area selected. using the whole cloud!");
 
 
 
@@ -79,26 +81,45 @@ int SetUpNewSeries::compute()
 
 int SetUpNewSeries::openInputDialog()
 {
-    m_dialog = new AddNewSeriesDlg;
 
-    ccHObject::Container objsa;
-    this->getAllEntitiesOfType(CC_2D_RUBBERBAND_LABEL, objsa);
-    m_dialog->setInputAreas(objsa);
+    ccHObject::Container hobjects;
+    getAllEntitiesOfType(CC_HIERARCHY_OBJECT, hobjects);
 
-    ccHObject::Container objsb;
-    this->getAllEntitiesOfType(CC_POINT_CLOUD, objsb);
-    m_dialog->setInputClouds(objsb);
-
-    ccHObject::Container objsc;
+    for (int i = 0; i < hobjects.size(); ++i )
+    {
+        ccHObject * obj = hobjects.at(i);
+        std::cout << obj->hasMetaData(QString("[qGEO][ccOrientation]")) << std::endl;
+    }
 
 
-    this->getAllEntitiesOfType((CC_CLASS_ENUM) MY_CC_SINGLE_PLANE_MODEL, objsc);
+//    ccHObject * m = m_selected.at(0);
 
-    std::cout << "number of models in tree: " << objsc.size() << std::endl;
+//    std::cout << "CLASS ID " << m->getClassID() << std::endl;
+//    std::cout << "LOOK FOR ID after cast" << (CC_CLASS_ENUM) MY_CC_SINGLE_PLANE_MODEL << std::endl;
+//    std::cout << "LOOK FOR ID before cast" << MY_CC_SINGLE_PLANE_MODEL << std::endl;
 
-    m_dialog->setInputModels(objsc);
 
-    return m_dialog->exec();
+
+//    m_dialog = new AddNewSeriesDlg;
+
+//    ccHObject::Container objsa;
+//    this->getAllEntitiesOfType(CC_2D_RUBBERBAND_LABEL, objsa);
+//    m_dialog->setInputAreas(objsa);
+
+//    ccHObject::Container objsb;
+//    this->getAllEntitiesOfType(CC_POINT_CLOUD, objsb);
+//    m_dialog->setInputClouds(objsb);
+
+//    ccHObject::Container objsc;
+
+
+//    this->getAllEntitiesOfType((CC_CLASS_ENUM) MY_CC_SINGLE_PLANE_MODEL, objsc);
+
+//    std::cout << "number of models in tree: " << objsc.size() << std::endl;
+
+//    m_dialog->setInputModels(objsc);
+
+//    return m_dialog->exec();
 
 
 }

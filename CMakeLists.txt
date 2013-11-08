@@ -10,8 +10,10 @@ option(BUILD_SANDBOX_TOOLS "Build sandbox tools." OFF)
 option(BUILD_MICMAC_RELATED "Build MICMAC-related code." ON)
 option(BUILD_PYTHON_WRAPPINGS "Build python interface for the library. Only some classes have been wrapped!" ON)
 option(BUILD_SPC_DOC "Build SPC doc" OFF)
+option(BUILD_TESTS "Do tests" OFF)
 option(BUILD_QGEO_CC_PLUGIN "Build SPC-based plugin for CloudCompare" ON)
 option(SWIG_WRAPPINGS "Use swigs to generate wrappings for some methods" ON)
+
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 

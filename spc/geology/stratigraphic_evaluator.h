@@ -1,9 +1,8 @@
 #ifndef STRATIGRAPHIC_EVALUATOR_H
 #define STRATIGRAPHIC_EVALUATOR_H
 
-#include <spc/geology/stratigraphic_model_base.h>
-#include <pcl/point_cloud.h>
-#include <pcl/point_types.h>
+#include <spc/stratigraphy/stratigraphic_model_base.h>
+
 
 
 namespace spc
