@@ -54,6 +54,45 @@ public:
     ///def const
     AttitudeEstimator();
 
+    ///
+    /// \brief getEstimatedAttitude return the current attitude as estimated by the estimator
+    /// \return an Attitude object
+    /// \note that the positioning of this attitude is centered at origin
+    /// please use getEstimatedAttitudes() for having an attitude for each input cloud.
+    ///
+    Attitude getEstimatedAttitude() {return static_cast<Attitude> (model_);}
+
+    ///
+    /// \brief getEstimatedAttitudes
+    /// \return  a vector of attitudes. each centered in the centroid of its parent cloud.
+    ///
+    std::vector<Attitude> getEstimatedAttitudes();
+
+    ///
+    /// \brief getEstimatedSingleAttitudeModel
+    /// \return the model correspondent to the estimated attitude/s
+    ///
+    SingleAttitudeModel getEstimatedSingleAttitudeModel() {return model_;}
+
+
+    ///
+    /// \brief addInputCloud this method require 1 or more clouds t be used for estimtion
+    /// \param cloud is the input cloud
+    ///
+    void addInputCloud(CloudPtrT cloud);
+
+    ///
+    /// \brief getAveragedSquareDeviations
+    /// \return  the current average squared deviation
+    ///
+    float getAveragedSquareDeviations();
+
+    /// for each input cloud get its own SP as estimated with this method
+    std::vector<float> getStratigraphicPositionsOfClouds();
+
+    /// call the actual estimation run
+    int estimate();
+
 private:
     /// a usable functor based on float
     struct my_functor : Functor<float>
@@ -108,29 +147,11 @@ private:
     ///
     void updateDeviations();
 
-public:
-    void addInputCloud(CloudPtrT cloud);
-
-    ///
-    /// \brief getAveragedSquareDeviations
-    /// \return  the current average squared deviation
-    ///
-    float getAveragedSquareDeviations();
-
-    /// for each input cloud get its own SP as estimated with this method
-    std::vector<float> getStratigraphicPositionsOfClouds();
-
-    /// call the actual estimation run
-    int estimate(SingleAttitudeModel &model);
-
-
-
-private:
     /// the input
     std::vector<CloudPtrT> clouds_;
 
     /// the current model
-    SingleAttitudeModel model_;
+    SingleAttitudeModel model_;   
 
     /// stratigraphic position for each point into the clouds
     std::vector<std::vector<float> > s_positions_;
@@ -140,6 +161,9 @@ private:
 
     /// model to observation distance for each point into  the clouds
     std::vector<std::vector<float> > sq_deviations_;
+
+    /// a vector with the centroids of each cloud
+    std::vector<Vector3f> centroids_;
 };
 
 

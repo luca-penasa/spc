@@ -1,5 +1,5 @@
-#ifndef EVALUATESTRATIGRAPHICPOSITION_H
-#define EVALUATESTRATIGRAPHICPOSITION_H
+#ifndef ATTITUDE_TO_MDOEL_H
+#define ATTITUDE_TO_MDOEL_H
 
 #include <qPCL/PclUtils/filters/BaseFilter.h>
 #include <dialogs/FastCloudSelectionDlg.h>
@@ -9,10 +9,10 @@
 #include <ccOutOfCore/ccSingleAttitudeModel.h>
 
 
-class EvaluateStratigraphicPosition : public BaseFilter
+class AttitudeToModel : public BaseFilter
 {
 public:    
-    EvaluateStratigraphicPosition(ccPluginInterface * parent_plugin = 0);
+    AttitudeToModel(ccPluginInterface * parent_plugin = 0);
 
 
     virtual int compute() ;
@@ -20,7 +20,7 @@ public:
 protected:
     virtual int checkSelected();
 
-    int openInputDialog();
+//    int openInputDialog();
 
 private:
     FastCloudSelectionDlg * m_dialog;
@@ -28,4 +28,4 @@ private:
     ccSingleAttitudeModel * m_model;
 };
 
-#endif // EVALUATESTRATIGRAPHICPOSITION_H
+#endif // ATTITUDE_TO_MDOEL_H

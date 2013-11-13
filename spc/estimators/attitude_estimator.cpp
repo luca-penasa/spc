@@ -7,6 +7,21 @@ AttitudeEstimator::AttitudeEstimator()
 {
 }
 
+std::vector<Attitude> AttitudeEstimator::getEstimatedAttitudes()
+{
+    std::vector<Attitude> atts;
+    Attitude att = getEstimatedAttitude();
+    Vector3f n =  att.getUnitNormal();
+
+    for (int i = 0 ; i < clouds_.size(); ++i)
+    {
+        Attitude new_att(n, centroids_.at(i));
+        atts.push_back(new_att);
+    }
+
+    return atts;
+}
+
 void AttitudeEstimator::initializeModel()
 {
     //for each cloud we estimate a model. then we average
@@ -85,6 +100,13 @@ void AttitudeEstimator::updateDeviations()
 void AttitudeEstimator::addInputCloud(AttitudeEstimator::CloudPtrT cloud)
 {
     clouds_.push_back(cloud);
+    //compute its centroid
+
+    Vector4f centroid;
+    pcl::compute3DCentroid(*cloud, centroid);
+
+    centroids_.push_back(centroid.head(3));
+
 }
 
 float AttitudeEstimator::getAveragedSquareDeviations()
@@ -106,7 +128,7 @@ std::vector<float> AttitudeEstimator::getStratigraphicPositionsOfClouds()
     return est_s_positions_;
 }
 
-int AttitudeEstimator::estimate(SingleAttitudeModel &model)
+int AttitudeEstimator::estimate()
 {
     initializeModel();
 
@@ -120,8 +142,6 @@ int AttitudeEstimator::estimate(SingleAttitudeModel &model)
 
 
     int info = lm.minimize(start);
-
-    model.setNormal( model_.getUnitNormal() );
 
     std::cout << "AFTER: " << start(0) << " " << start(1) << " " << start(2) << "with info " << info << std::endl;
 

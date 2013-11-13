@@ -4,10 +4,10 @@
 #include <qPCL/PclUtils/filters/BaseFilter.h>
 
 
-class FitGeologicalOrientation: public BaseFilter
+class FitAttitude: public BaseFilter
 {
 public:
-    FitGeologicalOrientation(ccPluginInterface * parent_plugin = 0);
+    FitAttitude(ccPluginInterface * parent_plugin = 0);
 
 
     virtual int compute();

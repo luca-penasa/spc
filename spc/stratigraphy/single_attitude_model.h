@@ -16,12 +16,17 @@ public:
     typedef boost::shared_ptr<SingleAttitudeModel> Ptr;
 
     /// def const
-    SingleAttitudeModel() {}
+    SingleAttitudeModel();
 
     /// inherited from StratigraphicModelBase
     virtual float getStratigraphicPosition(const Vector3f &point);
 
     virtual Vector3f getStratigraphicNormal(const Vector3f &point);
+
+    Vector3f getPointAtStratigraphicPosition(float sp)
+    {
+        return getPosition() + getUnitNormal() * sp;
+    }
 
 };
 

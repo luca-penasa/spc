@@ -10,5 +10,7 @@
         <file>icons/test1.png</file>
         <file>icons/test2.png</file>
         <file>icons/new_series.png</file>
+        <file>icons/attitude.png</file>
+        <file>icons/AttitudeToModel.png</file>
     </qresource>
 </RCC>

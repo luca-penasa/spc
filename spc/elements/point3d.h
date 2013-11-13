@@ -20,6 +20,12 @@ public:
     /// this imply updating the d parameters of the plane
     void setPosition(const Vector3f position);
 
+
+    Vector3f getPosition () const
+    {
+        return position_;
+    }
+
     void positionFromCentroid(pcl::PointCloud<pcl::PointXYZ> &cloud);
 
 protected:

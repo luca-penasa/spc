@@ -12,7 +12,7 @@ namespace spc
 ///
 /// \brief an Attitude is a more sophisticated way to rapresent a plane in space
 /// It is actually the same thing of a Plane object with a position in space that localize the measure
-/// \note Typical notation for an attitude is 10/245 with 10 dip angle (0-90) and 245 is azimut from N (0-360)
+/// \note Typical notation for an attitude is 10/245 with 10 dip angle (0-90) and 245 is azimut from N (0-360) - the dip.
 class Attitude: public Plane
 {
 public:
@@ -51,13 +51,6 @@ public:
         position_ = position;
     }
 
-//    void setPosition(const Vector3f position)
-//    {
-//        //compute the new distance from the origin
-//        setD(normal_.dot(position));
-//        position_ = position;
-//    }
-
 
     //////////////////////////////////////
     //// GEOLOGICAL AWARE GETTERS ////////
@@ -87,6 +80,9 @@ public:
 
     /// is the angle formed by the dipDirectionVector with the North!
     float getDip() const;
+
+    ///format dip and dip angle as astring
+    std::string getDipAndDipAngleAsString() const;
 
 };
 

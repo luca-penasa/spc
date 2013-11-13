@@ -1,6 +1,8 @@
 #include <spc/elements/attitude.h>
 #include <math.h>
 #include <Eigen/Geometry>
+#include <sstream>
+#include <string>
 
 namespace spc
 {
@@ -68,6 +70,15 @@ float Attitude::getDip() const
 
     return angle;
 
+}
+
+std::string Attitude::getDipAndDipAngleAsString() const
+{
+    char d = 0xb0;
+//    std::string degree = d;
+    std::stringstream s;
+    s << std::fixed << setprecision(2) << getDipAngle() << d << "/" << getDip() << d << "N";
+    return s.str();
 }
 
 

@@ -4,116 +4,152 @@
 
 
 ccAttitude::ccAttitude(CCVector3 center, CCVector3 orientation):
-    Attitude(asEigenVector(center), asEigenVector(orientation))
+    Attitude(asEigenVector(orientation), asEigenVector(center))
 {
-//    m_center  = center;
-//    m_orientation = orientation;
-//    m_scale = scale;
-
-    QVariant var("An attitude of a geologic plane in space");
-    setMetaData(QString("[qGEO][ccAttitude]"), var);
-
-
-//    buildUp();
+    initMetadata();
+    initParameters();
 }
 
-//bool ccAttitude::buildUp()
-//{
-//    CCVector3  newcenter;
-//    ccPlane * plane;
-
-//    //we add also a plane representing the local plane
-//    plane = new ccPlane(3*m_scale, 3*m_scale, get_orientating_matrix(m_center, m_orientation));
-//    *this += ccArrow(m_scale, get_orientating_matrix(m_center, m_orientation), QString("Plane Orientation"));
-
-//    this->addChild(plane);
 
 
-//}
+ccAttitude::ccAttitude(spc::Attitude att)
+{
+    setPosition(att.getPosition());
+    setNormal(att.getNormal());
 
-//ccPlane *ccAttitude::fromPlaneAndCloud(const CCVector3 c, const CCVector3 n, CCLib::GenericIndexedCloudPersist *cloud, CCVector3 &new_c)
-//{
-
-//    size_t count = cloud->size();
-
-//    CCLib::Neighbourhood Yk(cloud);
-
-//    //plane equation
-//    PointCoordinateType theLSQPlane[4] = {0,0,0,0}; /* = Yk.getLSQPlane();*/
-
-//    theLSQPlane[0] = n.x;
-//    theLSQPlane[1] = n.y;
-//    theLSQPlane[2] = n.z;
-//    theLSQPlane[3] = c.dot(n);
+    initMetadata();
+    initParameters();
+}
 
 
+ccAttitude::ccAttitude()
+{
+    initMetadata();
+    initParameters();
+}
 
-//    if (!theLSQPlane | (count < 3))
-//    {
-//        ccLog::Warning("[ccGenericPointCloud::fitPlane] Not enough points to fit a plane!");
-//        return 0;
-//    }
+ccBBox ccAttitude::getMyOwnBB()
+{
+    CCVector3 center (position_.data());
+    CCVector3 min_corner(center - m_scale * 0.5 * m_scale_factor);
+    CCVector3 max_corner(center + m_scale * 0.5* m_scale_factor);
+    ccBBox box(min_corner, max_corner);
 
-//    //get the centroid - we use the position as centroid
-//    const CCVector3 * G = &c;
+    return box;
+}
 
-//    //and a local base
-//    CCVector3 N(theLSQPlane);
-//    const CCVector3* X = Yk.getLSQPlaneX(); //main direction
-//    assert(X);
-//    CCVector3 Y = N * (*X); //second direction on the local RS - cross prod
+void ccAttitude::initParameters()
+{
+    m_scale_factor = 20;
+    m_width = 4;
+    m_scale = 0.0;
+//    m_oldTransform.toIdentity();
+}
 
-//    PointCoordinateType minX=0,maxX=0,minY=0,maxY=0;
-//    cloud->placeIteratorAtBegining();
+void ccAttitude::initMetadata()
+{
+    QVariant var("An attitude of a geologic plane in space");
+    setMetaData(QString("[qGEO][ccAttitude]"), var);
+}
 
-//    for (unsigned k=0;k<count;++k)
-//    {
-//        //projetion into local 2D plane ref.
-//        CCVector3 P = *(cloud->getNextPoint()) - *G;
-//        PointCoordinateType x2D = P.dot(*X);
-//        PointCoordinateType y2D = P.dot(Y);
+void ccAttitude::drawMeOnly(CC_DRAW_CONTEXT &context)
+{
 
-//        if (k!=0)
-//        {
-//            if (minX<x2D)
-//                minX=x2D;
-//            else if (maxX>x2D)
-//                maxX=x2D;
-//            if (minY<y2D)
-//                minY=y2D;
-//            else if (maxY>y2D)
-//                maxY=y2D;
-//        }
-//        else
-//        {
-//            minX=maxX=x2D;
-//            minY=maxY=y2D;
-//        }
-//    }
+    m_scale = context.pickedPointsRadius;
+    //we draw here a little 3d representation of the sensor
+    if (MACRO_Draw3D(context))
+    {
+        bool pushName = MACRO_DrawEntityNames(context);
+
+        if (pushName)
+        {
+            //not particulary fast
+            if (MACRO_DrawFastNamesOnly(context))
+                return;
+            glPushName(getUniqueID());
+        }
 
 
-//    //we recenter plane (as it is not always the case!)
-//    float dX = maxX-minX;
-//    float dY = maxY-minY;
-//    CCVector3 Gt = *G + *X * (minX+dX*0.5);
-//    Gt += Y * (minY+dY*0.5);
-//    ccGLMatrix glMat(*X,Y,N,Gt);
+        glPushAttrib(GL_LINE_BIT);
+        glLineWidth(m_width);
 
-//    ccPlane * plane = new ccPlane(dX, dY, &glMat);
 
-//    return plane;
-//}
+        //we draw the segments
+        if (isSelected())
+            glColor3ubv(ccColor::red);
+        else
+            glColor3ubv(ccColor::green);
 
-//void ccAttitude::drawMeOnly(CC_DRAW_CONTEXT &context)
-//{
-//    std::cout << "here I am" << std::endl;
-//}
+        Vector3f pos = position_;
 
-//ccGLMatrix *ccAttitude::get_orientating_matrix(CCVector3 center, CCVector3 orientation)
-//{
-//    ccGLMatrix * mat = new ccGLMatrix;
-//    *mat = ccGLMatrix::FromToRotation(orientation, CCVector3(0,0,1));
-//    mat->setTranslation(center);
+        Vector3f dip_v = this->getDipVector();
+        Vector3f strike_v = this->getStrikeVector();
 
-//    return mat;
-//}
+
+        Vector3f arr_shaft = pos + dip_v * m_scale * m_scale_factor ;
+        Vector3f strike_dir = pos + strike_v * m_scale * 0.5 * m_scale_factor ;
+        Vector3f s_opp = pos - strike_v * m_scale * 0.5* m_scale_factor;
+
+        context._win->display3DLabel(getDipAndDipAngleAsString().c_str(), CCVector3(pos(0), pos(1), pos(2)), ccColor::red);
+
+
+        glBegin(GL_LINES);
+        glColor3ubv(ccColor::red);
+
+        glVertex3fv( pos.data() );
+        glVertex3fv( arr_shaft.data() );
+
+
+        glColor3ubv(ccColor::blue);
+
+
+        glVertex3fv( pos.data());
+        glVertex3fv( strike_dir.data());
+
+        glVertex3fv( pos.data());
+        glVertex3fv( s_opp.data() );
+        glEnd();
+
+        glPopAttrib();
+
+        if (pushName)
+            glPopName();
+
+    }
+}
+
+void ccAttitude::applyGLTransformation(const ccGLMatrix &trans)
+{
+
+//    std::cout << " called apply gl trans" << std::endl;
+//    Vector3f p = getPosition();
+//    Vector3f n = getNormal();
+
+
+//    CCVector3 position (p(0), p(1), p(2));
+//    CCVector3 normal (n(0), n(1), n(2));
+
+//    trans.apply(position);
+//    trans.transposed().applyRotation(normal);
+
+//    this->setNormal(Vector3f(normal.x, normal.y, normal.z));
+//    this->setPosition(Vector3f(position.x, position.y, position.z ));
+
+
+
+}
+
+void ccAttitude::setGLTransformation(const ccGLMatrix &trans)
+{
+//    ccGLMatrix oldmatrix = m_oldTransform;
+//    ccGLMatrix newmatrix =  oldmatrix.inverse() * trans ;
+
+//    applyGLTransformation(newmatrix);
+//    m_oldTransform = trans;
+
+}
+
+
+
+
+

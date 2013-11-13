@@ -1,8 +1,8 @@
-#include "FitGeologicalOrientation.h"
+#include "FitAttitude.h"
 #include <qPCL/PclUtils/utils/cc2sm.h>
 
 
-#include <ccOutOfCore/ccSinglePlaneStratigraphicModel.h>
+#include <ccOutOfCore/ccSingleAttitudeModel.h>
 
 #include <ccArrow.h>
 
@@ -14,17 +14,17 @@
 
 
 
-FitGeologicalOrientation::FitGeologicalOrientation(ccPluginInterface * parent_plugin): BaseFilter(FilterDescription(   "Fit A geological orientation",
+FitAttitude::FitAttitude(ccPluginInterface * parent_plugin): BaseFilter(FilterDescription(   "Fit A geological orientation",
                                                                                               "Fit a geological orientation",
                                                                                               "Use a set of points to fit a geological orientation",
-                                                                                              ":/toolbar/icons/stratigraphic_normal.png")
+                                                                                              ":/toolbar/icons/attitude.png")
                                                                                                         , parent_plugin)
 {
 //    m_dialog = 0;
 }
 
 int
-FitGeologicalOrientation::compute()
+FitAttitude::compute()
 {
     ccHObject::Container ents;
 
@@ -63,14 +63,7 @@ FitGeologicalOrientation::compute()
 
     std::cout << "starting opimization" << std::endl;
 
-    spc::SingleAttitudeModel model;
-
-    int status = estimator.estimate(model);
-
-    //we got a model return it as a ccObject
-    ccSingleAttitudeModel * ccmodel = new ccSingleAttitudeModel(model);
-    ccmodel->setName(QString("Single Attitude Stratigraphic Model"));
-    newEntity(ccmodel);
+    int status = estimator.estimate();
 
     if (status == 0)
     {
@@ -80,48 +73,32 @@ FitGeologicalOrientation::compute()
 
     std::cout << "ended optimizing" << std::endl;
 
-    Vector3f n = model.getUnitNormal();
 
-    std::vector<float> sps = estimator.getStratigraphicPositionsOfClouds();
+    std::vector<spc::Attitude> atts;
+    atts =estimator.getEstimatedAttitudes();
+
+
 
     //now for each entity we send back a ccOrientation for visualizing the result
-    for (int i= 0; i < clouds.size(); ++i)
+    for (spc::Attitude att: atts)
     {
 
-        //each cloud will have the same normal but different centers
 
-        //get the center
-        Vector4f centroid;
-        pcl::compute3DCentroid(*(clouds.at(i)), centroid);
+        ccAttitude * ccAtt = new ccAttitude (att);
 
-        Vector3f c = centroid.segment(0,3);
+        std::cout << ccAtt->getUnitNormal() << std::endl;
+        std::cout << ccAtt->getPosition() << std::endl;
 
-        CCVector3 cc (c(0), c(1), c(2));
-        CCVector3 cn (n(0), n(1), n(2));
-
-        ccAttitude * orientation = new ccAttitude (cc, cn);
-
-        orientation->setName("Orientation");
-
-        orientation->setVisible(true);
-
-        newEntity(orientation);        
+        ccAtt->setName("Attitude");
+        ccAtt->setVisible(true);
+        newEntity(ccAtt);
     }
 
-
-//    //we also store the used cloud in a group, child of the orientation.
-//    ccHObject * folder = new ccHObject;
-//    folder->setName("Fitted clouds");
-//    folder->setEnabled(false);
-//    for (auto ent: entities)
-//        folder->addChild( ccHObjectCaster::ToGenericPointCloud(ent)->clone() );
-
-//    orientation->addChild(folder);
 
     return 1;
 }
 
-int FitGeologicalOrientation::checkSelected()
+int FitAttitude::checkSelected()
 {
     ccHObject::Container ents, planes, polys;
     getSelectedEntitiesThatAre(CC_POINT_CLOUD, ents);
