@@ -20,7 +20,7 @@ FitAttitude::FitAttitude(ccPluginInterface * parent_plugin): BaseFilter(FilterDe
                                                                                               ":/toolbar/icons/attitude.png")
                                                                                                         , parent_plugin)
 {
-//    m_dialog = 0;
+    this->setShowProgressBar(false);
 }
 
 int

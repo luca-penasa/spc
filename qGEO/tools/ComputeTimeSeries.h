@@ -1,7 +1,7 @@
 #ifndef COMPUTETIMESERIES_H
 #define COMPUTETIMESERIES_H
 
-#include <dialogs/ccCurvePlotterDlg.h>
+//#include <dialogs/ccCurvePlotterDlg.h>
 #include <qPCL/PclUtils/filters/BaseFilter.h>
 #include <spc/methods/kernel_smoothing.h>
 #include <dialogs/ComputeTimeSeriesDlg.h>
@@ -34,7 +34,7 @@ protected:
    virtual int checkSelected();
 
    ComputeTimeSeriesDlg * m_dialog;
-   ccCurvePlotterDlg * m_plot_dialog;
+//   ccCurvePlotterDlg * m_plot_dialog;
 
    std::vector<spc::EquallySpacedTimeSeries<float> > computed_series;
 

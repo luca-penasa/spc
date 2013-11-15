@@ -12,7 +12,7 @@ AttitudeToModel::AttitudeToModel(ccPluginInterface *parent_plugin) : BaseFilter(
                                                                          "Create Stratigraphic Model from one attitude",
                                                                          ":/toolbar/icons/AttitudeToModel.png"), parent_plugin)
 {
-
+this->setShowProgressBar(false);
 }
 
 

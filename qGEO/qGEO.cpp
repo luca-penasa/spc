@@ -7,16 +7,18 @@
 #include <ComputeStratigraphicPosition.h>
 #include <FitAttitude.h>
 #include <AttitudeToModel.h>
+#include <Edit.h>
+
 #include <EvaluateStratigraphicPosition.h>
 #include <Properties.h>
 #include <define2dselection.h>
 #include <SetUpNewSeries.h>
 #include <split_point_cloud.h>
-#include <plot_2d.h>
+#include <OpenPlotsDialog.h>
 #include <test.h>
 
 
-qGEO::qGEO(): m_menu(0)
+qGEO::qGEO(): m_menu(0), m_plotter(0)
 {
 }
 
@@ -57,15 +59,18 @@ void qGEO::getActions(QActionGroup& group)
         //ADD FILTERS
         addFilter(new FitAttitude(this));
         addFilter(new AttitudeToModel(this));
-        addFilter( new ComputeStratigraphicPosition(this) );
-        addFilter( new ComputeTimeSeries(this));
-        addFilter(new SplitPointCloud(this));
+        addFilter(new Edit(this));
+        addFilter(new OpenPlotsDialog(this));
 
-        addFilter(new EvaluateStratigraphicPosition(this));
-        addFilter(new Plot2D(this));
-        addFilter(new Properties(this));
-        addFilter(new Define2DSelection(this));
-        addFilter(new SetUpNewSeries(this));
+
+//        addFilter( new ComputeStratigraphicPosition(this) );
+//        addFilter( new ComputeTimeSeries(this));
+//        addFilter(new SplitPointCloud(this));
+
+//        addFilter(new EvaluateStratigraphicPosition(this));
+//        addFilter(new Properties(this));
+//        addFilter(new Define2DSelection(this));
+//        addFilter(new SetUpNewSeries(this));
     }
 
     for (std::vector<BaseFilter*>::const_iterator it = m_filters.begin(); it != m_filters.end(); ++it)
@@ -95,21 +100,33 @@ int qGEO::addFilter(BaseFilter * filter)
     return 1;
 }
 
-ccCurvePlotterDlg * qGEO::getCurrentPlotter()
+PlotterDlg *qGEO::getPlotter()
 {
-    Plot2D * example_class = new Plot2D; // this is only an instance for testing
-                                         // the typeid in the for...
-    //cycle on all enabled filters:
-    for (auto  f: m_filters)
+    if (!m_plotter)
     {
-        if (typeid(*f) == typeid(*example_class))
-        {
-            //do a cast
-            Plot2D * plot = dynamic_cast<Plot2D *>( f );
-            return plot->getPlot();
-        }
+        ccMainAppInterface *main = this->getMainAppInterface();
+        QMainWindow * mainw = main->getMainWindow();
+        m_plotter = new PlotterDlg(mainw);
     }
+
+    return m_plotter;
 }
+
+//ccCurvePlotterDlg * qGEO::getCurrentPlotter()
+//{
+//    Plot2D * example_class = new Plot2D; // this is only an instance for testing
+//                                         // the typeid in the for...
+//    //cycle on all enabled filters:
+//    for (auto  f: m_filters)
+//    {
+//        if (typeid(*f) == typeid(*example_class))
+//        {
+//            //do a cast
+//            Plot2D * plot = dynamic_cast<Plot2D *>( f );
+//            return plot->getPlot();
+//        }
+//    }
+//}
 
 void qGEO::onNewSelection(const ccHObject::Container& selectedEntities)
 {
@@ -123,4 +140,4 @@ QIcon qGEO::getIcon() const
 }
 
 //plugin export
-Q_EXPORT_PLUGIN2(qGEO,qGEO);
+Q_EXPORT_PLUGIN2(qGEO,qGEO)

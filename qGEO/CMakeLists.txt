@@ -16,9 +16,12 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fopenmp -fPIC" )
 
 
     #for mocketized files
-    include_directories(${CMAKE_CURRENT_BINARY_DIR}/geoutils)
-    include_directories(${CMAKE_CURRENT_BINARY_DIR}/geoutils/dialogs)
+    include_directories(${CMAKE_CURRENT_BINARY_DIR}/tools)
+    include_directories(${CMAKE_CURRENT_BINARY_DIR}/tools/dialogs)
+    include_directories(${CMAKE_CURRENT_BINARY_DIR}/visualization)
     include_directories(${CMAKE_CURRENT_BINARY_DIR})
+
+
     include_directories(${SPC_BUILD_INCLUDE_DIRS})
 
 
@@ -30,6 +33,8 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fopenmp -fPIC" )
 
     include_directories(${CC_PLUGINS_SOURCE_DIR})
 
+include_directories(visualization)
+
 
 
     include_directories(${CC_BUILD_DIR}/qCC) #for mocketized files that cc created
@@ -38,11 +43,11 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fopenmp -fPIC" )
     include_directories(${CC_SOURCE_DIR}/CC/include/)
     #include_directories(${QGEO_PLUGIN_DLL_BINARY_DIR}/geoutils) #for including moc'ed headers
 
-    include_directories(geoutils)
+    include_directories(tools)
     #include_directories(${QPCL_PLUGIN_DLL_SOURCE_DIR}/../) #for accessing other plugins headers
 
-    add_subdirectory(geoutils)
     add_subdirectory(tools)
+    add_subdirectory(visualization)
 
 
     file( GLOB header_list *.h)
@@ -69,6 +74,6 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fopenmp -fPIC" )
 
 
   #include( ${CC_PLUGINS_SOURCE_DIR}/CMakePluginTpl.cmake )
-  target_link_libraries(${PROJECT_NAME} PclUtils geoutils ${QWT_LIBRARIES} ${SPC_LIBRARIES} ${QT_LIBRARIES})
+  target_link_libraries(${PROJECT_NAME} PclUtils qGEOTools qGEOVis ${QWT_LIBRARIES} ${SPC_LIBRARIES} ${QT_LIBRARIES})
 
   install(TARGETS ${PROJECT_NAME} DESTINATION ${QGEO_INSTALL_DIR})

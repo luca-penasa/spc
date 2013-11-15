@@ -12,5 +12,6 @@
         <file>icons/new_series.png</file>
         <file>icons/attitude.png</file>
         <file>icons/AttitudeToModel.png</file>
+        <file>icons/edit.png</file>
     </qresource>
 </RCC>

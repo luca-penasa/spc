@@ -7,7 +7,10 @@
 namespace spc
 {
 
-
+///
+/// \brief The SingleAttitudeModel class represent a stratigraphic "meter" or model.
+///
+///
 class SingleAttitudeModel: public StratigraphicModelBase, public Attitude
 {
 public:
@@ -25,8 +28,22 @@ public:
 
     Vector3f getPointAtStratigraphicPosition(float sp)
     {
-        return getPosition() + getUnitNormal() * sp;
+        return getPosition() + getUnitNormal() * (sp - additional_shift_ );
     }
+
+
+    float getAdditionalShift() const
+    {
+        return additional_shift_;
+    }
+
+    void setAdditionalShift(float additional_shift)
+    {
+        additional_shift_ = additional_shift;
+    }
+
+protected:
+    float additional_shift_;
 
 };
 

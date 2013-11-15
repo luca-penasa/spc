@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 project(SPC)
 string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER) #in lowercase
 
+#supress warnings from PCL about SHOT etc...
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations")
+
 set(SPC_LIBRARIES CACHE INTERNAL "SPC libs" FORCE)
 
 option(BUILD_SPC_SHARED "Build spc library as a shared lib." ON)
@@ -69,17 +72,17 @@ if(BUILD_QGEO_CC_PLUGIN)
 
 
 
-    #we need qwt ############
-    find_path( QWT_INCLUDE_DIR qwt_plot.h /usr/include/qwt6 )
-    find_library( QWT_LIBRARIES NAMES qwt6) #explicit look for qwt6
+#    #we need qwt ############
+#    find_path( QWT_INCLUDE_DIR qwt_plot.h /usr/include/qwt6 )
+#    find_library( QWT_LIBRARIES NAMES qwt6) #explicit look for qwt6
 
-    include( FindPackageHandleStandardArgs )
-    find_package_handle_standard_args( QWT DEFAULT_MSG QWT_LIBRARIES QWT_INCLUDE_DIR )
+#    include( FindPackageHandleStandardArgs )
+#    find_package_handle_standard_args( QWT DEFAULT_MSG QWT_LIBRARIES QWT_INCLUDE_DIR )
 
-    if(QWT_FOUND)
-      mark_as_advanced(QWT_LIBRARIES QWT_INCLUDE_DIR )
-      include_directories(${QWT_INCLUDE_DIR})
-    endif()
+#    if(QWT_FOUND)
+#      mark_as_advanced(QWT_LIBRARIES QWT_INCLUDE_DIR )
+#      include_directories(${QWT_INCLUDE_DIR})
+#    endif()
 
 
     include_directories(${CC_SOURCE_DIR}/libs/qCC_db)

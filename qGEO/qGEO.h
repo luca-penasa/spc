@@ -3,13 +3,13 @@
 
 #include <QObject>
 #include <QtGui>
-//#include "../ccStdPluginInterface.h"
 #include <mainwindow.h>
 
 #include <qPCL/PclUtils/filters/BaseFilter.h>
 #include <ComputeTimeSeries.h>
 
 #include <ccStdPluginInterface.h>
+#include <PlotterDlg.h>
 
 
 class QToolBar;
@@ -57,7 +57,7 @@ public:
 
     //! Return a plotter object for plotting things
     //! for now only one plotter at a time is possible!
-    ccCurvePlotterDlg * getCurrentPlotter();
+    PlotterDlg *getPlotter();
 
 
 
@@ -80,6 +80,9 @@ protected:
 
 	//! Loaded filters
 	std::vector<BaseFilter*> m_filters;
+
+
+    PlotterDlg * m_plotter;
 };
 
 

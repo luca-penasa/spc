@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CurvePlotterDialog</class>
- <widget class="QDialog" name="CurvePlotterDialog">
+ <class>PlotterDlgUi</class>
+ <widget class="QDialog" name="PlotterDlgUi">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>699</width>
-    <height>330</height>
+    <width>342</width>
+    <height>664</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,14 +17,14 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QwtPlot" name="qwtPlot"/>
+      <widget class="Plotter" name="plot" native="true"/>
      </item>
     </layout>
    </item>
   </layout>
   <action name="actionExport">
    <property name="icon">
-    <iconset resource="../icones.qrc">
+    <iconset>
      <normaloff>:/CC/images/ccCamera.png</normaloff>:/CC/images/ccCamera.png</iconset>
    </property>
    <property name="text">
@@ -36,7 +36,7 @@
   </action>
   <action name="actionSaveTimeSeries">
    <property name="icon">
-    <iconset resource="../icones.qrc">
+    <iconset>
      <normaloff>:/CC/images/ccSave.png</normaloff>:/CC/images/ccSave.png</iconset>
    </property>
    <property name="text">
@@ -48,7 +48,7 @@
   </action>
   <action name="actionClearPlot">
    <property name="icon">
-    <iconset resource="../icones.qrc">
+    <iconset>
      <normaloff>:/CC/images/smallCancel.png</normaloff>:/CC/images/smallCancel.png</iconset>
    </property>
    <property name="text">
@@ -58,13 +58,12 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>QwtPlot</class>
-   <extends>QFrame</extends>
-   <header>qwt_plot.h</header>
+   <class>Plotter</class>
+   <extends>QWidget</extends>
+   <header>plotter.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
- <resources>
-  <include location="../icones.qrc"/>
- </resources>
+ <resources/>
  <connections/>
 </ui>

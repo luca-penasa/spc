@@ -22,49 +22,38 @@
 
 
 
-#include <ui_curvePlotterDlg.h>
+#include <visualization/ui_PlotterDlg.h>
 
 #include <spc/time_series/equally_spaced_time_series.h>
-
-class QwtPlot;
-class QwtPlotCurve;
+#include <spc/elements/continous_values_stratigraphy.h>
 
 
-class ccCurvePlotterDlg : public QDialog, Ui::CurvePlotterDialog
+
+
+class PlotterDlg : public QDialog, Ui::PlotterDlgUi
 {
     Q_OBJECT
 public:
-    ccCurvePlotterDlg(QWidget *parent=0);
+    PlotterDlg(QWidget *parent=0);
 
+    void addContinousValuesLog(spc::ContinousValuesLog * log);
 
-    void addCurve(std::vector<float> &x, std::vector<float> &y);
-
-    void addCurve(spc::EquallySpacedTimeSeries<float> &tseries);
-
-
-    void callReplot();
-    //enum colors {red=7, green=8, blue=9, cyan=10, magenta=11, yellow=12, darkRed=13, darkGreen=14, darkBlue=15, darkCyan=16, darkMagenta=17, darkYellow=18 };
-
+    void addRandomContinousValuesLog();
 
 public slots:
-    void exportDocument();
-    void saveCurve();
-    void clearPlot();
+    void update()
+    {
+        this->plot->replot();
+    }
+
 
 protected:
-    QColor nextColor();
 
-protected:
-    QwtPlot * m_plot;
+    std::vector<spc::ContinousValuesLog * >   m_continous_logs;
 
-    std::vector<QwtPlotCurve *> m_curves;
-    std::vector<QVector<QPointF> *> m_vectors;
+    QCPAxis * m_main_axis;
 
 
-    std::vector<spc::EquallySpacedTimeSeries<float>> m_series; //save all as copies
-
-
-    int m_current_color;
 };
 
 

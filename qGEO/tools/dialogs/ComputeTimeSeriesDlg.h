@@ -4,7 +4,7 @@
 #include <ui_ComputeTimeSeriesDlg.h>
 #include <ccPointCloud.h>
 #include <spc/methods/kernel_smoothing.h>
-#include <dialogs/ccCurvePlotterDlg.h>
+//#include <dialogs/ccCurvePlotterDlg.h>
 
 class ComputeTimeSeriesDlg : public QDialog, public Ui::ComputeTimeSeriesDialog
 {
@@ -23,8 +23,8 @@ public:
 
     void updateComboScalars(const ccPointCloud * cloud);
 
-    void setPlotWindow(ccCurvePlotterDlg * plotter) {m_plotter = plotter;}
-    ccCurvePlotterDlg * gePlotWindow() {return m_plotter;}
+//    void setPlotWindow(ccCurvePlotterDlg * plotter) {m_plotter = plotter;}
+//    ccCurvePlotterDlg * gePlotWindow() {return m_plotter;}
 
 
 public slots:
@@ -32,7 +32,7 @@ public slots:
     void accept() { done(1); }
 
 private:
-    ccCurvePlotterDlg * m_plotter;
+//    ccCurvePlotterDlg * m_plotter;
 
 
 };

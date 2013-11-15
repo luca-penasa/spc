@@ -12,7 +12,7 @@
 
 #include <ccHObjectCaster.h>
 
-#include <dialogs/ccCurvePlotterDlg.h>
+//#include <dialogs/ccCurvePlotterDlg.h>
 
 #include <spc/methods/linear_interpolator.h>
 #include <spc/time_series/sparse_time_series.h>
@@ -28,7 +28,7 @@
 ComputeTimeSeries::ComputeTimeSeries(ccPluginInterface *parent_plugin) : BaseFilter(FilterDescription(   "Compute Time Series",
                                                                          "Compute Time Series",
                                                                          "Build a time series that describe how some scalar change along a given direction/stratigraphic position",
-                                                                         ":/toolbar/icons/time_series.png"), parent_plugin), m_dialog(0), m_plot_dialog(0)
+                                                                         ":/toolbar/icons/time_series.png"), parent_plugin)
 {
 }
 
@@ -136,28 +136,28 @@ int ComputeTimeSeries::openInputDialog()
 int ComputeTimeSeries::openOutputDialog()
 {
 
-    qGEO * plugin = static_cast<qGEO *>(getParentPlugin());
+//    qGEO * plugin = static_cast<qGEO *>(getParentPlugin());
 
-    ccCurvePlotterDlg * plotter = plugin->getCurrentPlotter();
+//    ccCurvePlotterDlg * plotter = plugin->getCurrentPlotter();
 
-    if (!plotter)
-        return -1;
+//    if (!plotter)
+//        return -1;
 
-    else if (!m_dialog->getAppendPlot())
-        plotter->clearPlot();
-
-
-    for (auto series: computed_series)
-    {
-        if (series.getY().size() != 0)
-            plotter->addCurve(series);
-    }
+//    else if (!m_dialog->getAppendPlot())
+//        plotter->clearPlot();
 
 
-    plotter->show();
-    plotter->raise();
+//    for (auto series: computed_series)
+//    {
+//        if (series.getY().size() != 0)
+//            plotter->addCurve(series);
+//    }
 
-    return 1;
+
+//    plotter->show();
+//    plotter->raise();
+
+//    return 1;
 
 }
 

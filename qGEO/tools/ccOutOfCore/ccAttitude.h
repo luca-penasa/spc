@@ -9,13 +9,18 @@
 #include "ccNormalVectors.h"
 
 
+#include <ccOutOfCore/ccMyBaseObject.h>
+
+
+#include <QIcon>
+
 
 
 
 ///
 /// \brief The ccAttitude class gives a qCC-valid representation of a geological attitude
 ///
-class ccAttitude: public ccHObject, public spc::Attitude
+class ccAttitude: public ccMyBaseObject, public spc::Attitude
 
 {
 public:
@@ -29,6 +34,11 @@ public:
     virtual bool isSerializable() const { return true; }
     virtual bool hasColors() const { return true; }
     virtual ccBBox getMyOwnBB();
+
+    virtual QIcon * getIcon() const
+    {
+        return new QIcon(QString::fromUtf8(":/toolbar/icons/attitude.png"));
+    }
 
 
 

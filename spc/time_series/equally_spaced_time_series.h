@@ -114,17 +114,7 @@ public:
 
     virtual auto getMaxX() -> ScalarT const {return x_start + x_step * this->getNumberOfSamples();}
 
-//    template<typename NScalarT>
-//    EquallySpacedTimeSeries& operator=(EquallySpacedTimeSeries<NScalarT> & rhs)
-//    {
-//        this->y.clear();
-//        std::vector<NScalarT> old_y = rhs.getY();
-//        std::vector<ScalarT> new_y (old_y.begin(), old_y.end());
-//        this->setY(new_y);
-//        this->x_start = (ScalarT) rhs.getXStart();
-//        this->x_step = (ScalarT) rhs.getXStep();
-//        return *this;
-//    }
+
 
 private:
     ///
