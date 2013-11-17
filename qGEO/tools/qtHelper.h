@@ -56,7 +56,7 @@ class ObjectSelectionComboBox: public QComboBox
 public:
     ObjectSelectionComboBox(QWidget * parent =0): QComboBox(parent), m_has_none(false) {}
 
-    static ObjectSelectionComboBox * fromContainer(ccHObject::Container &cont, bool none);
+//    static ObjectSelectionComboBox * fromContainer(ccHObject::Container &cont, bool none);
 
     void addObjects(ccHObject::Container & cont);
 
@@ -64,8 +64,22 @@ public:
 
     bool hasNone() const {return m_has_none;}
 
+    // if none -> void
+    ccHObject * getSelected() const
+    {
+        int id = this->currentIndex();
+        if (id > m_container.size())
+            return 0;
+
+        return m_container.at(id);
+    }
+
+
 private:
     bool m_has_none;
+
+    /// where we keep a copy of the full container, for easy retrieving
+    ccHObject::Container m_container;
 
 };
 

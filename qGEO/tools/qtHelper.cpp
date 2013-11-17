@@ -180,43 +180,42 @@ QString suggestIncrementalName(QString name)
 }
 
 
-ObjectSelectionComboBox *ObjectSelectionComboBox::fromContainer(ccHObject::Container &cont, bool none)
-{
-    ObjectSelectionComboBox * combo = new ObjectSelectionComboBox;
-    combo->setNone(none);
+//ObjectSelectionComboBox *ObjectSelectionComboBox::fromContainer(ccHObject::Container &cont, bool none)
+//{
+//    ObjectSelectionComboBox * combo = new ObjectSelectionComboBox;
+//    combo->setNone(none);
 
-    for (int i = 0; i < cont.size() ; i++)
-    {
-        ccHObject * object = cont.at(i);
+//    combo->m_container = cont;
 
-        //put in a qVariant
-        QVariant data;
-        data.setValue( (void *) object);
-        QString name = object->getName();
+//    for (int i = 0; i < cont.size() ; i++)
+//    {
+//        ccHObject * object = cont.at(i);
 
-        combo->addItem(name, data);
-    }
+//        //put in a qVariant
+//        QVariant data;
+//        data.setValue( (void *) object);
+//        QString name = object->getName();
 
-    if ( combo->hasNone() )
-        combo->addItem("None");
+//        combo->addItem(name, data);
+//    }
+
+//    if ( combo->hasNone() )
+//        combo->addItem("None");
 
 
-    return combo;
-}
+//    return combo;
+//}
 
 
 void ObjectSelectionComboBox::addObjects(ccHObject::Container &cont)
 {
+    m_container = cont;
     for (int i = 0; i < cont.size() ; i++)
     {
         ccHObject * object = cont.at(i);
-
-        //put in a qVariant
-        QVariant data;
-        data.setValue( (void *) object);
         QString name = object->getName();
 
-        this->addItem(name, data);
+        this->addItem(name);
     }
 
     if (this->hasNone())

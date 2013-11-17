@@ -9,6 +9,8 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 
+#include <spc/elements/generic_cloud.h>
+
 
 namespace spc
 {
@@ -43,6 +45,21 @@ public:
     //! \return a vector of stratigraphic positions computed according this model
     //!
     virtual std::vector<float> getStratigraphicPositions(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
+
+    //!
+    //! \brief getStratigraphicPositions is for the wrapper type of SPC
+    //! \param cloud
+    //! \return
+    //!
+    virtual std::vector<float> getStratigraphicPositions(GenericCloud * cloud);
+
+    //!
+    //! \brief getStratigraphicPositions with indices
+    //! \param cloud
+    //! \param indices
+    //! \return the stratigraphic positions
+    //!
+    virtual std::vector<float> getStratigraphicPositions(GenericCloud *cloud, const std::vector<int> &indices);
 
     //!
     //! \brief getStratigraphicPositions as getStratigraphicPosition but for a whole cloud!

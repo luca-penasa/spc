@@ -29,7 +29,7 @@
 
 
 
-
+//// te dialog with the widgt collecting the plots
 class PlotterDlg : public QDialog, Ui::PlotterDlgUi
 {
     Q_OBJECT

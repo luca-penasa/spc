@@ -11,6 +11,7 @@
 
 #include <ccOutOfCore/ccMyBaseObject.h>
 #include <QIcon>
+#include <ccPointCloud.h>
 
 class ccSingleAttitudeModel: public QObject,  public ccMyBaseObject, public spc::SingleAttitudeModel
 {

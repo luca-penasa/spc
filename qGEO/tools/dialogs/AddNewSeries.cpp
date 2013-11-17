@@ -49,12 +49,9 @@ ccHObject *AddNewSeriesDlg::getSelectedArea() const
     return getBackObjectFromCombo(ui->comboArea);
 }
 
-ccHObject *AddNewSeriesDlg::getBackObjectFromCombo(const QComboBox *combo) const
+ccHObject *AddNewSeriesDlg::getBackObjectFromCombo(const ObjectSelectionComboBox *combo) const
 {
 
-    QVariant data = combo->itemData(combo->currentIndex());
+    return combo->getSelected();
 
-    ccHObject * object = static_cast<ccHObject *> (data.data());
-
-    return object;
 }

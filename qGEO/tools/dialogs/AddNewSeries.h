@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <ccHObject.h>
 #include <QComboBox>
+#include <qtHelper.h>
 
 namespace Ui {
 class AddNewSeries;
@@ -35,7 +36,7 @@ public:
 private:
     Ui::AddNewSeries *ui;
 
-    ccHObject * getBackObjectFromCombo(const QComboBox * combo) const;
+    ccHObject * getBackObjectFromCombo(const ObjectSelectionComboBox *combo) const;
 
 };
 

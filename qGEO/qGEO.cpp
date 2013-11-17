@@ -61,7 +61,7 @@ void qGEO::getActions(QActionGroup& group)
         addFilter(new AttitudeToModel(this));
         addFilter(new Edit(this));
         addFilter(new OpenPlotsDialog(this));
-
+        addFilter(new SetUpNewSeries(this));
 
 //        addFilter( new ComputeStratigraphicPosition(this) );
 //        addFilter( new ComputeTimeSeries(this));
@@ -70,7 +70,7 @@ void qGEO::getActions(QActionGroup& group)
 //        addFilter(new EvaluateStratigraphicPosition(this));
 //        addFilter(new Properties(this));
 //        addFilter(new Define2DSelection(this));
-//        addFilter(new SetUpNewSeries(this));
+
     }
 
     for (std::vector<BaseFilter*>::const_iterator it = m_filters.begin(); it != m_filters.end(); ++it)

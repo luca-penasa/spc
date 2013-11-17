@@ -22,6 +22,8 @@ PlotterDlg::PlotterDlg(QWidget* parent): QDialog(parent), Ui::PlotterDlgUi()
     tbar->addAction(this->actionClearPlot);
 
 
+
+
 }
 
 

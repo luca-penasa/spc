@@ -17,7 +17,7 @@
    <item>
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="Plotter" name="plot" native="true"/>
+      <widget class="PlotterWidget" name="plot" native="true"/>
      </item>
     </layout>
    </item>
@@ -58,9 +58,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>Plotter</class>
+   <class>PlotterWidget</class>
    <extends>QWidget</extends>
-   <header>plotter.h</header>
+   <header>PlotterWidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
