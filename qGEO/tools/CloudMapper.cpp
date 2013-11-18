@@ -4,7 +4,6 @@ template<>
 void CloudWrapper<ccPointCloud>::getPoint(int id, float &x, float &y, float &z)
 {
     assert(id < in_cloud->size());
-    std::cout <<"size: " <<  in_cloud->size() << std::endl;
     CCVector3 point;
     in_cloud->getPoint(id, point);
     x = point.x;

@@ -40,6 +40,13 @@ public:
 
     void addRandomContinousValuesLog();
 
+
+    PlotterWidget * getPlotterWidget()
+    {
+        return plot;
+    }
+
+
 public slots:
     void update()
     {

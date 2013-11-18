@@ -12,7 +12,9 @@ public:
 
     virtual int compute();
 
-    int checkSelected() {return 1;}
+    virtual int openInputDialog();
+
+    virtual int checkSelected() {return 1;}
 };
 
 #endif // PLOT_2D_H

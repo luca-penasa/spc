@@ -57,7 +57,7 @@ public:
 
     //! Return a plotter object for plotting things
     //! for now only one plotter at a time is possible!
-    PlotterDlg *getPlotter();
+    PlotterDlg *getPlotterDlg();
 
 
 
@@ -75,7 +75,7 @@ public slots:
 protected:
 
 	//! Menu
-    QMenu* m_menu;
+//    QMenu* m_menu;
 
 
 	//! Loaded filters

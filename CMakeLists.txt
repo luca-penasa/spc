@@ -8,14 +8,16 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations")
 set(SPC_LIBRARIES CACHE INTERNAL "SPC libs" FORCE)
 
 option(BUILD_SPC_SHARED "Build spc library as a shared lib." ON)
-option(BUILD_TOOLS "Build the tools." ON)
+option(BUILD_TOOLS "Build the tools." OFF)
 option(BUILD_SANDBOX_TOOLS "Build sandbox tools." OFF)
-option(BUILD_MICMAC_RELATED "Build MICMAC-related code." ON)
-option(BUILD_PYTHON_WRAPPINGS "Build python interface for the library. Only some classes have been wrapped!" ON)
+option(BUILD_MICMAC_RELATED "Build MICMAC-related code." OFF)
+option(BUILD_PYTHON_WRAPPINGS "Build python interface for the library. Only some classes have been wrapped!" OFF)
 option(BUILD_SPC_DOC "Build SPC doc" OFF)
 option(BUILD_TESTS "Do tests" OFF)
 option(BUILD_QGEO_CC_PLUGIN "Build SPC-based plugin for CloudCompare" ON)
-option(SWIG_WRAPPINGS "Use swigs to generate wrappings for some methods" ON)
+option(SWIG_WRAPPINGS "Use swigs to generate wrappings for some methods" OFF)
+option(USE_PARALLEL_OPENMP "Enable paralellization of some algorithms via OpenMP" OFF)
+
 
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
@@ -35,7 +37,7 @@ add_definitions(${PCL_DEFINITIONS})
 # Standard set of flags for c++
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fopenmp -fPIC -lpthread -lgcc_s")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++0x -fopenmp -fPIC -lpthread")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -pipe -std=c++0x -fPIC " )
 
 #set(CMAKE_BUILD_TYPE DEBUG) #force it to debug for now
 
@@ -45,6 +47,10 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/functions.cmake)
 # includes starts from here
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
+if(USE_PARALLEL_OPENMP)
+    add_definitions(-DUSE_OPENMP)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -lpthread -lgcc_s" )
+endif()
 
 
 

@@ -11,7 +11,7 @@ GenericTimeSeries<ScalarT>::GenericTimeSeries(): y(0)
 
 template<typename ScalarT>
 auto
-GenericTimeSeries<ScalarT>::getY() -> vector<ScalarT>
+GenericTimeSeries<ScalarT>::getY() const-> vector<ScalarT>
 {
     return y;
 }

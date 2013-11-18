@@ -2,7 +2,7 @@
 #define ASSOCIATECLOUDTOMODEL_H
 
 #include <qPCL/PclUtils/filters/BaseFilter.h>
-#include <dialogs/AddNewSeries.h>
+#include <dialogs/ccTimeSeriesGeneratorEditorDlg.h>
 
 
 class SetUpNewSeries : public BaseFilter
@@ -13,12 +13,9 @@ public:
 protected:
     virtual int compute();
 
-    virtual int openInputDialog();
-
     virtual int checkSelected();
 
-private:
-    AddNewSeriesDlg * m_dialog;
+
 
 };
 

@@ -21,18 +21,17 @@ PlotterWidget::PlotterWidget(QWidget *parent): QCustomPlot(parent), m_main_scale
     m_group = new QCPMarginGroup(this);
     getMainAxisRect()->setMarginGroup(QCP::msTop|QCP::msBottom, m_group);
 
+    setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
 
-    setInteractions(QCP::iRangeDrag | QCP::iRangeZoom |QCP::iSelectAxes);
+//    SinglePlot * sp =  new SinglePlot(this);
 
-    SinglePlot * sp =  new SinglePlot(this);
+//    spc::ContinousValuesLog * log =  new spc::ContinousValuesLog;
+//    log->resize(100);
+//    for(int i = 0 ; i < log->getSize(); ++i)
+//        log->setValue(i, i);
 
-    spc::ContinousValuesLog * log =  new spc::ContinousValuesLog;
-    log->resize(100);
-    for(int i = 0 ; i < log->getSize(); ++i)
-        log->setValue(i, i);
-
-    sp->updateDataWith(log);
-    addSinglePlot(sp);
+//    sp->updateDataWith(log);
+//    addSinglePlot(sp);
 
 
 

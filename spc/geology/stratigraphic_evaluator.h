@@ -42,7 +42,9 @@ public:
         out.resize(indices_.size());
 
         //now perform computations
+//#idfef USE_OPENMP
 //#pragma omp parallel for shared (out)
+//#endif
         for (int i = 0 ; i < indices_.size(); ++i)
         {
             int id = indices_.at(i);

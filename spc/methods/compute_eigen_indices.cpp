@@ -111,7 +111,9 @@ namespace spc
                                       const int &n_threads)
     {
         out_cloud.resize(in_cloud.size());
+#ifdef USE_OPENMP
         #pragma omp parallel for shared (out_cloud) num_threads(n_threads)
+#endif
         for (int i = 0; i < in_cloud.size(); ++i)
         {
             computeEigIndices<PointNormalEigs>(in_cloud, i, out_cloud[i].id0, out_cloud[i].id1, out_cloud[i].id2);
@@ -186,8 +188,9 @@ namespace spc
         //place for neighs ids and distances
         std::vector<int> indices;
         std::vector<float> distances;
-
+#ifdef USE_OPENMP
         #pragma omp parallel for shared (out_cloud) private (indices, distances) num_threads(n_threads)
+#endif
         for (int i = 0; i < n_points; ++i)
         {
             //get neighbors for this point

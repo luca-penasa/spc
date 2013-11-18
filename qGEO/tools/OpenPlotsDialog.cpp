@@ -12,12 +12,14 @@ OpenPlotsDialog::OpenPlotsDialog(ccPluginInterface *parent_plugin) : BaseFilter(
 int
 OpenPlotsDialog::compute()
 {
+    return 1;
+}
 
-    ccPluginInterface * plugin = getParentPlugin();
+int OpenPlotsDialog::openInputDialog()
+{
+    qGEO * qgeo = static_cast<qGEO *> (getParentPlugin());
 
-    qGEO * qgeo = static_cast<qGEO *> (plugin);
-
-    PlotterDlg * dlg = qgeo->getPlotter();
+    PlotterDlg * dlg = qgeo->getPlotterDlg();
 
     assert (dlg); //just to be sure
 

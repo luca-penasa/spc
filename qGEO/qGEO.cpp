@@ -18,7 +18,7 @@
 #include <test.h>
 
 
-qGEO::qGEO(): m_menu(0), m_plotter(0)
+qGEO::qGEO(): m_plotter(0)
 {
 }
 
@@ -34,7 +34,10 @@ qGEO::~qGEO()
 void qGEO::handleNewEntity(ccHObject* entity)
 {
 	assert(entity && m_app);
+    entity->setSelected(true);
 	m_app->addToDB(entity);
+
+
 }
 
 void qGEO::handleEntityChange(ccHObject* entity)
@@ -100,7 +103,7 @@ int qGEO::addFilter(BaseFilter * filter)
     return 1;
 }
 
-PlotterDlg *qGEO::getPlotter()
+PlotterDlg *qGEO::getPlotterDlg()
 {
     if (!m_plotter)
     {

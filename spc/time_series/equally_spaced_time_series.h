@@ -9,7 +9,7 @@ namespace spc
 {
 
 using namespace std;
-template <typename ScalarT>
+template <typename ScalarT = float >
 ///
 /// \brief The EquallySpacedTimeSeries class is made up of a set of ordered y values equally spaced.
 ///
@@ -83,7 +83,7 @@ public:
     /// \brief getX
     /// \return a vector of the x positions
     ///
-    virtual auto getX() -> vector<ScalarT>;
+    virtual auto getX() const -> vector<ScalarT>;
 
     ///
     /// \brief resize the y vector to the given size

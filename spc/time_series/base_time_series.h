@@ -48,13 +48,13 @@ public:
     /// \brief getX positions
     /// \return a vector of x positions
     ///
-    virtual auto getX() -> vector<ScalarT> = 0;
+    virtual auto getX() const -> vector<ScalarT> = 0;
 
     ///
     /// \brief getY values
     /// \return a vector of the y values associated with x
     ///
-    auto getY() -> vector<ScalarT> ;
+    auto getY() const -> vector<ScalarT> ;
 
     ///
     /// \brief setY values

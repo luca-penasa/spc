@@ -33,8 +33,9 @@ KernelSmoothing<ScalarT>::compute(GenericTimeSeries<ScalarT> *new_series)
 
     ScalarT value;
     ScalarT variance;
-
-#pragma omp parallel for private (value, variance)
+#ifdef DUSE_OPENMP
+    #pragma omp parallel for private (value, variance)
+#endif
     for (int i = 0; i < new_y_.size(); ++i)
     {
 

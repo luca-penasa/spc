@@ -290,11 +290,7 @@ void ccSingleAttitudeModel::setMinSp(float min_sp)
 }
 
 
-
-
 void ccSingleAttitudeModel::initEditDlg()
 {
     m_edit_dlg = new ccSingleAttitudeModelEditorDlg(this);
-
-//    connect(m_edit_dlg, SIGNAL(stratChanged(double)), this, SLOT(setAdditionalShiftSlot(double)));
 }

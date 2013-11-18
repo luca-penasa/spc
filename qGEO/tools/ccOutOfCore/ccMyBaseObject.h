@@ -3,6 +3,8 @@
 
 #include <ccOutOfCore/ccEditableHObject.h>
 #include <ccHObject.h>
+#include <dialogs/ccTimeSeriesGeneratorEditorDlg.h>
+
 class ccMyBaseObject: public  ccEditableHObject, public ccHObject
 {
 public:
@@ -10,6 +12,7 @@ public:
     /// \brief ccMyBaseObject def constructor
     ///
     ccMyBaseObject();
+
 };
 
 #endif // CCMYBASEOBJECT_H

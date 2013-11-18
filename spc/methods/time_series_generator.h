@@ -4,6 +4,9 @@
 #include <sensor_msgs/PointCloud2.h>
 #include <spc/time_series/equally_spaced_time_series.h>
 #include <spc/io/pointcloud2_reader.h>
+#include <spc/elements/generic_cloud.h>
+
+#include <spc/stratigraphy/stratigraphic_model_base.h>
 
 namespace spc
 {
@@ -14,18 +17,35 @@ template <typename ScalarT>
 /// the results is always a TimeSeries equally spaced. If you want to evaluate non-equally spaced time series
 /// have a look directly to the KernelSmoothing method that permits to do that.
 ///
+/// You can also chose to set as input a stratigraphic model + a cloud as a generic cloud
+///
 class TimeSeriesGenerator
 {
 public:
     ///
     /// \brief TimeSeriesGenerator def constructor
     ///
-    TimeSeriesGenerator() {f_min = 0 ; f_max = 0;}
+    TimeSeriesGenerator(): in_reader_(0), in_cloud_(0), model_(0)
+    {
+        f_min = 0 ; f_max = 0;
+    }
+
+    void setStratigraphicModel(StratigraphicModelBase * model)
+    {
+        model_ = model;
+    }
+
+    void setInputCloud(GenericCloud * cloud)
+    {
+        in_cloud_ = cloud;
+    }
+
+
 
     ///
     /// \brief setInputCloud
     /// \param in_cloud is a sensor msgs cloud
-    ///
+    /// \note this is deprecated, please use the setInputCloud and setStratigraphicModel way
     void setInputReader(spc::PointCloud2Reader * reader) {in_reader_ = reader;}
 
     ///
@@ -72,14 +92,21 @@ public:
     int compute();
 
     ///
-    /// \brief setFixedMinMax permits to create a bunch of ts all with the same extension - where nothing can said you'll find nans
+    /// \brief setFixedMinMax permits to create a bunch of ts all with the same extension - where nothing can be said you'll find nans
     /// \param min minx value of the time series
     /// \param max maxx value of the time series
     ///
     void setFixedMinMax(ScalarT min, ScalarT max) {f_min = min; f_max=max;}
 
 
+    void fillIndicesIfNeeded();
+
 private:
+
+    StratigraphicModelBase * model_;
+
+    GenericCloud * in_cloud_;
+
     PointCloud2Reader * in_reader_;
 
     ///

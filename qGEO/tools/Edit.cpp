@@ -12,7 +12,7 @@ Edit::Edit(ccPluginInterface *parent_plugin) : BaseFilter(FilterDescription(   "
                                                                          "Edit selected element",
                                                                          ":/toolbar/icons/edit.png"), parent_plugin)
 {
-
+    this->setShowProgressBar(false);
 }
 
 
@@ -37,11 +37,12 @@ int Edit::checkSelected()
     ccHObject * selected = getSelectedEntityAsCCHObject();
     if (selected && selected->hasMetaData("[qGEO]"))
     {
-        std::cout << "positive!" << std::endl;
+
         ccMyBaseObject * mobj = static_cast<ccMyBaseObject * >(selected);
 
         if (!mobj)
         {
+            std::cout << "problem casting!" << std::endl;
             return 0;
         }
 
@@ -50,6 +51,11 @@ int Edit::checkSelected()
             std::cout << "has edit dialog" << std::endl;
             return 1;
         }
+        else
+        {
+            std::cout << "it does not have a edit dialog" << std::endl;
+        }
+
 
     }
     else

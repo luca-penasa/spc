@@ -31,7 +31,6 @@ public:
 
         replot();
 
-
     }
 
     MainScale * getMainAxisRect() const

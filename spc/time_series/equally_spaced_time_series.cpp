@@ -44,7 +44,7 @@ EquallySpacedTimeSeries<ScalarT>::EquallySpacedTimeSeries(ScalarT x_min_, Scalar
 
 template<typename ScalarT>
 auto
-EquallySpacedTimeSeries<ScalarT>::getX() -> vector<ScalarT>
+EquallySpacedTimeSeries<ScalarT>::getX() const -> vector<ScalarT>
 {
     std::vector<ScalarT> x(y.size());
     int counter = 0;

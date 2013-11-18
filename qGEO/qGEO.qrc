@@ -13,5 +13,7 @@
         <file>icons/attitude.png</file>
         <file>icons/AttitudeToModel.png</file>
         <file>icons/edit.png</file>
+        <file>icons/tseries.png</file>
+        <file>icons/tseries_generator.png</file>
     </qresource>
 </RCC>

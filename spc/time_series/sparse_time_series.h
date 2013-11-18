@@ -37,7 +37,7 @@ public:
     /// \return the vector of x positions
     /// reimplemented from base class
     ///
-    auto getX() -> vector<ScalarT> {return x;}
+    auto getX() const -> vector<ScalarT> {return x;}
 
     ///
     /// \brief resize the x and y vectors
