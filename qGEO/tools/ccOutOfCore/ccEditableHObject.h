@@ -32,7 +32,10 @@ public:
     virtual void showEditDlg()
     {
         if (getHasEditDlg())
-             m_edit_dlg->show();
+        {
+            updateEditDlg(); // do the update
+            m_edit_dlg->show(); // then show it
+        }
     }
 
 protected:
@@ -45,6 +48,15 @@ protected:
     virtual void initEditDlg()
     {
         std::cout << "ccEditableHObject initEditDlg called... are you sure?" << std::endl;
+    }
+
+    ///
+    /// \brief updateEditDlg some objects may need to do somethin before to show the dialog
+    /// as re-read the dbtree and update comboBoxes etc...
+    ///
+    virtual void updateEditDlg()
+    {
+        // nothing by def
     }
 
 

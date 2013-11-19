@@ -9,7 +9,7 @@
 class ccTimeSeriesGenerator;
 
 namespace Ui {
-class AddNewSeries;
+class ccTimeSeriesGeneratorEditorDlgUi;
 }
 
 class ccTimeSeriesGeneratorEditorDlg : public QDialog
@@ -40,16 +40,18 @@ public:
 
     float getStep() const;
 
+    void initWithTree();
 public slots:
-
     void updateScalarFields(int id) ;
 
-//    void updateWithSelected(ccHObject::Container & objects);
+    void updateWithSelected(ccHObject::Container &selected);
+
+//    void updateWithTree();
 
 
 
 private:
-    Ui::AddNewSeries *ui;
+    Ui::ccTimeSeriesGeneratorEditorDlgUi *ui;
 
     ccTimeSeriesGenerator * m_generator;
 

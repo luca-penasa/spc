@@ -54,29 +54,27 @@ class ObjectSelectionComboBox: public QComboBox
     Q_OBJECT
 
 public:
-    ObjectSelectionComboBox(QWidget * parent =0): QComboBox(parent), m_has_none(false) {}
+    ObjectSelectionComboBox(QWidget * parent =0);
 
-//    static ObjectSelectionComboBox * fromContainer(ccHObject::Container &cont, bool none);
-
-    void addObjects(ccHObject::Container & cont);
+    void updateObjects(ccHObject::Container & cont);
 
     void setNone(bool has) {m_has_none = has;}
 
     bool hasNone() const {return m_has_none;}
 
-    // if none -> void
-    ccHObject * getSelected() const
-    {
-        int id = this->currentIndex();
-        if (id > m_container.size())
-            return 0;
+    bool isPresentObjectWithID(const int id, int &position) const;
 
-        return m_container.at(id);
-    }
+    // if none -> void
+    ccHObject * getSelected() const;
+
+public slots:
+    void updateCurrentSelectionInfo(int id);
 
 
 private:
     bool m_has_none;
+
+    int m_old_selected_id;
 
     /// where we keep a copy of the full container, for easy retrieving
     ccHObject::Container m_container;
@@ -91,5 +89,6 @@ bool isLastOfListAnInteger(QStringList list, int &number);
 
 int ccVector3fromQstring(QString &string, CCVector3 &output_vector, QString separator = " ");
 
-Q_DECLARE_METATYPE(ComboItemDescriptor);
+Q_DECLARE_METATYPE (ComboItemDescriptor)
+
 #endif //Q_PCL_PLUGIN_QTHELPER_H

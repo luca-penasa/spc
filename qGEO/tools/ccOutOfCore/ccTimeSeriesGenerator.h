@@ -23,7 +23,12 @@ protected:
     virtual void initEditDlg();
 
 
+    virtual void updateEditDlg();
+
 
 };
+
+
+Q_DECLARE_METATYPE(ccTimeSeriesGenerator)
 
 #endif // CCTIMESERIESGENERATOR_H

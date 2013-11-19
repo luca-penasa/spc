@@ -10,6 +10,12 @@ ccTimeSeriesGenerator::ccTimeSeriesGenerator()
 }
 
 void ccTimeSeriesGenerator::initEditDlg()
-{
+{        
     m_edit_dlg = new ccTimeSeriesGeneratorEditorDlg(this);
+}
+
+void ccTimeSeriesGenerator::updateEditDlg()
+{
+    ccTimeSeriesGeneratorEditorDlg * asitis = static_cast<ccTimeSeriesGeneratorEditorDlg *> (m_edit_dlg);
+    asitis->initWithTree();
 }

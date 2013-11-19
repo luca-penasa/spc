@@ -180,44 +180,74 @@ QString suggestIncrementalName(QString name)
 }
 
 
-//ObjectSelectionComboBox *ObjectSelectionComboBox::fromContainer(ccHObject::Container &cont, bool none)
-//{
-//    ObjectSelectionComboBox * combo = new ObjectSelectionComboBox;
-//    combo->setNone(none);
 
-//    combo->m_container = cont;
-
-//    for (int i = 0; i < cont.size() ; i++)
-//    {
-//        ccHObject * object = cont.at(i);
-
-//        //put in a qVariant
-//        QVariant data;
-//        data.setValue( (void *) object);
-//        QString name = object->getName();
-
-//        combo->addItem(name, data);
-//    }
-
-//    if ( combo->hasNone() )
-//        combo->addItem("None");
-
-
-//    return combo;
-//}
-
-
-void ObjectSelectionComboBox::addObjects(ccHObject::Container &cont)
+ObjectSelectionComboBox::ObjectSelectionComboBox(QWidget *parent): QComboBox(parent), m_has_none(false), m_old_selected_id(-1)
 {
-    m_container = cont;
-    for (int i = 0; i < cont.size() ; i++)
-    {
-        ccHObject * object = cont.at(i);
-        QString name = object->getName();
+    connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(updateCurrentSelectedUniqueID(int)));
+}
 
+void ObjectSelectionComboBox::updateObjects(ccHObject::Container &cont)
+{
+    int old_selected = m_old_selected_id; //first of all!
+
+    if (cont.empty())
+        return;
+    //clear everything
+    this->clear();
+
+    m_container = cont;
+
+    for (ccHObject * obj : cont)
+    {
+        QString name = obj->getName();
         this->addItem(name);
     }
 
     if (this->hasNone())
-        this->addItem("None");
+        this->addItem("None"); // it correspond to -1 old id
+
+    int position;
+    if (isPresentObjectWithID(old_selected, position))
+    {
+        // restore it as selected
+        this->setCurrentIndex(position);
+    }
+}
+
+bool ObjectSelectionComboBox::isPresentObjectWithID(const int id, int &position) const
+{
+    position = 0;
+    for (ccHObject * obj: m_container)
+    {
+        if (obj->getUniqueID() == id)
+        {
+            return true;
+        }
+        position +=1;
+    }
+
+
+
+    return false;
+}
+
+
+ccHObject *ObjectSelectionComboBox::getSelected() const
+{
+    int id = this->currentIndex();
+    if (id > m_container.size())
+        return 0;
+
+    return m_container.at(id);
+}
+
+void ObjectSelectionComboBox::updateCurrentSelectionInfo(int id)
+{
+    if (id > m_container.size()) // is a None
+        m_old_selected_id = -1;
+    else
+    {
+        ccHObject * obj = m_container.at(id);
+        m_old_selected_id = obj->getUniqueID();
+    }
 }

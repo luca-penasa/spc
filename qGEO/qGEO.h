@@ -15,11 +15,17 @@
 class QToolBar;
 class QMenu;
 
+class qGEO;
+
+//qGEO * QGEO_MAIN_PLUGIN(0); // when qGEO will be instantiated it will point to the qGEO instance
+
 //! PCL bridge plugin
 class qGEO : public QObject, public ccStdPluginInterface
 {
     Q_OBJECT
     Q_INTERFACES(ccStdPluginInterface)
+
+
 
 public:
     //! Default constructor
@@ -28,29 +34,17 @@ public:
     //!Destructor
     virtual ~qGEO();
 
-//    //inherited from ccPluginInterface
-//    void getDescription(ccPluginDescription& desc);
-//	void newSelection(std::vector<ccHObject*>& selectedEntities);
-//    QIcon getIcon() const;
 
     virtual QString getName() const { return "qGEO"; }
     virtual QString getDescription() const { return "Geologic stuff for qCC"; }
     virtual QIcon getIcon() const;
 
-    //inherited from ccStdPluginInterface
-//    bool isEnabled(const std::vector<ccHObject*>& selectedEntities);
+    static qGEO *theInstance();
 
     QString getErrorMessage(int errorCode/*, LANGUAGE lang*/);
 
-
-    //inherited from ccStdPluginInterface
     virtual void onNewSelection(const ccHObject::Container& selectedEntities);
     virtual void getActions(QActionGroup& group);
-//    int doAction(ccHObject::Container& selectedEntities,
-
-//                 unsigned& uiModificationFlags,
-//                 ccProgressDialog* progressCb=NULL,
-//                 QWidget* parent=NULL);
 
 	//! Adds a filter
     int addFilter(BaseFilter* filter);
@@ -59,7 +53,27 @@ public:
     //! for now only one plotter at a time is possible!
     PlotterDlg *getPlotterDlg();
 
+    ///////// ACCESS TO DBTREE ///////////////////////////////
+    ccHObject::Container getSelected() const;
 
+
+    ccHObject::Container getSelectedThatHaveMetaData(const QString key) const;
+
+    ccHObject::Container getSelectedThatAre(CC_CLASS_ENUM ThisType) const;
+
+    ccHObject::Container getAllObjectsInTree();
+    ccHObject::Container getAllObjectsInTreeThatHaveMetaData(const QString key );
+    ccHObject::Container getAllObjectsInTreeThatAre(CC_CLASS_ENUM ThisType);
+
+
+    ///////// STATIC FILTERS //////////////////////////////////
+    static ccHObject::Container filterObjectsByType(const ccHObject::Container &in, const CC_CLASS_ENUM ThisType);
+
+    static ccHObject::Container filterObjectsByMetaData (const ccHObject::Container &in, const QString key);
+
+
+signals:
+    void selectionChanged(ccHObject::Container & selection);
 
 public slots:
 	//! Handles new entity
@@ -73,16 +87,15 @@ public slots:
 	
 
 protected:
-
-	//! Menu
-//    QMenu* m_menu;
-
-
 	//! Loaded filters
 	std::vector<BaseFilter*> m_filters;
 
 
     PlotterDlg * m_plotter;
+
+
+    ccHObject::Container m_selected;
+
 };
 
 

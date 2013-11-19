@@ -18,8 +18,11 @@
 #include <test.h>
 
 
+static qGEO* qgeo_instance = 0;
+
 qGEO::qGEO(): m_plotter(0)
 {
+    qgeo_instance = this;
 }
 
 qGEO::~qGEO()
@@ -115,31 +118,115 @@ PlotterDlg *qGEO::getPlotterDlg()
     return m_plotter;
 }
 
-//ccCurvePlotterDlg * qGEO::getCurrentPlotter()
-//{
-//    Plot2D * example_class = new Plot2D; // this is only an instance for testing
-//                                         // the typeid in the for...
-//    //cycle on all enabled filters:
-//    for (auto  f: m_filters)
-//    {
-//        if (typeid(*f) == typeid(*example_class))
-//        {
-//            //do a cast
-//            Plot2D * plot = dynamic_cast<Plot2D *>( f );
-//            return plot->getPlot();
-//        }
-//    }
-//}
+ccHObject::Container qGEO::getSelected() const
+{
+    return m_selected;
+}
+
+ccHObject::Container qGEO::getSelectedThatHaveMetaData(const QString key) const
+{
+    ccHObject::Container sel = getSelected();
+    ccHObject::Container new_sel;
+
+    for (ccHObject * obj: sel)
+    {
+        if (obj->hasMetaData(key))
+            new_sel.push_back(obj);
+
+    }
+
+    return new_sel;
+
+}
+
+ccHObject::Container qGEO::getSelectedThatAre(CC_CLASS_ENUM ThisType) const
+{
+    ccHObject::Container sel = getSelected(); // all selected  
+
+    ccHObject::Container out = qGEO::filterObjectsByType(sel, ThisType);
+
+    return out;
+
+}
+
+ccHObject::Container qGEO::filterObjectsByType(const ccHObject::Container &in, const CC_CLASS_ENUM ThisType)
+{
+    if (in.empty())
+        return ccHObject::Container(0);
+
+    ccHObject::Container out(0);
+    for (ccHObject * obj: in)
+    {
+        if (obj->isA(ThisType))
+        {
+            out.push_back(obj);
+        }
+    }
+
+    return out;
+}
+
+ccHObject::Container qGEO::getAllObjectsInTreeThatHaveMetaData( const QString key)
+{
+
+    ccHObject::Container all = this->getAllObjectsInTree();
+
+    return qGEO::filterObjectsByMetaData(all, key);
+}
+
+ccHObject::Container qGEO::getAllObjectsInTreeThatAre(CC_CLASS_ENUM ThisType)
+{
+    ccHObject::Container all = getAllObjectsInTree();
+    return qGEO::filterObjectsByType(all, ThisType);
+}
+
+ccHObject::Container qGEO::filterObjectsByMetaData(const ccHObject::Container &in, const QString key)
+{
+    ccHObject::Container out;
+    for (ccHObject * obj: in)
+    {
+        if (obj->hasMetaData(key))
+        {
+            out.push_back(obj);
+        }
+    }
+
+    return out;
+}
+
+ccHObject::Container qGEO::getAllObjectsInTree()
+{
+    ccHObject::Container cont;
+    int n = this->getMainAppInterface()->dbRootObject()->getChildrenNumber();
+    for (int i = 0; i < n; ++i)
+    {
+        cont.push_back(this->getMainAppInterface()->dbRootObject()->getChild(i));
+    }
+
+    return cont;
+}
+
+
+
 
 void qGEO::onNewSelection(const ccHObject::Container& selectedEntities)
 {
     for (unsigned i=0;i<m_filters.size();++i)
         m_filters[i]->updateSelectedEntities(selectedEntities);
+
+    m_selected = selectedEntities;
+
+    emit selectionChanged(m_selected);
 }
 
 QIcon qGEO::getIcon() const
 {
     return QIcon(QString::fromUtf8(":/toolbar/qGEO.png"));
+}
+
+qGEO *qGEO::theInstance()
+{
+    return qgeo_instance;
 }
 
 //plugin export
