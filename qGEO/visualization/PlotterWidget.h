@@ -24,7 +24,7 @@ public:
     void addSinglePlot(SinglePlot * plot)
     {
 
-
+        std::cout << "added plot" << std::endl;
         plot->setMarginGroup(QCP::msTop|QCP::msBottom, m_group);
 
         //also connect the the range to the main plot

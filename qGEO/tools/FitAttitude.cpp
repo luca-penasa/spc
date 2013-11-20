@@ -74,13 +74,13 @@ FitAttitude::compute()
     std::cout << "ended optimizing" << std::endl;
 
 
-    std::vector<spc::Attitude> atts;
+    std::vector<spc::spcAttitude> atts;
     atts =estimator.getEstimatedAttitudes();
 
 
 
     //now for each entity we send back a ccOrientation for visualizing the result
-    for (spc::Attitude att: atts)
+    for (spc::spcAttitude att: atts)
     {
 
 
@@ -89,7 +89,7 @@ FitAttitude::compute()
         std::cout << ccAtt->getUnitNormal() << std::endl;
         std::cout << ccAtt->getPosition() << std::endl;
 
-        ccAtt->setName("Attitude");
+        ccAtt->setName("spcAttitude");
         ccAtt->setVisible(true);
         newEntity(ccAtt);
     }

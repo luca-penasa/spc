@@ -30,7 +30,7 @@ int AttitudeToModel::compute()
         return -1;
     }
 
-    ccSingleAttitudeModel * model = new ccSingleAttitudeModel(att);
+    ccSingleAttitudeModel * model = new ccSingleAttitudeModel (*att);
 
 //    selected->addChild(model);
 

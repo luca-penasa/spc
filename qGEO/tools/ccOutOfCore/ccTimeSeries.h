@@ -4,7 +4,7 @@
 #include <spc/time_series/equally_spaced_time_series.h>
 #include <QIcon>
 
-class ccTimeSeries: public ccMyBaseObject, public spc::EquallySpacedTimeSeries<float>
+class ccTimeSeries:  public ccMyBaseObject, public spc::EquallySpacedTimeSeries<float>
 {
 public:
     ccTimeSeries();

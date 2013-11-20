@@ -11,7 +11,7 @@ namespace spc
 /// \brief The SingleAttitudeModel class represent a stratigraphic "meter" or model.
 ///
 ///
-class SingleAttitudeModel: public StratigraphicModelBase, public Attitude
+class SingleAttitudeModel: public StratigraphicModelBase, public spcAttitude
 {
 public:
 
@@ -21,12 +21,23 @@ public:
     /// def const
     SingleAttitudeModel();
 
+    SingleAttitudeModel(const SingleAttitudeModel & model): spcAttitude(model)
+    {
+        additional_shift_ =  model.getAdditionalShift();
+    }
+
+    SingleAttitudeModel(const spcAttitude & attitude): spcAttitude(attitude)
+    {
+        additional_shift_ = 0.0;
+
+    }
+
     /// inherited from StratigraphicModelBase
     virtual float getStratigraphicPosition(const Vector3f &point);
 
     virtual Vector3f getStratigraphicNormal(const Vector3f &point);
 
-    Vector3f getPointAtStratigraphicPosition(float sp)
+    Vector3f getPointAtStratigraphicPosition(float sp) const
     {
         return getPosition() + getUnitNormal() * (sp - additional_shift_ );
     }

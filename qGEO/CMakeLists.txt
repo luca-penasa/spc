@@ -33,7 +33,7 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fopenmp -fPIC" )
 
     include_directories(${CC_PLUGINS_SOURCE_DIR})
 
-include_directories(visualization)
+    include_directories(visualization)
 
 
 

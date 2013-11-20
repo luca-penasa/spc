@@ -56,17 +56,17 @@ public:
 
     ///
     /// \brief getEstimatedAttitude return the current attitude as estimated by the estimator
-    /// \return an Attitude object
+    /// \return an spcAttitude object
     /// \note that the positioning of this attitude is centered at origin
     /// please use getEstimatedAttitudes() for having an attitude for each input cloud.
     ///
-    Attitude getEstimatedAttitude() {return static_cast<Attitude> (model_);}
+    spcAttitude getEstimatedAttitude() {return static_cast<spcAttitude> (model_);}
 
     ///
     /// \brief getEstimatedAttitudes
     /// \return  a vector of attitudes. each centered in the centroid of its parent cloud.
     ///
-    std::vector<Attitude> getEstimatedAttitudes();
+    std::vector<spcAttitude> getEstimatedAttitudes();
 
     ///
     /// \brief getEstimatedSingleAttitudeModel

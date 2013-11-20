@@ -4,7 +4,7 @@
 
 
 ccAttitude::ccAttitude(CCVector3 center, CCVector3 orientation):
-    Attitude(asEigenVector(orientation), asEigenVector(center))
+    spcAttitude(asEigenVector(orientation), asEigenVector(center))
 {
     initMetadata();
     initParameters();
@@ -12,7 +12,7 @@ ccAttitude::ccAttitude(CCVector3 center, CCVector3 orientation):
 
 
 
-ccAttitude::ccAttitude(spc::Attitude att)
+ccAttitude::ccAttitude(spc::spcAttitude att)
 {
     setPosition(att.getPosition());
     setNormal(att.getNormal());

@@ -42,6 +42,7 @@ public:
 
 
 
+
     ///
     /// \brief setInputCloud
     /// \param in_cloud is a sensor msgs cloud

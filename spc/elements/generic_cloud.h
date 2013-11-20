@@ -6,10 +6,19 @@
 namespace spc
 {
 
-class GenericCloud: public ElementBase
+class GenericCloud: public spcElementBase, public SalvableObject
 {
 public:
     GenericCloud();
+
+    virtual std::string getSPCClassName()
+    {
+        std::string name = "GenericCloud";
+        return name;
+    }
+
+    virtual int toAsciiMeOnly(std::stringstream &stream) {/*nothing for now*/}
+
 
     /// a generic cloud must implement this method
     virtual void getPoint(const int id, float &x, float &y, float &z) = 0 ;

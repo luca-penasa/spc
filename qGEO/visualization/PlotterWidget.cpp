@@ -21,7 +21,7 @@ PlotterWidget::PlotterWidget(QWidget *parent): QCustomPlot(parent), m_main_scale
     m_group = new QCPMarginGroup(this);
     getMainAxisRect()->setMarginGroup(QCP::msTop|QCP::msBottom, m_group);
 
-    setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+    setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables | QCP::iSelectAxes );
 
 //    SinglePlot * sp =  new SinglePlot(this);
 

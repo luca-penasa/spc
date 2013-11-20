@@ -8,6 +8,7 @@
 #include <FitAttitude.h>
 #include <AttitudeToModel.h>
 #include <Edit.h>
+#include <OpenInComposer.h>
 
 #include <EvaluateStratigraphicPosition.h>
 #include <Properties.h>
@@ -22,7 +23,7 @@
 
 static qGEO * qgeo_instance = 0;
 
-qGEO::qGEO(): m_plotter(0)
+qGEO::qGEO()
 {
     qgeo_instance = this;
 }
@@ -68,8 +69,13 @@ void qGEO::getActions(QActionGroup& group)
         addFilter(new FitAttitude(this));
         addFilter(new AttitudeToModel(this));
         addFilter(new Edit(this));
+
+
         addFilter(new OpenPlotsDialog(this));
+//        m_plotter = openPlot->getPlotterDlg();
+
         addFilter(new SetUpNewSeries(this));
+        addFilter(new SaveSPCElement(this));
 
 //        addFilter( new ComputeStratigraphicPosition(this) );
 //        addFilter( new ComputeTimeSeries(this));
@@ -108,17 +114,7 @@ int qGEO::addFilter(BaseFilter * filter)
     return 1;
 }
 
-PlotterDlg *qGEO::getPlotterDlg()
-{
-    if (!m_plotter)
-    {
-        ccMainAppInterface *main = this->getMainAppInterface();
-        QMainWindow * mainw = main->getMainWindow();
-        m_plotter = new PlotterDlg(mainw);
-    }
 
-    return m_plotter;
-}
 
 ccHObject::Container qGEO::getSelected() const
 {
@@ -254,5 +250,26 @@ qGEO *qGEO::theInstance()
     return qgeo_instance;
 }
 
+QMainWindow *qGEO::getMainWindow()
+{
+    return getMainAppInterface()->getMainWindow();
+}
+
+PlotterDlg *qGEO::getPlotterDlg()
+{
+    for (BaseFilter * f: m_filters)
+    {
+//        OpenPlotsDialog * open_plot_filter = dynamic_cast<OpenPlotsDialog *>(f);
+        if (typeid(*f) ==typeid(OpenPlotsDialog))
+        {
+            std::cout << "found!"<<std::endl;
+            return static_cast<OpenPlotsDialog *> (f)->getPlotterDlg();
+        }
+
+    }
+    return 0;
+}
+
 //plugin export
-Q_EXPORT_PLUGIN2(qGEO,qGEO)
+Q_EXPORT_PLUGIN2
+(qGEO,qGEO)

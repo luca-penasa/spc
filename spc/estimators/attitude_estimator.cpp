@@ -7,15 +7,15 @@ AttitudeEstimator::AttitudeEstimator()
 {
 }
 
-std::vector<Attitude> AttitudeEstimator::getEstimatedAttitudes()
+std::vector<spcAttitude> AttitudeEstimator::getEstimatedAttitudes()
 {
-    std::vector<Attitude> atts;
-    Attitude att = getEstimatedAttitude();
+    std::vector<spcAttitude> atts;
+    spcAttitude att = getEstimatedAttitude();
     Vector3f n =  att.getUnitNormal();
 
     for (int i = 0 ; i < clouds_.size(); ++i)
     {
-        Attitude new_att(n, centroids_.at(i));
+        spcAttitude new_att(n, centroids_.at(i));
         atts.push_back(new_att);
     }
 

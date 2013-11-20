@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <assert.h>
+#include <spc/elements/element_base.h>
 
 namespace spc
 {
@@ -18,13 +19,16 @@ template <typename ScalarT>
 /// \brief The GenericTimeSeries class is a Generic class for time series-like (TS) objects.
 /// \ingroup time_series
 ///
-class GenericTimeSeries
+class GenericTimeSeries: public spcElementBase
 {
 public:
     ///
     /// \brief Base Constructor
     ///
     GenericTimeSeries();
+
+
+
 
     ///
     /// \brief GenericTimeSeries copy constructor
@@ -34,6 +38,14 @@ public:
     {
         m_name = other.m_name;
         y = other.y;
+    }
+
+
+    virtual std::string getSPCClassName()
+    {
+        std::string name = "GenericTimeSeries";
+        return name;
+
     }
 
     ///

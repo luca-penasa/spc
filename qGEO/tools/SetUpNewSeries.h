@@ -25,6 +25,9 @@ protected:
     virtual int
     openInputDialog();
 
+    virtual int
+    openOutputDialog();
+
 
 };
 

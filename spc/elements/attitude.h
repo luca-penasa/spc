@@ -5,52 +5,46 @@
 #include <spc/elements/plane.h>
 #include <iostream>
 
-#include <spc/elements/point3d.h>
-
+#include <spc/elements/movable_element.h>
+#include <fstream>
 namespace spc
 {
 ///
-/// \brief an Attitude is a more sophisticated way to rapresent a plane in space
+/// \brief an spcAttitude is a more sophisticated way to rapresent a plane in space
 /// It is actually the same thing of a Plane object with a position in space that localize the measure
 /// \note Typical notation for an attitude is 10/245 with 10 dip angle (0-90) and 245 is azimut from N (0-360) - the dip.
-class Attitude: public Plane
+class spcAttitude: public spcPlane
 {
 public:
 
-    typedef typename boost::shared_ptr<Attitude> Ptr;
-
-
     /// def contructor
-    Attitude();
+    spcAttitude();
 
     ///
-    /// \brief Attitude
+    /// \brief spcAttitude
     /// \param direction is the normal of the plane
     /// \param position is the position in space for this attitude measure
     ///
-    Attitude(const Vector3f direction, const Vector3f position);
+    spcAttitude(const Vector3f &direction, const Vector3f &position);
 
     ///
-    /// \brief Attitude constructor (geologic-aware)
+    /// \brief spcAttitude constructor (geologic-aware)
     /// \param dip is the azimutal angle of dip direction with the north [0-360]
     /// \param dipAngle formed with the orizontal plane
     ///
-    Attitude(const float dipAngle, const float dip, Vector3f position = Vector3f::Zero())
+    spcAttitude(const float dipAngle, const float dip, Vector3f position = Vector3f::Zero());
+
+
+    //copy const
+    spcAttitude(const spcAttitude & att): spcPlane(att)
     {
 
-        if (dipAngle <= 0.0 | dipAngle >= 90)
-            std::cout << "WARN: dipAngle out of bounds. Are you sure?" << std::endl;
-
-        Vector3f n = Vector3f::UnitZ(); //is a vertical vector
-        AngleAxis<float> rot_y (dipAngle / 180 * M_PI, Vector3f::UnitY());
-        AngleAxis<float> rot_z (dip / 180*M_PI, -Vector3f::UnitZ());
-
-        Vector3f out_n =  rot_z * rot_y * n;
-
-        normal_ = out_n;
-        position_ = position;
     }
 
+    virtual std::string getSPCClassName();
+
+
+    virtual int toAsciiMeOnly(std::stringstream &stream);
 
     //////////////////////////////////////
     //// GEOLOGICAL AWARE GETTERS ////////
@@ -84,10 +78,12 @@ public:
     ///format dip and dip angle as astring
     std::string getDipAndDipAngleAsString() const;
 
+
+
 };
 
 /// print out as stream
-std::ostream& operator<<(std::ostream& os, const Attitude& obj);
+std::ostream& operator<<(std::ostream& os, const spcAttitude& obj);
 
 }//end nspace
 

@@ -17,6 +17,7 @@ option(BUILD_TESTS "Do tests" OFF)
 option(BUILD_QGEO_CC_PLUGIN "Build SPC-based plugin for CloudCompare" ON)
 option(SWIG_WRAPPINGS "Use swigs to generate wrappings for some methods" OFF)
 option(USE_PARALLEL_OPENMP "Enable paralellization of some algorithms via OpenMP" OFF)
+option(BUILD_TESTING_TOOLS "Build the tools contained into the tests folder" OFF)
 
 
 
@@ -117,6 +118,11 @@ endif()
 #also tools if needed
 if(BUILD_SANDBOX_TOOLS)
     add_subdirectory(sandbox)
+endif()
+
+#also tools if needed
+if(BUILD_TESTING_TOOLS)
+    add_subdirectory(tests)
 endif()
 
 #add_subdirectory(sandbox)

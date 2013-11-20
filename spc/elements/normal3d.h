@@ -8,14 +8,37 @@ namespace spc
 {
 
 
-class Normal3D: public ElementBase
+class Normal3D: public spcElementBase, public SalvableObject
 {
 public:
     Normal3D();
 
+    Normal3D(float x, float y, float z)
+    {
+        normal_ = Vector3f(x,y,z);
+    }
+
+    virtual std::string getSPCClassName()
+    {
+        std::string name = "Normal3D";
+        return name;
+    }
+
+    virtual int toAsciiMeOnly(std::stringstream &stream)
+    {
+        stream << normal_(0) << std::endl;
+        stream << normal_(1) << std::endl;
+        stream << normal_(2) << std::endl;
+    }
+
     void setNormal(const Vector3f n)
     {
         normal_ = n;
+    }
+
+    void setNormal(const Normal3D n)
+    {
+        *this = n;
     }
 
     Vector3f getNormal() const

@@ -22,9 +22,15 @@ public:
 
     ccSingleAttitudeModel();
 
-    ccSingleAttitudeModel(const spc::SingleAttitudeModel &model);
+    // copy const
+    ccSingleAttitudeModel(const ccSingleAttitudeModel &model);
 
-    ccSingleAttitudeModel(const Plane *att);
+//    ccSingleAttitudeModel(const spc::SingleAttitudeModel &model);
+
+//    ccSingleAttitudeModel(const spc::spcPlane &att);
+
+    ccSingleAttitudeModel(const spc::spcAttitude & att);
+
 
 
     virtual bool isSerializable() const { return true; }
@@ -112,9 +118,9 @@ protected:
     //// these for internal use only /////////////////
     std::vector<float> m_breaks;
 
-    std::vector<Vector3f> m_major_thicks_positions;
+    std::vector<Eigen::Vector3f> m_major_thicks_positions;
 
-    Vector3f m_major_thicks_vector;
+    Eigen::Vector3f m_major_thicks_vector;
 
     float m_dynamic_scale;
 

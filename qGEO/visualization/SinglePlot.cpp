@@ -4,6 +4,7 @@
 SinglePlot::SinglePlot(QCustomPlot *parentPlot): QCPAxisRect(parentPlot, false)
 {
     init();
+
 }
 
 SinglePlot::SinglePlot(QCustomPlot *parentPlot, spc::ContinousValuesLog *log): QCPAxisRect(parentPlot, false)

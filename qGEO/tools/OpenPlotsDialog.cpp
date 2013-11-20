@@ -5,9 +5,11 @@
 OpenPlotsDialog::OpenPlotsDialog(ccPluginInterface *parent_plugin) : BaseFilter(FilterDescription(   "Show 2d Plots ",
                                                      "Open the 2D plots dialog",
                                                      "Open the 2D plots dialog",
-                                                     ":/toolbar/icons/plot_dlg.png" ), parent_plugin)
+                                                                                                     ":/toolbar/icons/plot_dlg.png" ), parent_plugin), m_plotter_dialog(0)
 {
     this->setShowProgressBar(false);
+    m_plotter_dialog = new PlotterDlg();
+    m_plotter_dialog->setVisible(false);
 }
 
 int
@@ -18,19 +20,11 @@ OpenPlotsDialog::compute()
 
 int OpenPlotsDialog::openInputDialog()
 {
-    qGEO * qgeo = static_cast<qGEO *> (getParentPlugin());
+    if (!m_plotter_dialog->isVisible())
+        m_plotter_dialog->show();
 
-    PlotterDlg * dlg = qgeo->getPlotterDlg();
-
-    assert (dlg); //just to be sure
-
-    if (!dlg->isVisible())
-    {
-        dlg->show();
-        dlg->update();
-    }
     else
-        dlg->setVisible(false);
+        m_plotter_dialog->setVisible(false);
 
     return 1;
 }

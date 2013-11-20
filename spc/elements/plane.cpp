@@ -3,27 +3,51 @@ using namespace Eigen;
 namespace spc
 {
 
-Plane::Plane()
+spcPlane::spcPlane()
 {
 }
 
-
-
-Plane::Plane(const Vector3f normal, const Vector3f point)
+spcPlane::spcPlane(const Vector3f normal, const Vector3f point): spcMovableElement(point)
 {
-    setNormal(normal);
-    setPosition(point);
+    normal_.setNormal(normal);
+}
+
+string spcPlane::getSPCClassName()
+{
+    std::string name = "spcPlane3D";
+    return name;
+}
+
+int spcPlane::toAsciiMeOnly(stringstream &stream)
+{
+    normal_.toAsciiMeOnly(stream);
+    spcMovableElement::toAsciiMeOnly(stream);
+}
+
+void spcPlane::setNormal(Vector3f n)
+{
+    normal_.setNormal(n);
+}
+
+Vector3f spcPlane::getUnitNormal() const
+{
+    return normal_.getUnitNormal();
 }
 
 
-float Plane::distanceTo(const Vector3f &point) const
+float spcPlane::distanceTo(const Vector3f &point) const
 {
-    return getUnitNormal().dot(point) + getP();
+    return normal_.getUnitNormal().dot(point) + getP();
 }
 
-float Plane::getP() const
+float spcPlane::getP() const
 {
-    return  - getUnitNormal().dot(position_);
+    return  - normal_.getUnitNormal().dot(getPosition());
+}
+
+Vector3f spcPlane::getNormal() const
+{
+    return normal_.getNormal();
 }
 
 

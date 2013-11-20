@@ -11,6 +11,7 @@
 class PlotterDlg;
 class QToolBar;
 class QMenu;
+class OpenPlotsDialog;
 
 //! PCL bridge plugin
 class qGEO : public QObject, public ccStdPluginInterface
@@ -44,7 +45,15 @@ public:
 
     //! Return a plotter object for plotting things
     //! for now only one plotter at a time is possible!
-    PlotterDlg *getPlotterDlg();
+//    PlotterDlg *getPlotterDlg();
+
+//    OpenPlotsDialog * getPlotTool();
+
+    QMainWindow * getMainWindow();
+
+    PlotterDlg * getPlotterDlg();
+
+
 
     ///////// ACCESS TO DBTREE ///////////////////////////////
     ccHObject::Container getSelected() const;
@@ -84,10 +93,6 @@ public slots:
 protected:
 	//! Loaded filters
 	std::vector<BaseFilter*> m_filters;
-
-
-    PlotterDlg * m_plotter;
-
 
     ccHObject::Container m_selected;
 

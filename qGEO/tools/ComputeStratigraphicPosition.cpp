@@ -110,7 +110,7 @@ ComputeStratigraphicPosition::compute()
 //        spc::AttitudeEstimator estimator;
 //        estimator.addInputCloud(pcl_cloud);
 //        estimator.estimate();
-//        spc::Attitude att = estimator.getEstimatedAttitude();
+//        spc::spcAttitude att = estimator.getEstimatedAttitude();
 
 //        Vector3f n = att->getUnitNormal();
 //        ccConsole::Print("Fitted normal: %f, %f, %f", n(0),n(1),n(2));

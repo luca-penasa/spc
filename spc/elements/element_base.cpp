@@ -1,5 +1,14 @@
 #include "element_base.h"
-
-ElementBase::ElementBase()
+#include <fstream>
+namespace spc
+{
+spcElementBase::spcElementBase()
 {
 }
+
+
+
+}//end nspace
+
+
+

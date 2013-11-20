@@ -5,13 +5,16 @@
 #include <ccHObject.h>
 #include <dialogs/ccTimeSeriesGeneratorEditorDlg.h>
 
-class ccMyBaseObject: public  ccEditableHObject, public ccHObject
+#include <spc/elements/element_base.h>
+
+class ccMyBaseObject: public ccEditableHObject, public ccHObject, virtual public spc::spcCommon
 {
 public:
     ///
     /// \brief ccMyBaseObject def constructor
     ///
     ccMyBaseObject();
+
 
 };
 

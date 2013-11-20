@@ -19,6 +19,8 @@ class SparseTimeSeries: public GenericTimeSeries<ScalarT>
     using GenericTimeSeries<ScalarT>::y;
 
 public:
+
+
     ///
     /// \brief SparseTimeSeries def const. does nothing
     ///
@@ -31,6 +33,13 @@ public:
     /// \param y_ vector of y values
     ///
     SparseTimeSeries(vector<ScalarT> x_, vector<ScalarT> y_);
+
+    virtual std::string getSPCClassName()
+    {
+        std::string name = "SparseTimeSeries";
+        return name;
+    }
+
 
     ///
     /// \brief getX get x positions

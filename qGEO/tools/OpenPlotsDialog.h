@@ -3,6 +3,7 @@
 
 #include <qPCL/PclUtils/filters/BaseFilter.h>
 //#include <dialogs/ccCurvePlotterDlg.h>
+#include <PlotterDlg.h>
 
 
 class OpenPlotsDialog : public BaseFilter
@@ -15,6 +16,14 @@ public:
     virtual int openInputDialog();
 
     virtual int checkSelected() {return 1;}
+
+    PlotterDlg * getPlotterDlg()
+    {
+        return m_plotter_dialog;
+    }
+
+protected:
+    PlotterDlg * m_plotter_dialog;
 };
 
 #endif // PLOT_2D_H

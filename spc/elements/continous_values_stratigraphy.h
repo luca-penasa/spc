@@ -6,11 +6,17 @@
 
 namespace spc
 {
-class ContinousValuesLog: public ElementBase
+class ContinousValuesLog: public spcElementBase
 
 {
 public:
     ContinousValuesLog();
+
+    virtual std::string getSPCClassName()
+    {
+        std::string name = "ContinousValuesLog";
+        return name;
+    }
 
     float getStratigraphicStart() const {return stratigraphic_start_;}
 

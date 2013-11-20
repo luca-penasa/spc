@@ -20,13 +20,13 @@
 ///
 /// \brief The ccAttitude class gives a qCC-valid representation of a geological attitude
 ///
-class ccAttitude: public ccMyBaseObject, public spc::Attitude
+class ccAttitude:public spc::spcAttitude,  public ccMyBaseObject
 
 {
 public:
     ccAttitude(CCVector3 center, CCVector3 orientation);
 
-    ccAttitude(spc::Attitude att);
+    ccAttitude(spc::spcAttitude att);
 
     ccAttitude();
 

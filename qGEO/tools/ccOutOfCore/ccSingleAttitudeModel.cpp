@@ -11,22 +11,27 @@ ccSingleAttitudeModel::ccSingleAttitudeModel()
 
 
 
-ccSingleAttitudeModel::ccSingleAttitudeModel(const spc::SingleAttitudeModel &model)
+ccSingleAttitudeModel::ccSingleAttitudeModel(const ccSingleAttitudeModel &model): spc::SingleAttitudeModel(model)
 {
     initMetadata();
-    setPosition(model.getPosition());
-    setNormal(model.getUnitNormal());
     initParameters();
 
 }
 
-ccSingleAttitudeModel::ccSingleAttitudeModel(const spc::Plane *att)
+ccSingleAttitudeModel::ccSingleAttitudeModel(const spc::spcAttitude &att): spc::SingleAttitudeModel(att)
 {
     initMetadata();
-    setPosition(att->getPosition());
-    setNormal(att->getUnitNormal());
     initParameters();
 }
+
+//ccSingleAttitudeModel::ccSingleAttitudeModel(const spc::SingleAttitudeModel &model): spc::SingleAttitudeModel(model)
+//{
+//    initMetadata();
+//    initParameters();
+
+//}
+
+
 
 
 void ccSingleAttitudeModel::drawMeOnly(CC_DRAW_CONTEXT &context)
@@ -57,8 +62,8 @@ void ccSingleAttitudeModel::drawMeOnly(CC_DRAW_CONTEXT &context)
         else
             glColor3ubv(ccColor::blue);
 
-        Vector3f start = this->getPointAtStratigraphicPosition(m_min_sp);
-        Vector3f end = this->getPointAtStratigraphicPosition(m_max_sp);
+        Eigen::Vector3f start = this->getPointAtStratigraphicPosition(m_min_sp);
+        Eigen::Vector3f end = this->getPointAtStratigraphicPosition(m_max_sp);
 
 
         glBegin(GL_LINES);
@@ -99,8 +104,8 @@ void ccSingleAttitudeModel::drawMajorThicks(CC_DRAW_CONTEXT &context)
 
     for (int i = 0 ; i < m_major_thicks_positions.size(); ++i)
     {
-        Vector3f pos = m_major_thicks_positions.at(i);
-        Vector3f end = pos + m_major_thicks_vector;
+        Eigen::Vector3f pos = m_major_thicks_positions.at(i);
+        Eigen::Vector3f end = pos + m_major_thicks_vector;
         glVertex3fv( pos.data() );
         glVertex3fv( end.data() );
     }
@@ -295,3 +300,6 @@ void ccSingleAttitudeModel::initEditDlg()
 {
     m_edit_dlg = new ccSingleAttitudeModelEditorDlg(this);
 }
+
+
+
