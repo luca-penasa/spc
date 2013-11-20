@@ -11,6 +11,13 @@ EquallySpacedTimeSeries<ScalarT>::EquallySpacedTimeSeries(): x_start(0.0f), x_st
 }
 
 template<typename ScalarT>
+EquallySpacedTimeSeries<ScalarT>::EquallySpacedTimeSeries(const EquallySpacedTimeSeries &other): GenericTimeSeries<ScalarT>(other)
+{
+    x_start = other.x_start;
+    x_step = other.x_step;
+}
+
+template<typename ScalarT>
 EquallySpacedTimeSeries<ScalarT>::EquallySpacedTimeSeries(vector <ScalarT> y_, ScalarT x_step_, ScalarT x_start_)
 {
     y = y_;
@@ -41,6 +48,7 @@ EquallySpacedTimeSeries<ScalarT>::EquallySpacedTimeSeries(ScalarT x_min_, Scalar
     fill();
 
 }
+
 
 template<typename ScalarT>
 auto

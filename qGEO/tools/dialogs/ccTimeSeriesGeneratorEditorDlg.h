@@ -12,13 +12,13 @@ namespace Ui {
 class ccTimeSeriesGeneratorEditorDlgUi;
 }
 
-class ccTimeSeriesGeneratorEditorDlg : public QDialog
+class ComputeTimeSeriesDlg : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit ccTimeSeriesGeneratorEditorDlg( ccTimeSeriesGenerator * gen, QWidget *parent = 0);
-    ~ccTimeSeriesGeneratorEditorDlg();
+    explicit ComputeTimeSeriesDlg( QWidget *parent = 0);
+    ~ComputeTimeSeriesDlg();
 
     void setInputModels(ccHObject::Container &objects);
 
@@ -52,8 +52,6 @@ public slots:
 
 private:
     Ui::ccTimeSeriesGeneratorEditorDlgUi *ui;
-
-    ccTimeSeriesGenerator * m_generator;
 
     ccHObject * getBackObjectFromCombo(const ObjectSelectionComboBox *combo) const;
 

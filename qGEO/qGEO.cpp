@@ -3,7 +3,7 @@
 
 #include <ccPointCloud.h>
 #include <qPCL/PclUtils/filters/BaseFilter.h>
-#include <ComputeTimeSeries.h>
+//#include <ComputeTimeSeries.h>
 #include <ComputeStratigraphicPosition.h>
 #include <FitAttitude.h>
 #include <AttitudeToModel.h>
@@ -17,8 +17,10 @@
 #include <OpenPlotsDialog.h>
 #include <test.h>
 
+#include <PlotterDlg.h>
 
-static qGEO* qgeo_instance = 0;
+
+static qGEO * qgeo_instance = 0;
 
 qGEO::qGEO(): m_plotter(0)
 {
@@ -152,9 +154,9 @@ ccHObject::Container qGEO::getSelectedThatAre(CC_CLASS_ENUM ThisType) const
 ccHObject::Container qGEO::filterObjectsByType(const ccHObject::Container &in, const CC_CLASS_ENUM ThisType)
 {
     if (in.empty())
-        return ccHObject::Container(0);
+        return in;
 
-    ccHObject::Container out(0);
+    ccHObject::Container out;
     for (ccHObject * obj: in)
     {
         if (obj->isA(ThisType))
@@ -177,7 +179,19 @@ ccHObject::Container qGEO::getAllObjectsInTreeThatHaveMetaData( const QString ke
 ccHObject::Container qGEO::getAllObjectsInTreeThatAre(CC_CLASS_ENUM ThisType)
 {
     ccHObject::Container all = getAllObjectsInTree();
+    std::cout << "in tree " <<  all.size() << std::endl;
     return qGEO::filterObjectsByType(all, ThisType);
+}
+
+ccHObject::Container qGEO::getAllChildren(ccHObject *object)
+{
+    int n = object->getChildrenNumber();
+    ccHObject::Container cont;
+    for (int i = 0; i < n; ++i)
+    {
+        cont.push_back(object->getChild(i));
+    }
+    return cont;
 }
 
 ccHObject::Container qGEO::filterObjectsByMetaData(const ccHObject::Container &in, const QString key)
@@ -196,17 +210,28 @@ ccHObject::Container qGEO::filterObjectsByMetaData(const ccHObject::Container &i
 
 ccHObject::Container qGEO::getAllObjectsInTree()
 {
-    ccHObject::Container cont;
-    int n = this->getMainAppInterface()->dbRootObject()->getChildrenNumber();
-    for (int i = 0; i < n; ++i)
+//    ccHObject::Container cont;
+
+    ccHObject* dbroot = this->getMainAppInterface()->dbRootObject();
+    ccHObject::Container tovisit;
+    tovisit.push_back(dbroot);
+
+    ccHObject::Container out;
+
+    while (!tovisit.empty())
     {
-        cont.push_back(this->getMainAppInterface()->dbRootObject()->getChild(i));
+        ccHObject  * last = tovisit.back();
+        tovisit.pop_back();
+
+        out.push_back(last);
+
+        ccHObject::Container sons = getAllChildren(last);
+
+        for (ccHObject * obj: sons)
+            tovisit.push_back(obj);
     }
-
-    return cont;
+    return out;
 }
-
-
 
 
 void qGEO::onNewSelection(const ccHObject::Container& selectedEntities)

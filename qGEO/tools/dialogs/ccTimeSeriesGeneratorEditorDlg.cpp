@@ -7,88 +7,86 @@
 
 
 
-ccTimeSeriesGeneratorEditorDlg::ccTimeSeriesGeneratorEditorDlg(ccTimeSeriesGenerator *gen, QWidget *parent) :
+ComputeTimeSeriesDlg::ComputeTimeSeriesDlg(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::ccTimeSeriesGeneratorEditorDlgUi),
-    m_generator(0)
+    ui(new Ui::ccTimeSeriesGeneratorEditorDlgUi)
 
 {
     ui->setupUi(this);
     ui->comboArea->setNone(true); //area may be none!
 
-    m_generator = gen;
 
     connect(this->ui->comboCloud, SIGNAL(currentIndexChanged(int)), this, SLOT(updateScalarFields(int)));
 //    connect(qGEO::theInstance(), SIGNAL(selectionChanged(ccHObject::Container&)), this, SLOT(updateWithSelected(ccHObject::Container&)) ) ;
 
 }
 
-ccTimeSeriesGeneratorEditorDlg::~ccTimeSeriesGeneratorEditorDlg()
+ComputeTimeSeriesDlg::~ComputeTimeSeriesDlg()
 {
     delete ui;
 }
 
-void ccTimeSeriesGeneratorEditorDlg::setInputModels(ccHObject::Container &objects)
+void ComputeTimeSeriesDlg::setInputModels(ccHObject::Container &objects)
 {
 //    ui->comboModel->clear();
     ui->comboModel->updateObjects(objects);
 }
 
-void ccTimeSeriesGeneratorEditorDlg::setInputClouds(ccHObject::Container &objects)
+void ComputeTimeSeriesDlg::setInputClouds(ccHObject::Container &objects)
 {
 //    ui->comboCloud->clear();
     ui->comboCloud->updateObjects(objects);
 }
 
-void ccTimeSeriesGeneratorEditorDlg::setInputAreas(ccHObject::Container &objects)
+void ComputeTimeSeriesDlg::setInputAreas(ccHObject::Container &objects)
 {
 //    ui->comboArea->clear();
     ui->comboArea->updateObjects(objects);
 }
 
-ccHObject *ccTimeSeriesGeneratorEditorDlg::getSelectedModel() const
+ccHObject *ComputeTimeSeriesDlg::getSelectedModel() const
 {
     return getBackObjectFromCombo(ui->comboModel);
 
 }
 
-ccHObject *ccTimeSeriesGeneratorEditorDlg::getSelectedCloud() const
+ccHObject *ComputeTimeSeriesDlg::getSelectedCloud() const
 {
     return getBackObjectFromCombo(ui->comboCloud);
 }
 
-ccHObject *ccTimeSeriesGeneratorEditorDlg::getSelectedArea() const
+ccHObject *ComputeTimeSeriesDlg::getSelectedArea() const
 {
     return getBackObjectFromCombo(ui->comboArea);
 }
 
-int ccTimeSeriesGeneratorEditorDlg::getSelectedScalarField() const
+int ComputeTimeSeriesDlg::getSelectedScalarField() const
 {
     return this->ui->comboScalar->currentIndex();
 }
 
-std::string ccTimeSeriesGeneratorEditorDlg::getSelectedScalarFieldName() const
+std::string ComputeTimeSeriesDlg::getSelectedScalarFieldName() const
 {
     return this->ui->comboScalar->currentText().toStdString();
 }
 
-float ccTimeSeriesGeneratorEditorDlg::getBandwidth() const
+float ComputeTimeSeriesDlg::getBandwidth() const
 {
     return this->ui->spinBandWidth->value();
 }
 
-float ccTimeSeriesGeneratorEditorDlg::getStep() const
+float ComputeTimeSeriesDlg::getStep() const
 {
     return this->ui->spinStep->value();
 }
 
-ccHObject *ccTimeSeriesGeneratorEditorDlg::getBackObjectFromCombo(const ObjectSelectionComboBox *combo) const
+ccHObject *ComputeTimeSeriesDlg::getBackObjectFromCombo(const ObjectSelectionComboBox *combo) const
 {
     return combo->getSelected();
 }
 
 
-void ccTimeSeriesGeneratorEditorDlg::updateScalarFields(int id)
+void ComputeTimeSeriesDlg::updateScalarFields(int id)
 {
     ccHObject * sel_cloud = getSelectedCloud();
     this->ui->comboScalar->clear();
@@ -106,7 +104,7 @@ void ccTimeSeriesGeneratorEditorDlg::updateScalarFields(int id)
 
 }
 
-void ccTimeSeriesGeneratorEditorDlg::updateWithSelected(ccHObject::Container & selected)
+void ComputeTimeSeriesDlg::updateWithSelected(ccHObject::Container & selected)
 {
     ccHObject::Container clouds  = qGEO::theInstance()->getSelectedThatAre(CC_POINT_CLOUD);
     ccHObject::Container models  = qGEO::theInstance()->getSelectedThatHaveMetaData("[qGEO][ccSingleAttitudeModel]");
@@ -124,11 +122,13 @@ void ccTimeSeriesGeneratorEditorDlg::updateWithSelected(ccHObject::Container & s
 
 }
 
-void ccTimeSeriesGeneratorEditorDlg::initWithTree()
+void ComputeTimeSeriesDlg::initWithTree()
 {
     qGEO * qgeo = qGEO::theInstance(); //get the plutign intself
 
     ccHObject::Container clouds = qgeo->getAllObjectsInTreeThatAre(CC_POINT_CLOUD);
+
+    std::cout << "found " << clouds.size() << " clouds" << std::endl;
     ccHObject::Container models  = qgeo->getAllObjectsInTreeThatHaveMetaData("[qGEO][ccSingleAttitudeModel]");
 
 

@@ -32,7 +32,11 @@ int AttitudeToModel::compute()
 
     ccSingleAttitudeModel * model = new ccSingleAttitudeModel(att);
 
+//    selected->addChild(model);
+
+//    qGEO::theInstance()->getMainAppInterface()->dbRootObject()->updateModificationTime();
     newEntity(model);
+
 
 
     return 1;

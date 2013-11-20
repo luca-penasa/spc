@@ -10,6 +10,11 @@ class MainScale: public QCPAxisRect
 public:   
     MainScale(QCustomPlot *parentPlot);
 
+    ~MainScale()
+    {
+        delete m_main_axis;
+    }
+
     QCPAxis * getMainAxis() const;
 
 

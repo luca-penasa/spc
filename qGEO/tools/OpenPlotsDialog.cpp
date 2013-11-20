@@ -1,5 +1,6 @@
 #include "OpenPlotsDialog.h"
 #include <qGEO/qGEO.h>
+#include <PlotterDlg.h>
 
 OpenPlotsDialog::OpenPlotsDialog(ccPluginInterface *parent_plugin) : BaseFilter(FilterDescription(   "Show 2d Plots ",
                                                      "Open the 2D plots dialog",

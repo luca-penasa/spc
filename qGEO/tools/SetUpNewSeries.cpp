@@ -20,61 +20,67 @@
 #include <spc/methods/time_series_generator.h>
 
 #include <ccOutOfCore/ccTimeSeriesGenerator.h>
-
+#include <ccOutOfCore/ccTimeSeries.h>
 #include <qGEO/qGEO.h>
+
+#include <PlotterWidget.h>
+#include <PlotterDlg.h>
+
+
 SetUpNewSeries::SetUpNewSeries(ccPluginInterface * parent_plugin): BaseFilter(FilterDescription(   "Add a new time series generator",
                                                                                                    "Add a new time series generator",
                                                                                                    "Add a new time series generator",
                                                                                                    ":/toolbar/icons/tseries_generator.png")
-                                                                              , parent_plugin)
+                                                                              , parent_plugin), m_dialog(0)
+
 {
     this->setShowProgressBar(false);
+
+    PlotterWidget * plotter = qGEO::theInstance()->getPlotterDlg()->getPlotterWidget();
+
+//    connect(this, SIGNAL(newSeries(ccTimeSeries)), plotter, SLOT(handleNewTimeSeries(ccTimeSeries)));
+
 }
 
 int SetUpNewSeries::compute()
 {
-    ccTimeSeriesGenerator * generator =  new ccTimeSeriesGenerator();
+//    ccTimeSeriesGenerator * generator =  new ccTimeSeriesGenerator();
 
-    newEntity(generator);
-
-
-
-//    //get the objects from the combo
-//    ccHObject * mod_obj = m_dialog->getSelectedModel();
-//    ccHObject * cloud_obj = m_dialog->getSelectedCloud();
-
-//    if (!mod_obj || !cloud_obj)
-//        return -1;
-
-//    ccPointCloud * cloud = static_cast<ccPointCloud *> (cloud_obj);
-//    ccSingleAttitudeModel * model = static_cast<ccSingleAttitudeModel *> (mod_obj);
-
-//    //try the mapper
-//    spc::GenericCloud * mycloud = new CloudWrapper<ccPointCloud>(cloud);
-
-//    spc::TimeSeriesGenerator<float> generator;
-//    generator.setInputCloud(mycloud);
-//    generator.setStratigraphicModel(model);
-//    generator.setYFieldName(m_dialog->getSelectedScalarFieldName());
-//    generator.setSamplingStep(m_dialog->getStep());
-//    generator.setBandwidth(m_dialog->getBandwidth());
-//    int status = generator.compute();
-
-//    if (status <= 0)
-//        return -1;
-
-//    spc::EquallySpacedTimeSeries<float> ts = generator.getOutputSeries();
+//    newEntity(generator);
 
 
-//    qGEO * plugin = static_cast<qGEO *> (getParentPlugin());
 
-//    PlotterWidget * plotter = plugin->getPlotterDlg()->getPlotterWidget();
+    //get the objects from the combo
+    ccHObject * mod_obj = m_dialog->getSelectedModel();
+    ccHObject * cloud_obj = m_dialog->getSelectedCloud();
 
-//    SinglePlot * plot = new SinglePlot(plotter);
-//    plot->updateDataWith(ts);
-//    plotter->addSinglePlot(plot);
+    if (!mod_obj || !cloud_obj)
+        return -1;
+
+    ccPointCloud * cloud = static_cast<ccPointCloud *> (cloud_obj);
+    ccSingleAttitudeModel * model = static_cast<ccSingleAttitudeModel *> (mod_obj);
+
+    //try the mapper
+    spc::GenericCloud * mycloud = new CloudWrapper<ccPointCloud>(cloud);
+
+    spc::TimeSeriesGenerator<float> generator;
+    generator.setInputCloud(mycloud);
+    generator.setStratigraphicModel(model);
+    generator.setYFieldName(m_dialog->getSelectedScalarFieldName());
+    generator.setSamplingStep(m_dialog->getStep());
+    generator.setBandwidth(m_dialog->getBandwidth());
+    int status = generator.compute();
+
+    if (status <= 0)
+        return -1;
 
 
+    spc::EquallySpacedTimeSeries<float> ts = generator.getOutputSeries();
+
+    ccTimeSeries * series = new ccTimeSeries(ts);
+    series->setEnabled(false);
+
+    emit newEntity(series);
 
     return 1;
 }
@@ -87,4 +93,14 @@ int SetUpNewSeries::checkSelected()
 {
     //always active!
     return 1;
+}
+
+int SetUpNewSeries::openInputDialog()
+{
+    if (!m_dialog)
+        m_dialog = new ComputeTimeSeriesDlg(0);
+
+    m_dialog->initWithTree();
+
+    return m_dialog->exec() ? 1 : 0;
 }

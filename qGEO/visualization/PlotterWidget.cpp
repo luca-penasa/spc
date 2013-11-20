@@ -1,6 +1,6 @@
 #include "PlotterWidget.h"
 #include "PlotsContainer.h"
-
+#include "SinglePlot.h"
 
 
 
@@ -38,4 +38,14 @@ PlotterWidget::PlotterWidget(QWidget *parent): QCustomPlot(parent), m_main_scale
 
     replot();
 
+}
+
+
+void PlotterWidget::handleNewTimeSeries(ccTimeSeries series)
+{
+    SinglePlot * plot = new SinglePlot(this);
+
+    plot->updateDataWith(series);
+
+    addSinglePlot(plot);
 }

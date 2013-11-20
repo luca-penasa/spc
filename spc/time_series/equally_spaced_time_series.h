@@ -33,6 +33,13 @@ public:
     EquallySpacedTimeSeries();
 
     ///
+    /// \brief EquallySpacedTimeSeries copy const
+    /// \param other
+    ///
+    EquallySpacedTimeSeries(const EquallySpacedTimeSeries &other);
+
+
+    ///
     /// \brief EquallySpacedTimeSeries constructor with args
     /// \param y_ the data vector
     /// \param x_step_ x sampling step

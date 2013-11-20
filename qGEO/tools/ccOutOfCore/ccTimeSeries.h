@@ -9,10 +9,18 @@ class ccTimeSeries: public ccMyBaseObject, public spc::EquallySpacedTimeSeries<f
 public:
     ccTimeSeries();
 
+    ccTimeSeries(const ccTimeSeries & other);
+
+    ccTimeSeries(const spc::EquallySpacedTimeSeries<float> &other);
+
     virtual QIcon * getIcon() const
     {
         return new QIcon(QString::fromUtf8(":/toolbar/icons/tseries.png"));
     }
+
+
+protected:
+    void initMetaData();
 };
 
 #endif // CCTIMESERIES_H

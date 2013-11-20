@@ -187,6 +187,7 @@ void ccSingleAttitudeModel::initMetadata()
 
 void ccSingleAttitudeModel::initParameters()
 {
+    setEditDlgsFreezesUi(false); //it have a non-modal edit dlg
     m_min_sp =-10;
     m_max_sp = 10;
     m_step = 1;

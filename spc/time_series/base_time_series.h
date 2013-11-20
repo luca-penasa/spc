@@ -27,6 +27,16 @@ public:
     GenericTimeSeries();
 
     ///
+    /// \brief GenericTimeSeries copy constructor
+    /// \param other
+    ///
+    GenericTimeSeries(const GenericTimeSeries &other)
+    {
+        m_name = other.m_name;
+        y = other.y;
+    }
+
+    ///
     /// \brief getName each time series may have an associated name
     /// \return the name as string
     ///

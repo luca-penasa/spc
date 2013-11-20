@@ -4,6 +4,7 @@
 #include "qcustomplot.h"
 #include "MainScale.h"
 #include "PlotsContainer.h"
+#include <ccOutOfCore/ccTimeSeries.h>
 
 
 //// main plot widget
@@ -12,6 +13,13 @@ class PlotterWidget : public QCustomPlot
     Q_OBJECT
 public:
     explicit PlotterWidget(QWidget *parent = 0);
+
+    ~PlotterWidget()
+    {
+        delete m_main_scale;
+        delete m_plots;
+        delete m_group;
+    }
 
     void addSinglePlot(SinglePlot * plot)
     {
@@ -39,7 +47,8 @@ public:
     }
 
 
-
+public slots:
+    void handleNewTimeSeries(ccTimeSeries series);
 
 
 

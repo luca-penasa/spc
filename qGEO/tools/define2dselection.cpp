@@ -12,7 +12,7 @@
 
 #include <ccPolyline.h>
 
-
+#include <iostream>
 #include <cc2DViewportLabel.h>
 Define2DSelection::Define2DSelection(ccPluginInterface *parent_plugin): BaseFilter(FilterDescription("Open Properties Dialog",
                                                                      "do something",

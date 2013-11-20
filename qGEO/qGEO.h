@@ -6,18 +6,11 @@
 #include <mainwindow.h>
 
 #include <qPCL/PclUtils/filters/BaseFilter.h>
-#include <ComputeTimeSeries.h>
-
 #include <ccStdPluginInterface.h>
-#include <PlotterDlg.h>
 
-
+class PlotterDlg;
 class QToolBar;
 class QMenu;
-
-class qGEO;
-
-//qGEO * QGEO_MAIN_PLUGIN(0); // when qGEO will be instantiated it will point to the qGEO instance
 
 //! PCL bridge plugin
 class qGEO : public QObject, public ccStdPluginInterface
@@ -64,6 +57,8 @@ public:
     ccHObject::Container getAllObjectsInTree();
     ccHObject::Container getAllObjectsInTreeThatHaveMetaData(const QString key );
     ccHObject::Container getAllObjectsInTreeThatAre(CC_CLASS_ENUM ThisType);
+
+    static ccHObject::Container getAllChildren(ccHObject * object);
 
 
     ///////// STATIC FILTERS //////////////////////////////////

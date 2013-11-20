@@ -26,6 +26,7 @@ public:
 
     ccSingleAttitudeModel(const Plane *att);
 
+
     virtual bool isSerializable() const { return true; }
 
     virtual bool hasColors() const { return true; }

@@ -3,11 +3,18 @@
 
 #include <QDialog>
 #include <iostream>
+#include <qGEO/qGEO.h>
 
 class ccEditableHObject
 {
 public:
     ccEditableHObject();
+
+    //destructor
+    ~ccEditableHObject()
+    {
+        delete m_edit_dlg;
+    }
 
     bool getHasEditDlg()
     {
@@ -34,8 +41,19 @@ public:
         if (getHasEditDlg())
         {
             updateEditDlg(); // do the update
-            m_edit_dlg->show(); // then show it
+            if (m_edit_dlg_is_freezes_ui)
+            {
+                    qGEO::theInstance()->getMainAppInterface()->freezeUI(true);
+                    m_edit_dlg->show();
+            }
+            else
+                m_edit_dlg->show(); // then show it
         }
+    }
+
+    void setEditDlgsFreezesUi(bool status)
+    {
+        m_edit_dlg_is_freezes_ui = status;
     }
 
 protected:
@@ -58,6 +76,9 @@ protected:
     {
         // nothing by def
     }
+
+    bool m_edit_dlg_is_freezes_ui;
+
 
 
 };
