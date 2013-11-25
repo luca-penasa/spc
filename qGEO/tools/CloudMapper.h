@@ -10,7 +10,7 @@
 
 
 template <typename inCloudT>
-class CloudWrapper: public spc::GenericCloud
+class CloudWrapper: public spc::spcGenericCloud
 {
 public:
     CloudWrapper(inCloudT *cloud)

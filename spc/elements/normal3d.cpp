@@ -3,11 +3,11 @@ namespace spc
 {
 
 
-Normal3D::Normal3D() : normal_(0,0,1)
+spcNormal3D::spcNormal3D() : normal_(0,0,1)
 {
 }
 
-void Normal3D::normalFromBestFit(pcl::PointCloud<pcl::PointXYZ> &cloud)
+void spcNormal3D::normalFromBestFit(pcl::PointCloud<pcl::PointXYZ> &cloud)
 {
     float curv;
     Vector4f params;

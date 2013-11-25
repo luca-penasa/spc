@@ -8,12 +8,12 @@ namespace spc
 {
 
 
-class Normal3D: public spcElementBase, public SalvableObject
+class spcNormal3D: public spcElementBase, public SalvableObject
 {
 public:
-    Normal3D();
+    spcNormal3D();
 
-    Normal3D(float x, float y, float z)
+    spcNormal3D(float x, float y, float z)
     {
         normal_ = Vector3f(x,y,z);
     }
@@ -36,7 +36,7 @@ public:
         normal_ = n;
     }
 
-    void setNormal(const Normal3D n)
+    void setNormal(const spcNormal3D n)
     {
         *this = n;
     }

@@ -35,7 +35,7 @@ public:
         model_ = model;
     }
 
-    void setInputCloud(GenericCloud * cloud)
+    void setInputCloud(spcGenericCloud * cloud)
     {
         in_cloud_ = cloud;
     }
@@ -106,7 +106,7 @@ private:
 
     StratigraphicModelBase * model_;
 
-    GenericCloud * in_cloud_;
+    spcGenericCloud * in_cloud_;
 
     PointCloud2Reader * in_reader_;
 

@@ -51,7 +51,7 @@ public:
     //! \param cloud
     //! \return
     //!
-    virtual std::vector<float> getStratigraphicPositions(GenericCloud * cloud);
+    virtual std::vector<float> getStratigraphicPositions(spcGenericCloud * cloud);
 
     //!
     //! \brief getStratigraphicPositions with indices
@@ -59,7 +59,7 @@ public:
     //! \param indices
     //! \return the stratigraphic positions
     //!
-    virtual std::vector<float> getStratigraphicPositions(GenericCloud *cloud, const std::vector<int> &indices);
+    virtual std::vector<float> getStratigraphicPositions(spcGenericCloud *cloud, const std::vector<int> &indices);
 
     //!
     //! \brief getStratigraphicPositions as getStratigraphicPosition but for a whole cloud!

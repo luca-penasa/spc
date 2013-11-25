@@ -76,6 +76,11 @@ public:
     static ccHObject::Container filterObjectsByMetaData (const ccHObject::Container &in, const QString key);
 
 
+    ccHObject::Container filterObjectsByKind(const ccHObject::Container &in, const CC_CLASS_ENUM ThisType);
+
+    ccHObject::Container getSelectedKindOf(CC_CLASS_ENUM ThisType);
+
+
 signals:
     void selectionChanged(ccHObject::Container & selection);
 

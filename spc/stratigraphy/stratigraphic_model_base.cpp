@@ -34,7 +34,7 @@ std::vector<float> StratigraphicModelBase::getStratigraphicPositions(pcl::PointC
 
 }
 
-std::vector<float> StratigraphicModelBase::getStratigraphicPositions(spc::GenericCloud *cloud)
+std::vector<float> StratigraphicModelBase::getStratigraphicPositions(spc::spcGenericCloud *cloud)
 {
     std::vector<float> out;
     int n = cloud->getSize();
@@ -52,7 +52,7 @@ std::vector<float> StratigraphicModelBase::getStratigraphicPositions(spc::Generi
 }
 
 
-std::vector<float> StratigraphicModelBase::getStratigraphicPositions(GenericCloud *cloud, const std::vector<int> &indices)
+std::vector<float> StratigraphicModelBase::getStratigraphicPositions(spcGenericCloud *cloud, const std::vector<int> &indices)
 {
     std::vector<float> out;
     out.resize(indices.size());

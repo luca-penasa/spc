@@ -4,6 +4,7 @@
 #include <spc/elements/element_base.h>
 #include <spc/elements/salvable_object.h>
 #include <pcl/common/centroid.h>
+#include <spc/elements/generic_cloud.h>
 #include <pcl/point_types.h>
 
 namespace spc
@@ -43,7 +44,10 @@ public:
     }
 
 
-    void fromCentroid(pcl::PointCloud<pcl::PointXYZ> &cloud);
+    void positionFromCentroid(pcl::PointCloud<pcl::PointXYZ> &cloud);
+
+
+    void positionFromCentroid(spcGenericCloud &cloud);
 
 protected:
     Vector3f position_;

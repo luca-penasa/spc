@@ -12,7 +12,7 @@
 
 #include <EvaluateStratigraphicPosition.h>
 #include <Properties.h>
-#include <define2dselection.h>
+#include <CloudToPlanarSelection.h>
 #include <SetUpNewSeries.h>
 #include <split_point_cloud.h>
 #include <OpenPlotsDialog.h>
@@ -83,7 +83,7 @@ void qGEO::getActions(QActionGroup& group)
 
 //        addFilter(new EvaluateStratigraphicPosition(this));
 //        addFilter(new Properties(this));
-//        addFilter(new Define2DSelection(this));
+        addFilter(new CloudToPlanarSelection(this));
 
     }
 
@@ -147,6 +147,16 @@ ccHObject::Container qGEO::getSelectedThatAre(CC_CLASS_ENUM ThisType) const
 
 }
 
+ccHObject::Container qGEO::getSelectedKindOf(CC_CLASS_ENUM ThisType)
+{
+    ccHObject::Container sel = getSelected(); // all selected
+
+    ccHObject::Container out = qGEO::filterObjectsByKind(sel, ThisType);
+
+    return out;
+
+}
+
 ccHObject::Container qGEO::filterObjectsByType(const ccHObject::Container &in, const CC_CLASS_ENUM ThisType)
 {
     if (in.empty())
@@ -156,6 +166,23 @@ ccHObject::Container qGEO::filterObjectsByType(const ccHObject::Container &in, c
     for (ccHObject * obj: in)
     {
         if (obj->isA(ThisType))
+        {
+            out.push_back(obj);
+        }
+    }
+
+    return out;
+}
+
+ccHObject::Container qGEO::filterObjectsByKind(const ccHObject::Container &in, const CC_CLASS_ENUM ThisType)
+{
+    if (in.empty())
+        return in;
+
+    ccHObject::Container out;
+    for (ccHObject * obj: in)
+    {
+        if (obj->isKindOf(ThisType))
         {
             out.push_back(obj);
         }

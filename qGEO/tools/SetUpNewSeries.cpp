@@ -27,6 +27,8 @@
 #include <PlotterDlg.h>
 #include <OpenPlotsDialog.h>
 
+#include <ccOutOfCore/ccPlanarSelection.h>
+
 SetUpNewSeries::SetUpNewSeries(ccPluginInterface * parent_plugin): BaseFilter(FilterDescription(   "Add a new time series generator",
                                                                                                    "Add a new time series generator",
                                                                                                    "Add a new time series generator",
@@ -73,6 +75,7 @@ int SetUpNewSeries::openOutputDialog()
     //get the objects from the combo
     ccHObject * mod_obj = m_dialog->getSelectedModel();
     ccHObject * cloud_obj = m_dialog->getSelectedCloud();
+    ccHObject * sel_obj = m_dialog->getSelectedArea();
 
     if (!mod_obj || !cloud_obj)
         return -1;
@@ -80,15 +83,49 @@ int SetUpNewSeries::openOutputDialog()
     ccPointCloud * cloud = static_cast<ccPointCloud *> (cloud_obj);
     ccSingleAttitudeModel * model = static_cast<ccSingleAttitudeModel *> (mod_obj);
 
-    //try the mapper
-    spc::GenericCloud * mycloud = new CloudWrapper<ccPointCloud>(cloud);
+    //set up the mapper
+    spc::spcGenericCloud * mycloud = new CloudWrapper<ccPointCloud>(cloud);
+
+    pcl::console::setVerbosityLevel(pcl::console::L_DEBUG);
 
     spc::TimeSeriesGenerator<float> generator;
+    std::vector<int> indices;
+    if (sel_obj)
+    {
+        ccPlanarSelection * selection = static_cast<ccPlanarSelection *> (sel_obj);
+        selection->setInputCloud(mycloud);
+        selection->updateIndices();
+        std::vector<int> indices = selection->getIndices();
+
+        // extract the indices in a new cloud to display for debug
+        ccPointCloud * ex = new ccPointCloud;
+        ex->reserve(indices.size());
+        for (int id: indices)
+        {
+            float x, y, z;
+            mycloud->getPoint(id, x, y, z);
+
+            ex->addPoint(CCVector3(x,y,z));
+        }
+
+        newEntity(ex);
+
+
+        pcl::console::print_warn("found %i points after segmentation", indices.size());
+
+        generator.setIndices(indices);
+     }
+
+
+
+
     generator.setInputCloud(mycloud);
     generator.setStratigraphicModel(model);
     generator.setYFieldName(m_dialog->getSelectedScalarFieldName());
     generator.setSamplingStep(m_dialog->getStep());
     generator.setBandwidth(m_dialog->getBandwidth());
+
+
     int status = generator.compute();
 
     if (status <= 0)

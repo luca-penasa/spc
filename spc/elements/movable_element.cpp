@@ -28,7 +28,7 @@ void spcMovableElement::setPosition(const Vector3f position)
     position_ = position;
 }
 
-void spcMovableElement::fromCentroid(pcl::PointCloud<pcl::PointXYZ> &cloud)
+void spcMovableElement::positionFromCentroid(pcl::PointCloud<pcl::PointXYZ> &cloud)
 {
 
     Eigen::Vector4f centroid;
@@ -37,6 +37,11 @@ void spcMovableElement::fromCentroid(pcl::PointCloud<pcl::PointXYZ> &cloud)
 
     setPosition( centroid.head(3) );
 }
+
+//void spcMovableElement::positionFromCentroid(spcGenericCloud &cloud)
+//{
+
+//}
 
 
 } //end nspace

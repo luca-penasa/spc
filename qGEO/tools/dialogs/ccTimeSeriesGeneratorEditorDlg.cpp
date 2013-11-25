@@ -132,10 +132,10 @@ void ComputeTimeSeriesDlg::initWithTree()
     ccHObject::Container models  = qgeo->getAllObjectsInTreeThatHaveMetaData("[qGEO][ccSingleAttitudeModel]");
 
 
+    ccHObject::Container selections  = qgeo->getAllObjectsInTreeThatHaveMetaData("[qGEO][ccPlanarSelection]");
 
     setInputClouds(clouds);
-
-
+    setInputAreas(selections);
     setInputModels(models);
 
 

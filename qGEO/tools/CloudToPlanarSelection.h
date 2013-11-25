@@ -7,23 +7,25 @@
 #include <ccGraphicalSegmentationTool.h>
 
 
-class Define2DSelection: public BaseFilter
+class CloudToPlanarSelection: public BaseFilter
 {
 Q_OBJECT
 
 public:
-    Define2DSelection(ccPluginInterface * parent_plugin = 0);
+    CloudToPlanarSelection(ccPluginInterface * parent_plugin = 0);
 
 protected:
    virtual int compute();
 
     virtual int openInputDialog();
 
+    virtual int checkParameters();
+
 private:
     ccGraphicalSegmentationTool * m_segtool;
 
-public slots:
-    void called();
+//public slots:
+//    void called();
 
 
 };

@@ -37,7 +37,7 @@ void AttitudeEstimator::initializeModel()
             continue;
         else
         {
-            Normal3D n;
+            spcNormal3D n;
             n.normalFromBestFit(*cloud);
             normals.push_back(n.getUnitNormal());
         }
