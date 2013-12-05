@@ -17,6 +17,11 @@ class spcAttitude: public spcPlane
 {
 public:
 
+    typedef typename boost::shared_ptr<spcAttitude> Ptr;
+    typedef typename boost::shared_ptr<const spcAttitude> ConstPtr;
+
+
+
     /// def contructor
     spcAttitude();
 
@@ -36,15 +41,8 @@ public:
 
 
     //copy const
-    spcAttitude(const spcAttitude & att): spcPlane(att)
-    {
+    spcAttitude(const spcAttitude & att): spcPlane(att) {}
 
-    }
-
-    virtual std::string getSPCClassName();
-
-
-    virtual int toAsciiMeOnly(std::stringstream &stream);
 
     //////////////////////////////////////
     //// GEOLOGICAL AWARE GETTERS ////////
@@ -77,6 +75,14 @@ public:
 
     ///format dip and dip angle as astring
     std::string getDipAndDipAngleAsString() const;
+
+protected:
+    template <class Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+
+        ar & boost::serialization::base_object<spcPlane>(*this);
+    }
 
 
 

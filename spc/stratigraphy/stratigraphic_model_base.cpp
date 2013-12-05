@@ -4,11 +4,11 @@ namespace spc
 {
 
 
-StratigraphicModelBase::StratigraphicModelBase()
+spcStratigraphicModelBase::spcStratigraphicModelBase()
 {
 }
 
-std::vector<float> StratigraphicModelBase::getStratigraphicPositions(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, const std::vector<int> &indices)
+std::vector<float> spcStratigraphicModelBase::getStratigraphicPositions(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, const std::vector<int> &indices)
 {
     std::vector<float> out;
     for (int id : indices)
@@ -21,7 +21,7 @@ std::vector<float> StratigraphicModelBase::getStratigraphicPositions(pcl::PointC
 
 }
 
-std::vector<float> StratigraphicModelBase::getStratigraphicPositions(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
+std::vector<float> spcStratigraphicModelBase::getStratigraphicPositions(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
 {
     std::vector<float> out;
     for (pcl::PointXYZ p: *cloud)
@@ -34,7 +34,7 @@ std::vector<float> StratigraphicModelBase::getStratigraphicPositions(pcl::PointC
 
 }
 
-std::vector<float> StratigraphicModelBase::getStratigraphicPositions(spc::spcGenericCloud *cloud)
+std::vector<float> spcStratigraphicModelBase::getStratigraphicPositions(spc::spcGenericCloud *cloud)
 {
     std::vector<float> out;
     int n = cloud->getSize();
@@ -52,7 +52,23 @@ std::vector<float> StratigraphicModelBase::getStratigraphicPositions(spc::spcGen
 }
 
 
-std::vector<float> StratigraphicModelBase::getStratigraphicPositions(spcGenericCloud *cloud, const std::vector<int> &indices)
+std::vector<float> spcStratigraphicModelBase::getStratigraphicPositions(spcGenericCloud *cloud, const std::vector<int> &indices)
+{
+    std::vector<float> out;
+    out.resize(indices.size());
+
+    float x, y, z, sp;
+    int counter  =0;
+    for (int i: indices)
+    {
+        cloud->getPoint(i, x, y, z);
+        out.at(counter++) = getStratigraphicPosition(Vector3f(x,y,z));
+    }
+
+    return out;
+}
+
+std::vector<float> spcStratigraphicModelBase::getStratigraphicPositions(spcGenericCloud::Ptr cloud, const std::vector<int> &indices)
 {
     std::vector<float> out;
     out.resize(indices.size());

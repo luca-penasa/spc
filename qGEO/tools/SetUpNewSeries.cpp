@@ -39,15 +39,15 @@ SetUpNewSeries::SetUpNewSeries(ccPluginInterface * parent_plugin): BaseFilter(Fi
     this->setShowProgressBar(false);
 
     PlotterWidget * plotter = qGEO::theInstance()->getPlotterDlg()->getPlotterWidget();
-//    connect(this, SIGNAL(newSeries(ccTimeSeries)), plotter, SLOT(handleNewTimeSeries(ccTimeSeries)));
+    //    connect(this, SIGNAL(newSeries(ccTimeSeries)), plotter, SLOT(handleNewTimeSeries(ccTimeSeries)));
 
 }
 
 int SetUpNewSeries::compute()
 {
-//    ccTimeSeriesGenerator * generator =  new ccTimeSeriesGenerator();
+    //    ccTimeSeriesGenerator * generator =  new ccTimeSeriesGenerator();
 
-//    newEntity(generator);
+    //    newEntity(generator);
 
     return 1;
 }
@@ -77,14 +77,24 @@ int SetUpNewSeries::openOutputDialog()
     ccHObject * cloud_obj = m_dialog->getSelectedCloud();
     ccHObject * sel_obj = m_dialog->getSelectedArea();
 
-    if (!mod_obj || !cloud_obj)
-        return -1;
+
+    std::cout << "mod " << mod_obj << std::endl;
+    std::cout << "cloud " << cloud_obj << std::endl;
+
+
+    std::cout << cloud_obj->getName().toStdString().c_str() << std::endl;
+    std::cout << mod_obj->getName().toStdString().c_str() << std::endl;
 
     ccPointCloud * cloud = static_cast<ccPointCloud *> (cloud_obj);
-    ccSingleAttitudeModel * model = static_cast<ccSingleAttitudeModel *> (mod_obj);
 
-    //set up the mapper
-    spc::spcGenericCloud * mycloud = new CloudWrapper<ccPointCloud>(cloud);
+
+    ccSingleAttitudeModel * model  = static_cast<ccSingleAttitudeModel *> (mod_obj);
+
+    if (!model || !cloud)
+        return -1;
+
+    //as shared ptr pointing to a genericloud
+    spc::spcGenericCloud::Ptr mycloud ( new CloudWrapper<ccPointCloud>(cloud));
 
     pcl::console::setVerbosityLevel(pcl::console::L_DEBUG);
 
@@ -93,34 +103,22 @@ int SetUpNewSeries::openOutputDialog()
     if (sel_obj)
     {
         ccPlanarSelection * selection = static_cast<ccPlanarSelection *> (sel_obj);
+
         selection->setInputCloud(mycloud);
         selection->updateIndices();
-        std::vector<int> indices = selection->getIndices();
-
-        // extract the indices in a new cloud to display for debug
-        ccPointCloud * ex = new ccPointCloud;
-        ex->reserve(indices.size());
-        for (int id: indices)
-        {
-            float x, y, z;
-            mycloud->getPoint(id, x, y, z);
-
-            ex->addPoint(CCVector3(x,y,z));
-        }
-
-        newEntity(ex);
-
 
         pcl::console::print_warn("found %i points after segmentation", indices.size());
 
         generator.setIndices(indices);
-     }
+    }
 
+    // this will create a copy
+    spc::spcSingleAttitudeModel::Ptr ptr =  boost::make_shared<spc::spcSingleAttitudeModel>(*model);
 
 
 
     generator.setInputCloud(mycloud);
-    generator.setStratigraphicModel(model);
+    generator.setStratigraphicModel(ptr);
     generator.setYFieldName(m_dialog->getSelectedScalarFieldName());
     generator.setSamplingStep(m_dialog->getStep());
     generator.setBandwidth(m_dialog->getBandwidth());
@@ -132,22 +130,18 @@ int SetUpNewSeries::openOutputDialog()
         return -1;
 
 
-    spc::EquallySpacedTimeSeries<float> ts = generator.getOutputSeries();
+    spc::EquallySpacedTimeSeries<float> ts;
+    generator.getOutputSeries(ts);
+
+
 
     ccTimeSeries * series = new ccTimeSeries(ts);
-    series->setEnabled(false);
 
-    std::cout << "-1" << std::endl;
-    std::cout << qGEO::theInstance()->getPlotterDlg()->getPlotterWidget() << std::endl;
-    SinglePlot * newplot = new SinglePlot(qGEO::theInstance()->getPlotterDlg()->getPlotterWidget());
 
-    std::cout << "1" << std::endl;
-    newplot->updateDataWith(*series);
-std::cout << "2" << std::endl;
-    PlotterDlg * plotter = qGEO::theInstance()->getPlotterDlg();
-    std::cout << "3" << std::endl;
-    plotter->getPlotterWidget()->addSinglePlot(newplot);
-std::cout << "4" << std::endl;
+    qGEO::theInstance()->getPlotterDlg()->getPlotterWidget()->handleNewTimeSeries(series);
     emit newEntity(series);
-return 1;
+
+
+
+    return 1;
 }

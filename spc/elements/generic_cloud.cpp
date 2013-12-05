@@ -3,7 +3,7 @@
 namespace spc
 {
 
-spcGenericCloud::spcGenericCloud()
+spcGenericCloud::spcGenericCloud(): spcElementBase("spcGenericCloud")
 {
 }
 

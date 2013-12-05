@@ -12,12 +12,6 @@ class ContinousValuesLog: public spcElementBase
 public:
     ContinousValuesLog();
 
-    virtual std::string getSPCClassName()
-    {
-        std::string name = "ContinousValuesLog";
-        return name;
-    }
-
     float getStratigraphicStart() const {return stratigraphic_start_;}
 
     void setMinStratigraphicPosition(float sp_start) {stratigraphic_start_ = sp_start;}

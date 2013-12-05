@@ -25,17 +25,17 @@ public:
     ///
     /// \brief TimeSeriesGenerator def constructor
     ///
-    TimeSeriesGenerator(): in_reader_(0), in_cloud_(0), model_(0)
+    TimeSeriesGenerator(): in_reader_(0)
     {
         f_min = 0 ; f_max = 0;
     }
 
-    void setStratigraphicModel(StratigraphicModelBase * model)
+    void setStratigraphicModel(spcStratigraphicModelBase::Ptr model)
     {
         model_ = model;
     }
 
-    void setInputCloud(spcGenericCloud * cloud)
+    void setInputCloud(spcGenericCloud::Ptr cloud)
     {
         in_cloud_ = cloud;
     }
@@ -84,7 +84,7 @@ public:
     /// \brief getOutputSeries
     /// \return the resulting series
     ///
-    auto getOutputSeries() -> EquallySpacedTimeSeries<ScalarT> {return out_series_;}
+    void getOutputSeries(EquallySpacedTimeSeries<ScalarT> &tserie)  {tserie = out_series_;}
 
     ///
     /// \brief compute make computations
@@ -102,12 +102,12 @@ public:
 
     void fillIndicesIfNeeded();
 
-private:
+private:    
+    spcStratigraphicModelBase::Ptr model_;
 
-    StratigraphicModelBase * model_;
+    spcGenericCloud::Ptr in_cloud_;
 
-    spcGenericCloud * in_cloud_;
-
+    /// TODO this is ptretty DEPRECATED: should be removed:
     PointCloud2Reader * in_reader_;
 
     ///
@@ -131,7 +131,7 @@ private:
     std::string y_field_name_;
 
     ///
-    /// \brief out_series_
+    /// \brief out_series_ is a shared pointer to output
     ///
     EquallySpacedTimeSeries<ScalarT> out_series_;
 

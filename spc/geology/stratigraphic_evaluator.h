@@ -14,7 +14,7 @@ class StratigraphicEvaluator
 public:
     StratigraphicEvaluator();
 
-    void setInputModel(StratigraphicModelBase * model)
+    void setInputModel(spcStratigraphicModelBase * model)
     {
         //ensure also the indices vector is clear
         model_ = model;
@@ -71,7 +71,7 @@ private:
     /// \brief model_ is a pointer to a stratigraphic model that implements the virtual methods of
     /// a StratigraphicModelBase
     ///
-    StratigraphicModelBase * model_;
+    spcStratigraphicModelBase * model_;
 
 
     //! \brief in_cloud_ is the input cluod on which to compute stratigraphic positions

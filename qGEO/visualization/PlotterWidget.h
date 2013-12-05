@@ -17,7 +17,7 @@ public:
     ~PlotterWidget()
     {
         delete m_main_scale;
-        delete m_plots;
+        delete m_plots_container;
         delete m_group;
     }
 
@@ -32,7 +32,7 @@ public:
         connect(plot->getDepthAxis(), SIGNAL(rangeChanged(QCPRange)), getMainAxisRect()->getMainAxis(), SLOT(setRange(QCPRange)));
 
 
-        m_plots->addSinglePlot(plot);
+        m_plots_container->addSinglePlot(plot);
 
         getMainAxisRect()->getMainAxis()->setRange(plot->getDepthAxis()->range());
         plot->getGraph()->rescaleAxes(true);
@@ -47,16 +47,24 @@ public:
     }
 
 
-public slots:
-    void handleNewTimeSeries(ccTimeSeries series);
 
+    PlotsContainer * getPlotContainer()
+    {
+        return m_plots_container;
+    }
+
+
+public slots:
+    void handleNewTimeSeries(ccTimeSeries *series);
+
+    void saveAllSeries();
 
 
 
 protected:
     MainScale * m_main_scale;
 
-    PlotsContainer * m_plots;
+    PlotsContainer * m_plots_container;
 
     /// this this is the group each axisrect will be forced to belong
     QCPMarginGroup *m_group;

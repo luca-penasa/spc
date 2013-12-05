@@ -8,7 +8,7 @@
 #include <FitAttitude.h>
 #include <AttitudeToModel.h>
 #include <Edit.h>
-#include <OpenInComposer.h>
+#include <SaveSPCElement.h>
 
 #include <EvaluateStratigraphicPosition.h>
 #include <Properties.h>

@@ -11,14 +11,14 @@ ccSingleAttitudeModel::ccSingleAttitudeModel()
 
 
 
-ccSingleAttitudeModel::ccSingleAttitudeModel(const ccSingleAttitudeModel &model): spc::SingleAttitudeModel(model)
+ccSingleAttitudeModel::ccSingleAttitudeModel(const ccSingleAttitudeModel &model): spc::spcSingleAttitudeModel(model)
 {
     initMetadata();
     initParameters();
 
 }
 
-ccSingleAttitudeModel::ccSingleAttitudeModel(const spc::spcAttitude &att): spc::SingleAttitudeModel(att)
+ccSingleAttitudeModel::ccSingleAttitudeModel(const spc::spcAttitude &att): spc::spcSingleAttitudeModel(att)
 {
     initMetadata();
     initParameters();
@@ -227,7 +227,7 @@ void ccSingleAttitudeModel::updateMajorBreaks()
     }
 
     // also update the vector representing a major thick
-    m_major_thicks_vector = getDipVector() * m_major_thicks_length;
+    m_major_thicks_vector = getAttitude()->getDipVector() * m_major_thicks_length;
 
 }
 

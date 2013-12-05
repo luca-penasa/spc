@@ -22,31 +22,22 @@ template <typename ScalarT>
 class GenericTimeSeries: public spcElementBase
 {
 public:
+
+
+    typedef boost::shared_ptr<GenericTimeSeries<ScalarT> > Ptr;
+
     ///
     /// \brief Base Constructor
     ///
     GenericTimeSeries();
 
 
-
-
     ///
     /// \brief GenericTimeSeries copy constructor
     /// \param other
     ///
-    GenericTimeSeries(const GenericTimeSeries &other)
-    {
-        m_name = other.m_name;
-        y = other.y;
-    }
+    GenericTimeSeries(const GenericTimeSeries &other);
 
-
-    virtual std::string getSPCClassName()
-    {
-        std::string name = "GenericTimeSeries";
-        return name;
-
-    }
 
     ///
     /// \brief getName each time series may have an associated name

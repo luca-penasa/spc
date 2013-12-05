@@ -11,8 +11,6 @@ class SetUpNewSeries : public BaseFilter
 public:
     SetUpNewSeries(ccPluginInterface * parent_plugin);
 
-//signals:
-//    void newSeries(ccTimeSeries);
 
 protected:
     virtual int compute();

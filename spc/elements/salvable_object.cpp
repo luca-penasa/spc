@@ -5,7 +5,7 @@ namespace spc
 
 
 
-SalvableObject::SalvableObject()
+spcSalvableObject::spcSalvableObject()
 {
 }
 

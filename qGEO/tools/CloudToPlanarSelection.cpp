@@ -21,9 +21,9 @@
 
 #include<qPCL/PclUtils/utils/cc2sm.h>
 
-CloudToPlanarSelection::CloudToPlanarSelection(ccPluginInterface *parent_plugin): BaseFilter(FilterDescription("Open Properties Dialog",
-                                                                     "do something",
-                                                                     "Def selection",
+CloudToPlanarSelection::CloudToPlanarSelection(ccPluginInterface *parent_plugin): BaseFilter(FilterDescription("From a cloud representing a polygon create a selection",
+                                                                     "From a cloud representing a polygon create a selection",
+                                                                     "From a cloud representing a polygon create a selection",
                                                                      ":/toolbar/icons/selection.png"), parent_plugin)
 {
 

@@ -3,16 +3,16 @@ namespace spc
 {
 
 
-spcMovableElement::spcMovableElement() : position_(0,0,0)
+spcMovableElement::spcMovableElement() : position_(0,0,0), spcElementBase("spcMovableElement")
 {
 }
 
-spcMovableElement::spcMovableElement(const float x, const float y, const float z)
+spcMovableElement::spcMovableElement(const float x, const float y, const float z): spcElementBase("spcMovableElement")
 {
     position_ = Vector3f(x, y, z);
 }
 
-spcMovableElement::spcMovableElement(const Vector3f point)
+spcMovableElement::spcMovableElement(const Vector3f point): spcElementBase("spcMovableElement")
 {
     position_ = point;
 }

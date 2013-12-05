@@ -183,7 +183,7 @@ QString suggestIncrementalName(QString name)
 
 ObjectSelectionComboBox::ObjectSelectionComboBox(QWidget *parent): QComboBox(parent), m_has_none(false), m_old_selected_id(-1)
 {
-    connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(updateCurrentSelectedUniqueID(int)));
+    connect(this, SIGNAL(currentIndexChanged(int)), this, SLOT(updateCurrentSelectionInfo(int)));
 }
 
 void ObjectSelectionComboBox::updateObjects(ccHObject::Container &cont)
@@ -235,15 +235,18 @@ bool ObjectSelectionComboBox::isPresentObjectWithID(const int id, int &position)
 ccHObject *ObjectSelectionComboBox::getSelected() const
 {
     int id = this->currentIndex();
-    if (id > m_container.size())
-        return 0;
+
+    if (id >= m_container.size())
+        return 0;       
 
     return m_container.at(id);
 }
 
+
+
 void ObjectSelectionComboBox::updateCurrentSelectionInfo(int id)
 {
-    if (id > m_container.size()) // is a None
+    if (id >= m_container.size()) // is a None
         m_old_selected_id = -1;
     else
     {

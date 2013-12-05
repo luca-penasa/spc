@@ -32,16 +32,6 @@ spcAttitude::spcAttitude(const float dipAngle, const float dip, Vector3f positio
     this->setPosition(position);
 }
 
-string spcAttitude::getSPCClassName()
-{
-    std::string name = "spcAttitude";
-    return name;
-}
-
-int spcAttitude::toAsciiMeOnly(stringstream &stream)
-{
-    spcPlane::toAsciiMeOnly(stream);
-}
 
 Vector3f spc::spcAttitude::getDipDirectionVector() const
 {

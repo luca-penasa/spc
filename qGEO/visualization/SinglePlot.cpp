@@ -1,6 +1,8 @@
 #include "SinglePlot.h"
 #include <iostream>
 
+#include <boost/make_shared.hpp>
+
 SinglePlot::SinglePlot(QCustomPlot *parentPlot): QCPAxisRect(parentPlot, false)
 {
     init();
@@ -21,12 +23,15 @@ void SinglePlot::updateDataWith(const spc::ContinousValuesLog *log)
 
     // set these data into the graph
     updateGraphData( m_depth,m_values);
+
+
+
 }
 
-void SinglePlot::updateDataWith(const spc::GenericTimeSeries<float> &tserie)
+void SinglePlot::updateDataWith(ccTimeSeries * tserie)
 {
-    auto depth = tserie.getX();
-    auto val = tserie.getY();
+    auto depth = tserie->getX();
+    auto val = tserie->getY();
 
     QVector<double> m_depth, m_values;
 
@@ -38,6 +43,11 @@ void SinglePlot::updateDataWith(const spc::GenericTimeSeries<float> &tserie)
 
 
     updateGraphData(m_depth, m_values);
+
+
+    /// keep a pointer to this time series (until class is destructed)
+        m_tseries = tserie;
+
 }
 
 

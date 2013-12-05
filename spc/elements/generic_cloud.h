@@ -10,18 +10,18 @@ namespace spc
 
 
 
-class spcGenericCloud: public spcElementBase, public SalvableObject
+class spcGenericCloud: public spcElementBase
 {
 public:
+
+    typedef typename boost::shared_ptr<spcGenericCloud> Ptr;
+    typedef typename boost::shared_ptr<const spcGenericCloud> ConstPtr;
+
+
     spcGenericCloud();
 
-    virtual std::string getSPCClassName()
-    {
-        std::string name = "GenericCloud";
-        return name;
-    }
 
-    virtual int toAsciiMeOnly(std::stringstream &stream) {/*nothing for now*/}
+//    virtual int toStreamMeOnly(std::stringstream &stream) {/*nothing for now*/}
 
 
     /// a generic cloud must implement these method

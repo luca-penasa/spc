@@ -8,28 +8,21 @@ namespace spc
 {
 
 
-class spcNormal3D: public spcElementBase, public SalvableObject
+class spcNormal3D: public spcElementBase
 {
 public:
+
+    typedef typename boost::shared_ptr<spcNormal3D> Ptr;
+    typedef typename boost::shared_ptr<const spcNormal3D> ConstPtr;
+
+
     spcNormal3D();
 
-    spcNormal3D(float x, float y, float z)
+    spcNormal3D(float x, float y, float z): spcElementBase("spcNormal3D")
     {
         normal_ = Vector3f(x,y,z);
     }
 
-    virtual std::string getSPCClassName()
-    {
-        std::string name = "Normal3D";
-        return name;
-    }
-
-    virtual int toAsciiMeOnly(std::stringstream &stream)
-    {
-        stream << normal_(0) << std::endl;
-        stream << normal_(1) << std::endl;
-        stream << normal_(2) << std::endl;
-    }
 
     void setNormal(const Vector3f n)
     {
@@ -68,6 +61,16 @@ public:
 
 protected:
     Vector3f normal_;
+
+    template <class Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+
+        ar & boost::serialization::base_object<spcElementBase>(*this);
+        /// for now we dont need to call base-classes serialization methods
+        ar & BOOST_SERIALIZATION_NVP(normal_);
+    }
+
 };
 
 

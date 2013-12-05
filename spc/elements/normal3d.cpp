@@ -3,7 +3,7 @@ namespace spc
 {
 
 
-spcNormal3D::spcNormal3D() : normal_(0,0,1)
+spcNormal3D::spcNormal3D() : normal_(0,0,1), spcElementBase("spcNormal3D")
 {
 }
 

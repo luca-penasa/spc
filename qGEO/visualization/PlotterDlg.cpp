@@ -21,7 +21,19 @@ PlotterDlg::PlotterDlg(QWidget* parent): QDialog(parent), Ui::PlotterDlgUi()
     tbar->addAction(this->actionSaveTimeSeries);
     tbar->addAction(this->actionClearPlot);
 
+    //must connect any change of range to the props widget
 
+    QCPAxis * ax = this->plot->getMainAxisRect()->getMainAxis();
+    connect (ax, SIGNAL(rangeChanged(QCPRange)), this->props, SLOT(setRange(QCPRange)));
+    connect (this->props, SIGNAL(rangeChanged(QCPRange)), ax, SLOT(setRange(QCPRange)));
+
+    PropertiesViewerWidget * props = getPropertiesWidget();
+
+    connect(props, SIGNAL(needRedrawing()), getPlotterWidget(), SLOT(replot()));
+
+
+
+    connect(actionSaveTimeSeries, SIGNAL(triggered()), this->getPlotterWidget(), SLOT(saveAllSeries()));
 
 
 }

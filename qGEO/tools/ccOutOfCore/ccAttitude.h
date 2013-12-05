@@ -42,9 +42,10 @@ public:
 
 
 
+
 protected:
 
-//    void setAttitudeAsMetadata();
+    //    void setAttitudeAsMetadata();
 
     virtual void drawMeOnly(CC_DRAW_CONTEXT &context);
     virtual void applyGLTransformation(const ccGLMatrix& trans) ;
@@ -59,7 +60,7 @@ protected:
 
     int m_width;
 
-//    ccGLMatrix m_oldTransform;
+    //    ccGLMatrix m_oldTransform;
 
 
     static Eigen::Vector3f asEigenVector(CCVector3 v)

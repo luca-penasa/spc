@@ -60,7 +60,10 @@ public:
     /// \note that the positioning of this attitude is centered at origin
     /// please use getEstimatedAttitudes() for having an attitude for each input cloud.
     ///
-    spcAttitude getEstimatedAttitude() {return static_cast<spcAttitude> (model_);}
+    spcAttitude::Ptr getEstimatedAttitude()
+    {
+        return model_.getAttitude();
+    }
 
     ///
     /// \brief getEstimatedAttitudes
@@ -72,14 +75,14 @@ public:
     /// \brief getEstimatedSingleAttitudeModel
     /// \return the model correspondent to the estimated attitude/s
     ///
-    SingleAttitudeModel getEstimatedSingleAttitudeModel() {return model_;}
+    spcSingleAttitudeModel getEstimatedSingleAttitudeModel() {return model_;}
 
 
     ///
     /// \brief addInputCloud this method require 1 or more clouds t be used for estimtion
     /// \param cloud is the input cloud
     ///
-    void addInputCloud(CloudPtrT cloud);
+    void addInputCloud(const CloudPtrT cloud);
 
     ///
     /// \brief getAveragedSquareDeviations
@@ -151,7 +154,7 @@ private:
     std::vector<CloudPtrT> clouds_;
 
     /// the current model
-    SingleAttitudeModel model_;   
+    spcSingleAttitudeModel model_;
 
     /// stratigraphic position for each point into the clouds
     std::vector<std::vector<float> > s_positions_;

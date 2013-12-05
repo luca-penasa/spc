@@ -5,17 +5,20 @@
 
 #include <spc/elements/continous_values_stratigraphy.h>
 #include <spc/time_series/base_time_series.h>
+#include <ccOutOfCore/ccTimeSeries.h>
 
 class SinglePlot : public QCPAxisRect
 {
 public:
     SinglePlot(QCustomPlot *parentPlot);
 
+    /// DEPRECATED
     SinglePlot(QCustomPlot *parentPlot , spc::ContinousValuesLog *log);
 
+    /// DEPRECATED
     void updateDataWith(const spc::ContinousValuesLog * log);
 
-    void updateDataWith(const spc::GenericTimeSeries<float> &tserie);
+    void updateDataWith(ccTimeSeries * tserie);
 
     QCPAxis * getDepthAxis()
     {
@@ -40,12 +43,23 @@ public:
     }
 
 
+    ccTimeSeries * getTimeSeries()
+    {
+        return m_tseries;
+    }
+
+
 private:
     void updateGraphData(QVector<double> x, QVector<double> y)
     {
         m_graph->setData(x,y);
         m_graph->rescaleAxes();
     }
+
+
+
+
+    ccTimeSeries * m_tseries;
 
 
 

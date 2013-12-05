@@ -22,14 +22,15 @@ using namespace Eigen;
 /// stratigraphy. It is inherit by all models that permits to evaluate a stratigraphic position
 /// and a stratigraphic normal in the 3D space
 ///!
-class StratigraphicModelBase
+class spcStratigraphicModelBase
 {  
 public:
 
-    typedef typename boost::shared_ptr<StratigraphicModelBase> Ptr;
+    typedef typename boost::shared_ptr<spcStratigraphicModelBase> Ptr;
+    typedef typename boost::shared_ptr<const spcStratigraphicModelBase> ConstPtr;
 
     //! Def constructor
-    StratigraphicModelBase();
+    spcStratigraphicModelBase();
 
     //!
     //! \brief getStratigraphicPosition get the modeled stratigraphic position for a poin in 3d
@@ -60,6 +61,12 @@ public:
     //! \return the stratigraphic positions
     //!
     virtual std::vector<float> getStratigraphicPositions(spcGenericCloud *cloud, const std::vector<int> &indices);
+
+
+    /// also from shared pointer
+    virtual std::vector<float> getStratigraphicPositions(spcGenericCloud::Ptr cloud, const std::vector<int> &indices);
+
+
 
     //!
     //! \brief getStratigraphicPositions as getStratigraphicPosition but for a whole cloud!

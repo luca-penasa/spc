@@ -12,17 +12,6 @@ spcPlane::spcPlane(const Vector3f normal, const Vector3f point): spcMovableEleme
     normal_.setNormal(normal);
 }
 
-string spcPlane::getSPCClassName()
-{
-    std::string name = "spcPlane3D";
-    return name;
-}
-
-int spcPlane::toAsciiMeOnly(stringstream &stream)
-{
-    normal_.toAsciiMeOnly(stream);
-    spcMovableElement::toAsciiMeOnly(stream);
-}
 
 void spcPlane::setNormal(Vector3f n)
 {

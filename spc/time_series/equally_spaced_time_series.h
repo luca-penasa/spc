@@ -67,7 +67,7 @@ public:
     EquallySpacedTimeSeries(ScalarT x_min_, ScalarT x_max_, ScalarT step_);
 
     template<typename NScalarT>
-    EquallySpacedTimeSeries(EquallySpacedTimeSeries<NScalarT> &other)
+    EquallySpacedTimeSeries( const EquallySpacedTimeSeries<NScalarT> &other)
     {
         this->y.clear();
         std::vector<NScalarT> other_y = other.getY();

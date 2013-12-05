@@ -20,8 +20,9 @@ SerializedTimeSeriesGenerator<ScalarT>::compute()
         if (!generator.compute())
             return -1;
 
-        auto out = generator.getOutputSeries();
-        output_.push_back(out);
+        EquallySpacedTimeSeries<ScalarT> ts;
+        generator.getOutputSeries(ts);
+        output_.push_back(ts);
     }
 }
 

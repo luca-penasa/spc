@@ -7,6 +7,9 @@
 class ccTimeSeries:  public ccMyBaseObject, public spc::EquallySpacedTimeSeries<float>
 {
 public:
+
+    /// this is goind to create strange things with the ref count system of qt, maybe
+    typedef typename boost::shared_ptr<ccTimeSeries> Ptr;
     ccTimeSeries();
 
     ccTimeSeries(const ccTimeSeries & other);

@@ -11,26 +11,37 @@ namespace spc
 /// \brief The SingleAttitudeModel class represent a stratigraphic "meter" or model.
 ///
 ///
-class SingleAttitudeModel: public StratigraphicModelBase, public spcAttitude
+class spcSingleAttitudeModel: public spcStratigraphicModelBase, public spcElementBase
 {
 public:
 
 
-    typedef boost::shared_ptr<SingleAttitudeModel> Ptr;
+    typedef boost::shared_ptr<spcSingleAttitudeModel> Ptr;
+    typedef boost::shared_ptr<const spcSingleAttitudeModel> ConstPtr;
 
     /// def const
-    SingleAttitudeModel();
-
-    SingleAttitudeModel(const SingleAttitudeModel & model): spcAttitude(model)
+    spcSingleAttitudeModel() : additional_shift_(0.0), spcElementBase("spcSingleAttitudeModel")
     {
-        additional_shift_ =  model.getAdditionalShift();
+        attitude_ = spcAttitude::Ptr(new spcAttitude);
     }
 
-    SingleAttitudeModel(const spcAttitude & attitude): spcAttitude(attitude)
+    /// copy const
+    spcSingleAttitudeModel(const spcSingleAttitudeModel & model):  spcElementBase("spcSingleAttitudeModel")
+    {
+        additional_shift_ =  model.getAdditionalShift();
+        attitude_ = model.attitude_;
+    }
+
+    /// copy from an attitude
+    spcSingleAttitudeModel(const spcAttitude & attitude):  spcElementBase("spcSingleAttitudeModel")
     {
         additional_shift_ = 0.0;
 
+        attitude_ = boost::make_shared<spcAttitude>(attitude);
     }
+
+
+
 
     /// inherited from StratigraphicModelBase
     virtual float getStratigraphicPosition(const Vector3f &point);
@@ -39,7 +50,7 @@ public:
 
     Vector3f getPointAtStratigraphicPosition(float sp) const
     {
-        return getPosition() + getUnitNormal() * (sp - additional_shift_ );
+        return attitude_->getPosition() + attitude_->getUnitNormal() * (sp - additional_shift_ );
     }
 
 
@@ -53,8 +64,42 @@ public:
         additional_shift_ = additional_shift;
     }
 
+
+    void setAttitude(spcAttitude::Ptr &attitude)
+    {
+        attitude_ = attitude;
+    }
+
+
+    spcAttitude::Ptr getAttitude() const
+    {
+        return attitude_;
+    }
+
+    void setNormal (Vector3f n)
+    {
+        attitude_->setNormal(n);
+    }
+
+
+
+
 protected:
     float additional_shift_;
+
+    spcAttitude::Ptr attitude_;
+
+protected:
+    template <class Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+
+        /// also the attitude must be serialized
+        ar & boost::serialization::base_object<spcElementBase>(*this);
+        ar & BOOST_SERIALIZATION_NVP(additional_shift_);
+        ar & BOOST_SERIALIZATION_NVP(*attitude_);
+
+    }
 
 };
 

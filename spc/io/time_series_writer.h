@@ -11,7 +11,12 @@ class TimeSeriesWriter
 public:
     TimeSeriesWriter();
 
-    void setInputSeries(spc::GenericTimeSeries<ScalarT> * in_series) { in_series_ = in_series; }
+    void setInputSeries(typename spc::GenericTimeSeries<ScalarT>::Ptr in_series)
+    {
+
+        in_series_ = in_series;
+
+    }
 
     void setFilename(std::string filename) {filename_ = filename;}
 
@@ -22,7 +27,7 @@ public:
     void setSeparator(const std::string separator) {separator_ = separator;}
 
 private:
-    spc::GenericTimeSeries<ScalarT> * in_series_;
+    typename spc::GenericTimeSeries<ScalarT>::Ptr in_series_;
     std::string filename_;
     int precision_;
     std::string separator_;

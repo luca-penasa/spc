@@ -10,7 +10,7 @@
 namespace spc
 {
 template<typename ScalarT>
-TimeSeriesWriter<ScalarT>::TimeSeriesWriter()
+TimeSeriesWriter<ScalarT>::TimeSeriesWriter(): precision_(6), separator_(" ")
 {
 }
 
@@ -69,7 +69,8 @@ TimeSeriesWriter<ScalarT>::writeAsciiAsSparse()
         std::string result = stream.str ();
         boost::trim (result);
         stream.str ("");
-        file << result << "\n"; //new line
+        file << result << std::endl; //new line
+
     }
 
     file.close();

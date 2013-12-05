@@ -13,7 +13,7 @@
 #include <QIcon>
 #include <ccPointCloud.h>
 
-class ccSingleAttitudeModel: public QObject,  public ccMyBaseObject, public spc::SingleAttitudeModel
+class ccSingleAttitudeModel: public QObject,  public ccMyBaseObject, public spc::spcSingleAttitudeModel
 {
     Q_OBJECT
 
@@ -25,11 +25,14 @@ public:
     // copy const
     ccSingleAttitudeModel(const ccSingleAttitudeModel &model);
 
-//    ccSingleAttitudeModel(const spc::SingleAttitudeModel &model);
-
-//    ccSingleAttitudeModel(const spc::spcPlane &att);
 
     ccSingleAttitudeModel(const spc::spcAttitude & att);
+
+    spc::spcSingleAttitudeModel::Ptr asSPCClass()
+    {
+        spc::spcSingleAttitudeModel * spcPtr =  static_cast<spc::spcSingleAttitudeModel *> (this);
+        return boost::make_shared<spc::spcSingleAttitudeModel>(*spcPtr);
+    }
 
 
 

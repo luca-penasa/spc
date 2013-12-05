@@ -2,9 +2,14 @@
 #include <fstream>
 namespace spc
 {
-spcElementBase::spcElementBase()
+spcElementBase::spcElementBase(const std::string name)
 {
+
+    class_name_ = name;
 }
+
+
+
 
 
 

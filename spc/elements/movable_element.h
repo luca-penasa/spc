@@ -9,9 +9,14 @@
 
 namespace spc
 {
-class spcMovableElement: public spcElementBase, public SalvableObject
+class spcMovableElement: public spcElementBase
 {
 public:
+
+    typedef typename boost::shared_ptr<spcMovableElement> Ptr;
+    typedef typename boost::shared_ptr<const spcMovableElement> ConstPtr;
+
+
     spcMovableElement();
 
     spcMovableElement(const float x, const float y, const float z);
@@ -29,19 +34,6 @@ public:
 
     void setPosition(const Vector3f position);
 
-    virtual std::string getSPCClassName()
-    {
-        std::string name = "spcMovableElement";
-        return name;
-    }
-
-
-    virtual int toAsciiMeOnly(std::stringstream &stream)
-    {
-        stream << position_(0) << std::endl;
-        stream << position_(1) << std::endl;
-        stream << position_(2) << std::endl;
-    }
 
 
     void positionFromCentroid(pcl::PointCloud<pcl::PointXYZ> &cloud);
@@ -51,6 +43,15 @@ public:
 
 protected:
     Vector3f position_;
+
+    template <class Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+
+        ar & boost::serialization::base_object<spcElementBase>(*this);
+        /// for now we dont need to call base-classes serialization methods
+        ar & BOOST_SERIALIZATION_NVP(position_);
+    }
 
 };
 

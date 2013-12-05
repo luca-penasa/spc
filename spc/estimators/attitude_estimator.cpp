@@ -10,8 +10,9 @@ AttitudeEstimator::AttitudeEstimator()
 std::vector<spcAttitude> AttitudeEstimator::getEstimatedAttitudes()
 {
     std::vector<spcAttitude> atts;
-    spcAttitude att = getEstimatedAttitude();
-    Vector3f n =  att.getUnitNormal();
+    spcAttitude::Ptr att = getEstimatedAttitude();
+    std::cout << "att: \n" << att->getNormal() << std::endl;
+    Vector3f n =  att->getUnitNormal();
 
     for (int i = 0 ; i < clouds_.size(); ++i)
     {
@@ -49,7 +50,7 @@ void AttitudeEstimator::initializeModel()
 
     sum /= normals.size(); //the average
 
-    model_.setNormal(sum); //setunitnormal automatically normalize the vector
+    model_.setNormal(sum);
 }
 
 void AttitudeEstimator::updateSPs()
@@ -97,7 +98,7 @@ void AttitudeEstimator::updateDeviations()
     }
 }
 
-void AttitudeEstimator::addInputCloud(AttitudeEstimator::CloudPtrT cloud)
+void AttitudeEstimator::addInputCloud(const CloudPtrT cloud)
 {
     clouds_.push_back(cloud);
     //compute its centroid
@@ -132,7 +133,7 @@ int AttitudeEstimator::estimate()
 {
     initializeModel();
 
-    VectorXf start = model_.getUnitNormal();
+    VectorXf start = model_.getAttitude()->getUnitNormal();
 
     my_functor Functor(this);
 
@@ -143,6 +144,7 @@ int AttitudeEstimator::estimate()
 
     int info = lm.minimize(start);
 
+    start = model_.getAttitude()->getUnitNormal();
     std::cout << "AFTER: " << start(0) << " " << start(1) << " " << start(2) << "with info " << info << std::endl;
 
     return info;

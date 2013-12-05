@@ -4,9 +4,16 @@ namespace spc {
 
 
 template <typename ScalarT>
-GenericTimeSeries<ScalarT>::GenericTimeSeries(): y(0)
+GenericTimeSeries<ScalarT>::GenericTimeSeries(): y(0), spcElementBase("GenericTimeSeries")
 {
 
+}
+
+template<typename ScalarT>
+GenericTimeSeries<ScalarT>::GenericTimeSeries(const GenericTimeSeries &other): spcElementBase("GenericTimeSeries")
+{
+    m_name = other.m_name;
+    y = other.y;
 }
 
 template<typename ScalarT>

@@ -16,11 +16,15 @@ class spcPlanarSelection: public spcElementBase
 {
 public:
 
+    typedef typename boost::shared_ptr<spcPlanarSelection> Ptr;
+    typedef typename boost::shared_ptr<const spcPlanarSelection> ConstPtr;
+
+
     typedef typename pcl::PointCloud<pcl::PointXYZ> cloudT;
 
     spcPlanarSelection();
 
-    spcPlanarSelection(const spcPlanarSelection & el)
+    spcPlanarSelection(const spcPlanarSelection & el):  spcElementBase("spcPlanarSelection")
     {
         verts_3d_ = el.getVertices();
     }
@@ -47,7 +51,7 @@ public:
         max_distance_ = d;
     }
 
-    void setInputCloud (spcGenericCloud * cloud)
+    void setInputCloud (spcGenericCloud::Ptr cloud)
     {
         pcl::console::print_info("Settet input cloud! with %i points\n", cloud->getSize());
         in_cloud_ = cloud;
@@ -60,11 +64,6 @@ public:
         return indices_;
     }
 
-    virtual std::string getSPCClassName()
-    {
-        return "spcPlanarSelection";
-    }
-
     void updateIndices()
     {
         pcl::console::print_debug("Updating indices \n");
@@ -73,23 +72,23 @@ public:
         {
             if (projected_cloud_.at(i).z <= max_distance_)
             {
-//                pcl::console::print_debug("less than min distance \n");
+                //                pcl::console::print_debug("less than min distance \n");
                 pcl::PointXY p;
 
                 p.x = projected_cloud_.at(i).x;
                 p.y = projected_cloud_.at(i).y;
                 if (isPointInPoly(p, verts_2d_) == 1)
                 {
-//                    pcl::console::print_debug("found point inside \n");
+                    //                    pcl::console::print_debug("found point inside \n");
                     indices_.push_back(i);
                 }
             }
-//            else
-//                pcl::console::print_debug("too distant\n");
-         }
+            //            else
+            //                pcl::console::print_debug("too distant\n");
+        }
     }
 
-    pcl::PointCloud<pcl::PointXYZ> getInside(spcGenericCloud * in_cloud)
+    pcl::PointCloud<pcl::PointXYZ> getInside(spcGenericCloud::Ptr in_cloud)
     {
         setInputCloud(in_cloud);
         updateProjectedCloud();
@@ -148,7 +147,7 @@ protected:
 
     /// http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
     int isPointInPoly(const pcl::PointXY P,
-                       const std::vector<pcl::PointXY>& polyVertices)
+                      const std::vector<pcl::PointXY>& polyVertices)
     {
         int nvert = polyVertices.size();
         int i, j, c = 0;
@@ -157,7 +156,7 @@ protected:
                  (P.x < (polyVertices[j].x-polyVertices[i].x) * (P.y-polyVertices[i].y) / (polyVertices[j].y-polyVertices[i].y) + polyVertices[i].x) )
                 c = !c;
         }
-//        pcl::console::print_debug("Tested in poly: %i", c);
+        //        pcl::console::print_debug("Tested in poly: %i", c);
         return c;
 
     }
@@ -172,7 +171,7 @@ protected:
         pcl::console::print_info("updating poly vertices\n");
         verts_2d_.clear();
 
-//         = verts_3d_.applyTransform(proj_plane_.get2DArbitraryRefSystem());
+        //         = verts_3d_.applyTransform(proj_plane_.get2DArbitraryRefSystem());
 
         pcl::console::print_info("there are %i initial poly verts\n", verts_3d_.size());
         pcl::PointCloud<pcl::PointXYZ> projected = spcPCLXYZCloud(verts_3d_).applyTransform(proj_plane_.get2DArbitraryRefSystem());
@@ -202,7 +201,7 @@ protected:
     ///
     /// \brief in_cloud_ it the input cloud to be segmented
     ///
-    spcGenericCloud * in_cloud_;
+    spcGenericCloud::Ptr in_cloud_;
 
     /// things that will be auto-updated
     std::vector<pcl::PointXY> verts_2d_;
@@ -222,7 +221,16 @@ protected:
 
 
 
+protected:
+    template<class Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
 
+        ar & boost::serialization::base_object<spcElementBase>(*this);
+        ar & BOOST_SERIALIZATION_NVP(verts_3d_);
+        ar & BOOST_SERIALIZATION_NVP(max_distance_);
+
+    }
 
 
 

@@ -9,6 +9,8 @@
 
 #include <Eigen/Geometry>
 
+#include <boost/serialization/base_object.hpp>
+
 using namespace Eigen;
 namespace spc
 {
@@ -23,6 +25,11 @@ class spcPlane: public spcMovableElement
 public:
 
 
+    typedef typename boost::shared_ptr<spcPlane> Ptr;
+    typedef typename boost::shared_ptr<const spcPlane> ConstPtr;
+
+
+
     /// Def const
     spcPlane();
 
@@ -35,9 +42,7 @@ public:
     /// a Plane from direction of the normal and passing for a given point
     spcPlane(const Vector3f normal_, const Vector3f point);
 
-    virtual std::string getSPCClassName();
 
-    virtual int toAsciiMeOnly(std::stringstream &stream);
 
     void setNormal (Vector3f n);
 
@@ -67,6 +72,17 @@ public:
 
 protected:
     spcNormal3D normal_;
+
+
+    template <class Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+
+        ar & boost::serialization::base_object<spcMovableElement>(*this);
+        /// for now we dont need to call base-classes serialization methods
+        ar & BOOST_SERIALIZATION_NVP(normal_);
+    }
+
 
 
 };

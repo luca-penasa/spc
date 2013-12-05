@@ -31,7 +31,7 @@ int EvaluateStratigraphicPosition::compute()
     ccHObject::Container clouds;
     getSelectedEntitiesThatAreCCPointCloud(clouds);
 
-    spc::StratigraphicModelBase * m_base = static_cast<spc::StratigraphicModelBase *> (m_model);
+    spc::spcStratigraphicModelBase * m_base = static_cast<spc::spcStratigraphicModelBase *> (m_model);
 
 //    spc::StratigraphicModelBase::Ptr m_base_ptr = boost::make_shared<spc::StratigraphicModelBase> (*m_base);
 

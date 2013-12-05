@@ -12,11 +12,8 @@ ccAttitude::ccAttitude(CCVector3 center, CCVector3 orientation):
 
 
 
-ccAttitude::ccAttitude(spc::spcAttitude att)
-{
-    setPosition(att.getPosition());
-    setNormal(att.getNormal());
-
+ccAttitude::ccAttitude(spc::spcAttitude att): spc::spcAttitude(att)
+{    
     initMetadata();
     initParameters();
 }
@@ -54,7 +51,6 @@ void ccAttitude::initMetadata()
 
 void ccAttitude::drawMeOnly(CC_DRAW_CONTEXT &context)
 {
-
     m_scale = context.pickedPointsRadius;
     //we draw here a little 3d representation of the sensor
     if (MACRO_Draw3D(context))

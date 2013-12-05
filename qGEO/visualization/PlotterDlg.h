@@ -46,6 +46,11 @@ public:
         return plot;
     }
 
+    PropertiesViewerWidget * getPropertiesWidget()
+    {
+        return props;
+    }
+
 
 public slots:
     void update()

@@ -16,5 +16,6 @@
         <file>icons/tseries.png</file>
         <file>icons/tseries_generator.png</file>
         <file>icons/selection.png</file>
+        <file>icons/save.png</file>
     </qresource>
 </RCC>
