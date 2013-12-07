@@ -11,7 +11,7 @@ using namespace pcl;
 namespace spc
 {
 int 
-loadCSVFile(const std::string &in_filename, sensor_msgs::PointCloud2 &output, const int x_id, const int y_id, const int z_id, const int i_id, const int k, const std::string s)
+loadCSVFile(const std::string &in_filename, pcl::PCLPointCloud2 &output, const int x_id, const int y_id, const int z_id, const int i_id, const int k, const std::string s)
 {
 	//open file
     std::ifstream in(in_filename.c_str());
@@ -111,7 +111,7 @@ loadCSVFile(const std::string &in_filename, sensor_msgs::PointCloud2 &output, co
 	cloud->is_dense = false;
 	cloud->points.resize(cloud->width * cloud->height);
 	
-    toROSMsg(*cloud, output);
+    pcl::toPCLPointCloud2(*cloud, output);
 	
 }
 
@@ -206,7 +206,7 @@ saveAsCSV(const std::string &filename, const std::string &separator, const std::
 
 
 int
-savePCDBinaryCompressed(const std::string &filename, const sensor_msgs::PointCloud2 &cloud)
+savePCDBinaryCompressed(const std::string &filename, const pcl::PCLPointCloud2 &cloud)
 {
     pcl::PCDWriter w;
     return w.writeBinaryCompressed(filename, cloud);

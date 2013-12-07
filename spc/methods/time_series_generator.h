@@ -1,7 +1,8 @@
 #ifndef TIME_SERIES_GENERATOR_H
 #define TIME_SERIES_GENERATOR_H
 
-#include <sensor_msgs/PointCloud2.h>
+#include <pcl/PCLPointCloud2.h>
+
 #include <spc/time_series/equally_spaced_time_series.h>
 #include <spc/io/pointcloud2_reader.h>
 #include <spc/elements/generic_cloud.h>

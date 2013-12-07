@@ -2,18 +2,10 @@
 #include <fstream>
 namespace spc
 {
-spcElementBase::spcElementBase(const std::string name)
-{
-
-    class_name_ = name;
-}
-
-
-
-
 
 
 }//end nspace
 
+BOOST_CLASS_EXPORT_GUID(spc::spcElementBase,"spcElementBase")
 
 

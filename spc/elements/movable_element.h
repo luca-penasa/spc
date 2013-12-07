@@ -7,6 +7,9 @@
 #include <spc/elements/generic_cloud.h>
 #include <pcl/point_types.h>
 
+using namespace boost;
+
+
 namespace spc
 {
 class spcMovableElement: public spcElementBase
@@ -39,22 +42,26 @@ public:
     void positionFromCentroid(pcl::PointCloud<pcl::PointXYZ> &cloud);
 
 
-    void positionFromCentroid(spcGenericCloud &cloud);
+//    void positionFromCentroid(spcGenericCloud &cloud);
 
 protected:
+
     Vector3f position_;
+
+    friend class boost::serialization::access;
 
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version)
     {
+        ar & BOOST_SERIALIZATION_NVP( position_);
+        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(spcElementBase);
 
-        ar & boost::serialization::base_object<spcElementBase>(*this);
-        /// for now we dont need to call base-classes serialization methods
-        ar & BOOST_SERIALIZATION_NVP(position_);
     }
 
 };
 
 }//end nspace
+
+
 
 #endif // POINT3D_H

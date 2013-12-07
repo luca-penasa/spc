@@ -303,3 +303,4 @@ void ccSingleAttitudeModel::initEditDlg()
 
 
 
+BOOST_CLASS_EXPORT_GUID(ccSingleAttitudeModel, "ccSingleAttitudeModel")

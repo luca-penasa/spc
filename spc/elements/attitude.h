@@ -77,11 +77,17 @@ public:
     std::string getDipAndDipAngleAsString() const;
 
 protected:
+
+    friend class boost::serialization::access;
+
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version)
     {
+//        ar & boost::serialization::make_nvp("position",boost::serialization::base_object<spcMovableElement >(*this));
+//        ar & boost::serialization::make_nvp("normal", normal_);
 
-        ar & boost::serialization::base_object<spcPlane>(*this);
+
+        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(spcPlane);
     }
 
 

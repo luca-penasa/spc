@@ -34,12 +34,6 @@ public:
     ///
     SparseTimeSeries(vector<ScalarT> x_, vector<ScalarT> y_);
 
-    virtual std::string getSPCClassName()
-    {
-        std::string name = "SparseTimeSeries";
-        return name;
-    }
-
 
     ///
     /// \brief getX get x positions

@@ -74,6 +74,6 @@ set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fopenmp -fPIC" )
 
 
   #include( ${CC_PLUGINS_SOURCE_DIR}/CMakePluginTpl.cmake )
-  target_link_libraries(${PROJECT_NAME} PclUtils qGEOTools qGEOVis ${QWT_LIBRARIES} ${SPC_LIBRARIES} ${QT_LIBRARIES})
+  target_link_libraries(${PROJECT_NAME} PclUtils qGEOTools qGEOVis ${QWT_LIBRARIES} ${SPC_LIBRARIES} ${QT_LIBRARIES} boost_serialization)
 
   install(TARGETS ${PROJECT_NAME} DESTINATION ${QGEO_INSTALL_DIR})

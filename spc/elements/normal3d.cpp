@@ -3,7 +3,7 @@ namespace spc
 {
 
 
-spcNormal3D::spcNormal3D() : normal_(0,0,1), spcElementBase("spcNormal3D")
+spcNormal3D::spcNormal3D() : normal_(0,0,1)
 {
 }
 
@@ -21,4 +21,8 @@ void spcNormal3D::normalFromBestFit(pcl::PointCloud<pcl::PointXYZ> &cloud)
 }
 
 
+
 }//end nspace
+
+
+BOOST_CLASS_EXPORT_GUID(spc::spcNormal3D, "spcNormal3D")

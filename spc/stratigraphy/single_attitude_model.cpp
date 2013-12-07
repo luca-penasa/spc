@@ -24,3 +24,6 @@ Vector3f spcSingleAttitudeModel::getStratigraphicNormal(const Vector3f &point)
 
 
 }//end nspace
+
+
+BOOST_CLASS_EXPORT_GUID(spc::spcSingleAttitudeModel, "spcSingleAttitudeModel")

@@ -76,9 +76,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="18.307488"
-     inkscape:cx="395.98293"
-     inkscape:cy="-23.730058"
+     inkscape:zoom="9.153744"
+     inkscape:cx="396.90979"
+     inkscape:cy="-25.943616"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -92,9 +92,9 @@
      fit-margin-right="0"
      fit-margin-bottom="0"
      inkscape:window-width="1920"
-     inkscape:window-height="1031"
+     inkscape:window-height="1021"
      inkscape:window-x="1600"
-     inkscape:window-y="24"
+     inkscape:window-y="27"
      inkscape:window-maximized="1"
      inkscape:snap-global="false"
      inkscape:snap-bbox="true"
@@ -144,7 +144,7 @@
      inkscape:groupmode="layer"
      id="layer2"
      inkscape:label="squares"
-     style="display:inline"
+     style="display:none"
      transform="translate(-37.191444,-0.48156374)">
     <rect
        style="color:#000000;fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
@@ -246,6 +246,13 @@
        height="21"
        x="424.46478"
        y="33.813065" />
+    <rect
+       y="33.813065"
+       x="450.18829"
+       height="21"
+       width="21"
+       id="rect3438"
+       style="color:#000000;fill:none;stroke:#000000;stroke-width:0.1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
   </g>
   <g
      inkscape:label="Livello 1"
@@ -3962,7 +3969,7 @@
     <g
        id="g4275"
        transform="translate(4.308917e-7,-0.74031819)"
-       inkscape:export-filename="/home/luca/Code/spc-git/qGEO/icons/save.png"
+       inkscape:export-filename="/home/luca/Code/spc-git/qGEO/icons/load.png"
        inkscape:export-xdpi="199"
        inkscape:export-ydpi="199">
       <g
@@ -4050,6 +4057,103 @@
            inkscape:export-filename="/home/luca/Code/qPCL/icons/save.png"
            inkscape:export-xdpi="109.3476"
            inkscape:export-ydpi="109.3476" />
+      </g>
+    </g>
+    <g
+       inkscape:export-ydpi="199"
+       inkscape:export-xdpi="199"
+       inkscape:export-filename="/home/luca/Code/spc-git/qGEO/icons/save.png"
+       transform="translate(25.723525,-0.74031819)"
+       id="g3440">
+      <g
+         id="g3442"
+         transform="matrix(0.88218395,0,0,0.88218395,51.149469,129.30957)"
+         style="stroke:#797979;stroke-opacity:1">
+        <path
+           transform="matrix(0.49878083,0,0,0.49878083,192.26983,1030.6037)"
+           d="m 501.43417,101.17355 c 0,4.40441 -6.55402,7.97488 -14.63882,7.97488 -8.0848,0 -14.63882,-3.57047 -14.63882,-7.97488 0,-4.4044 6.55402,-7.974875 14.63882,-7.974875 8.0848,0 14.63882,3.570475 14.63882,7.974875 z"
+           sodipodi:ry="7.9748788"
+           sodipodi:rx="14.638819"
+           sodipodi:cy="101.17355"
+           sodipodi:cx="486.79535"
+           id="path3459"
+           style="fill:#008100;fill-opacity:0.31764915;stroke:#797979;stroke-opacity:1"
+           sodipodi:type="arc" />
+        <path
+           sodipodi:type="arc"
+           style="fill:#008100;fill-opacity:0.31764915;stroke:#797979;stroke-opacity:1"
+           id="path3461"
+           sodipodi:cx="486.79535"
+           sodipodi:cy="101.17355"
+           sodipodi:rx="14.638819"
+           sodipodi:ry="7.9748788"
+           d="m 501.43417,101.17355 c 0,4.40441 -6.55402,7.97488 -14.63882,7.97488 -8.0848,0 -14.63882,-3.57047 -14.63882,-7.97488 0,-4.4044 6.55402,-7.974875 14.63882,-7.974875 8.0848,0 14.63882,3.570475 14.63882,7.974875 z"
+           transform="matrix(0.49878083,0,0,0.49878083,192.26983,1025.6997)" />
+        <path
+           transform="matrix(0.49878083,0,0,0.49878083,192.26983,1020.1418)"
+           d="m 501.43417,101.17355 c 0,4.40441 -6.55402,7.97488 -14.63882,7.97488 -8.0848,0 -14.63882,-3.57047 -14.63882,-7.97488 0,-4.4044 6.55402,-7.974875 14.63882,-7.974875 8.0848,0 14.63882,3.570475 14.63882,7.974875 z"
+           sodipodi:ry="7.9748788"
+           sodipodi:rx="14.638819"
+           sodipodi:cy="101.17355"
+           sodipodi:cx="486.79535"
+           id="path3463"
+           style="fill:#008100;fill-opacity:0.31764915;stroke:#797979;stroke-opacity:1"
+           sodipodi:type="arc" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path3465"
+           d="m 442.37558,1070.6052 0,10.4619"
+           style="fill:none;stroke:#797979;stroke-width:0.49878085px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+        <path
+           inkscape:connector-curvature="0"
+           id="path3467"
+           d="m 427.77245,1070.6052 0,10.4619"
+           style="fill:none;stroke:#797979;stroke-width:0.49878085px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+      </g>
+      <g
+         id="g3469"
+         transform="matrix(0.47457733,0,0,0.47457733,214.06169,559.09633)"
+         style="fill:#008100;fill-opacity:0.7372549;stroke:#008100;stroke-opacity:1">
+        <g
+           id="g3479"
+           transform="matrix(1,0,0,-1,0,2157.0742)">
+          <path
+             inkscape:export-ydpi="109.3476"
+             inkscape:export-xdpi="109.3476"
+             inkscape:export-filename="/home/luca/Code/qPCL/icons/save.png"
+             sodipodi:nodetypes="cc"
+             inkscape:connector-curvature="0"
+             id="path3471"
+             d="m 465.47334,1086.8754 0,-8.4822"
+             style="color:#000000;fill:#008100;fill-opacity:0.7372549;fill-rule:nonzero;stroke:#008100;stroke-width:3.20000005;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate" />
+          <path
+             sodipodi:nodetypes="cc"
+             inkscape:connector-curvature="0"
+             id="path3473"
+             d="m 465.47334,1078.3932 0,-8.4822"
+             style="color:#000000;fill:#008100;fill-opacity:0.7372549;fill-rule:nonzero;stroke:#008100;stroke-width:3.20000005;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+             inkscape:export-filename="/home/luca/Code/qPCL/icons/save.png"
+             inkscape:export-xdpi="109.3476"
+             inkscape:export-ydpi="109.3476" />
+          <path
+             style="color:#000000;fill:#008100;fill-opacity:0.7372549;fill-rule:nonzero;stroke:#008100;stroke-width:3.20000005;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+             d="m 465.47334,1087.1512 -6.27056,-5.7122"
+             id="path3475"
+             inkscape:connector-curvature="0"
+             sodipodi:nodetypes="cc"
+             inkscape:export-filename="/home/luca/Code/qPCL/icons/save.png"
+             inkscape:export-xdpi="109.3476"
+             inkscape:export-ydpi="109.3476" />
+          <path
+             sodipodi:nodetypes="cc"
+             inkscape:connector-curvature="0"
+             id="path3477"
+             d="m 465.47334,1087.1632 6.27057,-5.7122"
+             style="color:#000000;fill:#008100;fill-opacity:0.7372549;fill-rule:nonzero;stroke:#008100;stroke-width:3.20000005;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0;marker:none;visibility:visible;display:inline;overflow:visible;enable-background:accumulate"
+             inkscape:export-filename="/home/luca/Code/qPCL/icons/save.png"
+             inkscape:export-xdpi="109.3476"
+             inkscape:export-ydpi="109.3476" />
+        </g>
       </g>
     </g>
   </g>

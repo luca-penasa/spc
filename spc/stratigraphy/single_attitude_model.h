@@ -3,6 +3,7 @@
 
 #include <spc/elements/attitude.h>
 #include <spc/stratigraphy/stratigraphic_model_base.h>
+#include <boost/serialization/shared_ptr.hpp>
 
 namespace spc
 {
@@ -20,20 +21,20 @@ public:
     typedef boost::shared_ptr<const spcSingleAttitudeModel> ConstPtr;
 
     /// def const
-    spcSingleAttitudeModel() : additional_shift_(0.0), spcElementBase("spcSingleAttitudeModel")
+    spcSingleAttitudeModel() : additional_shift_(0.0)
     {
         attitude_ = spcAttitude::Ptr(new spcAttitude);
     }
 
     /// copy const
-    spcSingleAttitudeModel(const spcSingleAttitudeModel & model):  spcElementBase("spcSingleAttitudeModel")
+    spcSingleAttitudeModel(const spcSingleAttitudeModel & model)
     {
         additional_shift_ =  model.getAdditionalShift();
         attitude_ = model.attitude_;
     }
 
     /// copy from an attitude
-    spcSingleAttitudeModel(const spcAttitude & attitude):  spcElementBase("spcSingleAttitudeModel")
+    spcSingleAttitudeModel(const spcAttitude & attitude)
     {
         additional_shift_ = 0.0;
 
@@ -89,16 +90,15 @@ protected:
 
     spcAttitude::Ptr attitude_;
 
-protected:
+    friend class boost::serialization::access;
+
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version)
     {
-
-        /// also the attitude must be serialized
-        ar & boost::serialization::base_object<spcElementBase>(*this);
+//        ar & boost::serialization::make_nvp("normal", normal_);
         ar & BOOST_SERIALIZATION_NVP(additional_shift_);
-        ar & BOOST_SERIALIZATION_NVP(*attitude_);
-
+        ar & BOOST_SERIALIZATION_NVP(attitude_);
+        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(spcElementBase);
     }
 
 };

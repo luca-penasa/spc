@@ -24,7 +24,7 @@ public:
 
     spcPlanarSelection();
 
-    spcPlanarSelection(const spcPlanarSelection & el):  spcElementBase("spcPlanarSelection")
+    spcPlanarSelection(const spcPlanarSelection & el)
     {
         verts_3d_ = el.getVertices();
     }
@@ -222,15 +222,18 @@ protected:
 
 
 protected:
-    template<class Archive>
+
+
+
+    friend class boost::serialization::access;
+
+    template <class Archive>
     void serialize(Archive &ar, const unsigned int version)
     {
-
-        ar & boost::serialization::base_object<spcElementBase>(*this);
         ar & BOOST_SERIALIZATION_NVP(verts_3d_);
         ar & BOOST_SERIALIZATION_NVP(max_distance_);
-
     }
+
 
 
 

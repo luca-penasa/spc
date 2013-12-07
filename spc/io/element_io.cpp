@@ -1,5 +1,11 @@
 #include "element_io.h"
 
-ElementIO::ElementIO()
+namespace spc
 {
+
+spcElementSerializer::spcElementSerializer()
+{
+}
+
+
 }

@@ -18,7 +18,7 @@ public:
 
     spcNormal3D();
 
-    spcNormal3D(float x, float y, float z): spcElementBase("spcNormal3D")
+    spcNormal3D(float x, float y, float z)
     {
         normal_ = Vector3f(x,y,z);
     }
@@ -60,16 +60,21 @@ public:
     void normalFromBestFit(pcl::PointCloud<pcl::PointXYZ> & cloud);
 
 protected:
+
+
+
     Vector3f normal_;
+
+    friend class boost::serialization::access;
 
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version)
     {
-
-        ar & boost::serialization::base_object<spcElementBase>(*this);
-        /// for now we dont need to call base-classes serialization methods
+//        ar & boost::serialization::make_nvp("normal", normal_);
         ar & BOOST_SERIALIZATION_NVP(normal_);
+        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(spcElementBase);
     }
+
 
 };
 

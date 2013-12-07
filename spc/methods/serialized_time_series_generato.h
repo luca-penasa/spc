@@ -44,7 +44,7 @@ public:
     auto getOutput() -> std::vector<EquallySpacedTimeSeries<ScalarT> > {return output_;}
 
 private:
-//    sensor_msgs::PointCloud2::Ptr in_cloud_ ;
+//    pcl::PCLPointCloud2::Ptr in_cloud_ ;
     spc::PointCloud2Reader * in_reader_;
     IndicesContainer all_indices_;
     ScalarT sampling_step_;

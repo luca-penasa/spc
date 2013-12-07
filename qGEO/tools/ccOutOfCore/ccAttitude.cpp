@@ -147,5 +147,6 @@ void ccAttitude::setGLTransformation(const ccGLMatrix &trans)
 
 
 
+BOOST_CLASS_EXPORT_GUID(ccAttitude, "ccAttitude")
 
 

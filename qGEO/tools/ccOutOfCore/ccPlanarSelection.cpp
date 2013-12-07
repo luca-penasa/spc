@@ -13,3 +13,7 @@ ccPlanarSelection::ccPlanarSelection()
     setVisible(true);
 
 }
+
+
+
+BOOST_CLASS_EXPORT_GUID(ccPlanarSelection, "ccPlanarSelection")

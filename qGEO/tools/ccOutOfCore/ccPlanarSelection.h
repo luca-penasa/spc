@@ -101,6 +101,21 @@ protected:
     bool m_foreground;
 
 
+    friend class boost::serialization::access;
+
+    template <class Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & BOOST_SERIALIZATION_NVP(m_rgbColor);
+        ar & BOOST_SERIALIZATION_NVP(m_width);
+        ar & BOOST_SERIALIZATION_NVP(m_foreground);
+
+        ar & boost::serialization::make_nvp("spcPlanarSelection", boost::serialization::base_object<spc::spcPlanarSelection> (*this));
+        ar & boost::serialization::make_nvp("ccMyBaseObject", boost::serialization::base_object<ccMyBaseObject> (*this));
+
+    }
+
+
 };
 
 #endif // CCPLANARSELECTION_H

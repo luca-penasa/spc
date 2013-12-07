@@ -77,13 +77,6 @@ public:
         this->x_step = (ScalarT) other.getXStep();
     }
 
-    virtual std::string getSPCClassName()
-    {
-        std::string name = "EquallySpacedTimeSeries";
-        return name;
-
-
-    }
 
     ///
     /// \brief getXStart

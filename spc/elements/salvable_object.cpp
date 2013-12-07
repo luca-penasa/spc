@@ -5,9 +5,12 @@ namespace spc
 
 
 
-spcSalvableObject::spcSalvableObject()
+spcSerializableObject::spcSerializableObject()
 {
 }
 
 
 }//end nspace
+
+
+BOOST_CLASS_EXPORT_GUID(spc::spcSerializableObject, "spcSerializableObject")

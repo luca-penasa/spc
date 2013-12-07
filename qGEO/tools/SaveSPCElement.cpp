@@ -1,9 +1,9 @@
 #include "SaveSPCElement.h"
 
 
-SaveSPCElement::SaveSPCElement(ccPluginInterface * parent_plugin): BaseFilter(FilterDescription(   "Save selected as SPC elments",
-                                                                                                   "Save selected as SPC elments",
-                                                                                                   "Save selected as SPC elments",
+SaveSPCElement::SaveSPCElement(ccPluginInterface * parent_plugin): BaseFilter(FilterDescription(   "Save selected as SPC elemnts",
+                                                                                                   "Save selected as SPC elemnts",
+                                                                                                   "Save selected as SPC elemnts",
                                                                                                    ":/toolbar/icons/save.png")
                                                                               , parent_plugin)
 {

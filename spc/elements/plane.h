@@ -71,15 +71,19 @@ public:
 
 
 protected:
+
     spcNormal3D normal_;
 
+    friend class boost::serialization::access;
 
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version)
     {
+//        ar & boost::serialization::make_nvp("position",boost::serialization::base_object<spcMovableElement >(*this));
+//        ar & boost::serialization::make_nvp("normal", normal_);
 
-        ar & boost::serialization::base_object<spcMovableElement>(*this);
-        /// for now we dont need to call base-classes serialization methods
+
+        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(spcMovableElement);
         ar & BOOST_SERIALIZATION_NVP(normal_);
     }
 

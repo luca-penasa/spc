@@ -4,7 +4,8 @@
 #include <iostream>
 #include <fstream>
 
-#include <sensor_msgs/PointCloud2.h>
+#include <pcl/PCLPointCloud2.h>
+
 #include <pcl/common/io.h>
 
 
@@ -31,7 +32,7 @@ printHeader(const std::string &filename)
 
 template <typename ScalarT>
 std::vector<ScalarT>
-readFieldToVector(const sensor_msgs::PointCloud2 &cloud,
+readFieldToVector(const pcl::PCLPointCloud2 &cloud,
                        const std::string &fieldname,
                        const uint count = 0) //some fields may have higher multiplicity than 1
 {
@@ -61,7 +62,7 @@ readFieldToVector(const sensor_msgs::PointCloud2 &cloud,
 
 template<typename ScalarT>
 std::vector< std::vector<ScalarT> >
-readCompleteFieldToVector(const sensor_msgs::PointCloud2 &cloud,
+readCompleteFieldToVector(const pcl::PCLPointCloud2 &cloud,
                           const std::string &fieldname)
 {
 
@@ -80,10 +81,10 @@ readCompleteFieldToVector(const sensor_msgs::PointCloud2 &cloud,
 }
 
 
-sensor_msgs::PointCloud2
+pcl::PCLPointCloud2
 fromStdVectorToSensor(const std::vector<std::vector<float> > & std_field, const std::string field_name )
 {
-    sensor_msgs::PointCloud2 out_cloud;
+    pcl::PCLPointCloud2 out_cloud;
 
 
 

@@ -1,7 +1,8 @@
 #ifndef POINTCLOUD2_READER_H
 #define POINTCLOUD2_READER_H
 
-#include <sensor_msgs/PointCloud2.h>
+#include <pcl/PCLPointCloud2.h>
+
 
 #ifdef QGEO
 #include <ccPointCloud.h>
@@ -23,13 +24,13 @@ public:
 
     PointCloud2Reader() {}
 
-    PointCloud2Reader(sensor_msgs::PointCloud2::Ptr in_cloud) {setInputCloud(in_cloud);}
+    PointCloud2Reader(pcl::PCLPointCloud2::Ptr in_cloud) {setInputCloud(in_cloud);}
 
 #ifdef QGEO
     PointCloud2Reader(ccPointCloud * in_cloud) {setInputCloud(in_cloud);}
 #endif
 
-    void setInputCloud(sensor_msgs::PointCloud2::Ptr in_cloud) {resetInputs(); in_cloud_ = in_cloud;}
+    void setInputCloud(pcl::PCLPointCloud2::Ptr in_cloud) {resetInputs(); in_cloud_ = in_cloud;}
 
 #ifdef QGEO
     void setInputCloud(ccPointCloud * in_cloud) {resetInputs(); in_cloud_cc_ = in_cloud;}
@@ -38,9 +39,9 @@ public:
     void setIndices(std::vector<int> indices) {indices_ = indices;}
 
 #ifdef QGEO
-    void resetInputs() {in_cloud_ = boost::shared_ptr<sensor_msgs::PointCloud2>(); in_cloud_cc_ = 0;}
+    void resetInputs() {in_cloud_ = boost::shared_ptr<pcl::PCLPointCloud2>(); in_cloud_cc_ = 0;}
 #else
-    void resetInputs() {in_cloud_ = boost::shared_ptr<sensor_msgs::PointCloud2>();}
+    void resetInputs() {in_cloud_ = boost::shared_ptr<pcl::PCLPointCloud2>();}
 #endif
     template <typename ScalarT>
     auto getScalarFieldAsStdVector(std::string &field_name) -> std::vector<ScalarT> * ;
@@ -65,7 +66,7 @@ private:
          }
      }
 
-    sensor_msgs::PointCloud2::Ptr in_cloud_;
+    pcl::PCLPointCloud2::Ptr in_cloud_;
 
 #ifdef QGEO
     ccPointCloud * in_cloud_cc_;

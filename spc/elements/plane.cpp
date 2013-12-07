@@ -109,3 +109,4 @@ Vector3f spcPlane::projectOnPlane(const Vector3f &v) const
 
 
 }//end nspace
+BOOST_CLASS_EXPORT_GUID(spc::spcPlane, "spcPlane")

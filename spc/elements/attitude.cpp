@@ -93,7 +93,7 @@ std::string spcAttitude::getDipAndDipAngleAsString() const
     char d = 0xb0;
 //    std::string degree = d;
     std::stringstream s;
-    s << std::fixed << setprecision(2) << getDipAngle() << d << "/" << getDip() << d << "N";
+    s << std::fixed << std::setprecision(2) << getDipAngle() << d << "/" << getDip() << d << "N";
     return s.str();
 }
 
@@ -101,3 +101,4 @@ std::string spcAttitude::getDipAndDipAngleAsString() const
 
 
 }//end nspace
+BOOST_CLASS_EXPORT_GUID(spc::spcAttitude, "spcAttitude")

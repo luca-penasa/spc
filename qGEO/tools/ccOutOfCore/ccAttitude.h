@@ -74,6 +74,20 @@ protected:
     }
 
 
+    friend class boost::serialization::access;
+
+    template <class Archive>
+    void serialize(Archive &ar, const unsigned int version)
+    {
+        ar & BOOST_SERIALIZATION_NVP(m_scale);
+        ar & BOOST_SERIALIZATION_NVP(m_width);
+        ar & boost::serialization::make_nvp("spcAttitude", boost::serialization::base_object<spc::spcAttitude> (*this));
+        ar & boost::serialization::make_nvp("ccMyBaseObject", boost::serialization::base_object<ccMyBaseObject> (*this));
+
+    }
+
+
+
 };//end class
 
 #endif // CCPLANEORIENTATION_H

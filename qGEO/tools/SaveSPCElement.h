@@ -1,5 +1,5 @@
-#ifndef OPENINCOMPOSER_H
-#define OPENINCOMPOSER_H
+#ifndef SAVE_SPC_ELEMENT_H
+#define SAVE_SPC_ELEMENT_H
 
 #include <qPCL/PclUtils/filters/BaseFilter.h>
 #include <qGEO/qGEO.h>
@@ -10,6 +10,12 @@
 #include <ccOutOfCore/ccMyBaseObject.h>
 #include<ccOutOfCore/ccAttitude.h>
 #include <boost/typeof/typeof.hpp>
+
+#include <spc/elements/spcSerializableContainer.h>
+
+#include <spc/io/element_io.h>
+
+
 
 class SaveSPCElement: public BaseFilter
 {
@@ -27,46 +33,46 @@ public:
         if (m_filename.isEmpty())
             return 1;
 
-
-        std::stringstream stream;
-
-
-        //EASILY CONFIGURABLE HERE
-        stream.precision (6); //6digits
-        stream.imbue (std::locale::classic ());
-
-        // get all qgeo-valid objects that are selected
+        // get all qgeo-valid objects that are also selected
         ccHObject::Container all = qGEO::theInstance()->getSelectedThatHaveMetaData("[qGEO]");
 
-//        for (ccHObject * obj: all)
-//        {
+        for (ccHObject * obj: all)
+        {
+            std::cout << obj->getName().toStdString().c_str() << std::endl;
+        }
 
-        ccHObject * obj = all.at(0);
-
-            spc::spcElementBase * common = dynamic_cast<spc::spcElementBase *> (obj);
-
-            if (!common)
-                std::cout << "cast not valid!" << std::endl;
-
-            std::ofstream ofs("/home/luca/filename.xml");
-            boost::archive::xml_oarchive oa(ofs);
-            oa << BOOST_SERIALIZATION_NVP(*common);
-
-            //save the class type:
-
-//            stream << "#" << common->getSPCClassName() << std::endl;
-//            common->toStringStreamMeOnly(stream);/
-
-//        }
+        spc::spcSerializableContainer::Ptr all_objects =  spc::spcSerializableContainer::Ptr(new spc::spcSerializableContainer);
 
 
 
-        std::ofstream file;
-        file.open(m_filename.toStdString().c_str());
+        for (ccHObject * obj: all)
+        {
 
-        file << stream.str();
+            spc::spcSerializableObject * element = dynamic_cast<spc::spcSerializableObject *> (obj);
 
-        file.close(); // and we are fine!
+            if (!element)
+            {
+                std::cout << "skipped element!" << std::endl;
+                continue;
+            }
+
+
+
+            all_objects->push_back(element);
+        }
+
+
+        //now serialize everything!
+
+        spc::spcElementSerializer serializer;
+        bool status = serializer.save(m_filename.toStdString(), all_objects);
+
+        if (!status)
+        {
+            ccLog::Error("Some error eccured trying to save the objects!");
+            return -1;
+        }
+
 
 
         return 1;
@@ -75,14 +81,15 @@ public:
     virtual int openInputDialog()
     {
         m_filename.clear();
-        m_filename =  QFileDialog::getSaveFileName();
+        m_filename =  QFileDialog::getSaveFileName(0, tr("Save To XML File"),
+                                                   "",
+                                                   tr("XML Documents (*.xml)"));
 
         return 1;
     }
 
     virtual int checkSelected()
     {
-        return 1;// for now
         ccHObject::Container qua = qGEO::theInstance()->getSelectedThatHaveMetaData("[qGEO]");
 
         if (qua.size() > 0)
@@ -100,4 +107,4 @@ protected:
 
 };
 
-#endif // OPENINCOMPOSER_H
+#endif // SAVE_SPC_ELEMENT_H

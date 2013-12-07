@@ -9,6 +9,7 @@
 #include <AttitudeToModel.h>
 #include <Edit.h>
 #include <SaveSPCElement.h>
+#include <LoadSPCElement.h>
 
 #include <EvaluateStratigraphicPosition.h>
 #include <Properties.h>
@@ -76,6 +77,8 @@ void qGEO::getActions(QActionGroup& group)
 
         addFilter(new SetUpNewSeries(this));
         addFilter(new SaveSPCElement(this));
+        addFilter(new LoadSPCElement(this));
+
 
 //        addFilter( new ComputeStratigraphicPosition(this) );
 //        addFilter( new ComputeTimeSeries(this));
