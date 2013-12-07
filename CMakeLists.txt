@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 project(SPC)
 string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER) #in lowercase
 
-#supress warnings from PCL about SHOT etc...
+#supress warnings from PCL about SHOT etc... - not working!
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations")
 
 set(SPC_LIBRARIES CACHE INTERNAL "SPC libs" FORCE)
@@ -14,20 +14,12 @@ option(BUILD_MICMAC_RELATED "Build MICMAC-related code." OFF)
 option(BUILD_PYTHON_WRAPPINGS "Build python interface for the library. Only some classes have been wrapped!" OFF)
 option(BUILD_SPC_DOC "Build SPC doc" OFF)
 option(BUILD_TESTS "Do tests" OFF)
-option(BUILD_QGEO_CC_PLUGIN "Build SPC-based plugin for CloudCompare" ON)
 option(SWIG_WRAPPINGS "Use swigs to generate wrappings for some methods" OFF)
 option(USE_PARALLEL_OPENMP "Enable paralellization of some algorithms via OpenMP" OFF)
 option(BUILD_TESTING_TOOLS "Build the tools contained into the tests folder" OFF)
 
 
-
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-
-#we always need eigen
-#find_package(Eigen REQUIRED)
-#include_directories(SYSTEM ${EIGEN_INCLUDE_DIRS})
-#add_definitions(-DEIGEN_USE_NEW_STDVECTOR
-#                -DEIGEN_YES_I_KNOW_SPARSE_MODULE_IS_NOT_STABLE_YET)
 
 #PCL!
 find_package(PCL 1.6 REQUIRED)
@@ -41,19 +33,16 @@ add_definitions(${PCL_DEFINITIONS})
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -pipe -std=c++0x -fPIC " )
 
-#set(CMAKE_BUILD_TYPE DEBUG) #force it to debug for now
-
 #add custom functions and macros
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/functions.cmake)
 
-# includes starts from here
+# include the current source dir
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-if(USE_PARALLEL_OPENMP)
+if(USE_PARALLEL_OPENMP) # a definition if use parallelization where possible
     add_definitions(-DUSE_OPENMP)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -lpthread -lgcc_s" )
 endif()
-
 
 
 #micmac lib part
@@ -64,52 +53,9 @@ if(BUILD_MICMAC_RELATED)
     link_directories(${CULTURE_3D_BUILD_DIR}/src)
 endif()
 
-#qgeo plugin for cloud compare??
-if(BUILD_QGEO_CC_PLUGIN)
-    set(CC_BUILD_DIR "/home/luca/Code/CC_git_clean/build" CACHE STRING "Dir with CloudCompare build")
-    set(CC_SOURCE_DIR "/home/luca/Code/CC_git_clean" CACHE STRING "Dir with CloudCompare souces")
-    set(QGEO_INSTALL_DIR "/home/luca/apps/bin/plugins" CACHE STRING "Where to intall the qGEO plugin")
-
-    add_definitions(-DQGEO)
-
-    find_package(Qt4 4 COMPONENTS REQUIRED)
-    set(QT_USE_QTOPENGL TRUE)
-    include(${QT_USE_FILE})
-    add_definitions(${QT_DEFINITIONS})
-    include_directories(${QT_QTOPENGL_INCLUDE_DIR})
-
-
-
-#    #we need qwt ############
-#    find_path( QWT_INCLUDE_DIR qwt_plot.h /usr/include/qwt6 )
-#    find_library( QWT_LIBRARIES NAMES qwt6) #explicit look for qwt6
-
-#    include( FindPackageHandleStandardArgs )
-#    find_package_handle_standard_args( QWT DEFAULT_MSG QWT_LIBRARIES QWT_INCLUDE_DIR )
-
-#    if(QWT_FOUND)
-#      mark_as_advanced(QWT_LIBRARIES QWT_INCLUDE_DIR )
-#      include_directories(${QWT_INCLUDE_DIR})
-#    endif()
-
-
-    include_directories(${CC_SOURCE_DIR}/libs/qCC_db)
-    include_directories(${CC_SOURCE_DIR}/CC/include)
-
-    find_package(Qt4 REQUIRED)
-    include(${QT_USE_FILE})
-    add_definitions(${QT_DEFINITIONS})
-
-endif()
-
-
 
 # the main libraries
 add_subdirectory(spc)
-
-if(BUILD_QGEO_CC_PLUGIN) ##qGEO will use various things defined after spc
-    add_subdirectory(qGEO)    
-endif()
 
 #also tools if needed
 if(BUILD_TOOLS)
@@ -125,6 +71,3 @@ endif()
 if(BUILD_TESTING_TOOLS)
     add_subdirectory(tests)
 endif()
-
-#add_subdirectory(sandbox)
-

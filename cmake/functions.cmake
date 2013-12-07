@@ -1,5 +1,5 @@
+#compiles and link something
 macro(spc_compile_and_link name files libs)
-#    message("${name}")
     if(BUILD_SPC_SHARED)
             add_library(${name} SHARED ${files})
     else()
@@ -15,7 +15,7 @@ macro(spc_compile_and_link name files libs)
     message("${SPC_LIBRARIES}")
 endmacro()
 
-
+# this macro add a library to SPC
 macro(spc_add_library libname dependence)
 
     file(GLOB SOURCES *.cpp)
@@ -42,19 +42,21 @@ macro(spc_add_library libname dependence)
     set(libs ${dependence} ${SCP_LIBRARIES})
     spc_compile_and_link(spc_${libname} "${sources}" "${libs}")
 
-    set(all_heads ${@libname@_HEADERS} ${@libname@_IMPLS})
+    set(all_heads ${HEADERS} ${IMPLS})
     spc_install_target_library_headers(${libname} "${all_heads}")
 
 endmacro()
 
+#can be called when a module needs PCL
 macro(spc_library_needs_pcl)
-    find_package(PCL 1.3 REQUIRED)
+    find_package(PCL 1.6 REQUIRED)
     include_directories(${PCL_INCLUDE_DIRS})
     link_directories(${PCL_LIBRARY_DIRS})
     add_definitions(${PCL_DEFINITIONS})
     set(additional_libs ${additional_libs} ${PCL_LIBRARIES})
 endmacro()
 
+#to be called if a module need QT
 macro(spc_library_needs_qt)
     find_package(Qt4 REQUIRED)
     include(${QT_USE_FILE})
@@ -62,22 +64,24 @@ macro(spc_library_needs_qt)
     set(additional_libs ${additional_libs} ${QT_LIBRARIES})
 endmacro()
 
-
+#add an executable
 macro(spc_add_executable name codefiles)
     add_executable(${name} ${codefiles})
     install(TARGETS ${name} DESTINATION bin)
 endmacro()
 
+#install hedears
 macro(spc_install_target_library_headers libname headers)
     install(FILES ${headers} DESTINATION include/spc/${libname})
 endmacro()
 
+#install a library
 macro(spc_install_target_library_libs libname)
     install(TARGETS "${libname}" DESTINATION lib)
 endmacro()
 
 
-
+# find all moc-able files in current folder
 function( spc_find_mocable_files in_headers out_headers)
     set(local_list)
     foreach( one_file ${in_headers} )
