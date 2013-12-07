@@ -1,18 +1,24 @@
-#compiles and link something
+#compiles and link a spc_lib
 macro(spc_compile_and_link name files libs)
     if(BUILD_SPC_SHARED)
             add_library(${name} SHARED ${files})
     else()
             add_library(${name} STATIC ${files})
     endif()
+
     target_link_libraries(${name} ${libs})
-    spc_install_target_library_libs (${name})
+
+    spc_install_target_library_libs(${name})
 
     #update the variable keeping the libarires
-
-    set(SPC_LIBRARIES ${SPC_LIBRARIES} ${name} CACHE INTERNAL "SPC libs")
-    set(SPC_BUILD_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR} CACHE INTERNAL "SPC include dirs at build time")
+#    set(SPC_LIBRARIES ${SPC_LIBRARIES} ${name} CACHE INTERNAL "SPC libs")
+#    set(SPC_BUILD_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR} CACHE INTERNAL "SPC include dirs at build time")
     message("${SPC_LIBRARIES}")
+endmacro()
+
+
+macro(spc_set_properties_public_header headers)
+    set_target_properties(${name} PROPERTIES PUBLIC_HEADER "${headers}")
 endmacro()
 
 # this macro add a library to SPC
@@ -41,6 +47,7 @@ macro(spc_add_library libname dependence)
     set(sources ${SOURCES} ${HEADERS} ${IMPLS} ${HEADERS_MOC} ${HEADERS_UIS} ${QRCS_RES})
     set(libs ${dependence} ${SCP_LIBRARIES})
     spc_compile_and_link(spc_${libname} "${sources}" "${libs}")
+    spc_set_properties_public_header({${HEADERS}})
 
     set(all_heads ${HEADERS} ${IMPLS})
     spc_install_target_library_headers(${libname} "${all_heads}")
@@ -77,7 +84,11 @@ endmacro()
 
 #install a library
 macro(spc_install_target_library_libs libname)
-    install(TARGETS "${libname}" DESTINATION lib)
+    install(TARGETS "${libname}"
+    EXPORT SpcTargets
+    LIBRARY DESTINATION "${INSTALL_LIB_DIR}" COMPONENT shlib
+    PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/spc/${libname}"
+)
 endmacro()
 
 

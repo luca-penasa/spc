@@ -1,11 +1,17 @@
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
-project(SPC)
-string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWER) #in lowercase
+project(spc)
+
+set(SPC_MAJOR_VERSION 0)
+set(SPC_MINOR_VERSION 1)
+set(SPC_PATCH_VERSION 0)
+set(SPC_VERSION
+  ${SPC_MAJOR_VERSION}.${SPC_MINOR_VERSION}.${SPC_PATCH_VERSION})
+
 
 #supress warnings from PCL about SHOT etc... - not working!
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations")
 
-set(SPC_LIBRARIES CACHE INTERNAL "SPC libs" FORCE)
+#set(SPC_LIBRARIES CACHE INTERNAL "SPC libs" FORCE)
 
 option(BUILD_SPC_SHARED "Build spc library as a shared lib." ON)
 option(BUILD_TOOLS "Build the tools." OFF)
@@ -17,6 +23,32 @@ option(BUILD_TESTS "Do tests" OFF)
 option(SWIG_WRAPPINGS "Use swigs to generate wrappings for some methods" OFF)
 option(USE_PARALLEL_OPENMP "Enable paralellization of some algorithms via OpenMP" OFF)
 option(BUILD_TESTING_TOOLS "Build the tools contained into the tests folder" OFF)
+
+
+
+set(INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries")
+set(INSTALL_BIN_DIR bin CACHE PATH "Installation directory for executables")
+set(INSTALL_INCLUDE_DIR include CACHE PATH
+  "Installation directory for header files")
+
+
+if(WIN32 AND NOT CYGWIN)
+  set(DEF_INSTALL_CMAKE_DIR CMake)
+else()
+  set(DEF_INSTALL_CMAKE_DIR lib/CMake/spc)
+endif()
+set(INSTALL_CMAKE_DIR ${DEF_INSTALL_CMAKE_DIR} CACHE PATH
+  "Installation directory for CMake files")
+
+#make rel path abs
+foreach(p LIB BIN INCLUDE CMAKE)
+  set(var INSTALL_${p}_DIR)
+  if(NOT IS_ABSOLUTE "${${var}}")
+    set(${var} "${CMAKE_INSTALL_PREFIX}/${${var}}")
+  endif()
+endforeach()
+
+
 
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
@@ -71,3 +103,42 @@ endif()
 if(BUILD_TESTING_TOOLS)
     add_subdirectory(tests)
 endif()
+
+
+
+
+# The interesting stuff goes here
+# ===============================
+
+# Add all targets to the build-tree export set
+export(TARGETS ${SPC_LIBRARIES}
+  FILE "${PROJECT_BINARY_DIR}/SPCTargets.cmake")
+
+# Export the package for use from the build-tree
+# (this registers the build-tree with a global CMake-registry)
+export(PACKAGE spc)
+
+# Create the FooBarConfig.cmake and FooBarConfigVersion files
+file(RELATIVE_PATH REL_INCLUDE_DIR "${INSTALL_CMAKE_DIR}"
+   "${INSTALL_INCLUDE_DIR}")
+# ... for the build tree
+set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}")
+configure_file(SpcConfig.cmake.in
+  "${PROJECT_BINARY_DIR}/SPCConfig.cmake" @ONLY)
+# ... for the install tree
+set(CONF_INCLUDE_DIRS "\${SPC_CMAKE_DIR}/${REL_INCLUDE_DIR}")
+configure_file(SpcConfig.cmake.in
+  "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/SPCConfig.cmake" @ONLY)
+# ... for both
+configure_file(SpcConfigVersion.cmake.in
+  "${PROJECT_BINARY_DIR}/SpcConfigVersion.cmake" @ONLY)
+
+# Install the FooBarConfig.cmake and FooBarConfigVersion.cmake
+install(FILES
+  "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/SPCConfig.cmake"
+  "${PROJECT_BINARY_DIR}/SpcConfigVersion.cmake"
+  DESTINATION "${INSTALL_CMAKE_DIR}" COMPONENT dev)
+
+# Install the export set for use with the install-tree
+install(EXPORT SpcTargets DESTINATION
+  "${INSTALL_CMAKE_DIR}" COMPONENT dev)
