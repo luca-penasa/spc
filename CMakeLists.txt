@@ -1,18 +1,30 @@
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 project(spc)
 
+
+#################### VERSIONING ###############################################
 set(SPC_MAJOR_VERSION 0)
 set(SPC_MINOR_VERSION 1)
 set(SPC_PATCH_VERSION 0)
-set(SPC_VERSION
-  ${SPC_MAJOR_VERSION}.${SPC_MINOR_VERSION}.${SPC_PATCH_VERSION})
+set(SPC_VERSION ${SPC_MAJOR_VERSION}.${SPC_MINOR_VERSION}.${SPC_PATCH_VERSION})
+###############################################################################
 
 
+########################### COMPILER FLAGS ##################################
 #supress warnings from PCL about SHOT etc... - not working!
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations")#
 
-#set(SPC_LIBRARIES CACHE INTERNAL "SPC libs" FORCE)
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fopenmp -fPIC -lpthread -lgcc_s")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -pipe -std=c++0x -fPIC " )
+##############################################################################
 
+
+############################################################################################################
+set(SPC_LIBRARIES CACHE INTERNAL "SPC libs" FORCE) #this will collect all the modular libs spc will create
+set(PCL_DEFINITIONS "") #my definitions
+############################################################################################################
+
+############################# OPTIONS ######################################################################
 option(BUILD_SPC_SHARED "Build spc library as a shared lib." ON)
 option(BUILD_TOOLS "Build the tools." OFF)
 option(BUILD_SANDBOX_TOOLS "Build sandbox tools." OFF)
@@ -23,13 +35,12 @@ option(BUILD_TESTS "Do tests" OFF)
 option(SWIG_WRAPPINGS "Use swigs to generate wrappings for some methods" OFF)
 option(USE_PARALLEL_OPENMP "Enable paralellization of some algorithms via OpenMP" OFF)
 option(BUILD_TESTING_TOOLS "Build the tools contained into the tests folder" OFF)
+#############################################################################################################
 
-
-
+################################### INSTALL OPTIONS #####################################################
 set(INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries")
 set(INSTALL_BIN_DIR bin CACHE PATH "Installation directory for executables")
-set(INSTALL_INCLUDE_DIR include CACHE PATH
-  "Installation directory for header files")
+set(INSTALL_INCLUDE_DIR include CACHE PATH "Installation directory for header files")
 
 
 if(WIN32 AND NOT CYGWIN)
@@ -37,33 +48,26 @@ if(WIN32 AND NOT CYGWIN)
 else()
   set(DEF_INSTALL_CMAKE_DIR lib/CMake/spc)
 endif()
-set(INSTALL_CMAKE_DIR ${DEF_INSTALL_CMAKE_DIR} CACHE PATH
-  "Installation directory for CMake files")
 
-#make rel path abs
+set(INSTALL_CMAKE_DIR ${DEF_INSTALL_CMAKE_DIR} CACHE PATH  "Installation directory for CMake files")
+
+
+#make relative path absolute
 foreach(p LIB BIN INCLUDE CMAKE)
   set(var INSTALL_${p}_DIR)
   if(NOT IS_ABSOLUTE "${${var}}")
     set(${var} "${CMAKE_INSTALL_PREFIX}/${${var}}")
   endif()
 endforeach()
+############################################################################################################
 
-
-
-
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-
-#PCL!
+#########################  PCL! - everybody here will need it ###############################
 find_package(PCL 1.6 REQUIRED)
 include_directories(${PCL_INCLUDE_DIRS})
 message("${PCL_INCLUDE_DIRS}")
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
-
-# Standard set of flags for c++
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fopenmp -fPIC -lpthread -lgcc_s")
-
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -pipe -std=c++0x -fPIC " )
+##################################################################################################
 
 #add custom functions and macros
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/functions.cmake)
@@ -72,9 +76,11 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/functions.cmake)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 if(USE_PARALLEL_OPENMP) # a definition if use parallelization where possible
-    add_definitions(-DUSE_OPENMP)
+    set(SPC_DEFINITIONS ${SPC_DEFINITIONS} "-DUSE_OPENMP")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -lpthread -lgcc_s" )
 endif()
+
+
 
 
 #micmac lib part
@@ -84,6 +90,11 @@ if(BUILD_MICMAC_RELATED)
     set(CULTURE_3D_SOURCE_DIR "/home/luca/Code/culture3d" CACHE STRING "path where culture 3d source resides. This is my default. Change o your needs")
     link_directories(${CULTURE_3D_BUILD_DIR}/src)
 endif()
+
+##################### ADD MY DEFINITIONS #################
+add_definitions(${SPC_DEFINITIONS})
+#########################################################
+
 
 
 # the main libraries
@@ -111,34 +122,29 @@ endif()
 # ===============================
 
 # Add all targets to the build-tree export set
-export(TARGETS ${SPC_LIBRARIES}
-  FILE "${PROJECT_BINARY_DIR}/SPCTargets.cmake")
+export(TARGETS ${SPC_LIBRARIES} FILE "${PROJECT_BINARY_DIR}/SPCTargets.cmake")
 
 # Export the package for use from the build-tree
 # (this registers the build-tree with a global CMake-registry)
 export(PACKAGE spc)
 
-# Create the FooBarConfig.cmake and FooBarConfigVersion files
-file(RELATIVE_PATH REL_INCLUDE_DIR "${INSTALL_CMAKE_DIR}"
-   "${INSTALL_INCLUDE_DIR}")
+file(RELATIVE_PATH REL_INCLUDE_DIR "${INSTALL_CMAKE_DIR}" "${INSTALL_INCLUDE_DIR}")
+
 # ... for the build tree
 set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}")
-configure_file(SpcConfig.cmake.in
-  "${PROJECT_BINARY_DIR}/SPCConfig.cmake" @ONLY)
+configure_file(SPCConfig.cmake.in "${PROJECT_BINARY_DIR}/SPCConfig.cmake" @ONLY)
+
 # ... for the install tree
 set(CONF_INCLUDE_DIRS "\${SPC_CMAKE_DIR}/${REL_INCLUDE_DIR}")
-configure_file(SpcConfig.cmake.in
-  "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/SPCConfig.cmake" @ONLY)
+configure_file(SPCConfig.cmake.in "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/SPCConfig.cmake" @ONLY)
 # ... for both
-configure_file(SpcConfigVersion.cmake.in
-  "${PROJECT_BINARY_DIR}/SpcConfigVersion.cmake" @ONLY)
+configure_file(SPCConfigVersion.cmake.in "${PROJECT_BINARY_DIR}/SPCConfigVersion.cmake" @ONLY)
 
 # Install the FooBarConfig.cmake and FooBarConfigVersion.cmake
-install(FILES
-  "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/SPCConfig.cmake"
-  "${PROJECT_BINARY_DIR}/SpcConfigVersion.cmake"
+install(FILES "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/SPCConfig.cmake"
+              "${PROJECT_BINARY_DIR}/SPCConfigVersion.cmake"
   DESTINATION "${INSTALL_CMAKE_DIR}" COMPONENT dev)
 
 # Install the export set for use with the install-tree
 install(EXPORT SpcTargets DESTINATION
-  "${INSTALL_CMAKE_DIR}" COMPONENT dev)
+               "${INSTALL_CMAKE_DIR}" COMPONENT dev)

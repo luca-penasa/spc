@@ -11,8 +11,8 @@ macro(spc_compile_and_link name files libs)
     spc_install_target_library_libs(${name})
 
     #update the variable keeping the libarires
-#    set(SPC_LIBRARIES ${SPC_LIBRARIES} ${name} CACHE INTERNAL "SPC libs")
-#    set(SPC_BUILD_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR} CACHE INTERNAL "SPC include dirs at build time")
+    set(SPC_LIBRARIES ${SPC_LIBRARIES} ${name} CACHE INTERNAL "SPC libs")
+    set(SPC_BUILD_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR} CACHE INTERNAL "SPC include dirs at build time")
     message("${SPC_LIBRARIES}")
 endmacro()
 
@@ -22,7 +22,8 @@ macro(spc_set_properties_public_header headers)
 endmacro()
 
 # this macro add a library to SPC
-macro(spc_add_library libname dependence)
+macro(spc_add_library)
+    get_filename_component(libname ${CMAKE_CURRENT_SOURCE_DIR}  NAME)
 
     file(GLOB SOURCES *.cpp)
     file(GLOB HEADERS *.h)
@@ -30,45 +31,13 @@ macro(spc_add_library libname dependence)
     file(GLOB UIS *.ui) #this when compiling
     file(GLOB QRCS *.qrc) #qt resources ?
 
-    #find also if there are any mocable file
-    spc_find_mocable_files("${HEADERS}" MOCABLES)
-
-
-    if(UIS OR QRCS  OR MOCABLES)
-        #we obviously need to link and use qt
-        spc_library_needs_qt()
-        QT4_WRAP_CPP(HEADERS_MOC ${HEADERS})
-        QT4_WRAP_UI(HEADERS_UIS ${UIS})
-        QT4_ADD_RESOURCES(QRCS_RES ${QRCS})
-        include_directories(${CMAKE_CURRENT_BINARY_DIR})
-
-    endif()
-
     set(sources ${SOURCES} ${HEADERS} ${IMPLS} ${HEADERS_MOC} ${HEADERS_UIS} ${QRCS_RES})
-    set(libs ${dependence} ${SCP_LIBRARIES})
+    set(libs ${SPC_LIBRARIES} ${PCL_LIBRARIES})
     spc_compile_and_link(spc_${libname} "${sources}" "${libs}")
     spc_set_properties_public_header({${HEADERS}})
 
     set(all_heads ${HEADERS} ${IMPLS})
     spc_install_target_library_headers(${libname} "${all_heads}")
-
-endmacro()
-
-#can be called when a module needs PCL
-macro(spc_library_needs_pcl)
-    find_package(PCL 1.6 REQUIRED)
-    include_directories(${PCL_INCLUDE_DIRS})
-    link_directories(${PCL_LIBRARY_DIRS})
-    add_definitions(${PCL_DEFINITIONS})
-    set(additional_libs ${additional_libs} ${PCL_LIBRARIES})
-endmacro()
-
-#to be called if a module need QT
-macro(spc_library_needs_qt)
-    find_package(Qt4 REQUIRED)
-    include(${QT_USE_FILE})
-    add_definitions(${QT_DEFINITIONS})
-    set(additional_libs ${additional_libs} ${QT_LIBRARIES})
 endmacro()
 
 #add an executable
@@ -85,10 +54,9 @@ endmacro()
 #install a library
 macro(spc_install_target_library_libs libname)
     install(TARGETS "${libname}"
-    EXPORT SpcTargets
-    LIBRARY DESTINATION "${INSTALL_LIB_DIR}" COMPONENT shlib
-    PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/spc/${libname}"
-)
+            EXPORT SpcTargets
+            LIBRARY DESTINATION "${INSTALL_LIB_DIR}" COMPONENT shlib
+            PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/spc/${libname}")
 endmacro()
 
 

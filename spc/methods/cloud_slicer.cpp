@@ -7,6 +7,8 @@
 #include <algorithm>
 #include <spc/common/common.h>
 
+#include <pcl/search/impl/search.hpp>
+
 #include <pcl/filters/extract_indices.h>
 
 //forced instantiation

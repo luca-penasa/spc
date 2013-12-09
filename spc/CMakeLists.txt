@@ -1,5 +1,3 @@
-
-
 add_subdirectory(time_series)
 add_subdirectory(common)
 add_subdirectory(elements)
@@ -25,7 +23,6 @@ endif()
 if(SWIG_WRAPPINGS)
     add_subdirectory(wrappings)
 endif()
-
 
 if(BUILD_TESTS)
     add_subdirectory(tests)
