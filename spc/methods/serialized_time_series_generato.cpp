@@ -1,35 +1,30 @@
 #include "serialized_time_series_generato.h"
-#include <spc/methods/time_series_generator.h>
 
 namespace spc
 {
 
-template <typename ScalarT>
 int
-SerializedTimeSeriesGenerator<ScalarT>::compute()
+SerializedTimeSeriesGenerator::compute()
 {
     for (auto id_list: all_indices_)
     {
-        TimeSeriesGenerator<ScalarT> generator;
+        TimeSeriesGenerator generator;
         generator.setBandwidth(bandwidth_);
         generator.setIndices(id_list);
         generator.setSamplingStep(sampling_step_);
-        generator.setInputReader(in_reader_);
+//        generator.setInputReader(in_reader_);
         generator.setXFieldName(x_field_name_);
-        generator.setYFieldName(y_field_name_);
+        generator.setLogFieldName(y_field_name_);
         if (!generator.compute())
             return -1;
 
-        EquallySpacedTimeSeries<ScalarT> ts;
-        generator.getOutputSeries(ts);
+        OutSeriesPtrT ts = generator.getOutputSeries();
         output_.push_back(ts);
     }
 }
 
 
-//instantiate
-template class SerializedTimeSeriesGenerator<float>;
-template class SerializedTimeSeriesGenerator<double>;
+
 
 }//end nspace
 

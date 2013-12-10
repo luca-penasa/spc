@@ -5,10 +5,10 @@ namespace spc
 
 
 template <typename ScalarT>
-SparseTimeSeries<ScalarT>::SparseTimeSeries(vector<ScalarT> x_, vector<ScalarT> y_)
+SparseTimeSeries<ScalarT>::SparseTimeSeries(vector<ScalarT> x, vector<ScalarT> y)
 {
-    assert(x_.size() == y_.size()); //must have same size
-    x = x_; y = y_;
+    assert(x.size() == y.size()); //must have same size
+    x_ = x; this->y_ = y;
 }
 
 

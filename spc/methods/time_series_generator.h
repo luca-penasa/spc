@@ -12,7 +12,6 @@
 namespace spc
 {
 
-template <typename ScalarT>
 ///
 /// \brief The TimeSeriesGenerator class estimates time series starting from two fields of a cloud
 /// the results is always a TimeSeries equally spaced. If you want to evaluate non-equally spaced time series
@@ -23,32 +22,37 @@ template <typename ScalarT>
 class TimeSeriesGenerator
 {
 public:
+
+    typedef float ScalarT;
+    typedef spc::EquallySpacedTimeSeries<ScalarT> OutSeriesT;
+    typedef boost::shared_ptr<OutSeriesT> OutSeriesPtrT;
+
+
     ///
     /// \brief TimeSeriesGenerator def constructor
     ///
-    TimeSeriesGenerator(): in_reader_(0)
+    TimeSeriesGenerator(): min_x_(0.0), max_x_ (0.0)
     {
-        f_min = 0 ; f_max = 0;
+
     }
 
+    ///! set the stratigraphic model to use for interpretation
+    /// you can set a field with setXFieldName if if the stratigraphic positions were pre-computed
     void setStratigraphicModel(spcStratigraphicModelBase::Ptr model)
     {
         model_ = model;
     }
 
-    void setInputCloud(spcGenericCloud::Ptr cloud)
+    ///
+    /// \brief setInputCloud the input cloud
+    /// \param cloud
+    ///
+    void setInputCloud( const spcGenericCloud::Ptr cloud)
     {
         in_cloud_ = cloud;
     }
 
 
-
-
-    ///
-    /// \brief setInputCloud
-    /// \param in_cloud is a sensor msgs cloud
-    /// \note this is deprecated, please use the setInputCloud and setStratigraphicModel way
-    void setInputReader(spc::PointCloud2Reader * reader) {in_reader_ = reader;}
 
     ///
     /// \brief setBandwidth
@@ -65,14 +69,24 @@ public:
     ///
     /// \brief setXFieldName
     /// \param field_name the field used as independen variable - x -
+    /// if you prefer you can use a model and estimate the X field on the fly
+    /// notice that if a model is set it is always used
     ///
     void setXFieldName(std::string field_name) {x_field_name_ = field_name;}
 
+
+    void setMinMaxLog(float min, float max)
+    {
+        min_x_ = min;
+        max_x_ = max;
+    }
+
     ///
-    /// \brief setYFieldName
-    /// \param field_name the field name to be used as dependent var - y -
+    /// \brief setLogFieldName
+    /// \param field_name the name of the field to be logged
+    /// \note this var is mandatory
     ///
-    void setYFieldName(std::string field_name) {y_field_name_ = field_name;}
+    void setLogFieldName(std::string field_name) {y_field_name_ = field_name;}
 
     ///
     /// \brief setIndices use only these points for estimatig the time series!
@@ -85,7 +99,14 @@ public:
     /// \brief getOutputSeries
     /// \return the resulting series
     ///
-    void getOutputSeries(EquallySpacedTimeSeries<ScalarT> &tserie)  {tserie = out_series_;}
+    inline
+    OutSeriesPtrT getOutputSeries()
+    {
+        if (!out_series_)
+            pcl::console::print_error("out series is void. Null pointer returned!");
+
+        return out_series_;
+    }
 
     ///
     /// \brief compute make computations
@@ -98,69 +119,69 @@ public:
     /// \param min minx value of the time series
     /// \param max maxx value of the time series
     ///
-    void setFixedMinMax(ScalarT min, ScalarT max) {f_min = min; f_max=max;}
+    void setFixedMinMax(ScalarT min, ScalarT max) {min_x_ = min; max_x_=max;}
 
+
+
+
+protected:
 
     void fillIndicesIfNeeded();
 
-private:    
+    void doExtractFields()
+    {
+        fillIndicesIfNeeded();
+
+        std::vector<float> x_d;
+
+        if (!x_field_name_.empty())
+            x_d = in_cloud_->getField(x_field_name_, indices_);
+
+        else // we should have a stratigrahic model
+            x_d= model_->getStratigraphicPositions(in_cloud_, indices_);
+
+        std::cout << "size of s posistions " << x_d.size() << std::endl;
+        std::vector<float> y_d = in_cloud_->getField(y_field_name_, indices_);
+
+        std::cout << "size of field " << y_d.size() << std::endl;
+
+        x_field = x_d;
+        y_field = y_d;
+
+    }
+
     spcStratigraphicModelBase::Ptr model_;
 
     spcGenericCloud::Ptr in_cloud_;
 
-    /// TODO this is ptretty DEPRECATED: should be removed:
-    PointCloud2Reader * in_reader_;
-
-    ///
-    /// \brief sampling_step_
-    ///
     ScalarT sampling_step_;
 
-    ///
-    /// \brief bandwidth_
-    ///
     ScalarT bandwidth_;
 
-    ///
-    /// \brief x_field_name_
-    ///
     std::string x_field_name_;
 
-    ///
-    /// \brief y_field_name_
-    ///
     std::string y_field_name_;
 
-    ///
-    /// \brief out_series_ is a shared pointer to output
-    ///
-    EquallySpacedTimeSeries<ScalarT> out_series_;
+    OutSeriesPtrT out_series_;
 
-    ///
-    /// \brief indices_
-    ///
     std::vector<int> indices_;
 
-    ///
-    /// \brief x_data
-    ///
-    std::vector<ScalarT> x_data;
+    ScalarT min_x_;
+
+    ScalarT max_x_;
+
+private:
+    // these vars are for internal use only - used to temporarly store the data
 
     ///
-    /// \brief y_data
+    /// \brief x_data field
     ///
-    std::vector<ScalarT> y_data;
+    std::vector<ScalarT> x_field;
 
     ///
-    /// \brief f_min
+    /// \brief y_data field
     ///
-    ScalarT f_min;
-
-    ///
-    /// \brief f_max
-    ///
-    ScalarT f_max;
-
+    std::vector<ScalarT> y_field;
 };
 
 }//end nspace

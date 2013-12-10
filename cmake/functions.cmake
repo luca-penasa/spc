@@ -32,7 +32,7 @@ macro(spc_add_library)
     file(GLOB QRCS *.qrc) #qt resources ?
 
     set(sources ${SOURCES} ${HEADERS} ${IMPLS} ${HEADERS_MOC} ${HEADERS_UIS} ${QRCS_RES})
-    set(libs ${SPC_LIBRARIES} ${PCL_LIBRARIES})
+    set(libs ${SPC_LIBRARIES} ${PCL_LIBRARIES} ${additional_libs})
     spc_compile_and_link(spc_${libname} "${sources}" "${libs}")
     spc_set_properties_public_header({${HEADERS}})
 

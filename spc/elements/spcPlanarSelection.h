@@ -6,6 +6,7 @@
 #include <spc/elements/plane.h>
 #include <pcl/io/pcd_io.h> //for debug only
 
+#include <boost/serialization/shared_ptr.hpp>
 
 namespace spc
 {
@@ -29,12 +30,12 @@ public:
         verts_3d_ = el.getVertices();
     }
 
-    pcl::PointCloud<pcl::PointXYZ> getVertices() const
+    pcl::PointCloud<pcl::PointXYZ>::Ptr getVertices() const
     {
         return verts_3d_;
     }
 
-    void setVertices(pcl::PointCloud<pcl::PointXYZ> &verts)
+    void setVertices(pcl::PointCloud<pcl::PointXYZ>::Ptr verts)
     {
         verts_3d_ = verts;
         updateProjectionPlane();
@@ -134,9 +135,9 @@ protected:
     void updateProjectionPlane()
     {
         pcl::console::print_info("Updating projection plane.\n");
-        proj_plane_.positionFromCentroid(verts_3d_);
+        proj_plane_.positionFromCentroid(*verts_3d_);
         spcNormal3D n;
-        n.normalFromBestFit(verts_3d_);
+        n.normalFromBestFit(*verts_3d_);
         proj_plane_.setNormal(n.getNormal());
         pcl::console::print_info("Normal now is %f %f %f.\n", n.getNormal()(0), n.getNormal()(1), n.getNormal()(2));
 
@@ -173,8 +174,8 @@ protected:
 
         //         = verts_3d_.applyTransform(proj_plane_.get2DArbitraryRefSystem());
 
-        pcl::console::print_info("there are %i initial poly verts\n", verts_3d_.size());
-        pcl::PointCloud<pcl::PointXYZ> projected = spcPCLXYZCloud(verts_3d_).applyTransform(proj_plane_.get2DArbitraryRefSystem());
+        pcl::console::print_info("there are %i initial poly verts\n", verts_3d_->size());
+        pcl::PointCloud<pcl::PointXYZ> projected = spcPCLCloud<pcl::PointXYZ>(verts_3d_).applyTransform(proj_plane_.get2DArbitraryRefSystem());
 
 
         for (int i = 0 ; i < projected.size(); ++i)
@@ -197,7 +198,7 @@ protected:
     ///
     /// \brief m_points the points defining a polyline in 3D
     ///
-    pcl::PointCloud<pcl::PointXYZ> verts_3d_;
+    pcl::PointCloud<pcl::PointXYZ>::Ptr verts_3d_;
     ///
     /// \brief in_cloud_ it the input cloud to be segmented
     ///

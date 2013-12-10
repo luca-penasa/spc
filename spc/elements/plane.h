@@ -31,7 +31,9 @@ public:
 
 
     /// Def const
-    spcPlane();
+    spcPlane()
+    {
+    }
 
     /// copy const
     spcPlane(const spcPlane &plane): spcMovableElement(plane)
@@ -40,27 +42,47 @@ public:
     }
 
     /// a Plane from direction of the normal and passing for a given point
-    spcPlane(const Vector3f normal_, const Vector3f point);
+    spcPlane(const Vector3f normal, const Vector3f point): spcMovableElement(point)
+    {
+        normal_.setNormal(normal);
+    }
 
+    void setNormal (Vector3f n)
+    {
+        normal_.setNormal(n);
+    }
 
+    Vector3f getUnitNormal() const
+    {
+        return normal_.getUnitNormal();
+    }
 
-    void setNormal (Vector3f n);
+    Vector3f getNormal() const
+    {
+        return normal_.getNormal();
+    }
 
-    Vector3f getUnitNormal() const;
+    Vector3f projectOnPlane(const Vector3f &v) const
+    {
+        Vector3f n = getUnitNormal();
+        return v - v.dot(n) * n;
 
-    Vector3f getNormal() const;
-
-    Vector3f projectOnPlane(const Vector3f &v) const;
+    }
 
 
     /// distance of a point to this plane
     /// distance is signed (+ if in the same half-space of normal_)
-    float distanceTo( const Vector3f &point) const;
+    float distanceTo( const Vector3f &point) const
+    {
+        return normal_.getUnitNormal().dot(point) + getP();
+    }
 
     /// get the P parameters (distance of the plane from the origin)
     /// in normal hessian form: n.dot(x) = -P with n unit normal vector
-    float getP() const;
-
+    float getP() const
+    {
+        return  - normal_.getUnitNormal().dot(getPosition());
+    }
 
     /// get the matrix that would project a point on a two-d ref system
     /// if you project a point in this ref system you'll get a 3d point
@@ -79,10 +101,6 @@ protected:
     template <class Archive>
     void serialize(Archive &ar, const unsigned int version)
     {
-//        ar & boost::serialization::make_nvp("position",boost::serialization::base_object<spcMovableElement >(*this));
-//        ar & boost::serialization::make_nvp("normal", normal_);
-
-
         ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(spcMovableElement);
         ar & BOOST_SERIALIZATION_NVP(normal_);
     }

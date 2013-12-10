@@ -3,36 +3,19 @@ using namespace Eigen;
 namespace spc
 {
 
-spcPlane::spcPlane()
-{
-}
-
-spcPlane::spcPlane(const Vector3f normal, const Vector3f point): spcMovableElement(point)
-{
-    normal_.setNormal(normal);
-}
 
 
-void spcPlane::setNormal(Vector3f n)
-{
-    normal_.setNormal(n);
-}
-
-Vector3f spcPlane::getUnitNormal() const
-{
-    return normal_.getUnitNormal();
-}
 
 
-float spcPlane::distanceTo(const Vector3f &point) const
-{
-    return normal_.getUnitNormal().dot(point) + getP();
-}
 
-float spcPlane::getP() const
-{
-    return  - normal_.getUnitNormal().dot(getPosition());
-}
+
+
+
+
+
+
+
+
 
 Transform<float, 3, Affine, AutoAlign> spcPlane::get2DArbitraryRefSystem() const
 {
@@ -91,17 +74,9 @@ Transform<float, 3, Affine, AutoAlign> spcPlane::get2DArbitraryRefSystem() const
     return T;
 }
 
-Vector3f spcPlane::getNormal() const
-{
-    return normal_.getNormal();
-}
 
-Vector3f spcPlane::projectOnPlane(const Vector3f &v) const
-{
-    Vector3f n = getUnitNormal();
-    return v - v.dot(n) * n;
 
-}
+
 
 
 

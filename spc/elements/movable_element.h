@@ -31,18 +31,18 @@ public:
         return position_;
     }
 
+    Vector3f &getPosition()
+    {
+        return position_;
+    }
+
     /// move this measure to this new position
     /// this imply updating the d parameters of the plane
     void setPosition(const spcMovableElement el);
 
     void setPosition(const Vector3f position);
 
-
-
     void positionFromCentroid(pcl::PointCloud<pcl::PointXYZ> &cloud);
-
-
-//    void positionFromCentroid(spcGenericCloud &cloud);
 
 protected:
 

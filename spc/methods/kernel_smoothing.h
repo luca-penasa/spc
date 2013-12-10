@@ -3,15 +3,13 @@
 
 #include <iostream>
 #include <flann/flann.hpp>
-#include <flann/flann.h>
 #include <vector>
 
 #include "spc/common/std_helpers.hpp"
 #include <cmath>
-#define _USE_MATH_DEFINES //For using PI
-
-//#include "GenericTimeSeries.h"
 #include <spc/time_series/equally_spaced_time_series.h>
+
+#define _USE_MATH_DEFINES //For using PI
 
 namespace spc
 {
@@ -24,6 +22,9 @@ class KernelSmoothing
     typedef typename flann::L2_Simple<ScalarT> distType;
     typedef typename flann::Index<distType> FLANNIndex;
     typedef typename flann::Matrix<ScalarT> FLANNMat;
+
+    typedef spc::EquallySpacedTimeSeries<ScalarT> OutSeriesT;
+    typedef boost::shared_ptr<OutSeriesT> OutSeriesPtrT;
 
 
     //a shorthand for vector type
@@ -39,40 +40,54 @@ public:
     //Constructor, takes two vectors of data, same size x and y
     KernelSmoothing();
 
-    void
-    setX(const vType &x){    x_ = x; input_modified_ = true;
-                             n_ = x_.size();
-                                                  initKDTree(); }
+    inline OutSeriesPtrT getOutput() const {return out_series_;}
 
-    void
+    inline void
+    setX(const vType &x)
+    {
+        x_ = x;
+        input_modified_ = true;
+        n_ = x_.size();
+        initKDTree();
+    }
+
+    inline void
     setY(const vType &y){ y_ = y; input_modified_ = true; }
 
-    void
+    inline void
     setXY(const vType &x, const  vType &y) {    x_ = x; y_ = y; input_modified_ = true; n_ = x_.size(); initKDTree(); }
 
-    void setInput (GenericTimeSeries<ScalarT> * series) { this->setX(series->getX()); this->setY(series->getY()); }
+    inline void setInputSeries (const GenericTimeSeries<ScalarT> & series)
+    {
 
-//    auto getOutput() -> EquallySpacedTimeSeries<ScalarT>;
+        this->setX(series.getX());
+        this->setY(series.getY());
+
+    }
 
     int
-    compute(GenericTimeSeries<ScalarT> * new_series);
-
-
-//    void
-//    setEvaluationPositions(const vType &new_x)
-//    {
-//        new_x_ = new_x;
-//        new_y_.resize(new_x_.size());
-//        new_y_nans_.resize(new_x_.size());
-//        variance_.resize(new_x_.size());
-
-//    }
+    compute();
 
     void
-    setBandwidth(const ScalarT &bandwidth) { bandwidth_ = bandwidth;}
+    setBandwidth(const ScalarT bandwidth)
+    {
+        bandwidth_ = bandwidth;
+    }
+
+
+    void
+    setStep(const ScalarT step)
+    {
+        step_ = step;
+    }
 
     void
     setComputeVariance(const bool &compute_var = true)	{ compute_var_ = compute_var; }
+
+    inline void setOutputSeries(OutSeriesPtrT out)
+    {
+        out_series_ = out;
+    }
 
     vType
     getNewY() {	return new_y_;}
@@ -96,6 +111,9 @@ public:
     void
     setUseWeights(const bool useit ) {use_weights_  = useit;}
 
+
+
+
 private:  //props
     //info on status
     bool input_modified_;
@@ -107,11 +125,15 @@ private:  //props
     //output
     vType new_x_;
     vType new_y_;
+
     //A vector where to keep track of nan in output
     std::vector<bool> new_y_nans_;
 
     //bandwidth
     ScalarT bandwidth_;
+
+    // the step
+    ScalarT step_;
 
     //total number of input points
     int n_;
@@ -120,10 +142,13 @@ private:  //props
     bool compute_var_; //would you like to compute variance?
 
     //Flann index
-    FLANNIndex* flann_index_;
+    boost::shared_ptr<FLANNIndex> flann_index_;
 
     bool use_weights_;
     vType weights_;
+
+
+    OutSeriesPtrT out_series_;
 
 private: //methods
     //compute gaussian weights on a vector
@@ -139,12 +164,7 @@ private: //methods
     }
 
     void
-    initKDTree()
-    {
-        flann_index_ = new FLANNIndex (flann::Matrix<ScalarT> (&x_[0], n_, 1), flann::KDTreeSingleIndexParams (15));
-        flann_index_->buildIndex();
-
-    }
+    initKDTree();
 
     int
     radiusSearch(const ScalarT &position,const ScalarT &radius, idvType &ids, vType &distances);

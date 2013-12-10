@@ -7,6 +7,11 @@
 #include <assert.h>
 #include <spc/elements/element_base.h>
 
+#include <boost/random/random_device.hpp>
+
+#include <boost/random/uniform_real_distribution.hpp>
+
+
 namespace spc
 {
 
@@ -23,39 +28,36 @@ class GenericTimeSeries: public spcElementBase
 {
 public:
 
+    GenericTimeSeries() {}
 
     typedef boost::shared_ptr<GenericTimeSeries<ScalarT> > Ptr;
+    typedef boost::shared_ptr<const GenericTimeSeries<ScalarT> > ConstPtr;
 
-    ///
-    /// \brief Base Constructor
-    ///
-    GenericTimeSeries();
+    typedef std::vector<ScalarT> VectorT;
+    typedef ScalarT ScaT;
 
+    void fill(const ScalarT value_ = std::numeric_limits<ScalarT>::quiet_NaN())
+    {
+        std::fill(this->y_.begin(), this->y_.end(), value_);
+    }
 
-    ///
-    /// \brief GenericTimeSeries copy constructor
-    /// \param other
-    ///
-    GenericTimeSeries(const GenericTimeSeries &other);
+    /// by default will generate in -1 to 1 range
+    void fillRandomY(ScalarT min=-1, ScalarT max=1)
+    {
 
+        boost::random::random_device rng;
+        boost::random::uniform_real_distribution<> index_dist(min, max);
 
-    ///
-    /// \brief getName each time series may have an associated name
-    /// \return the name as string
-    ///
-    string getName () const {return m_name;}
-
-    ///
-    /// \brief setName to set the name of Time Series
-    ///
-    void setName(string name_) {m_name = name_;}
+        for (auto& y: this->getY())
+            y = index_dist(rng) ;
+    }
 
     ///
     /// \brief getNumberOfSamples in time series
     /// \return the number of samples
     ///
 
-    size_t getNumberOfSamples() const {return y.size();}
+    size_t getNumberOfSamples() const {return y_.size();}
 
     ///
     /// \brief getX positions
@@ -67,12 +69,25 @@ public:
     /// \brief getY values
     /// \return a vector of the y values associated with x
     ///
-    auto getY() const -> vector<ScalarT> ;
+    VectorT getY() const
+    {
+        return y_;
+    }
+
+    VectorT &getY()
+    {
+        return y_;
+    }
+
+    ScalarT &getY(size_t id)
+    {
+        return y_.at(id);
+    }
 
     ///
     /// \brief setY values
     ///
-    void setY(vector<ScalarT> y_) {y = y_;}
+    void setY(vector<ScalarT> y) {y_ = y;}
 
     ///
     /// \brief Provide a way to resize the time series
@@ -86,45 +101,20 @@ public:
     /// \return the min value of the x positions
     /// Must be implemented in each derived class
     ///
-    virtual auto getMinX() -> ScalarT const = 0 ;
+    virtual ScalarT getMinX() const = 0 ;
 
     ///
     /// \brief getMaxX for the higher value of the x positions
     /// \return the max value of the x positions
     /// Must be implemented in each derived class
     ///
-    virtual auto getMaxX() -> ScalarT const = 0;
-
-
-//    template <typename NScalarT>
-//    GenericTimeSeries& operator=(const GenericTimeSeries<NScalarT> & new_series)
-//    {
-//        this->y.clear();
-//        this->y(new_series.getY().begin(), new_series.getY().end());
-//        return *this;
-
-//    }
-
-//    template<typename NScalarT>
-//    GenericTimeSeries& operator()(const GenericTimeSeries<NScalarT> & new_series)
-//    {
-//        *this = new_series;
-//        return *this;
-//    }
-
-
-
+    virtual ScalarT getMaxX() const = 0;
 
 protected:
     ///
-    /// \brief m_name is the name associated with the time series
-    ///
-    string m_name;
-
-    ///
     /// \brief y is the vector of values of the TS
     ///
-    std::vector<ScalarT> y;
+    std::vector<ScalarT> y_;
 
 };
 

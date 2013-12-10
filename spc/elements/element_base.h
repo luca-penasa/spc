@@ -42,6 +42,8 @@ public:
     typedef typename boost::shared_ptr<const spcElementBase> ConstPtr;
 
 
+    spcElementBase () {}
+
 
 protected:
     friend class boost::serialization::access;
@@ -50,6 +52,11 @@ protected:
     void serialize(Archive &ar, const unsigned int version)
     {
         ar & boost::serialization::make_nvp("spcSerializableObject", boost::serialization::base_object<spc::spcSerializableObject> (*this));
+    }
+
+    std::string getClassName()
+    {
+        return typeid(this).name();
     }
 
 

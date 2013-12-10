@@ -41,6 +41,13 @@ public:
         attitude_ = boost::make_shared<spcAttitude>(attitude);
     }
 
+    spcSingleAttitudeModel(const spcAttitude::Ptr attitude)
+    {
+        additional_shift_ = 0.0;
+
+        attitude_ = attitude;
+    }
+
 
 
 

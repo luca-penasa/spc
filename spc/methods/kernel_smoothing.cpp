@@ -8,14 +8,12 @@ namespace spc
 
 
 template<typename ScalarT>
-KernelSmoothing<ScalarT>::KernelSmoothing() : weights_(0)
+KernelSmoothing<ScalarT>::KernelSmoothing() : weights_(0), step_(1.0), bandwidth_(1.0)
 {
 
     //defaults
-    compute_var_ = false;
-    bandwidth_ = 1.0; //default bandwidth
+    compute_var_ = false;    
     input_modified_ = true;
-
     use_weights_ = false;
 
 }
@@ -23,9 +21,16 @@ KernelSmoothing<ScalarT>::KernelSmoothing() : weights_(0)
 
 template<typename ScalarT>
 int
-KernelSmoothing<ScalarT>::compute(GenericTimeSeries<ScalarT> *new_series)
+KernelSmoothing<ScalarT>::compute()
 {
-    new_x_ = new_series->getX();
+
+    if (!out_series_)
+    {
+        out_series_ = OutSeriesPtrT(new OutSeriesT(get_min(x_), get_max(x_), step_));
+        std::cout << "time series wil be automaticcaly of full size" << std::endl;
+    }
+
+    new_x_ = out_series_->getX();
     new_y_.resize(new_x_.size());
 
     new_y_nans_.resize(new_x_.size());
@@ -39,9 +44,8 @@ KernelSmoothing<ScalarT>::compute(GenericTimeSeries<ScalarT> *new_series)
     for (int i = 0; i < new_y_.size(); ++i)
     {
 
-        evaluateKS(new_x_[i], value, variance);
-//        std::cout << new_x_[i] << std::endl;
-        //check if value is nan
+        evaluateKS(new_x_.at(i), value, variance);
+
         if (!std::isnan(value))
             new_y_nans_[i] = false;
         else
@@ -52,7 +56,7 @@ KernelSmoothing<ScalarT>::compute(GenericTimeSeries<ScalarT> *new_series)
             variance_[i] = variance;
     }
 
-    new_series->setY(new_y_);
+    out_series_->setY(new_y_);
 
     return 1;
 }
@@ -166,7 +170,7 @@ KernelSmoothing<ScalarT>::evaluateKS(const ScalarT &position, ScalarT &value, Sc
     for (int i = 0; i < ids.size(); ++i)
     {
         int this_id = ids[i];
-        vproduct[i] = weights[i] * y_[this_id];
+        vproduct[i] = weights[i] * this->y_.at(this_id);
     }
 
     //sum this product
@@ -208,8 +212,6 @@ KernelSmoothing<ScalarT>::evaluateKS(const ScalarT &position, ScalarT &value, Sc
     {
         var = 0.0;
     }
-    //
-
 
     return 1;
 
@@ -224,6 +226,15 @@ KernelSmoothing<ScalarT>::getExternalWeightsForIds(const idvType ids, vType &wei
     size_t counter = 0;
     for (auto id: ids)
         weights.at(counter++) = this->weights_.at(id);
+}
+
+template<typename ScalarT>
+void KernelSmoothing<ScalarT>::initKDTree()
+{
+    FLANNMat mat = FLANNMat (&x_[0], n_, 1);
+    flann::KDTreeSingleIndexParams pars  = flann::KDTreeSingleIndexParams(15);
+    flann_index_.reset(new FLANNIndex (mat, pars));
+    flann_index_->buildIndex();
 }
 
 

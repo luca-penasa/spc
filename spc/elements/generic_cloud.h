@@ -4,6 +4,8 @@
 #include "element_base.h"
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
+#include <pcl/PCLPointCloud2.h>
+#include <pcl/io/io.h>
 namespace spc
 {
 
@@ -25,7 +27,7 @@ public:
 
 
     /// a generic cloud must implement these method
-    virtual void getPoint(const int id, float &x, float &y, float &z) = 0 ;
+    virtual void getPoint(const int id, float &x, float &y, float &z) const = 0  ;
 
     virtual void getFieldValue(const int id, const std::string fieldname, float &val) = 0;
 
@@ -77,25 +79,70 @@ public:
 
 };
 
-
-class spcPCLXYZCloud: public pcl::PointCloud<pcl::PointXYZ>, public spcGenericCloud
+template <typename PointT>
+class spcPCLCloud: public spcGenericCloud
 {
 public:
-    spcPCLXYZCloud()
-    {
 
+    typedef boost::shared_ptr<spcPCLCloud<PointT> > Ptr;
+    typedef boost::shared_ptr<const spcPCLCloud<PointT> > ConstPtr;
+
+    typedef boost::shared_ptr<pcl::PointCloud<PointT> > CloudPtrT;
+
+    // the actual data
+    CloudPtrT cloud_;
+
+    spcPCLCloud(CloudPtrT cloud)
+    {
+        cloud_ = cloud;
     }
 
-    spcPCLXYZCloud (const pcl::PointCloud<pcl::PointXYZ> & other): pcl::PointCloud<pcl::PointXYZ> (other)
+
+    virtual void getPoint(const int id, float &x, float &y, float &z) const
     {
+        x = cloud_->at(id).x;
+        y = cloud_->at(id).y;
+        z = cloud_->at(id).z;
+    }
+
+    //// we assume here that is a float the value to be extracted
+    virtual void getFieldValue(const int id, const std::string fieldname, float &val)
+    {
+
+        std::vector<pcl::PCLPointField> fields;
+        int distance_idx = pcl::getFieldIndex (*cloud_, fieldname, fields);
+        if (distance_idx == -1)
+        {
+          PCL_WARN ("[spc::GenericCloud] Unable to find field name in point type.\n");
+          return;
+        }
+
+        const uint8_t* pt_data = reinterpret_cast<const uint8_t*> (&cloud_->points[id]);
+
+        memcpy (&val, pt_data + fields[distance_idx].offset, sizeof (float));
+    }
+
+    virtual int getSize() const
+    {
+        return cloud_->size();
+    }
+};
+
+
+class spcPCLPointCloud2: public pcl::PCLPointCloud2 , public spcGenericCloud
+{
+public:
+    spcPCLPointCloud2() {}
+
+    spcPCLPointCloud2(const spcPCLPointCloud2 &other): pcl::PCLPointCloud2(other)
+    {
+
 
     }
 
     virtual void getPoint(const int id, float &x, float &y, float &z)
     {
-        x = at(id).x;
-        y = at(id).y;
-        z = at(id).z;
+
     }
 
     virtual void getFieldValue(const int id, const std::string fieldname, float &val)
@@ -103,10 +150,19 @@ public:
 
     }
 
+
     virtual int getSize() const
     {
-        return size();
+        return width * height; //should be a valid size
     }
+
+protected:
+    int offset_;
+    int x_stride_;
+    int y_stride_;
+    int z_stride_;
+
+
 };
 
 

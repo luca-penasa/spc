@@ -4,21 +4,29 @@
 #include <spc/methods/cloud_slicer.h>
 #include <spc/time_series/equally_spaced_time_series.h>
 #include <spc/io/pointcloud2_reader.h>
+#include <spc/methods/time_series_generator.h>
+
 
 namespace spc
 {
 
-template<typename ScalarT>
+
 class SerializedTimeSeriesGenerator
 {
 public:
+
+    typedef float ScalarT;
+
     typedef std::vector<int> Indices;
     typedef std::vector<Indices> IndicesContainer;
 
-public:
-    SerializedTimeSeriesGenerator() {};
+    typedef spc::EquallySpacedTimeSeries<ScalarT> OutSeriesT;
+    typedef boost::shared_ptr<OutSeriesT> OutSeriesPtrT;
 
-    void setInputReader(spc::PointCloud2Reader * reader) {in_reader_ = reader;}
+
+public:
+    SerializedTimeSeriesGenerator() {}
+
 
     void setIndices(IndicesContainer all_indices) {all_indices_ = all_indices;}
 
@@ -41,11 +49,10 @@ public:
 
     int compute();
 
-    auto getOutput() -> std::vector<EquallySpacedTimeSeries<ScalarT> > {return output_;}
+    std::vector<OutSeriesPtrT> getOutput() {return output_;}
 
 private:
 //    pcl::PCLPointCloud2::Ptr in_cloud_ ;
-    spc::PointCloud2Reader * in_reader_;
     IndicesContainer all_indices_;
     ScalarT sampling_step_;
     ScalarT bandwidth_;
@@ -53,7 +60,7 @@ private:
     std::string x_field_name_;
     std::string y_field_name_;
 
-    std::vector<EquallySpacedTimeSeries<ScalarT> > output_;
+    std::vector<OutSeriesPtrT> output_;
 };
 
 }//end nspace

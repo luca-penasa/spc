@@ -9,7 +9,7 @@ namespace spc
 {
 
 using namespace std;
-template <typename ScalarT = float >
+template <typename ScalarT>
 ///
 /// \brief The EquallySpacedTimeSeries class is made up of a set of ordered y values equally spaced.
 ///
@@ -21,14 +21,15 @@ template <typename ScalarT = float >
 /// \f]
 /// \ingroup time_series
 ///
-class EquallySpacedTimeSeries: public GenericTimeSeries<ScalarT>
+class EquallySpacedTimeSeries: public spc::GenericTimeSeries<ScalarT>
 {
-    using GenericTimeSeries<ScalarT>::m_name;
-    using GenericTimeSeries<ScalarT>::y;
+
 
 public:
+    typedef boost::shared_ptr<EquallySpacedTimeSeries<ScalarT> > Ptr;
+    typedef boost::shared_ptr<const EquallySpacedTimeSeries<ScalarT> > ConstPtr;
 
-
+    using typename spc::GenericTimeSeries<ScalarT>::VectorT;
 
     ///
     /// \brief EquallySpacedTimeSeries default constructor
@@ -69,7 +70,7 @@ public:
     template<typename NScalarT>
     EquallySpacedTimeSeries( const EquallySpacedTimeSeries<NScalarT> &other)
     {
-        this->y.clear();
+        this->y_.clear();
         std::vector<NScalarT> other_y = other.getY();
         std::vector<ScalarT> this_y (other_y.begin(), other_y.end());
         this->setY(this_y);
@@ -94,20 +95,26 @@ public:
     /// \brief getX
     /// \return a vector of the x positions
     ///
-    virtual auto getX() const -> vector<ScalarT>;
+    virtual VectorT getX() const
+    {
+        VectorT x(this->y_.size());
+        int counter = 0;
+        for (auto &x_pos: x)
+            x_pos = counter++ * x_step + x_start;
+
+        return x;
+    }
+
+
+
 
     ///
     /// \brief resize the y vector to the given size
     /// If longer it will be truncated
     /// \param size_ number of samples
     ///
-    void resize(size_t size_) { y.resize(size_); }
+    void resize(size_t size_) { this->y_.resize(size_); }
 
-    ///
-    /// \brief fill the time series with a value
-    /// \param value_ the const value to use for y-filling
-    ///
-    void fill(const ScalarT value_ = std::numeric_limits<ScalarT>::quiet_NaN()) {std::fill(y.begin(), y.end(), value_);}
 
     ///
     /// \brief setXStep set sampling step
@@ -121,13 +128,13 @@ public:
     ///
     void setXStart(ScalarT start) {x_start = start;}
 
-    virtual auto getMinX() -> ScalarT const {return x_start;}
+    virtual ScalarT getMinX() const {return x_start;}
 
-    virtual auto getMaxX() -> ScalarT const {return x_start + x_step * this->getNumberOfSamples();}
+    virtual ScalarT getMaxX() const {return x_start + x_step * this->getNumberOfSamples();}
 
 
 
-private:
+protected:
     ///
     /// \brief x_start holds the x position of first sampl
     ///

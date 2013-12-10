@@ -11,7 +11,7 @@ EquallySpacedTimeSeries<ScalarT>::EquallySpacedTimeSeries(): x_start(0.0f), x_st
 }
 
 template<typename ScalarT>
-EquallySpacedTimeSeries<ScalarT>::EquallySpacedTimeSeries(const EquallySpacedTimeSeries &other): GenericTimeSeries<ScalarT>(other)
+EquallySpacedTimeSeries<ScalarT>::EquallySpacedTimeSeries(const EquallySpacedTimeSeries &other)
 {
     x_start = other.x_start;
     x_step = other.x_step;
@@ -20,7 +20,7 @@ EquallySpacedTimeSeries<ScalarT>::EquallySpacedTimeSeries(const EquallySpacedTim
 template<typename ScalarT>
 EquallySpacedTimeSeries<ScalarT>::EquallySpacedTimeSeries(vector <ScalarT> y_, ScalarT x_step_, ScalarT x_start_)
 {
-    y = y_;
+    y_ = y_;
     x_start = x_start_;
     x_step = x_step_;
 }
@@ -31,7 +31,7 @@ EquallySpacedTimeSeries<ScalarT>::EquallySpacedTimeSeries(ScalarT x_step_, Scala
     x_start = x_start_;
     x_step = x_step_;
     resize(size);
-    fill();
+    this->fill();
 }
 
 
@@ -45,23 +45,11 @@ EquallySpacedTimeSeries<ScalarT>::EquallySpacedTimeSeries(ScalarT x_min_, Scalar
     size_t n_samples = std::ceil(range / step_); // approximate to the upper integer
 
     resize(n_samples);
-    fill();
+    this->fill();
 
 }
 
 
-template<typename ScalarT>
-auto
-EquallySpacedTimeSeries<ScalarT>::getX() const -> vector<ScalarT>
-{
-    std::vector<ScalarT> x(y.size());
-    int counter = 0;
-    for (auto &x_pos: x)
-        x_pos = counter++ * x_step + x_start;
-
-    return x;
-
-}
 
 /// INSTANTIATIONS
 template class EquallySpacedTimeSeries<float>;
