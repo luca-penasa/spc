@@ -2,7 +2,6 @@
 #define SPC_STRINGS_H
 
 
-
 #include <string>
 
 

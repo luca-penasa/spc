@@ -34,4 +34,6 @@ saveAsCSV(const std::string &filename, const std::string &separator, const std::
 int
 savePCDBinaryCompressed(const std::string &filename, const pcl::PCLPointCloud2 &cloud);
 }//end namespace
-#endif
+
+
+#endif //SPC_IO_HELPER

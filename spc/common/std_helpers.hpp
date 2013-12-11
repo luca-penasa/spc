@@ -1,5 +1,5 @@
-#ifndef STD_HELPERS_IMPL_H
-#define STD_HELPERS_IMPL_H
+#ifndef SPC_STD_HELPERS_IMPL_H
+#define SPC_STD_HELPERS_IMPL_H
 
 #include "std_helpers.h"
 

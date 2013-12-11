@@ -1,5 +1,5 @@
-#ifndef L_POINT_TYPES_H
-#define L_POINT_TYPES_H
+#ifndef SPC_POINT_TYPES_H
+#define SPC_POINT_TYPES_H
 
 #include <pcl/point_types.h>
 
@@ -48,6 +48,6 @@ POINT_CLOUD_REGISTER_POINT_STRUCT (PointIntDist,           // here we assume a X
 
 
 
-#endif
+#endif //SPC_POINT_TYPES_H
 
 

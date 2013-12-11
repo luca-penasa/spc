@@ -87,62 +87,6 @@ fill_nan_rbf(std::vector<nType> &x, std::vector<nType> &y)
 }
 
 
-// void
-// fill_nan_rbf(std::vector<float> &x, std::vector<float> &y)
-// {
-//
-// 	//remove nans from y
-// 	RBFInterpolator<float> rbf;
-// 	Eigen::VectorXf a;
-// 	Eigen::VectorXf b;
-//
-// 	//count nans
-// 	int n_nans = 0;
-// 	for (int i = 0; i < n; ++i)
-// 	{
-// 		float value = y[i];
-// 		if (isnan(value))
-// 		{
-// 			n_nans += 1;
-// 		}
-// 	}
-//
-// 	for (int i = 0; i < n_nans; ++i)
-// 	{
-//
-// 		a(i) = x[i]
-// 		float value = y[i];
-// 		if (!isnan(value))
-// 		{
-// 			a(i) = y[i];
-// 			b
-// 		}
-//
-// 	}
-// }
-
-/// TO USE WITH ++11 support
-//template<typename Stype>
-//std::vector<int>
-//getSortingIds(std::vector<Stype> const &v)
-//{
-//    using iter = decltype(v.begin());
-//    using pair = std::pair<size_t, iter>;
-
-//    std::vector<pair> order;
-//    order.reserve(v.size());
-
-//    size_t n = 0;
-//    for (auto const& e : v)
-//        order.push_back = std::make_pair(n++, e);
-
-//    std::sort(order.begin(), order.end(), [](pair const& a, pair const& b) { return *a.second < *b.second; });
-//    std::vector<int> out(order.size());
-//    std::transform(begin(order), end(order), begin(out), [](pair const& p) { return p.first; });
-//    return out;
-//}
-
-
 template<typename Stype>
 std::vector<int>
 getSortingIds(const std::vector<Stype> &v)
