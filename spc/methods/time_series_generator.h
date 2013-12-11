@@ -140,13 +140,11 @@ protected:
         else // we should have a stratigrahic model
             x_d= model_->getStratigraphicPositions(in_cloud_, indices_);
 
-        std::cout << "size of s posistions " << x_d.size() << std::endl;
         std::vector<float> y_d = in_cloud_->getField(y_field_name_, indices_);
 
-        std::cout << "size of field " << y_d.size() << std::endl;
 
-        x_field = x_d;
-        y_field = y_d;
+        x_field_ = x_d;
+        y_field_ = y_d;
 
     }
 
@@ -176,12 +174,12 @@ private:
     ///
     /// \brief x_data field
     ///
-    std::vector<ScalarT> x_field;
+    std::vector<ScalarT> x_field_;
 
     ///
     /// \brief y_data field
     ///
-    std::vector<ScalarT> y_field;
+    std::vector<ScalarT> y_field_;
 };
 
 }//end nspace

@@ -22,20 +22,8 @@ using namespace Eigen;
 namespace spc
 {
 
-class spcCommon
-{
-public:
-    spcCommon() {}
-    ///
-    /// \brief __virtual__ we need to have at least 1 virtual function implemented
-    /// here so we will able to dynamic cast from any object that inherit from spcCommon
-    /// I mean the extern cc-types implemented in qGEO as ccHObject types.
-    /// \return
-    ///
-    virtual int __virtual__() {}
-};
 
-class spcElementBase: virtual public spcCommon, public spcSerializableObject
+class spcElementBase: public spcSerializableObject
 {
 public:
     typedef typename boost::shared_ptr<spcElementBase> Ptr;

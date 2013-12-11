@@ -33,6 +33,8 @@ public:
 
     virtual int getSize() const = 0 ;
 
+    virtual bool hasField(const std::string fieldname) = 0;
+
 
     /// some always-working methods
     virtual Vector3f getPoint (const int id)
@@ -47,6 +49,12 @@ public:
     {
         std::vector<float> out;
 
+        if (!hasField(fieldname))
+        {
+            pcl::console::print_warn("[Error in %s] asked for field %s", getClassName().c_str(), fieldname.c_str());
+            return out;
+        }
+
         float val;
         for (int i : indices)
         {
@@ -58,6 +66,8 @@ public:
 
 
     }
+
+
 
 
     pcl::PointCloud<pcl::PointXYZ> applyTransform(const Transform<float, 3, Affine, AutoAlign> &T)
@@ -121,6 +131,18 @@ public:
 
         memcpy (&val, pt_data + fields[distance_idx].offset, sizeof (float));
     }
+
+    virtual bool hasField(const std::string fieldname)
+    {
+        std::vector<pcl::PCLPointField> fields;
+        int distance_idx = pcl::getFieldIndex (*cloud_, fieldname, fields);
+        if (distance_idx == -1)
+            return false;
+        else
+            return true;
+    }
+
+
 
     virtual int getSize() const
     {

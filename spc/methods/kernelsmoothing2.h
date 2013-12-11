@@ -71,7 +71,6 @@ public:
             pcl::console::print_warn("You could fix the sizes of out series setting the output time series\n");
         }
 
-        std::cout << "SIZE: " << out_series_->getNumberOfSamples() << std::endl;
 
 
         FLANNMat mat = FLANNMat (&sparse_->getX()[0], sparse_->getNumberOfSamples(), 1);
@@ -90,14 +89,9 @@ public:
         {
             evaluateKS(x, value);
             out_series_->getY(count++) = value;
-            std::cout << out_series_->getMaxX() << std::endl;
-
         }
 
-        if (!out_series_)
-        {
-            pcl::console::print_error("NULL POINTER as output in kernelsmoothing2");
-        }
+
 
 
         return 1;
@@ -152,8 +146,6 @@ protected:
         //now search
         int nn = flann_index_->radiusSearch(FLANNMat(&pos[0], 1, 1), ids_empty, d_empty, radius2, search_params);
 
-        std::cout << "number: " << nn<< std::endl;
-        std::cout << "radius: " << radius<< std::endl;
 
         //resize the output vectors to the number of found neighbors
         ids.resize(nn);
