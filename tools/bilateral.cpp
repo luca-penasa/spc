@@ -1,4 +1,4 @@
-#include <sensor_msgs/PointCloud2.h>
+#include <pcl/PCLPointCloud2.h>
 #include <pcl/point_types.h>
 #include <pcl/io/pcd_io.h>
 #include <pcl/console/print.h>
@@ -28,7 +28,7 @@ printHelp (int argc, char **argv)
 }
 
 bool
-loadCloud (const std::string &filename, sensor_msgs::PointCloud2 &cloud)
+loadCloud (const std::string &filename,pcl::PCLPointCloud2 &cloud)
 {
   TicToc tt;
   print_highlight ("Loading "); print_value ("%s ", filename.c_str ());
@@ -45,7 +45,7 @@ loadCloud (const std::string &filename, sensor_msgs::PointCloud2 &cloud)
 
 
 void
-compute (const sensor_msgs::PointCloud2::ConstPtr &input, sensor_msgs::PointCloud2::Ptr &output, const double sigma_r, const double sigma_s)
+compute (const pcl::PCLPointCloud2::ConstPtr &input,pcl::PCLPointCloud2::Ptr &output, const double sigma_r, const double sigma_s)
 {
   TicToc tt;
   tt.tic ();
@@ -54,10 +54,10 @@ compute (const sensor_msgs::PointCloud2::ConstPtr &input, sensor_msgs::PointClou
   //Convert blob to XYZI cloud
   PointCloud<PointXYZI>::Ptr xyzi_cloud (new pcl::PointCloud<PointXYZI> ());
    
-  fromROSMsg (*input, *xyzi_cloud);
+  fromPCLPointCloud2 (*input, *xyzi_cloud);
   
 
- 
+
 
   PointCloud<PointXYZI>::Ptr xyzi_cloud_filtered (new PointCloud<PointXYZI> ());
    
@@ -100,15 +100,15 @@ compute (const sensor_msgs::PointCloud2::ConstPtr &input, sensor_msgs::PointClou
 //     xyz_cloud_filtered->points[point_i].z = xyz_cloud->points[point_i].z + var_nor ();
 //   }
 
-//   sensor_msgs::PointCloud2 output;
-  toROSMsg (*xyzi_cloud_filtered, *output);
+//  pcl::PCLPointCloud2 output;
+  pcl::toPCLPointCloud2 (*xyzi_cloud_filtered, *output);
 //    concatenateFields (*input, *xyzi_cloud_filtered, output); TODO add this for keep the fields
 
 //   print_info ("[done, "); print_value ("%g", tt.toc ()); print_info (" ms: "); print_value ("%d", output.width * output.height); print_info (" points]\n");
  }
 
 void
-saveCloud (const std::string &filename, const sensor_msgs::PointCloud2 &output)
+saveCloud (const std::string &filename, const pcl::PCLPointCloud2 &output)
 {
   TicToc tt;
   tt.tic ();
@@ -148,7 +148,7 @@ main (int argc, char** argv)
   parse_argument (argc, argv, "-sr", sigma_r);
 
   // Load the first file
-  sensor_msgs::PointCloud2::Ptr cloud (new sensor_msgs::PointCloud2);
+ pcl::PCLPointCloud2::Ptr cloud (new pcl::PCLPointCloud2);
   if (!loadCloud (argv[p_file_indices[0]], *cloud))
     return (-1);
   
@@ -160,7 +160,7 @@ main (int argc, char** argv)
     }
 
   // Do the filtering
-  sensor_msgs::PointCloud2::Ptr output (new sensor_msgs::PointCloud2);
+ pcl::PCLPointCloud2::Ptr output (new pcl::PCLPointCloud2);
   
   
   compute (cloud, output, sigma_r, sigma_s);

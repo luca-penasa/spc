@@ -87,14 +87,14 @@ int main (int argc, char ** argv)
     Eigen::Vector4f origin;
     Eigen::Quaternionf orientation;
 
-    sensor_msgs::PointCloud2 in_cloud_sr;
+   pcl::PCLPointCloud2 in_cloud_sr;
     loadPCDFile(in_cloud_name, in_cloud_sr, origin, orientation);
 
     cout << "Radius: " << radius << endl;
     cout << "Starting " << n_threads << " threads" << endl;
 
     PointCloud<PointXYZ>::Ptr in_cloud (new PointCloud<PointXYZ>); //we just need for xyz in pcl format
-    fromROSMsg(in_cloud_sr, *in_cloud);
+    fromPCLPointCloud2(in_cloud_sr, *in_cloud);
 
 
     print_info("Number of points in input: "); print_value( "%i" ,in_cloud->size()); print_info("\n");
@@ -111,8 +111,8 @@ int main (int argc, char ** argv)
 
     pcl::console::print_highlight("Saving results\n");
 
-    sensor_msgs::PointCloud2 out_indices_sensor;
-    toROSMsg(indices_cloud, out_indices_sensor);
+   pcl::PCLPointCloud2 out_indices_sensor;
+    pcl::toPCLPointCloud2(indices_cloud, out_indices_sensor);
 
     if (find_switch(argc, argv, "-c") == -1)
     {
@@ -123,10 +123,10 @@ int main (int argc, char ** argv)
     }
     else
     {
-        sensor_msgs::PointCloud2 out_all_sensor, eigenvalues_cloud_sm, out_indices_sm;
+       pcl::PCLPointCloud2 out_all_sensor, eigenvalues_cloud_sm, out_indices_sm;
         concatenateFields(in_cloud_sr, out_indices_sensor, out_indices_sm);
 
-        toROSMsg(eigenvalues_cloud, eigenvalues_cloud_sm);
+        pcl::toPCLPointCloud2(eigenvalues_cloud, eigenvalues_cloud_sm);
 
         concatenateFields(eigenvalues_cloud_sm, out_indices_sm, out_all_sensor);
         if (find_switch(argc, argv, "-a"))

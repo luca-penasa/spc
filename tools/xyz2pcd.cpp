@@ -54,7 +54,7 @@ printHelp(int argc, char *argv[])
 }
 
 void
-saveCloud (const std::string &filename, const sensor_msgs::PointCloud2 &output, bool is_binary)
+saveCloud (const std::string &filename, const pcl::PCLPointCloud2 &output, bool is_binary)
 {
 //   TicToc tt;
 //   tt.tic ();
@@ -163,7 +163,7 @@ int main(int argc, char *argv[] )
 		}
 		
 		//Set up the blob 
-		sensor_msgs::PointCloud2::Ptr cloud (new sensor_msgs::PointCloud2);
+		pcl::PCLPointCloud2::Ptr cloud (new pcl::PCLPointCloud2);
 		
 		//get the cloud
         int status = spc::loadCSVFile(filename, *cloud, x_column, y_column, z_column, int_column, skip_n_rows, separator);

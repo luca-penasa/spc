@@ -3,7 +3,7 @@ namespace spc {
 
 
 template<class nType> std::vector<nType> 
-subdivideRange(nType &start, nType &end, nType &step)
+subdivideRange(const nType start, const nType end, const nType step)
 {
 	nType range = std::abs(end-start);
 	int n_steps = ceil(range / step) + 1;
@@ -20,8 +20,11 @@ subdivideRange(nType &start, nType &end, nType &step)
 	
 }
 
-template std::vector<float> subdivideRange<float>(float &start, float &end, float &step);
-template std::vector<double> subdivideRange<double>(double &start, double &end, double &step);
+
+
+//// INST
+template std::vector<float> subdivideRange<float>(const float start, const float end, const float step);
+template std::vector<double> subdivideRange<double>(const double start, const double end, const double step);
 
 
 } //end namespace

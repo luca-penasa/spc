@@ -2,7 +2,7 @@
 #define SPCPLANARSELECTION_H
 
 #include <spc/elements/element_base.h>
-#include <spc/elements/generic_cloud.h>
+#include <spc/elements/spcPCLCloud.h>
 #include <spc/elements/plane.h>
 #include <pcl/io/pcd_io.h> //for debug only
 
@@ -54,7 +54,7 @@ public:
 
     void setInputCloud (spcGenericCloud::Ptr cloud)
     {
-        pcl::console::print_info("Settet input cloud! with %i points\n", cloud->getSize());
+        pcl::console::print_info("Settet input cloud! with %i points\n", cloud->size());
         in_cloud_ = cloud;
         updateProjectedCloud();
         updateIndices();

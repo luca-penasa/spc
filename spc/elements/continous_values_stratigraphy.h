@@ -31,7 +31,7 @@ public:
         values_.resize(number);
     }
 
-    size_t getSize() const
+    size_t size() const
     {
         return values_.size();
     }
@@ -44,7 +44,7 @@ public:
 
     float getValue(int id) const
     {
-        assert (id < getSize());
+        assert (id < size());
         return values_.at(id);
     }
 
@@ -52,8 +52,8 @@ public:
     std::vector<OutT> getStratigraphicPositions() const
     {
         std::vector<OutT> sps;
-        sps.resize(getSize());
-        for (int i = 0; i < getSize(); ++i)
+        sps.resize(size());
+        for (int i = 0; i < size(); ++i)
         {
             sps.at(i) = (OutT) getStratigraphicPositionOfSample(i);
         }
@@ -67,10 +67,10 @@ public:
     std::vector<OutT> getValues() const
     {
         std::vector<OutT> val;
-        val.resize(getSize());
+        val.resize(size());
 
 
-        for (int i  = 0 ; i < getSize(); ++i)
+        for (int i  = 0 ; i < size(); ++i)
             val.at(i) = (OutT) getValue(i);
 
         return val;

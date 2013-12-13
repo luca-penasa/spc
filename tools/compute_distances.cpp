@@ -68,10 +68,10 @@ int main(int argc, char* argv[])
 	
 	//create a cloud for storing data
 	pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
-	sensor_msgs::PointCloud2::Ptr in_sensor_cloud (new sensor_msgs::PointCloud2);
-	sensor_msgs::PointCloud2::Ptr out_sensor_cloud (new sensor_msgs::PointCloud2);
+    pcl::PCLPointCloud2::Ptr in_sensor_cloud (new pcl::PCLPointCloud2);
+    pcl::PCLPointCloud2::Ptr out_sensor_cloud (new pcl::PCLPointCloud2);
 	pcl::PointCloud<PointD>::Ptr cloud_distances (new pcl::PointCloud<PointD>);
-	sensor_msgs::PointCloud2::Ptr cloud_distances_sensor (new sensor_msgs::PointCloud2);
+    pcl::PCLPointCloud2::Ptr cloud_distances_sensor (new pcl::PCLPointCloud2);
 	//now for each cloud:
 	for (int i = 0; i < filenames.size(); ++i)
 	{	
@@ -85,10 +85,10 @@ int main(int argc, char* argv[])
 			continue;
 		}
 		
-		pcl::fromROSMsg(*in_sensor_cloud, *cloud);
+		pcl::fromPCLPointCloud2(*in_sensor_cloud, *cloud);
 		//compute distances
         spc::computeDistanceFromOrigin(*cloud, *cloud_distances);
-		pcl::toROSMsg(*cloud_distances, *cloud_distances_sensor);
+		pcl::toPCLPointCloud2(*cloud_distances, *cloud_distances_sensor);
 		
 		merge = default_merge;
 		

@@ -17,7 +17,7 @@ namespace spc
 {
 
 template<typename nType> std::vector<nType> 
-subdivideRange(nType &start, nType &end, nType &step);
+subdivideRange(const nType start, const nType end, const nType step);
 
 template<typename nType> std::vector<int>
 get_nans_id(const std::vector<nType> vector)

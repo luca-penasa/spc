@@ -32,14 +32,25 @@ public:
     //! Def constructor
     spcStratigraphicModelBase();
 
+
+    ////////////////////////// MANDATORY METHODS ///////////////////////////////////////////////
     //!
     //! \brief getStratigraphicPosition get the modeled stratigraphic position for a poin in 3d
     //! \param point is the 3d point
     //! \return the stratigraphic position of that point
     //!
-    virtual float getStratigraphicPosition(const Vector3f &point) = 0;
+    virtual float getStratigraphicPosition(const Vector3f &point) const = 0;
+
+    //!
+    //! \brief getStratigraphicNormal get the normal for a given point in 3d
+    //! \param point isthe 3d point
+    //! \return the normal for that point
+    //!
+    virtual Vector3f getStratigraphicNormal(const Vector3f &point) const = 0;
 
 
+
+    ///////////////////////// METHODS DEENDING UPON THE MANDATORY ONES ////////////////////////////
     //!
     //! \brief getStratigraphicPositions as getStratigraphicPosition but for a whole cloud!
     //! \param cloud
@@ -76,12 +87,7 @@ public:
     //!
     virtual std::vector<float> getStratigraphicPositions(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, const std::vector<int> &indices);
 
-    //!
-    //! \brief getStratigraphicNormal get the normal for a given point in 3d
-    //! \param point isthe 3d point
-    //! \return the normal for that point
-    //!
-    virtual Vector3f getStratigraphicNormal(const Vector3f &point) = 0;
+
 
 };
 

@@ -3,12 +3,12 @@
 #include <pcl/console/print.h>
 #include <pcl/console/time.h>
 #include <pcl/filters/voxel_grid.h>
-#include <spc/methods/kernel_smoothing.h>
+
 #include <spc/time_series/sparse_time_series.h>
 #include <spc/common/common.h>
 #include <spc/common/strings.h>
 #include <spc/common/io_helper.h>
-
+#include <spc/methods/kernelsmoothing2.h>
 #include <math.h>
 
 
@@ -19,23 +19,23 @@ using namespace std;
 
 //A strange point type to be used here:
 struct PointXYZScalar
-    {
-        PCL_ADD_POINT4D;
-        float Sc4laR897;
+{
+    PCL_ADD_POINT4D;
+    float Sc4laR897;
 
-        EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-    } EIGEN_ALIGN16;
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+} EIGEN_ALIGN16;
 
-    POINT_CLOUD_REGISTER_POINT_STRUCT   (PointXYZScalar,
-                         (float, x, x)
-                         (float, y, y)
-                         (float, z, z)
-                         (float, Sc4laR897, Sc4laR897)
+POINT_CLOUD_REGISTER_POINT_STRUCT   (PointXYZScalar,
+                                     (float, x, x)
+                                     (float, y, y)
+                                     (float, z, z)
+                                     (float, Sc4laR897, Sc4laR897)
 
 
-    )
+                                     )
 
-int checkIfFieldExists(sensor_msgs::PointCloud2 cloud, string fieldName)
+int checkIfFieldExists(pcl::PCLPointCloud2 cloud, string fieldName)
 {
     int status = getFieldIndex(cloud, fieldName);
     if(status == -1)
@@ -121,7 +121,7 @@ int main (int argc, char ** argv)
 
     /////////////////////// DO COMPUTATIONS
     //load the cloud
-    sensor_msgs::PointCloud2::Ptr incloud_sns (new sensor_msgs::PointCloud2);
+    pcl::PCLPointCloud2::Ptr incloud_sns (new pcl::PCLPointCloud2);
     io::loadPCDFile(incloud_pathname, *incloud_sns);
 
     assert( checkIfFieldExists(*incloud_sns, intensity_field_name) != -1);
@@ -136,17 +136,17 @@ int main (int argc, char ** argv)
 
 
     //SUBSAMPLE THE ORIGINAL CLOUD
-    pcl::VoxelGrid<sensor_msgs::PointCloud2> grid_filter;
+    pcl::VoxelGrid<pcl::PCLPointCloud2> grid_filter;
     grid_filter.setInputCloud(incloud_sns);
     grid_filter.setLeafSize(vsize, vsize, vsize);
 
-    sensor_msgs::PointCloud2::Ptr downsampled_cloud  (new sensor_msgs::PointCloud2);
+    pcl::PCLPointCloud2::Ptr downsampled_cloud  (new pcl::PCLPointCloud2);
     grid_filter.filter(*downsampled_cloud);
 
 
     //convert to pcl type
     pcl::PointCloud<PointXYZScalar>::Ptr incloud (new pcl::PointCloud<PointXYZScalar>);
-    fromROSMsg(*downsampled_cloud, *incloud);
+    fromPCLPointCloud2(*downsampled_cloud, *incloud);
 
 
     ///// COMPUTE DISTANCES
@@ -156,9 +156,9 @@ int main (int argc, char ** argv)
 
     std::transform(incloud->begin(), incloud->end(), distances.begin(),
                    [&](PointT & point){return sqrt(
-                                              (point.x - center(0)) * (point.x - center(0)) +
-                                              (point.y - center(1)) * (point.y - center(1)) +
-                                              (point.z - center(2)) * (point.z - center(2)) ) ;});
+                    (point.x - center(0)) * (point.x - center(0)) +
+                    (point.y - center(1)) * (point.y - center(1)) +
+                    (point.z - center(2)) * (point.z - center(2)) ) ;});
 
     // EXTRACT ALSO INTENSITIES
     vector<float> intensities (incloud->size());
@@ -166,30 +166,30 @@ int main (int argc, char ** argv)
 
 
     //create the input tseries
-    spc::SparseTimeSeries<float> * in_data  = new spc::SparseTimeSeries<float>(distances, intensities);
+    spc::SparseTimeSeries<float>::Ptr in_data  (new spc::SparseTimeSeries<float>(distances, intensities));
 
 
-//    float min = get_min<float>(distances);
-//    float max = get_max<float>(distances);
+    //    float min = get_min<float>(distances);
+    //    float max = get_max<float>(distances);
 
 
-//    //the vector with distances at which to estimate the trend
-//    vector<float> new_distances = subdivideRange(min, max, step);
+    //    //the vector with distances at which to estimate the trend
+    //    vector<float> new_distances = subdivideRange(min, max, step);
 
 
-//    print_info("MIN Distance %f, Max Distance %f, Requested Step %f \n", min, max, step);
+    //    print_info("MIN Distance %f, Max Distance %f, Requested Step %f \n", min, max, step);
 
 
-    spc::EquallySpacedTimeSeries<float> *  series = new spc::EquallySpacedTimeSeries<float>(in_data->getMinX(), in_data->getMaxX(), step);
+    spc::EquallySpacedTimeSeries<float>::Ptr  series ;
 
     //now do the estimate of the trend, using kernelsmoothing
     //now initialize a kernelsmoothing object
-    spc::KernelSmoothing<float> ks;
-    ks.setComputeVariance(0); //also compute the variance - support for variance computing is not complete!
-    ks.setInput(in_data);
+    spc::KernelSmoothing2<float> ks;
+    //    ks.setComputeVariance(0); //also compute the variance - support for variance computing is not complete!
+    ks.setInputSeries(in_data);
     ks.setBandwidth(bandwidth);
-    ks.compute(series);
-
+    ks.compute();
+    series = ks.getOutputSeries();
 
 
     print_info("Computing estimate... This may take a while\n");

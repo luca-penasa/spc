@@ -72,10 +72,10 @@ int main(int argc, char ** argv)
 
     string ids_file;
     parse_argument(argc, argv, "-id", ids_file);
-    sensor_msgs::PointCloud2 original_cloud;
+   pcl::PCLPointCloud2 original_cloud;
     io::loadPCDFile(argv[pcd_files_indices[0]], original_cloud); //load first cloud
 
-    sensor_msgs::PointCloud2 query_cloud;
+   pcl::PCLPointCloud2 query_cloud;
     io::loadPCDFile(argv[pcd_files_indices[1]], query_cloud); //load the second as gemetric query cloud
 
     //to PCL xyz
@@ -88,8 +88,8 @@ int main(int argc, char ** argv)
     if (ids_file.empty())
     {
         //load only if really needed
-        fromROSMsg(original_cloud, *original_cloud_pcl);
-        fromROSMsg(query_cloud, *query_cloud_pcl);
+        fromPCLPointCloud2(original_cloud, *original_cloud_pcl);
+        fromPCLPointCloud2(query_cloud, *query_cloud_pcl);
     }
 
     vector<int> indices;
@@ -115,13 +115,13 @@ int main(int argc, char ** argv)
     indices_pcl->indices = indices;
 
 
-    ExtractIndices<sensor_msgs::PointCloud2> extractor;
+    ExtractIndices<pcl::PCLPointCloud2> extractor;
     extractor.setIndices(indices_pcl);
 
-    boost::shared_ptr<sensor_msgs::PointCloud2> original_cloud_ptr = boost::make_shared<sensor_msgs::PointCloud2>(original_cloud);
+    boost::shared_ptr<pcl::PCLPointCloud2> original_cloud_ptr = boost::make_shared<pcl::PCLPointCloud2>(original_cloud);
     extractor.setInputCloud(original_cloud_ptr);
 
-    sensor_msgs::PointCloud2 new_cloud;
+   pcl::PCLPointCloud2 new_cloud;
     extractor.filter(new_cloud);
 
     string outfilename = argv[pcd_files_indices[2]];

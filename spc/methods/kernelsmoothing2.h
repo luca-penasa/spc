@@ -1,5 +1,5 @@
-#ifndef KERNELSMOOTHING2_H
-#define KERNELSMOOTHING2_H
+#ifndef VOMBAT_KERNELSMOOTHING2_H
+#define VOMBAT_KERNELSMOOTHING2_H
 
 #include <spc/time_series/sparse_time_series.h>
 #include <spc/time_series/equally_spaced_time_series.h>
@@ -16,8 +16,7 @@ template <typename ScalarT>
 class KernelSmoothing2
 {
 
-public:
-
+public:        
     typedef SparseTimeSeries<ScalarT> SparseT;
     typedef boost::shared_ptr<SparseT> SparsePtrT;
 
@@ -65,20 +64,34 @@ public:
 
     int compute()
     {
+
+        std::cout << "started computing 0" << std::endl;
+
         if (!out_series_)
         {
             out_series_ = EquallyPtrT(new EquallyT(sparse_->getMinX(), sparse_->getMaxX(), step_));
             pcl::console::print_warn("You could fix the sizes of out series setting the output time series\n");
         }
 
-
+        std::cout << "started computing 1" << std::endl;
 
         FLANNMat mat = FLANNMat (&sparse_->getX()[0], sparse_->getNumberOfSamples(), 1);
-        flann::KDTreeSingleIndexParams pars  = flann::KDTreeSingleIndexParams(15);
+        std::cout << "crash here" << std::endl;
+
+        flann::KDTreeSingleIndexParams pars  (15);
+
         flann_index_.reset(new FLANNIndex (mat, pars));
         flann_index_->buildIndex();
 
+        if (!flann_index_)
+        {
+            pcl::console::print_error("[Error] some error in flann computation and initialization." );
+        }
         ScalarT value;
+
+
+        std::cout << "started computing 2 " << flann_index_ << std::endl;
+
 
 #ifdef DUSE_OPENMP
 #pragma omp parallel for private (value)

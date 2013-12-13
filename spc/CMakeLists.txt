@@ -7,6 +7,7 @@ add_subdirectory(estimators)
 add_subdirectory(methods)
 add_subdirectory(io)
 add_subdirectory(devices)
+add_subdirectory(external)
 
 if (BUILD_PYTHON_WRAPPINGS)
     add_subdirectory(python_interface)

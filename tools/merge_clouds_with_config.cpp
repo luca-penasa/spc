@@ -197,12 +197,12 @@ normalizeField(std::vector<std::vector<ScalarT> > & field, const NORMALIZE_TYPES
 }
 
 //PointCloud<PointScalar>
-//getScaledField(const int id, sensor_msgs::PointCloud2::Ptr cloud, string &field_name, const NORMALIZE_TYPES kind)
+//getScaledField(const int id,pcl::PCLPointCloud2::Ptr cloud, string &field_name, const NORMALIZE_TYPES kind)
 //{
 //    PointCloud<PointScalar> pcl_cloud;
 //    field_name = cloud->fields[id].name;
 //    (*cloud).fields[id].name = "Sc4laR897";
-//    fromROSMsg(*cloud, pcl_cloud);
+//    fromPCLPointCloud2(*cloud, pcl_cloud);
 
 //    normalizeField(pcl_cloud, kind );
 
@@ -212,12 +212,12 @@ normalizeField(std::vector<std::vector<ScalarT> > & field, const NORMALIZE_TYPES
 //}
 
 /// note we are not checking for fields with duplicated names, they will be simply overwritten
-sensor_msgs::PointCloud2
-mergeAll(const vector<sensor_msgs::PointCloud2> &clouds)
+pcl::PCLPointCloud2
+mergeAll(const vector<pcl::PCLPointCloud2> &clouds)
 {
 
-    sensor_msgs::PointCloud2 out_cloud;
-    sensor_msgs::PointCloud2 tmp_cloud;
+   pcl::PCLPointCloud2 out_cloud;
+   pcl::PCLPointCloud2 tmp_cloud;
 
     int c = 0; //counter
     for (auto cloud: clouds)
@@ -283,11 +283,11 @@ int main(int argc, char ** argv)
     }
 
     //// GET THE FIELDS
-    sensor_msgs::PointCloud2::Ptr cloud (new sensor_msgs::PointCloud2);
-    sensor_msgs::PointCloud2::Ptr tmp_cloud (new sensor_msgs::PointCloud2);
+   pcl::PCLPointCloud2::Ptr cloud (new pcl::PCLPointCloud2);
+   pcl::PCLPointCloud2::Ptr tmp_cloud (new pcl::PCLPointCloud2);
 
 
-    vector<sensor_msgs::PointCloud2> collected_fields;
+    vector<pcl::PCLPointCloud2> collected_fields;
 
     for (auto file: files) // for each file
     {
@@ -301,9 +301,9 @@ int main(int argc, char ** argv)
             string this_field_name = cloud->fields.at(field).name;
 
 
-            std::vector< std::vector<float> > std_field = readCompleteFieldToVector<float>(*cloud, this_field_name);
+            std::vector< std::vector<float> > std_field = spc::readCompleteFieldToVector<float>(*cloud, this_field_name);
             normalizeField(std_field, ntype);
-            *tmp_cloud = fromStdVectorToSensor(std_field, this_field_name);
+            *tmp_cloud = spc::fromStdVectorToSensor(std_field, this_field_name);
             collected_fields.push_back(*tmp_cloud);
 
 

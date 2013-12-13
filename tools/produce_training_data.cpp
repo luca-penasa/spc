@@ -50,12 +50,12 @@ getCorrespondingIds(const PointCloud<PointXYZ>::Ptr  reference_cloud,
 }
 
 float
-getValue(const uint point_id, const string field_name, const sensor_msgs::PointCloud2 & cloud, float &value, const uint count_id=0)
+getValue(const uint point_id, const string field_name, const pcl::PCLPointCloud2 & cloud, float &value, const uint count_id=0)
 {
     uint point_step = cloud.point_step;
 
     int field_id = getFieldIndex(cloud, field_name);
-    sensor_msgs::PointField field = cloud.fields.at(field_id);
+    pcl::PCLPointField field = cloud.fields.at(field_id);
 
 //    uint count = field.count;
     uint offset = field.offset;
@@ -81,11 +81,11 @@ int main(int argc, char** argv)
         train_pcd_fns.push_back(argv[id]);
 
     //load geometry cloud
-    sensor_msgs::PointCloud2::Ptr tmp_sns (new sensor_msgs::PointCloud2);
+   pcl::PCLPointCloud2::Ptr tmp_sns (new pcl::PCLPointCloud2);
     pcl::io::loadPCDFile(geometry_cloud_fn, *tmp_sns);
 
     PointCloud<PointXYZ>::Ptr geometry_cloud (new PointCloud<PointXYZ>);
-    fromROSMsg(*tmp_sns, *geometry_cloud);
+    fromPCLPointCloud2(*tmp_sns, *geometry_cloud);
 
 
     std::ofstream file;
@@ -95,7 +95,7 @@ int main(int argc, char** argv)
 //    stream.precision (precision);
     stream.imbue (std::locale::classic ());
 
-    sensor_msgs::PointCloud2::Ptr features_cloud (new sensor_msgs::PointCloud2);
+   pcl::PCLPointCloud2::Ptr features_cloud (new pcl::PCLPointCloud2);
     pcl::io::loadPCDFile(features_cloud_fn, *features_cloud);
 
     int n_fields = features_cloud->fields.size(); //we consider we do not have strange paddings in fields
@@ -108,7 +108,7 @@ int main(int argc, char** argv)
         //load the train cloud
         pcl::io::loadPCDFile(name, *tmp_sns); //load here
         PointCloud<PointXYZ> this_cloud;
-        fromROSMsg(*tmp_sns, this_cloud);
+        fromPCLPointCloud2(*tmp_sns, this_cloud);
 
         std::vector<int> indices;
         std::vector<float> distances;

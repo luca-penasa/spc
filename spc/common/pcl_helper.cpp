@@ -142,6 +142,9 @@ fromStdVectorToSensor(const std::vector<std::vector<float> > & std_field, const 
 
 
 
+template
+std::vector< std::vector<float> >
+readCompleteFieldToVector(const pcl::PCLPointCloud2 &cloud, const std::string &fieldname);
 
 
 }//end nspace

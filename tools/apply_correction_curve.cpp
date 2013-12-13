@@ -12,6 +12,8 @@
 
 #include <spc/methods/linear_interpolator.h>
 
+#include <pcl/PCLPointCloud2.h>
+
 #include <math.h>
 
 using namespace pcl;
@@ -21,24 +23,24 @@ using namespace std;
 
 //A strange point type to be used here:
 struct PointXYZScalar
-    {
-        PCL_ADD_POINT4D;
-        float Sc4laR897;
+{
+    PCL_ADD_POINT4D;
+    float Sc4laR897;
 
 
 
 
-        EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-    } EIGEN_ALIGN16;
+    EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+} EIGEN_ALIGN16;
 
-    POINT_CLOUD_REGISTER_POINT_STRUCT   (PointXYZScalar,
-                         (float, x, x)
-                         (float, y, y)
-                         (float, z, z)
-                         (float, Sc4laR897, Sc4laR897)
+POINT_CLOUD_REGISTER_POINT_STRUCT   (PointXYZScalar,
+                                     (float, x, x)
+                                     (float, y, y)
+                                     (float, z, z)
+                                     (float, Sc4laR897, Sc4laR897)
 
 
-    )
+                                     )
 
 int main(int argc, char* argv[])
 {
@@ -88,7 +90,7 @@ int main(int argc, char* argv[])
 
 
     ////////// LOAD THINGS //////////////////
-    sensor_msgs::PointCloud2::Ptr cloud(new sensor_msgs::PointCloud2);
+    pcl::PCLPointCloud2::Ptr cloud(new pcl::PCLPointCloud2);
 
     if (pcl::io::loadPCDFile(incloud_pathname, *cloud) < 0)
     {
@@ -124,7 +126,7 @@ int main(int argc, char* argv[])
     cloud->fields[getFieldIndex(*cloud, intensity_field_name.c_str())].name = "Sc4laR897";
     PointCloud<PointXYZScalar>::Ptr pcl_cloud (new PointCloud<PointXYZScalar>);
 
-    fromROSMsg(*cloud, *pcl_cloud);
+    pcl::fromPCLPointCloud2(*cloud, *pcl_cloud);
 
     ///////// GET DATA AND INFOS FROM TSERIES ////////////
     vector <float> correction_d = tseries[0];
@@ -137,10 +139,10 @@ int main(int argc, char* argv[])
     //////// COMPUTE DISTANCES FOR THE CLOUD /////////////
     vector<float> distances(pcl_cloud->size());
     std::transform(pcl_cloud->begin(), pcl_cloud->end(), distances.begin(),
-                                           [&](PointXYZScalar & point){return sqrt(
-                                              (point.x - center(0)) * (point.x - center(0)) +
-                                              (point.y - center(1)) * (point.y - center(1)) +
-                                              (point.z - center(2)) * (point.z - center(2)) ) ;});
+                   [&](PointXYZScalar & point){return sqrt(
+                    (point.x - center(0)) * (point.x - center(0)) +
+                    (point.y - center(1)) * (point.y - center(1)) +
+                    (point.z - center(2)) * (point.z - center(2)) ) ;});
 
     float min_d_cloud = *std::min_element(distances.begin(), distances.end());
     float max_d_cloud = *std::min_element(distances.begin(), distances.end());
@@ -181,8 +183,10 @@ int main(int argc, char* argv[])
         point.Sc4laR897 /= interpolated_intensities[counter++];
 
     //////// CONVERT BACK CLOUD /////////////////
-    sensor_msgs::PointCloud2::Ptr out_cloud (new sensor_msgs::PointCloud2);
-    toROSMsg(*pcl_cloud, *out_cloud);
+    pcl::PCLPointCloud2::Ptr out_cloud (new pcl::PCLPointCloud2);
+
+    pcl::toPCLPointCloud2(*pcl_cloud, *out_cloud);
+
     //change scalar field name
     out_cloud->fields[getFieldIndex(*out_cloud, "Sc4laR897")].name = "corrected_int";
 
@@ -190,7 +194,7 @@ int main(int argc, char* argv[])
     cloud->fields[getFieldIndex(*cloud, "Sc4laR897")].name = intensity_field_name.c_str();
 
     /////// MERGE ORIGINAL DATASET WITH THIS CLOUD /////////
-    sensor_msgs::PointCloud2::Ptr complete_out_cloud (new sensor_msgs::PointCloud2);
+    pcl::PCLPointCloud2::Ptr complete_out_cloud (new pcl::PCLPointCloud2);
     concatenateFields(*cloud, *out_cloud, *complete_out_cloud);
 
 
@@ -203,7 +207,7 @@ int main(int argc, char* argv[])
 
     spc::savePCDBinaryCompressed(save_fn, *complete_out_cloud);
 
-//    std::cout << full_in_path.parent_path().c_str() + "/" + filename + "_distance_corrected.pcd" << std::endl;
+    //    std::cout << full_in_path.parent_path().c_str() + "/" + filename + "_distance_corrected.pcd" << std::endl;
 
 
 

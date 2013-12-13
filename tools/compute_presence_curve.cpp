@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 
 
     //load the cloud
-    sensor_msgs::PointCloud2::Ptr cloud  (new sensor_msgs::PointCloud2);
+   pcl::PCLPointCloud2::Ptr cloud  (new pcl::PCLPointCloud2);
 
 
     pcl::io::loadPCDFile(infilename, *cloud);
@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_projected ( new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_xyz ( new pcl::PointCloud<pcl::PointXYZ>);
 
-    fromROSMsg(*cloud, *cloud_xyz);
+    fromPCLPointCloud2(*cloud, *cloud_xyz);
 
     //so project cloud on plane
     pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients ());
@@ -53,10 +53,10 @@ int main(int argc, char *argv[])
 
 
 
-    sensor_msgs::PointCloud2::Ptr new_cloud  (new sensor_msgs::PointCloud2);
-    toROSMsg(*cloud_projected, *new_cloud);
+   pcl::PCLPointCloud2::Ptr new_cloud  (new pcl::PCLPointCloud2);
+    pcl::toPCLPointCloud2(*cloud_projected, *new_cloud);
 
-    sensor_msgs::PointCloud2::Ptr new_cloud2  (new sensor_msgs::PointCloud2);
+   pcl::PCLPointCloud2::Ptr new_cloud2  (new pcl::PCLPointCloud2);
 
     pcl::concatenateFields(*cloud, *new_cloud, *new_cloud2);
 

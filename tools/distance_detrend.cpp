@@ -15,6 +15,8 @@
 
 #include <boost/lexical_cast.hpp>
 
+#include <spc/methods/kernelsmoothing2.h>
+
 
 void printHelp()
 {
@@ -37,25 +39,25 @@ int main(int argc, char *argv[])
     std::string basename = spc::stripExtension(infilename); //the filename without extension
 
 	//load the cloud
-	sensor_msgs::PointCloud2::Ptr cloud  (new sensor_msgs::PointCloud2);
+	pcl::PCLPointCloud2::Ptr cloud  (new pcl::PCLPointCloud2);
 	pcl::io::loadPCDFile(infilename, *cloud);
 
     pcl::PointCloud<PointIntDist> cloud_;
 	pcl::PointCloud<pcl::PointXYZ> cloud_xyz_;
 
 	//get distance and intensity fields
-	fromROSMsg(*cloud, cloud_);
+	fromPCLPointCloud2(*cloud, cloud_);
 
     //also the xyz cloud
-	fromROSMsg(*cloud, cloud_xyz_);
+	fromPCLPointCloud2(*cloud, cloud_xyz_);
 
     //downsample xyz cloud, to speed up the trend estimation
     //using voxelgrid to obtain an even sampling of the cloud
-    pcl::VoxelGrid<sensor_msgs::PointCloud2> grid_filter;
+    pcl::VoxelGrid<pcl::PCLPointCloud2> grid_filter;
     grid_filter.setInputCloud(cloud);
     grid_filter.setLeafSize(voxelsize, voxelsize, voxelsize); //5 cm x 5 x 5 as boxsize for downsampling
 
-    sensor_msgs::PointCloud2::Ptr downsampled_cloud  (new sensor_msgs::PointCloud2);
+   pcl::PCLPointCloud2::Ptr downsampled_cloud  (new pcl::PCLPointCloud2);
     grid_filter.filter(*downsampled_cloud);
 
     //keep a copy of the downsampled cloud for future inspection
@@ -64,7 +66,7 @@ int main(int argc, char *argv[])
     std::cout << " Downsampled version saved  " << std::endl;
 
     pcl::PointCloud<PointIntDist> cloud_down; //a cloud with only d and I, for the downsampled version
-    fromROSMsg(*downsampled_cloud, cloud_down);
+    fromPCLPointCloud2(*downsampled_cloud, cloud_down);
 
 
 	std::vector<float> i_vector;
@@ -90,13 +92,15 @@ int main(int argc, char *argv[])
 
     //the vector with distances at which to estimate the trend
     std::vector<float> new_d = spc::subdivideRange(min, max, step);
-    spc::EquallySpacedTimeSeries<float> * series = new spc::EquallySpacedTimeSeries<float>(step, min, new_d.size());
+    spc::EquallySpacedTimeSeries<float>::Ptr  series;
 
     //now do the estimate of the trend, using kernelsmoothing
 	//now initialize a kernelsmoothing object
-    spc::KernelSmoothing<float> ks;
-    ks.setComputeVariance(1); //also compute the variance
-	ks.setXY(d_vector, i_vector);
+    spc::KernelSmoothing2<float> ks;
+//    ks.setComputeVariance(1); //also compute the variance
+
+    ks.setInputSeries(spc::SparseTimeSeries<float>::Ptr(new spc::SparseTimeSeries<float>(d_vector, i_vector)));
+//	ks.setXY(d_vector, i_vector);
 //	ks.setEvaluationPositions(new_d);
     ks.setBandwidth(bandwidth); //using a bandwidth of 1 meters
 
@@ -109,7 +113,9 @@ int main(int argc, char *argv[])
     std::cout << "Computing Kernel smoothing model on subsampled cloud." << std::endl;
 
 	//now compute ks
-    ks.compute(series);
+    ks.compute();
+
+    series = ks.getOutputSeries();
 
     //get the computed values
     std::vector<float> new_i = series->getY();
@@ -170,15 +176,15 @@ int main(int argc, char *argv[])
 
     }
 
-        sensor_msgs::PointCloud2 new_i_cloud;
-        toROSMsg(cloud_, new_i_cloud);
+       pcl::PCLPointCloud2 new_i_cloud;
+        pcl::toPCLPointCloud2(cloud_, new_i_cloud);
 
-        sensor_msgs::PointCloud2 out_cloud;
+       pcl::PCLPointCloud2 out_cloud;
         pcl::PointCloud<pcl::PointXYZI> definitive_cloud;
 
         pcl::concatenateFields(*cloud,new_i_cloud, out_cloud);
 
-        pcl::fromROSMsg(out_cloud, definitive_cloud);
+        pcl::fromPCLPointCloud2(out_cloud, definitive_cloud);
 
         pcl::io::savePCDFileBinary(basename + voxelsize_string + bandwidth_string + std::string("_corrected_ints.pcd"), definitive_cloud);
 

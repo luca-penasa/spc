@@ -17,7 +17,7 @@ using namespace pcl;
 using namespace pcl::console;
 using namespace std;
 
-int fillHeader(const string & filename,  sensor_msgs::PointCloud2 &cloud)
+int fillHeader(const string & filename, pcl::PCLPointCloud2 &cloud)
 {
     PCDReader r;
     r.readHeader(filename , cloud);
@@ -61,7 +61,7 @@ int main(int argc, char ** argv)
 
         stream << parent << "/" << only_name << "\n";
 
-        sensor_msgs::PointCloud2 incloud;
+       pcl::PCLPointCloud2 incloud;
 
         fillHeader(full_filename, incloud);
 

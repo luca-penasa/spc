@@ -16,6 +16,8 @@
 #include <spc/common/pcl_helper.h>
 #include <spc/common/svmlib_helper.h>
 
+
+
 using namespace pcl;
 using namespace pcl::console;
 using namespace std;
@@ -28,19 +30,19 @@ int main (int argc, char ** argv)
     vector<int> pcd_indices = parse_file_extension_argument(argc, argv, ".pcd");
     vector<int> svd_indices = parse_file_extension_argument(argc, argv, ".svd");
 
-    sensor_msgs::PointCloud2 cloud;
+   pcl::PCLPointCloud2 cloud;
     pcl::io::loadPCDFile(argv[pcd_indices.at(0)], cloud);
 
-    std::vector< sensor_msgs::PointField>  fields = cloud.fields;
+    std::vector< pcl::PCLPointField>  fields = cloud.fields;
 
     stdcloudT all_fields;
     for (auto field : fields)
     {
-        stdfieldT this_field = readCompleteFieldToVector<float>(cloud, field.name);
+        stdfieldT this_field = spc::readCompleteFieldToVector<float>(cloud, field.name);
         all_fields.push_back(this_field);
     }
 
-    writeToSVMlibFile(all_fields, argv[svd_indices.at(0)]);
+    spc::writeToSVMlibFile(all_fields, argv[svd_indices.at(0)]);
 
     //now write all the field in a svmlib compatible ascii file
 

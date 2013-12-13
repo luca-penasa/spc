@@ -42,10 +42,12 @@ protected:
         ar & boost::serialization::make_nvp("spcSerializableObject", boost::serialization::base_object<spc::spcSerializableObject> (*this));
     }
 
-    std::string getClassName()
+    std::string getClassName() const
     {
         return typeid(this).name();
     }
+
+
 
 
 

@@ -108,14 +108,14 @@ int main(int argc, char **argv)
 
     }
 
-    sensor_msgs::PointCloud2 sns_cloud;
-    toROSMsg(cloud, sns_cloud);
+   pcl::PCLPointCloud2 sns_cloud;
+    pcl::toPCLPointCloud2(cloud, sns_cloud);
 
-    sensor_msgs::PointCloud2 sns_cloud_prob;
-    toROSMsg(cloud_prob, sns_cloud_prob);
+   pcl::PCLPointCloud2 sns_cloud_prob;
+    pcl::toPCLPointCloud2(cloud_prob, sns_cloud_prob);
 
 
-    sensor_msgs::PointCloud2 full_cloud, out_cloud;
+   pcl::PCLPointCloud2 full_cloud, out_cloud;
     pcl::io::loadPCDFile(argv[pcd_indices[0]], full_cloud);
 
 
