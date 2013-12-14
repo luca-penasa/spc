@@ -129,8 +129,13 @@ private:
 		if (  ( x_.size() == y_.size() ) && (x_.size() != 0)  && (new_x_.size() != 0))
 		{
 			is_input_ok_ = true;
+            return true;
 		}
+        else
+            return false;
 	}
+
+
 	
 	
 	/** \brief Get the nearest point id for a given x value

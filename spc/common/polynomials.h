@@ -2,13 +2,14 @@
 #define SPC_POLYNOMIALS_H
 
 #include <Eigen/Dense>
+#include <vector>
 
 namespace spc
 {
 
     template<typename ScalarT>
     int
-    polyfit(const std::vector<ScalarT> &x, const std::vector<ScalarT> &y, const int &deg, std::vector<ScalarT> &poly);
+    polyfit(const typename std::vector<ScalarT> &x, const typename std::vector<ScalarT> &y, const int &deg, std::vector<ScalarT> &poly);
 
 
 

@@ -114,18 +114,24 @@ LinearInterpolator<T>::evaluateInterpolatorLowerPoints()
 
     std::vector<T> small_x(n), small_y(n);
 
+
+////////////////// CHECK THESE TWO FOREACH /////////// PLEASE!
     int nn = 0;
-    for (auto &i: small_x)
-        i = x_start_ + step_ * nn++;
+    BOOST_FOREACH (T i, small_x)
+    {
+        small_x.at(nn) = x_start_ + step_ * nn++;
+    }
 
     nn = 0;
-    for (auto &i: small_y)
-        i = y_.at(nn++);
+    BOOST_FOREACH(T i, small_y)
+    {
+        small_y.at(nn) = y_.at(nn++);
+    }
 
-    auto tmp_x_e = spc::stdVectorToEigen(small_x);
-    auto tmp_y_e = spc::stdVectorToEigen(small_y);
+    Eigen::Matrix<double, Eigen::Dynamic, 1> tmp_x_e = spc::stdVectorToEigen(small_x);
+    Eigen::Matrix<double, Eigen::Dynamic, 1> tmp_y_e = spc::stdVectorToEigen(small_y);
 
-    auto poly = spc::polyfit(tmp_x_e, tmp_y_e, n-1);
+    Eigen::Matrix<double, Eigen::Dynamic, 1> poly = spc::polyfit(tmp_x_e, tmp_y_e, n-1);
 
     //using this polynomial we evaluate all the points out of lower bound
     std::vector <T> x_to_evaluate(lower_points_.size()); //container

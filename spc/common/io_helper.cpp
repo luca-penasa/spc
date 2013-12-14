@@ -112,6 +112,8 @@ loadCSVFile(const std::string &in_filename, pcl::PCLPointCloud2 &output, const i
 	cloud->points.resize(cloud->width * cloud->height);
 	
     pcl::toPCLPointCloud2(*cloud, output);
+
+    return 1;
 	
 }
 
@@ -202,6 +204,8 @@ saveAsCSV(const std::string &filename, const std::string &separator, const std::
 
     file.close();
 //    pcl::io::resetLockingPermissions (file_name, file_lock);
+
+    return 1;
 }
 
 

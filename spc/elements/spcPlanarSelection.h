@@ -7,6 +7,7 @@
 #include <pcl/io/pcd_io.h> //for debug only
 
 #include <boost/serialization/shared_ptr.hpp>
+#include <boost/foreach.hpp>
 
 namespace spc
 {
@@ -105,7 +106,7 @@ public:
         pcl::PointCloud<pcl::PointXYZ> cloud;
         cloud.resize(indices.size());
 
-        for (int id: indices)
+        BOOST_FOREACH(int id, indices)
         {
             Vector3f point = in_cloud->getPoint(id);
             pcl::PointXYZ p;

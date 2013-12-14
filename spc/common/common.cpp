@@ -1,4 +1,23 @@
 #include <spc/common/common.h>
+
+#include <flann/flann.hpp>
+void dotest()
+{
+
+
+    std::vector<float> x(100);
+
+
+    for (int i =0; i < 100; ++i)
+        x.at(i) = i;
+
+    flann::Matrix<float> dataset(x.data(), 100, 1);
+
+    flann::Index<flann::L2<float> > index(dataset, flann::KDTreeIndexParams(4));
+
+
+}
+
 namespace spc {
 
 

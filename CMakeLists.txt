@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 project(spc)
 
-
 #################### VERSIONING ###############################################
 set(SPC_MAJOR_VERSION 0)
 set(SPC_MINOR_VERSION 1)
@@ -12,12 +11,28 @@ set(SPC_VERSION ${SPC_MAJOR_VERSION}.${SPC_MINOR_VERSION}.${SPC_PATCH_VERSION})
 
 ########################### COMPILER FLAGS ##################################
 #supress warnings from PCL about SHOT etc... - not working!
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations")#
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations")
 
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++0x -fopenmp -fPIC -lpthread -lgcc_s")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -pipe -std=c++0x -fPIC " )
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -pipe -std=c++0x -fPIC -Wall -Wno-sign-compare" )
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++0x -Wall -Wno-long-long -pedantic" )
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -Wall -Wno-sign-compare" )
+
+
 ##############################################################################
 
+
+FIND_PACKAGE( OpenMP REQUIRED)
+if(OPENMP_FOUND)
+message("OPENMP FOUND")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+endif()
+
+#find_package(OpenMP)
+#include_directories("{OpenMP_INCLUDE_DIRS}")
+#message(${OpenMP_INCLUDE_DIR})
 
 ############################################################################################################
 set(SPC_LIBRARIES CACHE INTERNAL "SPC libs" FORCE) #this will collect all the modular libs spc will create

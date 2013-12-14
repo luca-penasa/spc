@@ -49,26 +49,7 @@ public:
     }
 
 
-    virtual std::vector<float> getField(const std::string fieldname, std::vector<int> indices)
-    {
-        std::vector<float> out;
-
-        if (!hasField(fieldname))
-        {
-            pcl::console::print_warn("[Error in %s] asked for field %s", getClassName().c_str(), fieldname.c_str());
-            return out;
-        }
-
-        float val;
-        for (int i : indices)
-        {
-            getFieldValue(i, fieldname, val);
-            out.push_back(val);
-        }
-
-        return out;
-
-    }
+    virtual std::vector<float> getField(const std::string fieldname, std::vector<int> indices) ;
 
     virtual std::vector<float> getField(const std::string fieldname)
     {

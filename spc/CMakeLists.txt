@@ -8,6 +8,9 @@ add_subdirectory(methods)
 add_subdirectory(io)
 add_subdirectory(devices)
 add_subdirectory(external)
+add_subdirectory(flann)
+
+
 
 if (BUILD_PYTHON_WRAPPINGS)
     add_subdirectory(python_interface)

@@ -36,7 +36,7 @@ public:
 
     Keypoint() {} //def const
 
-    auto getPoint(const int id) -> PointInT
+    PointInT getPoint(const int id)
     {
         return cloud_->at(id);
     }
@@ -161,7 +161,7 @@ public:
         }
     }
 
-    auto computeKeypoints(float radius, float leafsize) -> KeypointsPtrT
+    KeypointsPtrT computeKeypoints(float radius, float leafsize)
     {
 
         KeypointsPtrT keys (new KeypointsT);
@@ -220,7 +220,7 @@ public:
 
     }
 
-    auto getFlannSearcher(CloudPtrT cloud) -> FlannSearchPtrT
+    FlannSearchPtrT getFlannSearcher(CloudPtrT cloud)
     {
         if (searchers_.find(cloud) != searchers_.end())
         {
@@ -256,6 +256,8 @@ public:
         Eigen::Vector4f normal;
         float c;
         pcl::computePointNormal(*cloud, normal, c);
+
+        return normal;
     }
 
     std::vector<int> thresholdCloud(CloudPtrT in_cloud, std::vector<int> indices, float &ratio, std::vector<int> &others)
@@ -293,7 +295,7 @@ public:
         eigenvalues = eigensolver.eigenvalues();
     }
 
-    auto projectOnLocalPlane(CloudPtrT cloud, std::vector<int> indices, Eigen::Vector4f plane) -> CloudPtrT
+     CloudPtrT projectOnLocalPlane(CloudPtrT cloud, std::vector<int> indices, Eigen::Vector4f plane)
     {
         pcl::ModelCoefficients::Ptr coefficients (new pcl::ModelCoefficients ());
         coefficients->values.resize (4);
@@ -331,7 +333,7 @@ public:
         float std = 0.0;
 
         float tmp;
-        for (auto i: indices)
+        BOOST_FOREACH (int i, indices)
         {
             tmp = in_cloud->at(i).intensity - avg;
             std += tmp * tmp;

@@ -6,7 +6,7 @@ namespace spc
 int
 SerializedTimeSeriesGenerator::compute()
 {
-    for (auto id_list: all_indices_)
+    BOOST_FOREACH(std::vector<int> id_list, all_indices_)
     {
         TimeSeriesGenerator generator;
         generator.setBandwidth(bandwidth_);
@@ -21,6 +21,8 @@ SerializedTimeSeriesGenerator::compute()
         OutSeriesPtrT ts = generator.getOutputSeries();
         output_.push_back(ts);
     }
+
+    return 1;
 }
 
 

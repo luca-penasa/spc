@@ -14,7 +14,7 @@ public:
     typedef boost::shared_ptr<Flann1DSearcher<ScalarT> > Ptr;
     typedef boost::shared_ptr<const Flann1DSearcher<ScalarT> > ConstPtr;
 
-    Flann1DSearcher(const std::vector<ScalarT> v);
+    Flann1DSearcher(std::vector<ScalarT> v);
 
     typedef typename flann::L2_Simple<ScalarT> distType;
     typedef typename flann::Index<distType> FLANNIndex;

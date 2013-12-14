@@ -26,6 +26,7 @@ polyfit(const std::vector<ScalarT> &x, const std::vector<ScalarT> &y, const int 
 
     Eigen::Matrix<ScalarT, Eigen::Dynamic, 1>::Map(poly.data(), poly.size()) = solution;
 
+    return 1;
 }
 
 
@@ -52,6 +53,8 @@ vander(const std::vector<ScalarT> &x, const int &n_cols, Eigen::Matrix<ScalarT, 
     }
 
     vandermat.col(n_cols-1).fill(1);
+
+    return 1;
 
 }
 

@@ -5,7 +5,7 @@
 
 
 template<typename ScalarT>
-Flann1DSearcher<ScalarT>::Flann1DSearcher(const std::vector<ScalarT> v)
+Flann1DSearcher<ScalarT>::Flann1DSearcher(std::vector<ScalarT> v)
 {
     v_ = v;
 

@@ -11,7 +11,7 @@ spcStratigraphicModelBase::spcStratigraphicModelBase()
 std::vector<float> spcStratigraphicModelBase::getStratigraphicPositions(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, const std::vector<int> &indices)
 {
     std::vector<float> out;
-    for (int id : indices)
+    BOOST_FOREACH (int id , indices)
     {
         pcl::PointXYZ p = cloud->at(id);
         out.push_back(getStratigraphicPosition(Vector3f(p.x, p.y, p.z)));
@@ -24,7 +24,7 @@ std::vector<float> spcStratigraphicModelBase::getStratigraphicPositions(pcl::Poi
 std::vector<float> spcStratigraphicModelBase::getStratigraphicPositions(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud)
 {
     std::vector<float> out;
-    for (pcl::PointXYZ p: *cloud)
+    BOOST_FOREACH(pcl::PointXYZ p, *cloud)
     {
         pcl::PointXYZ point;
         out.push_back(getStratigraphicPosition(Vector3f(p.x, p.y, p.z)));
@@ -41,7 +41,7 @@ std::vector<float> spcStratigraphicModelBase::getStratigraphicPositions(spc::spc
 
     out.resize(n);
 
-    float x, y, z, sp;
+    float x, y, z;
     for (int i = 0 ; i < n; i++)
     {
         cloud->getPoint(i, x, y, z);
@@ -57,9 +57,9 @@ std::vector<float> spcStratigraphicModelBase::getStratigraphicPositions(spcGener
     std::vector<float> out;
     out.resize(indices.size());
 
-    float x, y, z, sp;
+    float x, y, z;
     int counter  =0;
-    for (int i: indices)
+    BOOST_FOREACH (int i, indices)
     {
         cloud->getPoint(i, x, y, z);
         out.at(counter++) = getStratigraphicPosition(Vector3f(x,y,z));
@@ -73,9 +73,9 @@ std::vector<float> spcStratigraphicModelBase::getStratigraphicPositions(spcGener
     std::vector<float> out;
     out.resize(indices.size());
 
-    float x, y, z, sp;
+    float x, y, z;
     int counter  =0;
-    for (int i: indices)
+    BOOST_FOREACH (int i, indices)
     {
         cloud->getPoint(i, x, y, z);
         out.at(counter++) = getStratigraphicPosition(Vector3f(x,y,z));

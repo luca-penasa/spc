@@ -1,5 +1,6 @@
 #include <spc/time_series/equally_spaced_time_series.h>
 
+
 namespace spc
 {
 
@@ -50,10 +51,24 @@ EquallySpacedTimeSeries<ScalarT>::EquallySpacedTimeSeries(ScalarT x_min_, Scalar
 }
 
 
+template <typename ScalarT>
+vector<ScalarT>
+EquallySpacedTimeSeries<ScalarT>::getX() const
+{
+    std::vector<ScalarT> x(this->y_.size());
+    int counter = 0;
+    BOOST_FOREACH (ScalarT &x_pos, x)
+    {
+        x_pos = counter++ * x_step + x_start;
+    }
+    return x;
+}
+
 
 /// INSTANTIATIONS
 template class EquallySpacedTimeSeries<float>;
 template class EquallySpacedTimeSeries<double>;
+
 
 
 }

@@ -18,6 +18,9 @@
 #include <boost/serialization/export.hpp>
 
 
+#include <boost/foreach.hpp>
+
+
 using namespace Eigen;
 namespace spc
 {

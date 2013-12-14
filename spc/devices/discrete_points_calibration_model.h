@@ -48,6 +48,7 @@ protected:
 
         interpolator_->setInputSeries(discrete_points_distance_);
 
+        return 1;
     }
 
     ///

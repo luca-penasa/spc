@@ -1,4 +1,5 @@
 #include "attitude_estimator.h"
+#include <numeric>
 
 namespace spc
 {
@@ -28,7 +29,6 @@ void AttitudeEstimator::initializeModel()
     //for each cloud we estimate a model. then we average
     //clearly only for the clouds that have at least 3 points
 
-    int counter = 0;
     std::vector<Vector3f> normals;
 
     for (int i = 0; i < clouds_.size(); ++i)
@@ -56,9 +56,9 @@ void AttitudeEstimator::initializeModel()
 void AttitudeEstimator::updateSPs()
 {
     s_positions_.clear();
-    for (CloudPtrT cloud: clouds_)
+    BOOST_FOREACH (CloudPtrT cloud, clouds_)
     {
-        auto vec = model_.getStratigraphicPositions(cloud);
+        std::vector<float> vec = model_.getStratigraphicPositions(cloud);
         s_positions_.push_back(vec);
     }
 }
@@ -69,7 +69,7 @@ void AttitudeEstimator::computeAveragedSPs()
 
     est_s_positions_.clear(); //clear it
 
-    for (std::vector<float> sps: s_positions_)
+    BOOST_FOREACH (std::vector<float> sps, s_positions_)
     {
         float avg_sp = std::accumulate(sps.begin(), sps.end(), 0.0);
         avg_sp /= sps.size();
@@ -87,7 +87,7 @@ void AttitudeEstimator::updateDeviations()
         std::vector<float> devs;
         CloudPtrT cloud = clouds_.at(i);
         float est_sp = est_s_positions_.at(i); //its sp
-        for (float this_sp: s_positions_.at(i))
+        BOOST_FOREACH (float this_sp, s_positions_.at(i))
         {
             float diff = est_sp - this_sp;
             devs.push_back(diff*diff);
@@ -115,7 +115,7 @@ float AttitudeEstimator::getAveragedSquareDeviations()
     updateDeviations(); //be sure are updated
     float acc = 0;
     int counter =0;
-    for (std::vector<float> devs: sq_deviations_)
+    BOOST_FOREACH (std::vector<float> devs, sq_deviations_)
     {
         acc += std::accumulate(devs.begin(), devs.end(), 0.0f);
         counter += devs.size();

@@ -7,8 +7,8 @@ namespace spc
 {
 
 template <typename ScalarT>
-auto
-get_min(const std::vector<ScalarT> &invect) -> ScalarT
+ScalarT
+get_min(const std::vector<ScalarT> &invect)
 {
     int n = invect.size();
     ScalarT value = invect[0];
@@ -22,8 +22,8 @@ get_min(const std::vector<ScalarT> &invect) -> ScalarT
 
 
 template <typename ScalarT>
-auto
-get_max(const std::vector<ScalarT> &invect) -> ScalarT
+ScalarT
+get_max(const std::vector<ScalarT> &invect)
 {
     int n = invect.size();
     ScalarT value = invect[0];
@@ -37,8 +37,8 @@ get_max(const std::vector<ScalarT> &invect) -> ScalarT
 
 
 template <typename ScalarT>
-auto
-get_sum(const std::vector<ScalarT> &input) -> ScalarT
+ScalarT
+get_sum(const std::vector<ScalarT> &input)
 {
     ScalarT sum = 0;
     for (int i = 0; i < input.size(); ++i)
@@ -48,8 +48,8 @@ get_sum(const std::vector<ScalarT> &input) -> ScalarT
 }
 
 template <typename ScalarT>
-auto
-get_mean(const std::vector<ScalarT> &input) -> ScalarT
+ScalarT
+get_mean(const std::vector<ScalarT> &input)
 {
     ScalarT sum = get_sum(input);
     return sum / input.size() - 1;
@@ -57,8 +57,8 @@ get_mean(const std::vector<ScalarT> &input) -> ScalarT
 }
 
 template <typename ScalarT>
-auto
-get_difference(const std::vector<ScalarT> &input1, const std::vector<ScalarT> &input2) -> std::vector<ScalarT>
+std::vector<ScalarT>
+get_difference(const std::vector<ScalarT> &input1, const std::vector<ScalarT> &input2)
 {
     std::vector<ScalarT> difference;
     difference.resize(input1.size());
@@ -70,8 +70,8 @@ get_difference(const std::vector<ScalarT> &input1, const std::vector<ScalarT> &i
 
 
 template <typename ScalarT>
-auto
-get_difference(const std::vector<ScalarT> &input1, const ScalarT value) -> std::vector<ScalarT>
+std::vector<ScalarT>
+get_difference(const std::vector<ScalarT> &input1, const ScalarT value)
 {
     std::vector<ScalarT> difference;
     difference.resize(input1.size());
@@ -83,8 +83,8 @@ get_difference(const std::vector<ScalarT> &input1, const ScalarT value) -> std::
 }
 
 template<typename ScalarT>
-auto
-get_squared(const std::vector<ScalarT> &input) -> std::vector<ScalarT>
+std::vector<ScalarT>
+get_squared(const std::vector<ScalarT> &input)
 {
     std::vector<ScalarT> squared;
     squared.resize(input.size());
@@ -96,8 +96,8 @@ get_squared(const std::vector<ScalarT> &input) -> std::vector<ScalarT>
 }
 
 template<typename ScalarT>
-auto
-get_product(const std::vector<ScalarT> &input1, const std::vector<ScalarT> &input2) -> std::vector<ScalarT>
+std::vector<ScalarT>
+get_product(const std::vector<ScalarT> &input1, const std::vector<ScalarT> &input2)
 {
     std::vector<ScalarT> product;
     product.resize(input1.size());

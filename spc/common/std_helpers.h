@@ -10,28 +10,30 @@ namespace spc
 /// SCALAR RETURNING
 
 template <typename ScalarT>
-auto get_min(const std::vector<ScalarT> &invect) -> ScalarT;
+ScalarT get_min(const std::vector<ScalarT> &invect);
 
 template <typename ScalarT>
-auto get_max(const std::vector<ScalarT> &invect) -> ScalarT;
+ScalarT get_max(const std::vector<ScalarT> &invect);
 
 template <typename ScalarT>
-auto get_sum(const std::vector<ScalarT> &input) -> ScalarT;
+ScalarT get_sum(const std::vector<ScalarT> &input);
 
 
 
 //// VECTOR RETURNING
 template <typename ScalarT>
-auto get_difference(const std::vector<ScalarT> &input1, const std::vector<ScalarT> &input2) -> std::vector<ScalarT>;
+std::vector<ScalarT>
+get_difference(const std::vector<ScalarT> &input1, const std::vector<ScalarT> &input2);
 
 template <typename ScalarT>
-auto get_difference(const std::vector<ScalarT> &input, const ScalarT &value) -> std::vector<ScalarT>;
+std::vector<ScalarT>
+get_difference(const std::vector<ScalarT> &input, const ScalarT &value);
 
 template <typename ScalarT>
-auto get_squared(const std::vector<ScalarT> &input) -> std::vector<ScalarT>;
+ std::vector<ScalarT>get_squared(const std::vector<ScalarT> &input)  ;
 
 template <typename ScalarT>
-auto get_product(const std::vector<ScalarT> &input1, const std::vector<ScalarT> &input2) -> std::vector<ScalarT>;
+std::vector<ScalarT> get_product(const std::vector<ScalarT> &input1, const std::vector<ScalarT> &input2);
 
 }//end nspace
 

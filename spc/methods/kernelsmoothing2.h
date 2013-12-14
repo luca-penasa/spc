@@ -8,6 +8,7 @@
 #include <flann/flann.hpp>
 
 #include <pcl/console/print.h>
+#include <boost/foreach.hpp>
 
 using namespace flann;
 
@@ -21,7 +22,7 @@ template <typename ScalarT>
 class KernelSmoothing2
 {
 
-public:        
+public:
     typedef SparseTimeSeries<ScalarT> SparseT;
     typedef boost::shared_ptr<SparseT> SparsePtrT;
 
@@ -75,8 +76,9 @@ protected:
 
     flann::KDTreeSingleIndexParams pars_;
 
-    ScalarT bandwidth_;
     ScalarT step_;
+    ScalarT bandwidth_;
+
 
     boost::shared_ptr<FLANNIndex> flann_index_;
 
@@ -84,8 +86,10 @@ protected:
     inline void
     gaussian(const std::vector<ScalarT> &values, std::vector<ScalarT> &gaussian_values)
     {
-        for (auto val: values)
+        BOOST_FOREACH (float val, values)
+        {
             gaussian_values.push_back(gaussian(val));
+        }
     }
 
 

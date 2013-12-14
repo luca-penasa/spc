@@ -73,16 +73,16 @@ lstsq(const Eigen::MatrixBase<Derived> &A,
         typename Derived::Scalar scale = x.array().abs().maxCoeff(); //to improve condition number
         x_tmp /= scale;
 
-        auto van = vander(x_tmp, deg+1);
+        Eigen::Matrix<typename Derived::Scalar, Eigen::Dynamic, Eigen::Dynamic> van = vander(x_tmp, deg+1);
 
         //scale back, reconstruct a scaling vector
         Eigen::Matrix<typename Derived::Scalar, 1, 1> tmp_s;
         tmp_s(0) = scale;
 
-        auto scalevan = vander(tmp_s, deg+1);
+        Eigen::Matrix<typename Derived::Scalar, Eigen::Dynamic, Eigen::Dynamic> scalevan = vander(tmp_s, deg+1);
 
         //solve the system
-        auto sol = lstsq(van, y);
+        Eigen::Matrix<typename Derived::Scalar, Eigen::Dynamic, 1> sol = lstsq(van, y);
 
         //effective scaling back.
         sol.array() /= scalevan.transpose().array();

@@ -30,7 +30,7 @@ public:
     bool save(const std::string &fname, const spcSerializableObject::ConstPtr obj)
     {
         try {
-        std::ofstream ofs(fname);
+        std::ofstream ofs(fname.c_str());
         boost::archive::xml_oarchive oa(ofs);
         oa << BOOST_SERIALIZATION_NVP(obj);
         ofs.close();
@@ -50,7 +50,7 @@ public:
 
         try {
             spc::spcSerializableObject::Ptr tmp;
-            std::ifstream ifs(fname);
+            std::ifstream ifs(fname.c_str());
             boost::archive::xml_iarchive ia(ifs);
 
             ia >> BOOST_SERIALIZATION_NVP(tmp);

@@ -8,7 +8,7 @@ namespace spc
 
 
 template<typename ScalarT>
-KernelSmoothing<ScalarT>::KernelSmoothing() : weights_(0), step_(1.0), bandwidth_(1.0)
+KernelSmoothing<ScalarT>::KernelSmoothing() :  step_(1.0), weights_(0), bandwidth_(1.0)
 {
 
     //defaults
@@ -224,8 +224,10 @@ KernelSmoothing<ScalarT>::getExternalWeightsForIds(const idvType ids, vType &wei
     weights.resize(ids.size());
 
     size_t counter = 0;
-    for (auto id: ids)
+    BOOST_FOREACH (int id, ids)
+    {
         weights.at(counter++) = this->weights_.at(id);
+    }
 }
 
 template<typename ScalarT>

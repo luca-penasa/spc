@@ -95,17 +95,7 @@ public:
     /// \brief getX
     /// \return a vector of the x positions
     ///
-    inline virtual std::vector<ScalarT> getX() const
-    {
-        std::vector<ScalarT> x(this->y_.size());
-        int counter = 0;
-        for (auto &x_pos: x)
-            x_pos = counter++ * x_step + x_start;
-
-        return x;
-    }
-
-
+    virtual std::vector<ScalarT> getX() const;
 
 
     ///

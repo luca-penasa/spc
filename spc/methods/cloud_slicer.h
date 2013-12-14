@@ -42,7 +42,7 @@ private:
     int field_id_;
     std::string field_name_;
 
-    std::vector<std::vector<int>> all_indices_;
+    std::vector<std::vector<int> > all_indices_;
 
 };
 

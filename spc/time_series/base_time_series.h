@@ -42,15 +42,8 @@ public:
     }
 
     /// by default will generate in -1 to 1 range
-    void fillRandomY(ScalarT min=-1, ScalarT max=1)
-    {
+    void fillRandomY(ScalarT min=-1, ScalarT max=1);
 
-        boost::random::random_device rng;
-        boost::random::uniform_real_distribution<> index_dist(min, max);
-
-        for (auto& y: this->getY())
-            y = index_dist(rng) ;
-    }
 
     ///
     /// \brief getNumberOfSamples in time series

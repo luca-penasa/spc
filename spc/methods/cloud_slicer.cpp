@@ -11,6 +11,11 @@
 
 #include <pcl/filters/extract_indices.h>
 
+#include <spc/common/std_helpers.h>
+
+
+#include <algorithm>
+
 //forced instantiation
 template class pcl::search::FlannSearch<PointScalar>;
 template class pcl::search::Search<PointScalar>;
@@ -65,19 +70,19 @@ CloudSerializedSlicerOnField::compute()
     search_tree.setInputCloud(scalar_cloud);
 
     // get max and min of this scalar field
-    PointScalar min = *std::min_element(scalar_cloud->begin(), scalar_cloud->end(), [&](const PointScalar &a, const PointScalar &b){return a.scalar < b.scalar;} );
-    PointScalar max = *std::max_element(scalar_cloud->begin(), scalar_cloud->end(), [&](const PointScalar &a, const PointScalar &b){return a.scalar < b.scalar;} );
 
-    float min_s = min.scalar;
-    float max_s = max.scalar;
+    ////// MUST BE REWRITTEN FOR BACK_COMAPTIBILITY WITH NO C++11
+    PointScalar min;/* = *std::min_element(scalar_cloud->begin(), scalar_cloud->end(), [&](const PointScalar &a, const PointScalar &b){return a.scalar < b.scalar;} );*/
+    PointScalar max;/* = *std::max_element(scalar_cloud->begin(), scalar_cloud->end(), [&](const PointScalar &a, const PointScalar &b){return a.scalar < b.scalar;} );*/
 
+
+    ////////////// CHECK ALSO THIS
     //now subdivide this range in equally spaced positions.
-    auto intervals = subdivideRange<float>( min.scalar, max.scalar, slice_step_);
-
-    std::vector<std::vector<int>> all_indices;
+    std::vector<float> intervals = subdivideRange<float>( min.scalar, max.scalar, slice_step_);
 
 
-    for (auto pos: intervals)
+
+    BOOST_FOREACH(float pos, intervals)
     {
         std::vector<int> indices;
         std::vector<float> dist;

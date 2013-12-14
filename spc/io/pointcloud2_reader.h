@@ -44,7 +44,7 @@ public:
     void resetInputs() {in_cloud_ = boost::shared_ptr<pcl::PCLPointCloud2>();}
 #endif
     template <typename ScalarT>
-    auto getScalarFieldAsStdVector(std::string &field_name) -> std::vector<ScalarT> * ;
+    typename std::vector<ScalarT> * getScalarFieldAsStdVector(std::string &field_name);
 
     std::vector<rgb_type> getRGB();
 

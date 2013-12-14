@@ -8,7 +8,7 @@ namespace spc
 
 
 template <typename ScalarT>
-auto PointCloud2Reader::getScalarFieldAsStdVector(std::string &field_name) -> std::vector<ScalarT> *
+std::vector<ScalarT> * PointCloud2Reader::getScalarFieldAsStdVector(std::string &field_name)
 {
 
     this->fillIndicesIfNeeded();
@@ -40,9 +40,10 @@ auto PointCloud2Reader::getScalarFieldAsStdVector(std::string &field_name) -> st
 
         if (size == sizeof(ScalarT)) //simple copy!
         {
-            for (auto i: indices_)
+            BOOST_FOREACH (int i, indices_)
+            {
                 memcpy(out_vector->data() + count++, in_cloud_->data.data() + i*point_step + offset, sizeof(ScalarT));
-
+            }
         }
         else //we MUST get a cast to make the data fit!
         {
@@ -50,7 +51,7 @@ auto PointCloud2Reader::getScalarFieldAsStdVector(std::string &field_name) -> st
             if (size == 4) //float or int
             {
                 float data;
-                for (auto i: indices_)
+                BOOST_FOREACH(int i, indices_)
                 {
                     memcpy(&data, in_cloud_->data.data() + i*point_step + offset, sizeof(float));
                     out_vector->at(count++) = (ScalarT) data;
@@ -59,7 +60,7 @@ auto PointCloud2Reader::getScalarFieldAsStdVector(std::string &field_name) -> st
             else if (size == 8) //double
             {
                 double data;
-                for (auto i: indices_)
+                BOOST_FOREACH (int i, indices_)
                 {
                     memcpy(&data, in_cloud_->data.data() + i*point_step + offset, sizeof(double));
                     out_vector->at(count++) = (ScalarT) data;
@@ -132,10 +133,10 @@ std::vector< PointCloud2Reader::rgb_type > PointCloud2Reader::getRGB()
 
 //FORCED INSTANTATIONS
 template
-auto PointCloud2Reader::getScalarFieldAsStdVector(std::string &field_name) -> std::vector<float> *;
+std::vector<float> * PointCloud2Reader::getScalarFieldAsStdVector(std::string &field_name);
 
 template
-auto PointCloud2Reader::getScalarFieldAsStdVector(std::string &field_name) -> std::vector<double> *;
+std::vector<double> * PointCloud2Reader::getScalarFieldAsStdVector(std::string &field_name);
 
 
 } //end nspace

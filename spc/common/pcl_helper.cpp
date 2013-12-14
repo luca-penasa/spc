@@ -121,10 +121,10 @@ fromStdVectorToSensor(const std::vector<std::vector<float> > & std_field, const 
 
 
     int component_id = 0;
-    for (auto &component : std_field) //for each component in the std_field vector
+    BOOST_FOREACH (const std::vector<float> component, std_field) //for each component in the std_field vector
     {
         int point_id = 0;
-        for (auto &p: component) //for each value in this component
+        BOOST_FOREACH (const float p, component) //for each value in this component
         {
             memcpy(out_cloud.data.data() + point_id * out_cloud.point_step + component_id * scalar_size, &p, scalar_size  );
             point_id++;

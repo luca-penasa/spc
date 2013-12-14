@@ -18,7 +18,7 @@ spcAttitude::spcAttitude( const Vector3f &direction, const Vector3f &position): 
 spcAttitude::spcAttitude(const float dipAngle, const float dip, Vector3f position)
 {
 
-    if (dipAngle <= 0.0 | dipAngle >= 90)
+    if ((dipAngle <= 0.0) | (dipAngle >= 90))
         std::cout << "WARN: dipAngle out of bounds. Are you sure?" << std::endl;
 
     Vector3f n = Vector3f::UnitZ(); //is a vertical vector

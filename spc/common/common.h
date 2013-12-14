@@ -13,6 +13,10 @@
 
 #include <Eigen/Core>
 
+#include <boost/foreach.hpp>
+
+void dotest();
+
 namespace spc
 {
 
@@ -104,9 +108,10 @@ getSortingIds(const std::vector<Stype> &v)
     std::vector<pairT> order;
 
     size_t n = 0;
-    for (auto const &e : v)
+    BOOST_FOREACH (const Stype  &e , v)
+    {
         order.push_back ( std::make_pair(n++, (myiter) &e  ) );
-
+    }
     std::sort(order.begin(), order.end(),  [](pairT const& a, pairT const& b) { return *(a.second) < *(b.second); });
 
     std::vector<int> out(order.size());

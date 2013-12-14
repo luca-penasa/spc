@@ -4,6 +4,8 @@
 
 #include <spc/time_series/base_time_series.h>
 #include <pcl/console/print.h>
+
+#include <boost/foreach.hpp>
 namespace spc
 {
 
@@ -28,9 +30,10 @@ public:
 
 
         int c = 0;
-        for (const float x: new_x)
+        BOOST_FOREACH(const float x, new_x)
+        {
             out.at(c++) = getInterpolatedValue(x);
-
+        }
         return out;
     }
 
