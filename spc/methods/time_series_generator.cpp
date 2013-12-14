@@ -39,7 +39,6 @@ TimeSeriesGenerator::compute()
 
     KernelSmoothing2<ScalarT> ks;
 
-
     //and also init the output series
     if (min_x_ != max_x_)
 
@@ -60,10 +59,10 @@ TimeSeriesGenerator::compute()
     ks.setInputSeries(series);
     ks.setBandwidth(bandwidth_);
 
-    int status = ks.compute();
+    ks.compute();
 
 
-    return  status;
+    return 1;
 
 }
 

@@ -17,64 +17,30 @@ public:
 
     typedef boost::shared_ptr<pcl::PointCloud<PointT> > CloudPtrT;
 
-    spcPCLCloud(CloudPtrT cloud)
-    {
-        cloud_ = cloud;
-    }
+    spcPCLCloud(CloudPtrT cloud);
 
-    spcPCLCloud(const pcl::PointCloud<PointT> &cloud)
-    {
-        cloud_ = boost::make_shared<pcl::PointCloud<PointT> > (cloud);
-    }
+    spcPCLCloud(const pcl::PointCloud<PointT> &cloud);
 
-    virtual void getPoint(const int id, float &x, float &y, float &z) const
-    {
-        x = cloud_->at(id).x;
-        y = cloud_->at(id).y;
-        z = cloud_->at(id).z;
-    }
+    virtual void getPoint(const int id, float &x, float &y, float &z) const;
+
+
+    virtual void setPoint(const int id, const float x, const float y, const float z);
+
+
 
     //// we assume here that is a float the value to be extracted
-    virtual void getFieldValue(const int id, const std::string fieldname, float &val)
-    {
+    virtual void getFieldValue(const int id, const std::string fieldname, float &val);
 
-        std::vector<pcl::PCLPointField> fields;
-        int distance_idx = pcl::getFieldIndex (*cloud_, fieldname, fields);
-        if (distance_idx == -1)
-        {
-          PCL_WARN ("[spc::GenericCloud] Unable to find field name in point type.\n");
-          return;
-        }
-
-        const uint8_t* pt_data = reinterpret_cast<const uint8_t*> (&cloud_->points[id]);
-
-        memcpy (&val, pt_data + fields[distance_idx].offset, sizeof (float));
-    }
-
-    virtual bool hasField(const std::string fieldname)
-    {
-        std::vector<pcl::PCLPointField> fields;
-        int distance_idx = pcl::getFieldIndex (*cloud_, fieldname, fields);
-        if (distance_idx == -1)
-            return false;
-        else
-            return true;
-    }
+    virtual bool hasField(const std::string fieldname);
 
 
 
-    virtual int size() const
-    {
-        return cloud_->size();
-    }
+    virtual int size() const;
 
-    virtual void resize(size_t s)
-    {
-        cloud_->resize(s);
-    }
+    virtual void resize(size_t s);
 
 
-private:
+protected:
     // the actual data
     CloudPtrT cloud_;
 };

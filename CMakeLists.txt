@@ -14,8 +14,8 @@ set(SPC_VERSION ${SPC_MAJOR_VERSION}.${SPC_MINOR_VERSION}.${SPC_PATCH_VERSION})
 #supress warnings from PCL about SHOT etc... - not working!
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations")#
 
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++11 -fopenmp -fPIC -lpthread -lgcc_s")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -pipe -std=c++11 -fPIC " )
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++0x -fopenmp -fPIC -lpthread -lgcc_s")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -pipe -std=c++0x -fPIC " )
 ##############################################################################
 
 
@@ -116,7 +116,8 @@ if(BUILD_TESTING_TOOLS)
 endif()
 
 
-
+message("${PCL_DEFINITIONS}")
+message("${PCL_LIBRARIES}")
 
 # The interesting stuff goes here
 # ===============================

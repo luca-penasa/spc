@@ -92,10 +92,14 @@ std::vector<int>
 getSortingIds(const std::vector<Stype> &v)
 {
 //    typedef typename std::vector<Stype>::const_iterator myiter;
-//    typedef typename std::pair<size_t, myiter> pairT ;
 
-    using myiter = decltype(v.begin());
-    using pairT = std::pair<size_t, myiter>;
+
+//    using myiter = decltype(v.begin());
+
+    typedef typename std::vector<Stype>::const_iterator myiter;
+    typedef typename std::pair<size_t, myiter> pairT ;
+
+//    using pairT = std::pair<size_t, myiter>;
 
     std::vector<pairT> order;
 

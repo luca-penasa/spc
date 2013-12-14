@@ -84,6 +84,23 @@ std::vector<float> spcStratigraphicModelBase::getStratigraphicPositions(spcGener
     return out;
 }
 
+std::vector<float> spcStratigraphicModelBase::getStratigraphicPositions(spcGenericCloud::Ptr cloud)
+{
+    std::vector<float> out;
+    out.resize(cloud->size());
+
+    float x, y, z;
+
+    for (int i = 0; i < cloud->size(); ++i)
+    {
+        cloud->getPoint(i, x, y, z);
+        out.at(i) = getStratigraphicPosition(Vector3f(x,y,z));
+    }
+
+    return out;
+}
+
+
 
 
 } //end nspace

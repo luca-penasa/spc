@@ -78,6 +78,7 @@ public:
     virtual std::vector<float> getStratigraphicPositions(spcGenericCloud::Ptr cloud, const std::vector<int> &indices);
 
 
+    virtual std::vector<float> getStratigraphicPositions(spcGenericCloud::Ptr cloud);
 
     //!
     //! \brief getStratigraphicPositions as getStratigraphicPosition but for a whole cloud!
@@ -86,6 +87,7 @@ public:
     //! \return a vector of stratigraphic positions computed according this model
     //!
     virtual std::vector<float> getStratigraphicPositions(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, const std::vector<int> &indices);
+
 
 
 
