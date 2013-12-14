@@ -95,9 +95,9 @@ public:
     /// \brief getX
     /// \return a vector of the x positions
     ///
-    inline virtual typename spc::GenericTimeSeries<ScalarT>::VectorT getX() const
+    inline virtual std::vector<ScalarT> getX() const
     {
-        typename spc::GenericTimeSeries<ScalarT>::VectorT x(this->y_.size());
+        std::vector<ScalarT> x(this->y_.size());
         int counter = 0;
         for (auto &x_pos: x)
             x_pos = counter++ * x_step + x_start;

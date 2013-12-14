@@ -4,8 +4,8 @@
 #include <spc/time_series/sparse_time_series.h>
 #include <spc/time_series/equally_spaced_time_series.h>
 
-#include <flann/flann.h>
 //#include <flann/flann.hpp>
+#include <flann/flann.hpp>
 
 #include <pcl/console/print.h>
 
@@ -35,10 +35,7 @@ public:
     typedef typename flann::Matrix<ScalarT> FLANNMat;
 
 
-    KernelSmoothing2(): step_(1.0), bandwidth_(1.0)
-    {
-
-    }
+    KernelSmoothing2();
 
     void setInputSeries(SparsePtrT in)
     {
@@ -75,6 +72,8 @@ protected:
 
     SparsePtrT sparse_;
     EquallyPtrT out_series_;
+
+    flann::KDTreeSingleIndexParams pars_;
 
     ScalarT bandwidth_;
     ScalarT step_;

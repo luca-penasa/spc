@@ -37,7 +37,7 @@ TimeSeriesGenerator::compute()
 
     SparseTimeSeries<ScalarT>::Ptr series (new SparseTimeSeries<ScalarT> (x_field_, y_field_)); //the input series
 
-    KernelSmoothing2<ScalarT> ks;
+
 
     //and also init the output series
     if (min_x_ != max_x_)
@@ -51,15 +51,15 @@ TimeSeriesGenerator::compute()
     else
     {
         out_series_ = EquallySpacedTimeSeries<ScalarT>::Ptr(new EquallySpacedTimeSeries<ScalarT> (get_min(x_field_), get_max(x_field_), sampling_step_));
-        ks.setStep(sampling_step_);
+        ks_.setStep(sampling_step_);
     }
 
 
-    ks.setOutputSeriesBlank(out_series_);
-    ks.setInputSeries(series);
-    ks.setBandwidth(bandwidth_);
+    ks_.setOutputSeriesBlank(out_series_);
+    ks_.setInputSeries(series);
+    ks_.setBandwidth(bandwidth_);
 
-    ks.compute();
+    ks_.compute();
 
 
     return 1;

@@ -63,7 +63,7 @@ public:
     /// \brief getX positions
     /// \return a vector of x positions
     ///
-    virtual auto getX() const -> vector<ScalarT> = 0;
+    virtual vector<ScalarT> getX() const = 0;
 
     ///
     /// \brief getY values

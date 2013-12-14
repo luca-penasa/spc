@@ -83,21 +83,27 @@ public:
     ///
     /// \brief getMinX get min value of x
     /// \return the minimum value o the x vector
-    /// reimplemented from base class
+    /// reimplemented from base class nan if void
     ///
     virtual ScalarT getMinX() const
     {
-        return *std::min_element(x_.begin(), x_.end());
+        if (!x_.empty())
+            return *std::min_element(x_.begin(), x_.end());
+        else
+            return std::numeric_limits<ScalarT>::quiet_NaN();
     }
 
     ///
     /// \brief getMaxX get max value of x
     /// \return the maximum value o the x vector
-    /// reimplemented from base class
+    /// reimplemented from base class nan if void
     ///
     virtual ScalarT getMaxX()  const
     {
-        return *std::max_element(x_.begin(), x_.end());
+        if (!x_.empty())
+            return *std::max_element(x_.begin(), x_.end());
+        else
+            return std::numeric_limits<ScalarT>::quiet_NaN();
     }
 
 protected:

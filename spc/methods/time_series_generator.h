@@ -9,6 +9,8 @@
 
 #include <spc/stratigraphy/stratigraphic_model_base.h>
 
+#include <spc/methods/kernelsmoothing2.h>
+
 namespace spc
 {
 
@@ -180,6 +182,8 @@ private:
     /// \brief y_data field
     ///
     std::vector<ScalarT> y_field_;
+
+    KernelSmoothing2<ScalarT> ks_;
 };
 
 }//end nspace
