@@ -27,10 +27,16 @@ public:
     }
 
 
-    void setDiscretePoints(spc::GenericTimeSeries<float>::ConstPtr points)
+    void setDiscretePoints(spc::GenericTimeSeries<float>::Ptr points)
     {
         discrete_points_distance_ = points;
     }
+
+    spc::GenericTimeSeries<float>::Ptr getTS()
+    {
+        return discrete_points_distance_;
+    }
+
 
 protected:
 
@@ -56,7 +62,7 @@ protected:
     /// the correction function f(d)= ...
     /// these passing points will be interpolated to get a continous function
     ///
-    spc::GenericTimeSeries<float>::ConstPtr discrete_points_distance_;
+    spc::GenericTimeSeries<float>::Ptr discrete_points_distance_;
 
     /// we need an interpolator to interpolate between points
     /// any derived interpolator from interpolator base is fine
