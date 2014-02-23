@@ -7,7 +7,7 @@
 #include <spc/common/strings.h>
 #include <spc/common/io_helper.h>
 
-#include <spc/methods/linear_interpolator.h>
+//#include <spc/methods/linear_interpolator.h>
 #include <math.h>
 #include <pcl/kdtree/kdtree_flann.h>
 #include <spc/common/pcl_helper.h>

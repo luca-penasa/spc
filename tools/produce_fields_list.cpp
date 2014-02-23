@@ -9,7 +9,7 @@
 
 #include <boost/filesystem.hpp>
 
-#include <spc/methods/linear_interpolator.h>
+//#include <spc/methods/linear_interpolator.h>
 
 #include <math.h>
 

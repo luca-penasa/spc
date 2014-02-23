@@ -94,8 +94,9 @@ int main (int argc, char *argv[])
 
 
     int counter = 0;
-    for (auto point : *points)
+    for (int i = 0; i < points->size(); ++i)
     {
+        pcl::PointXYZ point = points->at(i);
         flann.nearestKSearch(point, 1, indices, distances);
 
 

@@ -7,7 +7,7 @@
 #include <spc/common/strings.h>
 #include <spc/common/io_helper.h>
 
-#include <spc/methods/linear_interpolator.h>
+//#include <spc/methods/linear_interpolator.h>
 
 #include <math.h>
 
@@ -36,8 +36,9 @@ int main (int argc, char ** argv)
     std::vector< pcl::PCLPointField>  fields = cloud.fields;
 
     stdcloudT all_fields;
-    for (auto field : fields)
+    for (int i = 0; i < fields.size(); ++i)
     {
+        pcl::PCLPointField field = fields.at(i);
         stdfieldT this_field = spc::readCompleteFieldToVector<float>(cloud, field.name);
         all_fields.push_back(this_field);
     }

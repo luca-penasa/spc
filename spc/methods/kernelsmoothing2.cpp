@@ -40,9 +40,9 @@ int KernelSmoothing2<ScalarT>::compute()
     std::cout << "started computing 2 " << flann_index_ << std::endl;
 
 
-#ifdef DUSE_OPENMP
-#pragma omp parallel for private (value)
-#endif
+//#ifdef USE_OPENMP
+//    #pragma omp parallel for private (value)
+//#endif
 
     int count = 0;
 

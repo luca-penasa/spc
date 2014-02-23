@@ -7,7 +7,7 @@
 #include <spc/common/strings.h>
 #include <spc/common/io_helper.h>
 
-#include <spc/methods/linear_interpolator.h>
+//#include <spc/methods/linear_interpolator.h>
 
 #include <math.h>
 
@@ -126,6 +126,7 @@ void
 getMeanAndStd(const std::vector<ScalarT> &v, ScalarT &mean, ScalarT &std )
 {
     mean = 0.0f;
+
     for (auto p: v)
         mean += p;
 

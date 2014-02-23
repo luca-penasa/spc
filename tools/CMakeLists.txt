@@ -4,6 +4,7 @@ if(BUILD_MICMAC_RELATED)
     link_directories(${CULTURE_3D_BUILD_DIR}/src)
 endif()
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x" )
 
 
 find_package(PCL REQUIRED)
@@ -55,8 +56,8 @@ target_link_libraries(${MY_TOOLS_PREFIX}compute_sensor_distances ${PCL_LIBRARIES
 # target_link_libraries(test_ks ${PCL_LIBRARIES} ${SPC_LIBRARIES})
 
 
-spc_add_executable(${MY_TOOLS_PREFIX}distance_detrend distance_detrend.cpp)
-target_link_libraries(${MY_TOOLS_PREFIX}distance_detrend ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
+#spc_add_executable(${MY_TOOLS_PREFIX}distance_detrend distance_detrend.cpp)
+#target_link_libraries(${MY_TOOLS_PREFIX}distance_detrend ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 spc_add_executable(${MY_TOOLS_PREFIX}ptx2pcd ptx2pcd.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}ptx2pcd ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
@@ -81,11 +82,11 @@ target_link_libraries(${MY_TOOLS_PREFIX}extract_pois ${PCL_LIBRARIES} ${SPC_LIBR
 spc_add_executable(${MY_TOOLS_PREFIX}compute_normals_eigenvalues compute_normals_eigenvalues.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}compute_normals_eigenvalues ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
-spc_add_executable(${MY_TOOLS_PREFIX}estimate_correction_curve estimate_correction_curve.cpp)
-target_link_libraries(${MY_TOOLS_PREFIX}estimate_correction_curve pcl_search ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
+#spc_add_executable(${MY_TOOLS_PREFIX}estimate_correction_curve estimate_correction_curve.cpp)
+#target_link_libraries(${MY_TOOLS_PREFIX}estimate_correction_curve pcl_search ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
-spc_add_executable(${MY_TOOLS_PREFIX}apply_correction_curve apply_correction_curve.cpp)
-target_link_libraries(${MY_TOOLS_PREFIX}apply_correction_curve pcl_search ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
+#spc_add_executable(${MY_TOOLS_PREFIX}apply_correction_curve apply_correction_curve.cpp)
+#target_link_libraries(${MY_TOOLS_PREFIX}apply_correction_curve pcl_search ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 
 
@@ -109,5 +110,9 @@ target_link_libraries(${MY_TOOLS_PREFIX}merge_classification_results ${PCL_LIBRA
 
 spc_add_executable(${MY_TOOLS_PREFIX}subset_from_geometry subset_from_geometry.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}subset_from_geometry ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
+
+
+spc_add_executable(${MY_TOOLS_PREFIX}get_mean_std_sampling_step get_mean_std_sampling_step.cpp)
+target_link_libraries(${MY_TOOLS_PREFIX}get_mean_std_sampling_step ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 

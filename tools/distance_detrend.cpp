@@ -4,7 +4,7 @@
 #include <spc/methods/nn_interpolator.h>
 #include <spc/common/common.h>
 
-#include <spc/methods/linear_interpolator.h>
+//#include <spc/methods/linear_interpolator.h>
 
 #include <pcl/filters/voxel_grid.h>
 
@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
 
 
     //just some min/max info
-    cout << "min distance: " << min << "  max distance: " << max << endl;
+    std::cout << "min distance: " << min << "  max distance: " << max << std::endl;
 
 
     std::cout << "Computing Kernel smoothing model on subsampled cloud." << std::endl;

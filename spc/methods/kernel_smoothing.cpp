@@ -38,7 +38,7 @@ KernelSmoothing<ScalarT>::compute()
 
     ScalarT value;
     ScalarT variance;
-#ifdef DUSE_OPENMP
+#ifdef USE_OPENMP
     #pragma omp parallel for private (value, variance)
 #endif
     for (int i = 0; i < new_y_.size(); ++i)

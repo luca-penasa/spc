@@ -122,7 +122,7 @@ public:
 
         smoothed_values_.resize(input_->size());
 
-#ifdef DUSE_OPENMP
+#ifdef USE_OPENMP
     #pragma omp parallel for shared (smoothed_values_)
 #endif
         for (int i = 0 ; i < input_->size(); ++i)
