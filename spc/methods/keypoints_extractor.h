@@ -14,7 +14,7 @@
 
 #include <pcl/filters/extract_indices.h>
 #include <pcl/features/normal_3d.h>
-#include <eigen3/Eigen/Core>
+#include <Eigen/Core>
 #include <pcl/ModelCoefficients.h>
 #include <pcl/filters/project_inliers.h>
 

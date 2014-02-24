@@ -4,8 +4,8 @@
 #include <spc/stratigraphy/single_attitude_model.h>
 
 
-#include <eigen3/unsupported/Eigen/NonLinearOptimization>
-#include <eigen3/unsupported/Eigen/NumericalDiff>
+#include <unsupported/Eigen/NonLinearOptimization>
+#include <unsupported/Eigen/NumericalDiff>
 
 #include <iostream>
 

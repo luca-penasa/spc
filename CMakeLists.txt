@@ -1,7 +1,16 @@
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 project(spc)
 
-#################### VERSIONING ###############################################
+
+option(BUILD_WITH_CLANG "Build spc library using clang isntead of gcc." OFF)
+if(BUILD_WITH_CLANG)
+    message("Using Clang as compiler! This may not work properly")
+    set(CMAKE_C_COMPILER "clang")
+    set(CMAKE_CXX_COMPILER "clang++")
+endif()
+
+
+################### VERSIONING ###############################################
 set(SPC_MAJOR_VERSION 0)
 set(SPC_MINOR_VERSION 1)
 set(SPC_PATCH_VERSION 0)
@@ -16,7 +25,7 @@ set(SPC_VERSION ${SPC_MAJOR_VERSION}.${SPC_MINOR_VERSION}.${SPC_PATCH_VERSION})
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++0x -fopenmp -fPIC -lpthread -lgcc_s")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -pipe -std=c++0x -fPIC -Wall -Wno-sign-compare" )
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++0x -Wall -Wno-long-long -pedantic" )
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -Wall -Wno-sign-compare" )
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -Wall -Wno-sign-compare -std=c++11" )
 
 
 ##############################################################################
@@ -24,10 +33,10 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -Wall -Wno-sign-compare" )
 
 FIND_PACKAGE( OpenMP REQUIRED)
 if(OPENMP_FOUND)
-message("OPENMP FOUND")
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+    message("OPENMP FOUND")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
 endif()
 
 #find_package(OpenMP)
