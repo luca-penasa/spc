@@ -13,7 +13,7 @@ std::vector<ScalarT> * PointCloud2Reader::getScalarFieldAsStdVector(std::string 
 
     this->fillIndicesIfNeeded();
 
-    std::vector<ScalarT> * out_vector = new std::vector<ScalarT>(indices_.size());
+    auto out_vector = new std::vector<ScalarT>(indices_.size());
 
 #ifdef QGEO
     if (in_cloud_ != 0) //sensor_msgs cloud!
@@ -23,7 +23,7 @@ std::vector<ScalarT> * PointCloud2Reader::getScalarFieldAsStdVector(std::string 
         if (id == -1)
         {
             pcl::console::print_error("Requested scalar field in pointcloud2reader not exists!");
-            return 0; //return a null pointer
+            return nullptr;  // return a null pointer
         }
 
         //now we get all the infos about this field
@@ -69,8 +69,7 @@ std::vector<ScalarT> * PointCloud2Reader::getScalarFieldAsStdVector(std::string 
             else //something went wrong
             {
                 pcl::console::print_error("something wrong in the pointcloud2 reader! - wrong sized of fields");
-                return 0;
-
+                return nullptr;
             }
 
         }

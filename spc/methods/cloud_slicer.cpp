@@ -25,7 +25,10 @@ struct PointScalarPointRep: public pcl::PointRepresentation<PointScalar>
     PointScalarPointRep() { this->nr_dimensions_ = 1; }
     /** \brief Empty destructor */
     virtual ~PointScalarPointRep() {}
-    virtual void copyToFloatArray (const PointScalar& p, float* out) const { memcpy(out, &p.scalar, sizeof(float)); }
+    virtual void copyToFloatArray(const PointScalar& p, float* out) const
+        override {
+      memcpy(out, &p.scalar, sizeof(float));
+    }
 };
 
 

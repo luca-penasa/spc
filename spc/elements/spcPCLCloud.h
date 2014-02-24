@@ -21,24 +21,21 @@ public:
 
     spcPCLCloud(const pcl::PointCloud<PointT> &cloud);
 
-    virtual void getPoint(const int id, float &x, float &y, float &z) const;
+    virtual void getPoint(const int id, float &x, float &y, float &z) const
+        override;
 
-
-    virtual void setPoint(const int id, const float x, const float y, const float z);
-
-
+    virtual void setPoint(const int id, const float x, const float y,
+                          const float z) override;
 
     //// we assume here that is a float the value to be extracted
-    virtual void getFieldValue(const int id, const std::string fieldname, float &val);
+    virtual void getFieldValue(const int id, const std::string fieldname,
+                               float &val) override;
 
-    virtual bool hasField(const std::string fieldname);
+    virtual bool hasField(const std::string fieldname) override;
 
+    virtual int size() const override;
 
-
-    virtual int size() const;
-
-    virtual void resize(size_t s);
-
+    virtual void resize(size_t s) override;
 
 protected:
     // the actual data

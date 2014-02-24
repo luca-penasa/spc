@@ -1,3 +1,4 @@
 build*
 *.user
 doc
+*.autosave

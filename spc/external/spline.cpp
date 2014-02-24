@@ -34,7 +34,7 @@ void magnet::math::Spline::generate()
             testPassed = true;
             std::sort(base::begin(), base::end());
 
-            for (base::iterator iPtr = base::begin(); iPtr != base::end() - 1; ++iPtr)
+            for (auto iPtr = base::begin(); iPtr != base::end() - 1; ++iPtr)
                 if (iPtr->first == (iPtr+1)->first)
                 {
                     if ((iPtr+1)->first != 0)

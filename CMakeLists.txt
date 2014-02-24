@@ -9,6 +9,7 @@ if(BUILD_WITH_CLANG)
     set(CMAKE_CXX_COMPILER "clang++")
 endif()
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 ################### VERSIONING ###############################################
 set(SPC_MAJOR_VERSION 0)

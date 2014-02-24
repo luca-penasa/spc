@@ -15,14 +15,11 @@ class InterpolatorSimpleSpline : public InterpolatorBase
 public:
     InterpolatorSimpleSpline();
 
-    virtual float getInterpolatedValue(const float x_val)
-    {
+    virtual float getInterpolatedValue(const float x_val) override {
         return spline_(x_val);
     }
 
-
-    virtual int updateInternals()
-    {
+    virtual int updateInternals() override {
         // clear current
         spline_ = magnet::math::Spline();
 

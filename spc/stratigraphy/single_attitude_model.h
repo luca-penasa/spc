@@ -52,9 +52,11 @@ public:
 
 
     /// inherited from StratigraphicModelBase
-    virtual float getStratigraphicPosition(const Vector3f &point) const;
+    virtual float getStratigraphicPosition(const Vector3f &point) const
+        override;
 
-    virtual Vector3f getStratigraphicNormal(const Vector3f &point) const ;
+    virtual Vector3f getStratigraphicNormal(const Vector3f &point) const
+        override;
 
     Vector3f getPointAtStratigraphicPosition(float sp) const
     {

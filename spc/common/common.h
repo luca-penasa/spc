@@ -55,7 +55,7 @@ void fill_nan_rbf(std::vector<nType> &x, std::vector<nType> &y)
     // get nans ids
     std::vector<int> nans_id = get_nans_id(y);
 
-    for (int i = 0; i < nans_id.size(); ++i) {
+    for (auto &elem : nans_id) {
     }
 
     // remove this ids from the original dataset
@@ -68,8 +68,8 @@ void fill_nan_rbf(std::vector<nType> &x, std::vector<nType> &y)
     rbf.setInputValues(y_stripped);
     rbf.updateAll();
 
-    for (int i = 0; i < nans_id.size(); ++i) {
-        int this_id = nans_id[i];
+    for (auto &elem : nans_id) {
+      int this_id = elem;
         nType this_x_position = x[this_id];
         Eigen::Matrix<nType, Eigen::Dynamic, 1> x_point;
         x_point.resize(1);

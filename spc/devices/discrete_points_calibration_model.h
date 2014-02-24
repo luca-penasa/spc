@@ -18,8 +18,7 @@ public:
 
     DiscretePointsCalibrationModel();
 
-    virtual float getDistanceCorrection(const float &distance)
-    {
+    virtual float getDistanceCorrection(const float &distance) override {
         if (!interpolator_)
             setUpInterpolator();
 
