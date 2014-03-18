@@ -67,7 +67,7 @@ public:
     // is automatically called after setting input
     virtual int updateInternals()
     {
-        //nothing in this abstract class
+        //nothing in this abstract class        
     }
 
 

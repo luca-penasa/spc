@@ -3,7 +3,6 @@
 
 #include <spc/stratigraphy/single_attitude_model.h>
 
-
 #include <unsupported/Eigen/NonLinearOptimization>
 #include <unsupported/Eigen/NumericalDiff>
 
@@ -12,31 +11,38 @@
 namespace spc
 {
 
-
-/// a templated version of the generic functor to be used in nonlinear optimizations
-template<typename _Scalar, int NX=Dynamic, int NY=Dynamic>
-struct Functor
+/// a templated version of the generic functor to be used in nonlinear
+/// optimizations
+template <typename _Scalar, int NX = Dynamic, int NY = Dynamic> struct Functor
 {
-  typedef _Scalar Scalar;
-  enum {
-    InputsAtCompileTime = NX,
-    ValuesAtCompileTime = NY
-  };
-  typedef Eigen::Matrix<Scalar,InputsAtCompileTime,1> InputType;
-  typedef Eigen::Matrix<Scalar,ValuesAtCompileTime,1> ValueType;
-  typedef Eigen::Matrix<Scalar,ValuesAtCompileTime,InputsAtCompileTime> JacobianType;
+    typedef _Scalar Scalar;
+    enum {
+        InputsAtCompileTime = NX,
+        ValuesAtCompileTime = NY
+    };
+    typedef Eigen::Matrix<Scalar, InputsAtCompileTime, 1> InputType;
+    typedef Eigen::Matrix<Scalar, ValuesAtCompileTime, 1> ValueType;
+    typedef Eigen::Matrix
+        <Scalar, ValuesAtCompileTime, InputsAtCompileTime> JacobianType;
 
-  const int m_inputs, m_values;
+    const int m_inputs, m_values;
 
-  Functor() : m_inputs(InputsAtCompileTime), m_values(ValuesAtCompileTime) {}
-  Functor(int inputs, int values) : m_inputs(inputs), m_values(values) {}
+    Functor() : m_inputs(InputsAtCompileTime), m_values(ValuesAtCompileTime)
+    {
+    }
+    Functor(int inputs, int values) : m_inputs(inputs), m_values(values)
+    {
+    }
 
-  int inputs() const { return m_inputs; }
-  int values() const { return m_values; }
-
+    int inputs() const
+    {
+        return m_inputs;
+    }
+    int values() const
+    {
+        return m_values;
+    }
 };
-
-
 
 ///
 /// \brief The SinglePlaneModelFromMultiCloudEstimator class
@@ -44,21 +50,22 @@ struct Functor
 class AttitudeEstimator
 {
 public:
-
     typedef pcl::PointXYZ PointT;
     typedef pcl::PointCloud<PointT> CloudT;
     typedef CloudT::Ptr CloudPtrT;
 
     typedef typename boost::shared_ptr<AttitudeEstimator> Ptr;
 
-    ///def const
+    /// def const
     AttitudeEstimator();
 
     ///
-    /// \brief getEstimatedAttitude return the current attitude as estimated by the estimator
+    /// \brief getEstimatedAttitude return the current attitude as estimated by
+    /// the estimator
     /// \return an spcAttitude object
     /// \note that the positioning of this attitude is centered at origin
-    /// please use getEstimatedAttitudes() for having an attitude for each input cloud.
+    /// please use getEstimatedAttitudes() for having an attitude for each input
+    /// cloud.
     ///
     spcAttitude::Ptr getEstimatedAttitude()
     {
@@ -67,7 +74,8 @@ public:
 
     ///
     /// \brief getEstimatedAttitudes
-    /// \return  a vector of attitudes. each centered in the centroid of its parent cloud.
+    /// \return  a vector of attitudes. each centered in the centroid of its
+    /// parent cloud.
     ///
     std::vector<spcAttitude> getEstimatedAttitudes();
 
@@ -75,11 +83,14 @@ public:
     /// \brief getEstimatedSingleAttitudeModel
     /// \return the model correspondent to the estimated attitude/s
     ///
-    spcSingleAttitudeModel getEstimatedSingleAttitudeModel() {return model_;}
-
+    spcSingleAttitudeModel getEstimatedSingleAttitudeModel()
+    {
+        return model_;
+    }
 
     ///
-    /// \brief addInputCloud this method require 1 or more clouds t be used for estimtion
+    /// \brief addInputCloud this method require 1 or more clouds t be used for
+    /// estimtion
     /// \param cloud is the input cloud
     ///
     void addInputCloud(const CloudPtrT cloud);
@@ -100,7 +111,7 @@ private:
     /// a usable functor based on float
     struct my_functor : Functor<float>
     {
-        my_functor(AttitudeEstimator * est): Functor<float>(3,3)
+        my_functor(AttitudeEstimator *est) : Functor<float>(3, 3)
         {
             estimator_ = est;
         }
@@ -120,27 +131,27 @@ private:
         }
 
         /// a pointer to the estimator itself
-        AttitudeEstimator * estimator_;
+        AttitudeEstimator *estimator_;
     };
 
-
-
-
     ///
-    /// \brief initializeModel produce an initial estimate of the model via linear system solving
+    /// \brief initializeModel produce an initial estimate of the model via
+    /// linear system solving
     /// it averages the normals of the best fitting planes for each input cloud
     ///
     void initializeModel();
 
     ///
-    /// \brief updateSPs updates the stratigraphi positions for each point of the cloud
+    /// \brief updateSPs updates the stratigraphi positions for each point of
+    /// the cloud
     /// usin the normal of defined in he current model
     ///
     void updateSPs();
 
     ///
     /// \brief computeAveragedSPs: for each cloud associates an average sp
-    /// deriving from the average of the SPs of the points contained by the cloud
+    /// deriving from the average of the SPs of the points contained by the
+    /// cloud
     ///
     void computeAveragedSPs();
 
@@ -157,19 +168,17 @@ private:
     spcSingleAttitudeModel model_;
 
     /// stratigraphic position for each point into the clouds
-    std::vector<std::vector<float> > s_positions_;
+    std::vector<std::vector<float>> s_positions_;
 
     /// the sp for each cloud, estimted from the model
     std::vector<float> est_s_positions_;
 
     /// model to observation distance for each point into  the clouds
-    std::vector<std::vector<float> > sq_deviations_;
+    std::vector<std::vector<float>> sq_deviations_;
 
     /// a vector with the centroids of each cloud
     std::vector<Vector3f> centroids_;
 };
-
-
 }
 
 #endif // SINGLE_PLANE_MODEL_FROM_MULTI_CLOUD_ESTIMATOR_H

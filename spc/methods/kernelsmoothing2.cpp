@@ -6,9 +6,9 @@ namespace spc
 
 
 template <typename ScalarT>
-KernelSmoothing2<ScalarT>::KernelSmoothing2(): step_(1.0), bandwidth_(1.0), pars_(15)
+KernelSmoothing2<ScalarT>::KernelSmoothing2(): step_(1.0), bandwidth_(1.0)
 {
-
+    pars_["leaf_max_size"] = 15;
 }
 
 
