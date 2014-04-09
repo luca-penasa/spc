@@ -32,7 +32,7 @@ macro(spc_add_library)
     file(GLOB QRCS *.qrc) #qt resources ?
 
     set(sources ${SOURCES} ${HEADERS} ${IMPLS} ${HEADERS_MOC} ${HEADERS_UIS} ${QRCS_RES})
-    set(libs ${SPC_LIBRARIES} ${PCL_LIBRARIES} ${additional_libs})
+    set(libs ${SPC_LIBRARIES} ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES} ${PCL_FILTERS_LIBRARIES} ${PCL_FEATURES_LIBRARIES} ${additional_libs} ${})
     spc_compile_and_link(spc_${libname} "${sources}" "${libs}")
     spc_set_properties_public_header({${HEADERS}})
 
@@ -55,7 +55,9 @@ endmacro()
 macro(spc_install_target_library_libs libname)
     install(TARGETS "${libname}"
             EXPORT SpcTargets
-            LIBRARY DESTINATION "${INSTALL_LIB_DIR}" COMPONENT shlib
+            ARCHIVE DESTINATION lib
+            LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
+            COMPONENT shlib
             PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/spc/${libname}")
 endmacro()
 

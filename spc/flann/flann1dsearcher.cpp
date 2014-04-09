@@ -2,6 +2,8 @@
 #include <flann/flann.hpp>
 
 
+namespace spc {
+
 
 
 template<typename ScalarT>
@@ -21,3 +23,4 @@ template class Flann1DSearcher<float>;
 template class Flann1DSearcher<double>;
 
 
+}

@@ -1,8 +1,10 @@
-#ifndef FLANN1DSEARCHER_H
-#define FLANN1DSEARCHER_H
+#ifndef SPC_FLANN1DSEARCHER_H
+#define SPC_FLANN1DSEARCHER_H
 
 #include <boost/shared_ptr.hpp>
 #include <flann/flann.hpp>
+
+namespace spc {
 
 
 
@@ -31,6 +33,6 @@ protected:
 
 
 
+} //end nspace
 
-
-#endif // FLANN1DSEARCHER_H
+#endif // SPC_FLANN1DSEARCHER_H

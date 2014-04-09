@@ -1,5 +1,5 @@
-#ifndef SALVABLE_OBJECT_H
-#define SALVABLE_OBJECT_H
+#ifndef SPC_SALVABLE_OBJECT_H
+#define SPC_SALVABLE_OBJECT_H
 
 #include <strstream>
 
