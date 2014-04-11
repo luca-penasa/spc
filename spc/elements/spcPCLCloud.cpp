@@ -1,6 +1,7 @@
 #include "spcPCLCloud.h"
 
 
+
 namespace spc
 {
 

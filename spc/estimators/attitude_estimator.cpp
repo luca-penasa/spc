@@ -30,7 +30,7 @@ void AttitudeEstimator::initializeModel()
 
     std::vector<Vector3f> normals;
 
-    for (auto &elem : clouds_) {
+    for each (auto &elem in clouds_) {
       CloudPtrT cloud = elem;
         if (cloud->size() < 3)
             continue;

@@ -54,6 +54,7 @@ set(PCL_DEFINITIONS "") #my definitions
 ############################# OPTIONS ######################################################################
 option(BUILD_SPC_SHARED "Build spc library as a shared lib." ON)
 option(BUILD_TOOLS "Build the tools." OFF)
+option(BUILD_TOOLS "Build really experimental staff." OFF)
 option(BUILD_SANDBOX_TOOLS "Build sandbox tools." OFF)
 option(BUILD_MICMAC_RELATED "Build MICMAC-related code." OFF)
 option(BUILD_PYTHON_WRAPPINGS "Build python interface for the library. Only some classes have been wrapped!" OFF)
@@ -95,6 +96,13 @@ message("${PCL_INCLUDE_DIRS}")
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
 ##################################################################################################
+
+message("TESTING PCL !")
+#define the PCL_VER_1_6_OR_OLDER preprocessor to compile qPCL with older versions of PCL
+if ( PCL_VERSION VERSION_LESS  1.7 ) # VERSION_GREATER Works just like "greater or equal"        		
+		message("You are using PCL 1.6 - the 1.7 is out !")
+		set(SPC_DEFINITIONS ${SPC_DEFINITIONS} "-DPCL_VER_LESS_1_7")
+endif()
 
 #add custom functions and macros
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/functions.cmake)

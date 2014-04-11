@@ -8,8 +8,8 @@
 #include <pcl/point_cloud.h>
 #include <pcl/io/pcd_io.h>
 
-#include <pcl/PCLPointCloud2.h>
 
+#include <spc\common\common.h>
 
 #include <string>
 #include <iostream>

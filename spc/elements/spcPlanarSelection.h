@@ -18,11 +18,11 @@ class spcPlanarSelection: public spcElementBase
 {
 public:
 
-    typedef typename boost::shared_ptr<spcPlanarSelection> Ptr;
-    typedef typename boost::shared_ptr<const spcPlanarSelection> ConstPtr;
+    typedef boost::shared_ptr<spcPlanarSelection> Ptr;
+    typedef boost::shared_ptr<const spcPlanarSelection> ConstPtr;
 
 
-    typedef typename pcl::PointCloud<pcl::PointXYZ> cloudT;
+    typedef pcl::PointCloud<pcl::PointXYZ> cloudT;
 
     spcPlanarSelection();
 
@@ -178,7 +178,7 @@ protected:
         pcl::console::print_info("there are %i initial poly verts\n", verts_3d_->size());
         pcl::PointCloud<pcl::PointXYZ> projected = spcPCLCloud<pcl::PointXYZ>(verts_3d_).applyTransform(proj_plane_.get2DArbitraryRefSystem());
 
-        for (auto &elem : projected) {
+        for each (auto &elem in projected) {
             pcl::PointXY p2d;
             pcl::PointXYZ p3d;
             p3d = elem;

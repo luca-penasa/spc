@@ -29,7 +29,7 @@ template <typename ScalarT>
 std::vector<ScalarT>
 readFieldToVector(const pcl::PCLPointCloud2 &cloud,
                        const std::string &fieldname,
-                       const uint count /*= 0*/) //some fields may have higher multiplicity than 1
+                       const unsigned int count /*= 0*/) //some fields may have higher multiplicity than 1
 {
     size_t n_points = cloud.height * cloud.width;
     std::vector<ScalarT> out_vector (n_points); //allocate n_points for this scalar
@@ -41,9 +41,9 @@ readFieldToVector(const pcl::PCLPointCloud2 &cloud,
 
     //get fields and related infos
     pcl::PCLPointField field = cloud.fields.at( pcl::getFieldIndex(cloud, fieldname) );
-    //uint field_count = field.count;
-    uint field_size = pcl::getFieldSize(field.datatype);
-    uint field_offset = field.offset;
+    //unsigned int field_count = field.count;
+    unsigned int field_size = pcl::getFieldSize(field.datatype);
+    unsigned int field_offset = field.offset;
 
     //cycle on the whole cloud
 
@@ -61,7 +61,7 @@ readCompleteFieldToVector(const pcl::PCLPointCloud2 &cloud, const std::string &f
 {
 
     pcl::PCLPointField field = cloud.fields.at( pcl::getFieldIndex(cloud, fieldname) );
-    uint field_count = field.count;
+    unsigned int field_count = field.count;
 
     std::vector< std::vector<ScalarT> > out_vector(field_count);
 
@@ -80,8 +80,8 @@ fromStdVectorToSensor(const std::vector<std::vector<float> > & std_field, const 
     pcl::PCLPointCloud2 out_cloud;
 
 
-    uint scalar_size =  sizeof(float);
-    uint scalar_type;
+    unsigned int scalar_size =  sizeof(float);
+    unsigned int scalar_type;
 
     if (scalar_size == 4) //see io.h of pcl
         scalar_type = 7;
@@ -89,8 +89,8 @@ fromStdVectorToSensor(const std::vector<std::vector<float> > & std_field, const 
         scalar_type = 8;
 
 
-    uint field_count = std_field.size();
-    uint n_points = std_field.at(0).size();
+    unsigned int field_count = std_field.size();
+    unsigned int n_points = std_field.at(0).size();
 
     pcl::PCLPointField field;
     field.count = field_count;
@@ -112,6 +112,8 @@ fromStdVectorToSensor(const std::vector<std::vector<float> > & std_field, const 
     out_cloud.data.resize(n_points *  out_cloud.point_step);
 
 //    out_cloud.header.
+
+	
 
     pcl::PCLHeader header;
     header.seq = 0;

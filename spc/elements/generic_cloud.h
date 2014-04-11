@@ -6,6 +6,10 @@
 #include <pcl/point_types.h>
 //#include <pcl/PCLPointCloud2.h>
 #include <pcl/io/io.h>
+
+#include <spc/common/common.h>
+
+
 namespace spc
 {
 
@@ -16,8 +20,8 @@ class spcGenericCloud: public spcElementBase
 {
 public:
 
-    typedef typename boost::shared_ptr<spcGenericCloud> Ptr;
-    typedef typename boost::shared_ptr<const spcGenericCloud> ConstPtr;
+    typedef boost::shared_ptr<spcGenericCloud> Ptr;
+    typedef boost::shared_ptr<const spcGenericCloud> ConstPtr;
 
 
     spcGenericCloud();

@@ -7,6 +7,9 @@
 #include <boost/interprocess/sync/file_lock.hpp>
 #include <boost/filesystem.hpp>
 
+
+#include <spc/common/common.h>
+
 namespace spc
 {
 template<typename ScalarT>
@@ -51,7 +54,7 @@ TimeSeriesWriter<ScalarT>::writeAsciiAsSparse()
         val_x = x.at(i);
         val_y = y.at(i);
 
-        if (std::isnan(val_x))
+        if (isnan(val_x))
             stream << "nan";
         else
             stream << val_x;
@@ -59,7 +62,7 @@ TimeSeriesWriter<ScalarT>::writeAsciiAsSparse()
         // the separator!
         stream << separator_.c_str();
 
-        if (std::isnan(val_y))
+        if (isnan(val_y))
             stream << "nan";
         else
             stream << val_y;

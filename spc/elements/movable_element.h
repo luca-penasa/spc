@@ -16,8 +16,8 @@ class spcMovableElement: public spcElementBase
 {
 public:
 
-    typedef typename boost::shared_ptr<spcMovableElement> Ptr;
-    typedef typename boost::shared_ptr<const spcMovableElement> ConstPtr;
+    typedef boost::shared_ptr<spcMovableElement> Ptr;
+    typedef boost::shared_ptr<const spcMovableElement> ConstPtr;
 
 
     spcMovableElement();

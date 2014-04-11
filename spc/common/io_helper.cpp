@@ -1,6 +1,8 @@
 #include "io_helper.h"
 #include <pcl/io/pcd_io.h>
 
+#include <spc/common/common.h>
+
 
 //using namespace pcl::io;
 using namespace pcl::console;

@@ -12,8 +12,8 @@ class spcNormal3D: public spcElementBase
 {
 public:
 
-    typedef typename boost::shared_ptr<spcNormal3D> Ptr;
-    typedef typename boost::shared_ptr<const spcNormal3D> ConstPtr;
+    typedef boost::shared_ptr<spcNormal3D> Ptr;
+    typedef boost::shared_ptr<const spcNormal3D> ConstPtr;
 
 
     spcNormal3D();
