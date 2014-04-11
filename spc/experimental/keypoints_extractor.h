@@ -237,7 +237,7 @@ public:
         }
     }
 
-    std::vector<int> getNeighborsInRadius(float scale, float radius, PointInT point)
+    std::vector<int> getNeighborsInRadius(float scale, float radius, typename PointInT point)
     {
         CloudPtrT cloud = getDownsampledVersion(scale);
         FlannSearchPtrT flann = getFlannSearcher(cloud);

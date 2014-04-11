@@ -7,7 +7,11 @@
 #include <algorithm>
 #include <spc/common/common.h>
 
-#include <pcl/search/impl/search.hpp>
+#ifdef PCL_VER_LESS_1_7
+	#include <pcl/search/impl/flann_search.hpp>
+#else
+	#include <pcl/search/impl/search.hpp>
+#endif
 
 #include <pcl/filters/extract_indices.h>
 

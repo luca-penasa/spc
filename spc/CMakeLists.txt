@@ -11,6 +11,10 @@ add_subdirectory(external)
 add_subdirectory(flann)
 
 
+if(BUILD_EXPERIMENTAL)
+    add_subdirectory(experimental)
+endif()
+
 
 if (BUILD_PYTHON_WRAPPINGS)
     add_subdirectory(python_interface)

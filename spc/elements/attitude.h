@@ -17,8 +17,8 @@ class spcAttitude: public spcPlane
 {
 public:
 
-    typedef typename boost::shared_ptr<spcAttitude> Ptr;
-    typedef typename boost::shared_ptr<const spcAttitude> ConstPtr;
+    typedef boost::shared_ptr<spcAttitude> Ptr;
+    typedef boost::shared_ptr<const spcAttitude> ConstPtr;
 
 
 

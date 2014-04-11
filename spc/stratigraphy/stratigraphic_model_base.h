@@ -26,8 +26,8 @@ class spcStratigraphicModelBase
 {  
 public:
 
-    typedef typename boost::shared_ptr<spcStratigraphicModelBase> Ptr;
-    typedef typename boost::shared_ptr<const spcStratigraphicModelBase> ConstPtr;
+    typedef  boost::shared_ptr<spcStratigraphicModelBase> Ptr;
+    typedef  boost::shared_ptr<const spcStratigraphicModelBase> ConstPtr;
 
     //! Def constructor
     spcStratigraphicModelBase();

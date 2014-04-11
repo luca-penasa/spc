@@ -1,6 +1,10 @@
 #ifndef SPC_COMMON_H
 #define SPC_COMMON_H
 
+#include <boost/math/special_functions/fpclassify.hpp>
+
+#define isnan boost::math::isnan
+
 #include <vector>
 #include <cmath>
 #include <iostream>
@@ -12,7 +16,66 @@
 
 #include <boost/foreach.hpp>
 
+#include <pcl\io/pcd_io.h>
+
 void dotest();
+
+#ifdef PCL_VER_LESS_1_7
+	#include <sensor_msgs/PointCloud2.h>
+
+	namespace pcl
+	{	
+		typedef sensor_msgs::PointCloud2 PCLPointCloud2;
+		typedef sensor_msgs::PointField PCLPointField;
+		typedef std_msgs::Header PCLHeader;
+
+
+		#define fromPCLPointCloud2 fromROSMsg
+		#define toPCLPointCloud2 toROSMsg
+	}
+
+#else
+	#include <pcl/PCLPointCloud2.h>
+#endif
+
+
+#if defined(_WIN32)
+ 
+#include <stdint.h>
+ 
+typedef uint8_t u_int8_t;
+typedef uint16_t u_int16_t;
+typedef uint32_t u_int32_t;
+ 
+#endif
+
+
+//#ifdef PCL_VER_1_6_OR_OLDER
+//
+//#include <pcl/ros/conversions.h>
+//#include <sensor_msgs/PointCloud2.h>
+//#include <sensor_msgs/PointField.h	
+//typedef sensor_msgs::PointCloud2 PCLCloud;
+//typedef sensor_msgs::PointField PCLScalarField;
+//#define FROM_PCL_CLOUD pcl::fromROSMsg
+//#define TO_PCL_CLOUD pcl::toROSMsg
+//
+//#else //Version 1.7.0 or newer
+//
+//#include <pcl/PCLPointCloud2.h>
+//#include <pcl/PCLPointField.h>
+//typedef pcl::PCLPointCloud2 PCLCloud;
+//typedef pcl::PCLPointField PCLScalarField;
+//#define FROM_PCL_CLOUD pcl::fromPCLPointCloud2
+//#define TO_PCL_CLOUD pcl::toPCLPointCloud2
+//
+//#endif
+
+
+
+
+
+
 
 namespace spc
 {

@@ -1,7 +1,7 @@
 #include <spc/io/pointcloud2_reader.h>
 #include <pcl/io/io.h>
 
-#include <pcl/PCLPointField.h>
+#include <spc/common/common.h>
 
 namespace spc
 {

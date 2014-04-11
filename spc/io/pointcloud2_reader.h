@@ -1,7 +1,7 @@
 #ifndef POINTCLOUD2_READER_H
 #define POINTCLOUD2_READER_H
 
-#include <pcl/PCLPointCloud2.h>
+#include <spc/common/common.h>
 
 
 #ifdef QGEO

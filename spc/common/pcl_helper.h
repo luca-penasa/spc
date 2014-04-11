@@ -4,7 +4,7 @@
 #include <iostream>
 #include <fstream>
 
-#include <pcl/PCLPointCloud2.h>
+#include <spc/common/common.h>
 
 #include <pcl/common/io.h>
 
@@ -19,7 +19,7 @@ printHeader(const std::string &filename);
 
 template <typename ScalarT>
 std::vector<ScalarT>
-readFieldToVector(const pcl::PCLPointCloud2 &cloud, const std::string &fieldname, const uint count = 0) ;
+readFieldToVector(const pcl::PCLPointCloud2 &cloud, const std::string &fieldname, const unsigned int count = 0) ;
 
 template<typename ScalarT>
 std::vector< std::vector<ScalarT> >

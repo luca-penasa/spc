@@ -29,8 +29,8 @@ namespace spc
 class spcElementBase: public spcSerializableObject
 {
 public:
-    typedef typename boost::shared_ptr<spcElementBase> Ptr;
-    typedef typename boost::shared_ptr<const spcElementBase> ConstPtr;
+    typedef boost::shared_ptr<spcElementBase> Ptr;
+    typedef boost::shared_ptr<const spcElementBase> ConstPtr;
 
 
     spcElementBase () {}

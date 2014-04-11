@@ -41,7 +41,7 @@ ScalarT
 get_sum(const std::vector<ScalarT> &input)
 {
     ScalarT sum = 0;
-    for (auto &elem : input)
+    for each (auto &elem in input)
       sum += elem;
 
     return sum;

@@ -2,6 +2,9 @@
 #include <spc/common/std_helpers.hpp>
 
 
+#include <spc/common/common.h>
+
+
 namespace spc
 {
 
@@ -46,7 +49,7 @@ KernelSmoothing<ScalarT>::compute()
 
         evaluateKS(new_x_.at(i), value, variance);
 
-        if (!std::isnan(value))
+        if (!isnan(value))
             new_y_nans_[i] = false;
         else
             new_y_nans_[i] = true;

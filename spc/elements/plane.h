@@ -25,8 +25,8 @@ class spcPlane: public spcMovableElement
 public:
 
 
-    typedef typename boost::shared_ptr<spcPlane> Ptr;
-    typedef typename boost::shared_ptr<const spcPlane> ConstPtr;
+    typedef boost::shared_ptr<spcPlane> Ptr;
+    typedef boost::shared_ptr<const spcPlane> ConstPtr;
 
 
 
