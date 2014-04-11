@@ -4,7 +4,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
-#include <math.h> //isnan
+
 #include <boost/algorithm/string/trim.hpp>
 
 namespace spc

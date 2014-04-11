@@ -1,10 +1,6 @@
 #ifndef SPC_COMMON_H
 #define SPC_COMMON_H
 
-#include <boost/math/special_functions/fpclassify.hpp>
-
-#define isnan boost::math::isnan
-
 #include <vector>
 #include <cmath>
 #include <iostream>
@@ -16,7 +12,7 @@
 
 #include <boost/foreach.hpp>
 
-#include <pcl\io/pcd_io.h>
+#include <pcl/io/pcd_io.h>
 
 void dotest();
 
@@ -89,7 +85,7 @@ std::vector<int> get_nans_id(const std::vector<nType> vector)
 {
     std::vector<int> nans_id;
     for (int i = 0; i < vector.size(); ++i) {
-        if (isnan(vector[i])) {
+        if (pcl_isnan(vector[i])) {
             nans_id.push_back(i);
         }
     }

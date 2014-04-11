@@ -49,7 +49,7 @@ KernelSmoothing<ScalarT>::compute()
 
         evaluateKS(new_x_.at(i), value, variance);
 
-        if (!isnan(value))
+        if (!pcl_isnan(value))
             new_y_nans_[i] = false;
         else
             new_y_nans_[i] = true;

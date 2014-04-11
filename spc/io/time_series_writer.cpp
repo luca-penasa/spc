@@ -54,7 +54,7 @@ TimeSeriesWriter<ScalarT>::writeAsciiAsSparse()
         val_x = x.at(i);
         val_y = y.at(i);
 
-        if (isnan(val_x))
+        if (pcl_isnan(val_x))
             stream << "nan";
         else
             stream << val_x;
@@ -62,7 +62,7 @@ TimeSeriesWriter<ScalarT>::writeAsciiAsSparse()
         // the separator!
         stream << separator_.c_str();
 
-        if (isnan(val_y))
+        if (pcl_isnan(val_y))
             stream << "nan";
         else
             stream << val_y;

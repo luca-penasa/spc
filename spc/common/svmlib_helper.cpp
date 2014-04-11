@@ -1,5 +1,5 @@
 #include "svmlib_helper.h"
-#include <boost/math/special_functions/fpclassify.hpp>
+#include <pcl/pcl_macros.h>
 
 namespace spc
 {
@@ -28,7 +28,7 @@ void writeToSVMlibFile(const std::vector<std::vector<std::vector<float> > > &fie
             for (int n = 0 ; n < n_multi; ++n ) //for each component of a field
             {
                 float value = fields.at(f).at(n).at(i);
-                if (boost::math::isnan(value))
+                if (pcl_isnan(value))
                 {
                     complete_field_id++;
                     continue;

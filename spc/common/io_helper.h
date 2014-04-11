@@ -9,7 +9,7 @@
 #include <pcl/io/pcd_io.h>
 
 
-#include <spc\common\common.h>
+#include <spc/common/common.h>
 
 #include <string>
 #include <iostream>
