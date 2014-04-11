@@ -23,6 +23,16 @@ public:
         normal_ = Vector3f(x,y,z);
     }
 
+    spcNormal3D(const Vector3f v)
+    {
+        normal_ = v;
+    }
+
+    /// this project a given 3d point onto the normal
+    Vector3f projectPoint(const Vector3f &point) const
+    {
+        return (this->getUnitNormal() * this->getUnitNormal().dot(point));
+    }
 
     void setNormal(const Vector3f n)
     {
@@ -33,6 +43,8 @@ public:
     {
         *this = n;
     }
+
+
 
     Vector3f getNormal() const
     {
@@ -55,6 +67,12 @@ public:
     void flipNormal()
     {
         normal_ = - normal_;
+    }
+
+    void setUnitAxis(const int ax_id = 2)
+    {
+        normal_.setZero();
+        normal_(ax_id) = 1.0;
     }
 
     void normalFromBestFit(pcl::PointCloud<pcl::PointXYZ> & cloud);

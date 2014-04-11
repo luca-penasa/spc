@@ -106,7 +106,7 @@ public:
         pcl::PointCloud<pcl::PointXYZ> cloud;
         cloud.resize(indices.size());
 
-        BOOST_FOREACH(int id, indices)
+        for (auto id: indices)
         {
             Vector3f point = in_cloud->getPoint(id);
             pcl::PointXYZ p;
