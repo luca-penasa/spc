@@ -6,7 +6,7 @@
 #include <spc/elements/plane.h>
 #include <pcl/io/pcd_io.h> //for debug only
 
-#include <boost/serialization/shared_ptr.hpp>
+//#include <boost/serialization/shared_ptr.hpp>
 #include <boost/foreach.hpp>
 
 namespace spc
@@ -227,14 +227,14 @@ protected:
 
 
 
-    friend class boost::serialization::access;
+//    friend class boost::serialization::access;
 
-    template <class Archive>
-    void serialize(Archive &ar, const unsigned int version)
-    {
-        ar & BOOST_SERIALIZATION_NVP(verts_3d_);
-        ar & BOOST_SERIALIZATION_NVP(max_distance_);
-    }
+//    template <class Archive>
+//    void serialize(Archive &ar, const unsigned int version)
+//    {
+//        ar & BOOST_SERIALIZATION_NVP(verts_3d_);
+//        ar & BOOST_SERIALIZATION_NVP(max_distance_);
+//    }
 
 
 

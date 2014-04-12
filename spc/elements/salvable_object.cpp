@@ -13,4 +13,4 @@ spcSerializableObject::spcSerializableObject()
 }//end nspace
 
 
-BOOST_CLASS_EXPORT_GUID(spc::spcSerializableObject, "spcSerializableObject")
+//BOOST_CLASS_EXPORT_GUID(spc::spcSerializableObject, "spcSerializableObject")

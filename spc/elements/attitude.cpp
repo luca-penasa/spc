@@ -101,4 +101,4 @@ std::string spcAttitude::getDipAndDipAngleAsString() const
 
 
 }//end nspace
-BOOST_CLASS_EXPORT_GUID(spc::spcAttitude, "spcAttitude")
+//BOOST_CLASS_EXPORT_GUID(spc::spcAttitude, "spcAttitude")

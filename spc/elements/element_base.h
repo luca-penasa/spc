@@ -12,10 +12,10 @@
 
 #include <fstream>
 #include <iostream>
-#include <boost/archive/xml_iarchive.hpp>
-#include <boost/archive/xml_oarchive.hpp>
-#include <boost/serialization/string.hpp> // so that boost know how to serialize std::string
-#include <boost/serialization/export.hpp>
+//#include <boost/archive/xml_iarchive.hpp>
+//#include <boost/archive/xml_oarchive.hpp>
+//#include <boost/serialization/string.hpp> // so that boost know how to serialize std::string
+//#include <boost/serialization/export.hpp>
 
 
 #include <boost/foreach.hpp>
@@ -37,13 +37,13 @@ public:
 
 
 protected:
-    friend class boost::serialization::access;
+//    friend class boost::serialization::access;
 
-    template <class Archive>
-    void serialize(Archive &ar, const unsigned int version)
-    {
-        ar & boost::serialization::make_nvp("spcSerializableObject", boost::serialization::base_object<spc::spcSerializableObject> (*this));
-    }
+//    template <class Archive>
+//    void serialize(Archive &ar, const unsigned int version)
+//    {
+//        ar & boost::serialization::make_nvp("spcSerializableObject", boost::serialization::base_object<spc::spcSerializableObject> (*this));
+//    }
 
     std::string getClassName() const
     {

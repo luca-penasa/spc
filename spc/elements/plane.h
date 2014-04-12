@@ -9,7 +9,7 @@
 
 #include <Eigen/Geometry>
 
-#include <boost/serialization/base_object.hpp>
+//#include <boost/serialization/base_object.hpp>
 
 using namespace Eigen;
 namespace spc
@@ -96,14 +96,14 @@ protected:
 
     spcNormal3D normal_;
 
-    friend class boost::serialization::access;
+//    friend class boost::serialization::access;
 
-    template <class Archive>
-    void serialize(Archive &ar, const unsigned int version)
-    {
-        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(spcMovableElement);
-        ar & BOOST_SERIALIZATION_NVP(normal_);
-    }
+//    template <class Archive>
+//    void serialize(Archive &ar, const unsigned int version)
+//    {
+//        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(spcMovableElement);
+//        ar & BOOST_SERIALIZATION_NVP(normal_);
+//    }
 
 
 

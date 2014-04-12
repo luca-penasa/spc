@@ -3,7 +3,7 @@
 
 #include <spc/elements/attitude.h>
 #include <spc/stratigraphy/stratigraphic_model_base.h>
-#include <boost/serialization/shared_ptr.hpp>
+//#include <boost/serialization/shared_ptr.hpp>
 
 namespace spc
 {
@@ -99,16 +99,16 @@ protected:
 
     spcAttitude::Ptr attitude_;
 
-    friend class boost::serialization::access;
+//    friend class boost::serialization::access;
 
-    template <class Archive>
-    void serialize(Archive &ar, const unsigned int version)
-    {
-//        ar & boost::serialization::make_nvp("normal", normal_);
-        ar & BOOST_SERIALIZATION_NVP(additional_shift_);
-        ar & BOOST_SERIALIZATION_NVP(attitude_);
-        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(spcElementBase);
-    }
+//    template <class Archive>
+//    void serialize(Archive &ar, const unsigned int version)
+//    {
+////        ar & boost::serialization::make_nvp("normal", normal_);
+//        ar & BOOST_SERIALIZATION_NVP(additional_shift_);
+//        ar & BOOST_SERIALIZATION_NVP(attitude_);
+//        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(spcElementBase);
+//    }
 
 };
 

@@ -6,6 +6,6 @@ namespace spc
 
 }//end nspace
 
-BOOST_CLASS_EXPORT_GUID(spc::spcElementBase,"spcElementBase")
+//BOOST_CLASS_EXPORT_GUID(spc::spcElementBase,"spcElementBase")
 
 

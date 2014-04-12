@@ -83,15 +83,15 @@ protected:
 
     Vector3f normal_;
 
-    friend class boost::serialization::access;
+//    friend class boost::serialization::access;
 
-    template <class Archive>
-    void serialize(Archive &ar, const unsigned int version)
-    {
-//        ar & boost::serialization::make_nvp("normal", normal_);
-        ar & BOOST_SERIALIZATION_NVP(normal_);
-        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(spcElementBase);
-    }
+//    template <class Archive>
+//    void serialize(Archive &ar, const unsigned int version)
+//    {
+////        ar & boost::serialization::make_nvp("normal", normal_);
+//        ar & BOOST_SERIALIZATION_NVP(normal_);
+//        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(spcElementBase);
+//    }
 
 
 };

@@ -1,11 +1,11 @@
 #include "element_io.h"
 
-namespace spc
-{
+//namespace spc
+//{
 
-spcElementSerializer::spcElementSerializer()
-{
-}
+////spcElementSerializer::spcElementSerializer()
+////{
+////}
 
 
-}
+//}

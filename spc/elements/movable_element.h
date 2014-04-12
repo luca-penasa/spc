@@ -48,15 +48,15 @@ protected:
 
     Vector3f position_;
 
-    friend class boost::serialization::access;
+//    friend class boost::serialization::access;
 
-    template <class Archive>
-    void serialize(Archive &ar, const unsigned int version)
-    {
-        ar & BOOST_SERIALIZATION_NVP( position_);
-        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(spcElementBase);
+//    template <class Archive>
+//    void serialize(Archive &ar, const unsigned int version)
+//    {
+//        ar & BOOST_SERIALIZATION_NVP( position_);
+//        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(spcElementBase);
 
-    }
+//    }
 
 };
 

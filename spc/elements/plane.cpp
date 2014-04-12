@@ -84,4 +84,4 @@ Transform<float, 3, Affine, AutoAlign> spcPlane::get2DArbitraryRefSystem() const
 
 
 }//end nspace
-BOOST_CLASS_EXPORT_GUID(spc::spcPlane, "spcPlane")
+//BOOST_CLASS_EXPORT_GUID(spc::spcPlane, "spcPlane")
