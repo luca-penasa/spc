@@ -1,2 +1,2 @@
-set(additional_libs boost_random)
+set(additional_libs)
 spc_add_library()

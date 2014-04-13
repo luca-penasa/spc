@@ -127,14 +127,14 @@ getMeanAndStd(const std::vector<ScalarT> &v, ScalarT &mean, ScalarT &std )
 {
     mean = 0.0f;
 
-    for (auto p: v)
+    BOOST_FOREACH (auto p, v)
         mean += p;
 
     mean /= v.size();
 
 
     std = 0.0f;
-    for (auto p: v)
+    BOOST_FOREACH (auto p, v)
         std += (p - mean) * (p - mean);
 
     std = sqrt(std/v.size());
@@ -167,7 +167,7 @@ normalizeVector(std::vector<ScalarT> &v, const NORMALIZE_TYPES kind)
                 //estimate mean and std of the scalar field
                 ScalarT mean, std;
                 getMeanAndStd(v, mean, std);
-                for (auto &val: v)
+                BOOST_FOREACH (auto &val, v)
                     val = (val - mean) / std;
 
 
@@ -177,7 +177,7 @@ normalizeVector(std::vector<ScalarT> &v, const NORMALIZE_TYPES kind)
             {
                 ScalarT min, max;
                 getMinMax(v, min, max);
-                for (auto &val: v)
+                BOOST_FOREACH (auto &val, v)
                     val = (val - min) / (max - min);
 
                 break;
@@ -191,7 +191,7 @@ template<typename ScalarT>
 void
 normalizeField(std::vector<std::vector<ScalarT> > & field, const NORMALIZE_TYPES kind)
 {
-    for (auto &f : field)
+    BOOST_FOREACH (auto &f, field)
         normalizeVector(f, kind);
 
     return;
@@ -221,7 +221,7 @@ mergeAll(const vector<pcl::PCLPointCloud2> &clouds)
    pcl::PCLPointCloud2 tmp_cloud;
 
     int c = 0; //counter
-    for (auto cloud: clouds)
+    BOOST_FOREACH (auto cloud, clouds)
     {
         if (c == 0)
         {
@@ -274,10 +274,10 @@ int main(int argc, char ** argv)
     vector<file> files = readConfigFile2(argv[txt_indices[0]]);
 
     print_highlight("Extracting these fields:\n");
-    for (auto file : files)
+    BOOST_FOREACH (auto file, files)
     {
         print_info("Fields to be extracted from cloud %s:\n", file.path_.c_str());
-        for (auto field : file.fields_names_)
+        BOOST_FOREACH (auto field , file.fields_names_)
         {
             print_info("  --> %s\n", field.c_str() );
         }
@@ -290,13 +290,13 @@ int main(int argc, char ** argv)
 
     vector<pcl::PCLPointCloud2> collected_fields;
 
-    for (auto file: files) // for each file
+    BOOST_FOREACH (auto file, files) // for each file
     {
         print_info("Reading %s\n", file.path_.c_str());
         //load it
         pcl::io::loadPCDFile(file.path_, *cloud);
 
-        for (auto field : file.fields_ids_) //for each field to be taken from this cloud
+        BOOST_FOREACH (auto field, file.fields_ids_) //for each field to be taken from this cloud
         {
 
             string this_field_name = cloud->fields.at(field).name;

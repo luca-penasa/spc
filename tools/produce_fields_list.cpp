@@ -51,19 +51,19 @@ int main(int argc, char ** argv)
     std::ostringstream stream;
     stream.imbue (std::locale::classic ());
 
-    for (auto id : pcd_indices)
+    BOOST_FOREACH (auto id, pcd_indices)
     {
-        char resolved[2000]; //should be enough
-        string full_filename = realpath(argv[id], resolved);
-        boost::filesystem::path full_path (full_filename);
-        string parent = full_path.parent_path().c_str();
-        string only_name = full_path.filename().c_str();
+        
+		boost::filesystem::path full_path = boost::filesystem::canonical(argv[id]);
+        
+        boost::filesystem::path parent = full_path.parent_path().c_str();
+        boost::filesystem::path only_name = full_path.filename().c_str();
 
-        stream << parent << "/" << only_name << "\n";
+		stream << parent << "/" << only_name.c_str() << "\n";
 
        pcl::PCLPointCloud2 incloud;
-
-        fillHeader(full_filename, incloud);
+	   string qua = full_path.string();
+	   fillHeader(qua, incloud);
 
         int n_fields  = incloud.fields.size();
         for (int i = 0; i < n_fields ; ++i)

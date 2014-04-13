@@ -20,8 +20,8 @@ namespace spc {
 class Cylinder: public spcMovableElement
 {
 public:
-    typedef typename boost::shared_ptr<Cylinder> Ptr;
-    typedef typename boost::shared_ptr<const Cylinder> ConstPtr;
+    typedef boost::shared_ptr<Cylinder> Ptr;
+    typedef boost::shared_ptr<const Cylinder> ConstPtr;
 
     /// def constrcutor
     Cylinder()

@@ -1,4 +1,4 @@
-#include <pcl/PCLPointCloud2.h>
+#include <spc/common/common.h>
 #include <pcl/point_types.h>
 #include <pcl/io/pcd_io.h>
 #include <pcl/console/print.h>

@@ -81,6 +81,8 @@ TimeSeriesWriter<ScalarT>::writeAsciiAsSparse()
     fs::permissions (fs::path (filename_), fs::remove_perms | fs::set_gid_on_exe);
     lock.unlock ();
 
+	return 1;
+
 }
 
 template class TimeSeriesWriter<float>;

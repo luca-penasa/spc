@@ -35,6 +35,7 @@ void printHelp(int argc, char **argv)
 
 int main(int argc, char *argv[])
 {
+	std::cout << " QQQQQQQQQQ" << std::endl; 
 
     if ((argc < 4)
             | (pcl::console::find_switch(argc, argv, "-h") )

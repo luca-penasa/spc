@@ -6,7 +6,7 @@
 #include <pcl/common/centroid.h>
 #include <Eigen/Dense>
 
-#include <strings.h>
+#include <spc/common/strings.h>
 
 #include <pcl/features/normal_3d.h>
 

@@ -9,6 +9,8 @@
 
 #include <spc/common/geometry.h>
 
+#include <spc/common/common.h>
+
 std::string default_merge = "yes";
 int default_binary = 1;
 

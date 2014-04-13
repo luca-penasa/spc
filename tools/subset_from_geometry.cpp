@@ -53,7 +53,7 @@ getCorrespondingIds(const PointCloud<PointXYZ>::Ptr  reference_cloud,
     pcl::KdTreeFLANN<pcl::PointXYZ> flann;
     flann.setInputCloud(reference_cloud);
 
-    for (auto point: queries_cloud)
+    BOOST_FOREACH (auto point, queries_cloud)
     {
         float distance;
         int index;
