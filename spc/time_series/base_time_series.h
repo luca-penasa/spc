@@ -42,7 +42,7 @@ public:
     }
 
     /// by default will generate in -1 to 1 range
-    void fillRandomY(ScalarT min=-1, ScalarT max=1);
+    //void fillRandomY(ScalarT min=-1, ScalarT max=1);
 
 
     ///

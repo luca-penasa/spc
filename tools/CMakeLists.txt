@@ -4,8 +4,9 @@ if(BUILD_MICMAC_RELATED)
     link_directories(${CULTURE_3D_BUILD_DIR}/src)
 endif()
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x" )
-
+if (UNIX) #this maybe is not needed at all...
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x" )
+endif()
 
 find_package(PCL REQUIRED)
 include_directories(${PCL_INCLUDE_DIRS})
