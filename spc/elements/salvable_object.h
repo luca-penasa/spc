@@ -110,7 +110,7 @@ public:
 
 
 public:
-	spcSerializableObject() {};
+    spcSerializableObject();
 
     virtual bool isSPCSerializable() {return true;}
 

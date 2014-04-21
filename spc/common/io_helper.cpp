@@ -89,7 +89,7 @@ loadCSVFile(const std::string &in_filename, pcl::PCLPointCloud2 &output, const i
 		}
 		
 		//just some verbosity
-		if (n_lines % 10000 == 0)
+        if (n_lines % 100000 == 0)
 		{
 			print_info("line %i\n", n_lines);
 		}

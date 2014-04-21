@@ -115,6 +115,7 @@ int main(int argc, char *argv[] )
 	vector<int> csv_file_indices   = pcl::console::parse_file_extension_argument (argc, argv, ".csv");
 	vector<int> txt_file_indices   = pcl::console::parse_file_extension_argument (argc, argv, ".txt");
 	vector<int> xyz_file_indices   = pcl::console::parse_file_extension_argument (argc, argv, ".xyz");
+    vector<int> pts_file_indices   = pcl::console::parse_file_extension_argument (argc, argv, ".pts");
 	
 	//put filenames on just one vector
 	vector <string> file_names;
@@ -132,6 +133,11 @@ int main(int argc, char *argv[] )
 	{
 		file_names.push_back(argv[xyz_file_indices.at(i)]);
 	}
+
+    for (int i = 0; i < pts_file_indices.size(); i++)
+    {
+        file_names.push_back(argv[pts_file_indices.at(i)]);
+    }
 	
 	//Check if we have a good input filename 
 	if (file_names.size() == 0)

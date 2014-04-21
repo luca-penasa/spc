@@ -20,5 +20,8 @@ template <typename PointT>
 void computeDistanceFromOrigin(const pcl::PointCloud<PointT> &incloud,
                                pcl::PointCloud<PointD> &outcloud);
 
+template <typename PointT>
+float getAverageDistanceFromSensor(const pcl::PointCloud<PointT> & cloud, const std::vector<int> ids);
+
 } // end nspace
 #endif

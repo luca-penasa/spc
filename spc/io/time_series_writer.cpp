@@ -27,13 +27,7 @@ TimeSeriesWriter<ScalarT>::writeAsciiAsSparse()
     file.open (filename_.c_str());
 
     // Mandatory lock file
-
-
-   boost::interprocess::file_lock  lock = boost::interprocess::file_lock (filename_.c_str());
-//    if (lock.try_lock ())
-//      PCL_DEBUG ("[pcl::PCDWriter::setLockingPermissions] File %s locked succesfully.\n", file_name.c_str ());
-//    else
-//      PCL_DEBUG ("[pcl::PCDWriter::setLockingPermissions] File %s could not be locked!\n", file_name.c_str ());
+    boost::interprocess::file_lock  lock = boost::interprocess::file_lock (filename_.c_str());
 
     namespace fs = boost::filesystem;
     fs::permissions (fs::path (filename_), fs::add_perms | fs::set_gid_on_exe);
@@ -81,7 +75,7 @@ TimeSeriesWriter<ScalarT>::writeAsciiAsSparse()
     fs::permissions (fs::path (filename_), fs::remove_perms | fs::set_gid_on_exe);
     lock.unlock ();
 
-	return 1;
+    return 1;
 
 }
 

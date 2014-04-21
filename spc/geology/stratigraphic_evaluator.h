@@ -18,7 +18,6 @@ public:
     {
         //ensure also the indices vector is clear
         model_ = model;
-        indices_.clear();
     }
 
     void setInputCloud( spc::spcGenericCloud::ConstPtr in_cloud) {in_cloud_ = in_cloud;}

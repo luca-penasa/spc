@@ -12,6 +12,21 @@ int StratigraphicEvaluator::compute()
     //clear the output
     output_.clear();
 
+    if (!model_)
+    {
+        pcl::console::print_error("Model not found. set one before to compute");
+        return -1;
+    }
+
+    std::cout << "HERE" << model_ << std::endl;
+
+    if (!in_cloud_)
+    {
+        pcl::console::print_error("in cloud not found. set one before to compute");
+        return -1;
+    }
+
+
     //populate indices if needed
     if (indices_.empty())
     {
@@ -20,8 +35,8 @@ int StratigraphicEvaluator::compute()
             indices_.push_back(i);
     }
 
-    std::vector<float> out;
-    out.resize(indices_.size());
+    std::vector<float> out(indices_.size());
+//    out.resize(indices_.size());
 
     //now perform computations
     //#idfef USE_OPENMP

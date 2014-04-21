@@ -232,4 +232,10 @@ namespace spc
                   const std::vector<int> &indices,
                   Eigen::Matrix3f &covmat);
 
+
+    template
+    void
+    computePointNormal (const pcl::PointCloud<pcl::PointXYZI> &cloud, const std::vector<int> &indices,
+                            float &nx, float &ny, float &nz, float &lam0, float &lam1, float &lam2);
+
 } //end nspace

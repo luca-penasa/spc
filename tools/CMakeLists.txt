@@ -120,3 +120,9 @@ spc_add_executable(${MY_TOOLS_PREFIX}get_mean_std_sampling_step get_mean_std_sam
 target_link_libraries(${MY_TOOLS_PREFIX}get_mean_std_sampling_step ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 
+spc_add_executable(${MY_TOOLS_PREFIX}append_orientations_to_pcd append_orientations_to_pcd)
+target_link_libraries(${MY_TOOLS_PREFIX}append_orientations_to_pcd ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
+
+
+spc_add_executable(${MY_TOOLS_PREFIX}compute_calibration_dataset compute_calibration_dataset)
+target_link_libraries(${MY_TOOLS_PREFIX}compute_calibration_dataset ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
