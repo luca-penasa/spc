@@ -50,6 +50,12 @@ endif()
 #include_directories("{OpenMP_INCLUDE_DIRS}")
 #message(${OpenMP_INCLUDE_DIR})
 
+include(FindProtobuf)
+find_package(Protobuf REQUIRED)
+include_directories(${PROTOBUF_INCLUDE_DIR})
+
+
+
 ############################################################################################################
 set(SPC_LIBRARIES CACHE INTERNAL "SPC libs" FORCE) #this will collect all the modular libs spc will create
 set(PCL_DEFINITIONS "") #my definitions

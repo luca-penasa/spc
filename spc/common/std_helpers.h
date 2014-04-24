@@ -35,6 +35,11 @@ template <typename ScalarT>
 template <typename ScalarT>
 std::vector<ScalarT> get_product(const std::vector<ScalarT> &input1, const std::vector<ScalarT> &input2);
 
+//! says if the element is present in input vector
+template <typename T>
+bool element_exists (const std::vector<T> &input, const T &element);
+
+
 }//end nspace
 
 #endif

@@ -108,6 +108,12 @@ get_product(const std::vector<ScalarT> &input1, const std::vector<ScalarT> &inpu
     return product;
 }
 
+template <typename T>
+bool element_exists (const std::vector<T> &input, const T &element)
+{
+    return std::find(input.begin(), input.end(), element) != input.end();
+}
+
 
 } //end nspace
 #endif

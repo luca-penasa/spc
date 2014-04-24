@@ -21,13 +21,24 @@
 #include <algorithm>
 
 #include <boost/any.hpp>
-
+#include <spc/common/std_helpers.hpp>
 #include <boost/spirit/home/support/detail/hold_any.hpp>
+
+
 
 
 namespace spc
 {
 
+//! to think about this
+class StorableTypes
+{
+enum storable_types
+{
+    STRING = 0, FVECTOR, IVECTOR, FLOAT, INT, EIGENV3F
+};
+
+};
 
 
 class CorePointMeasurements
@@ -35,6 +46,9 @@ class CorePointMeasurements
 public:
     typedef  std::map<std::string, boost::any> DataHolderType;
     typedef  std::pair<std::string, boost::any> PairType;
+
+    typedef boost::shared_ptr<CorePointMeasurements> Ptr;
+    typedef const boost::shared_ptr<CorePointMeasurements> ConstPtr;
 
     //!empty const
     CorePointMeasurements() {}
@@ -59,6 +73,9 @@ public:
         stream    << boost::any_cast<float> (this->value("avg_distance")) << " "
                   << boost::any_cast<float> (this->value("avg_intensity")) << " "
                   << boost::any_cast<float> (this->value("scattering_angle")) << " "
+                  << boost::any_cast<float> (this->value("scattering_angle_new")) << " "
+                  << boost::any_cast<size_t> (this->value("cloud_id")) << " "
+                  << boost::any_cast<size_t> (this->value("core_point_id")) << " "
                   << boost::any_cast<size_t> (this->value("n_neighbors")) << std::endl;
     }
 
@@ -69,6 +86,8 @@ private:
 
 
 };
+
+
 
 
 std::ostream& operator<<(std::ostream& os, const CorePointMeasurements& obj)
@@ -133,52 +152,73 @@ std::ostream& operator<<(std::ostream& os, const CorePointMeasurements& obj)
 
 
 
+std::vector<size_t> extractPropertyAsVector(const std::vector<CorePointMeasurements::Ptr> db, const std::string prop_name)
+{
+    std::vector<size_t> out;
+    BOOST_FOREACH(CorePointMeasurements::Ptr entry, db)
+            out.push_back(boost::any_cast<size_t> (entry->value(prop_name)));
+
+    return out;
+}
+
 class CalibrationDataDB
 {
 public:
     //! empty constructor
     CalibrationDataDB() {}
 
-    void pushBack(CorePointMeasurements data)
+    void pushBack(CorePointMeasurements::Ptr data)
     {
         db_.push_back(data);
     }
 
+    std::vector<CorePointMeasurements::Ptr> getDataDB()
+    {
+        return db_;
+    }
+
+
     void printOutStuff()
     {
-        BOOST_FOREACH(CorePointMeasurements entry, db_)
-                std::cout << entry << std::endl;
+        BOOST_FOREACH(CorePointMeasurements::Ptr entry, db_)
+                std::cout << *entry << std::endl;
     }
 
-    CalibrationDataDB getDataForCorePointID(size_t core_point_id)
+    std::vector<CorePointMeasurements::Ptr> getDataForCorePointID(size_t core_point_id)
     {
-        CalibrationDataDB new_db;
-        BOOST_FOREACH(CorePointMeasurements core, db_)
+        std::vector<CorePointMeasurements::Ptr> out;
+        BOOST_FOREACH(CorePointMeasurements::Ptr core, db_)
         {
-
-            if (boost::any_cast<size_t> (core.value("core_point_id")) == core_point_id)
-            {
-                new_db.pushBack(core);
-            }
-
+            if (boost::any_cast<size_t> (core->value("core_point_id")) == core_point_id)
+                out.push_back(core);
         }
 
-        return new_db;
+        return out;
     }
 
-    CalibrationDataDB refineNormalEstimations() const
+    std::vector<size_t> getVectorOfUniqueCorePoints()
     {
-        CalibrationDataDB new_db;
+        // first get the core points ids as a vector list
+        std::vector<size_t> core_points_ids;
 
+        BOOST_FOREACH( CorePointMeasurements::Ptr core, db_ )
+        {
+            size_t current_id = boost::any_cast<size_t> (core->value("core_point_id"));
+            if(!spc::element_exists<size_t>(core_points_ids, current_id))
+                core_points_ids.push_back( current_id);
+        }
 
+        return core_points_ids;
     }
+
+
 
     void writeFullData(std::ostringstream &stream)
     {
-        BOOST_FOREACH(CorePointMeasurements meas, db_)
-        {
-            meas.writeLine(stream);
-        }
+        stream << "avg_distance avg_intensity scattering_angle scattering_angle_new cloud_id core_point_id n_neighbors " << std::endl;
+
+        BOOST_FOREACH(CorePointMeasurements::Ptr meas, db_)
+            meas->writeLine(stream);
     }
 
     void writeToAsciiFile(const std::string filename )
@@ -203,8 +243,9 @@ public:
     }
 
 private:
-    std::vector<CorePointMeasurements> db_;
+    std::vector<CorePointMeasurements::Ptr> db_;
 };
+
 
 
 
@@ -240,7 +281,7 @@ public:
             //now we cycle on the core points for the current cloud
             for (size_t i = 0; i < core_points_cloud_->size(); ++i)
             {
-                CorePointMeasurements measurement = this->computeCorePointParameters(i, search_radius_);
+                CorePointMeasurements::Ptr measurement = this->computeCorePointParameters(i, search_radius_);
                 db_.pushBack(measurement);
             }
             current_cloud_id_ += 1;
@@ -255,10 +296,10 @@ public:
 
 
     //on current cloud!
-    CorePointMeasurements computeCorePointParameters(const size_t core_point_id,
-                                                     const float search_radius )
+    CorePointMeasurements::Ptr computeCorePointParameters(const size_t core_point_id,
+                                                          const float search_radius )
     {
-        CorePointMeasurements out;
+        CorePointMeasurements::Ptr out (new CorePointMeasurements);
 
         //get the point coordinates from core point cloud
         pcl::PointXYZI point = core_points_cloud_->at(core_point_id);
@@ -309,44 +350,44 @@ public:
         auto lambdas = Eigen::Vector3f(lam0, lam1, lam2);
 
         //number and which neighbors used for this dataset
-        out.value("n_neighbors") = ids.size();
-        out.value("neighbors") = ids;
-        out.value("neighbors_dists") = dists;
+        out->value("n_neighbors") = ids.size();
+        out->value("neighbors") = ids;
+        out->value("neighbors_dists") = dists;
 
         //normal and goodnees of fit
-        out.value("normal") = n_vec;
-        out.value("lambdas") = lambdas;
+        out->value("normal") = n_vec;
+        out->value("lambdas") = lambdas;
 
         //the local centroid
-        out.value("local_centroid") = c;
+        out->value("local_centroid") = c;
 
         Eigen::Vector3f pos = Eigen::Vector3f(current_sensor_center_(0), current_sensor_center_(1), current_sensor_center_(2));
 
         Eigen::Vector3f ray = c - pos;
 
         //position of sensor
-        out.value("sensor_position") = pos;
+        out->value("sensor_position") = pos;
 
         // ray from sensor to the center of mass of the core point
-        out.value("ray") = ray;
+        out->value("ray") = ray;
 
         // the id of the core point
-        out.value("core_point_id") = core_point_id;
+        out->value("core_point_id") = core_point_id;
 
         // cloud on which it was computed
-        out.value("cloud_name") = current_cloud_name_;
+        out->value("cloud_name") = current_cloud_name_;
 
         //a progressive id for this cloud
-        out.value("cloud_id") = current_cloud_id_;
+        out->value("cloud_id") = current_cloud_id_;
 
         //the average distance of the core point (its center of mass) from the sensor
-        out.value("avg_distance") = ray.norm();
+        out->value("avg_distance") = ray.norm();
 
         // the local average intensity
-        out.value("avg_intensity") = this->getAverageIntensity(*current_point_cloud_, ids);
+        out->value("avg_intensity") = this->getAverageIntensity(*current_point_cloud_, ids);
 
         //the scattering angle
-        out.value("scattering_angle") = IntensityAutoCalibrator::getMinimumAngleBetweenVectors(n_vec, ray);
+        out->value("scattering_angle") = IntensityAutoCalibrator::getMinimumAngleBetweenVectors(n_vec, ray);
 
         return out;
 
@@ -458,9 +499,74 @@ private:
 
     CalibrationDataDB db_;
 
-    int current_cloud_id_;
+    size_t current_cloud_id_;
 
     std::string current_cloud_name_;
+
+
+
+
+};
+
+
+/// NOT COMPLETED YET
+class CorePointsFilter
+{
+public:
+    CorePointsFilter() {}
+    void setInputCalibrationDataDB(CalibrationDataDB data)
+    {
+        db_ = data;
+    }
+
+    void fixUniqueNormals()
+    {
+
+        std::vector<size_t> unique_cores = db_.getVectorOfUniqueCorePoints();
+        BOOST_FOREACH (size_t id, unique_cores)
+        {
+            std::vector<CorePointMeasurements::Ptr> current_core_points = db_.getDataForCorePointID(id);
+            size_t best_id = estimateBestCorePointForNormals(current_core_points);
+
+            //extract the normal for the best core point
+            Eigen::Vector3f best_normal = boost::any_cast<Eigen::Vector3f> (current_core_points.at(best_id)->value("normal"));
+
+            //now we force ALL the other core points to have the same normal
+            BOOST_FOREACH (CorePointMeasurements::Ptr core_meas, current_core_points)
+            {
+                core_meas->value("normal") = best_normal;
+            }
+
+
+        }
+    }
+
+    //! secondary parameter is the scattering angle for now
+    /** \note this will overwrite any existing parameter with the same name
+     */
+    void recomputeScatteringAngles()
+    {
+        BOOST_FOREACH(CorePointMeasurements::Ptr core, db_.getDataDB())
+        {
+            Eigen::Vector3f normal = boost::any_cast<Eigen::Vector3f> (core->value("normal"));
+            Eigen::Vector3f ray = boost::any_cast<Eigen::Vector3f> (core->value("ray"));
+            core->value("scattering_angle_new") = IntensityAutoCalibrator::getMinimumAngleBetweenVectors(normal, ray);
+        }
+    }
+
+    // this is a temptative to get the best normal for a given core point
+    size_t estimateBestCorePointForNormals(const std::vector<CorePointMeasurements::Ptr> & data)
+    {
+        std::vector<size_t> n_neighbors = extractPropertyAsVector(data, std::string("n_neighbors"));
+        std::vector<size_t>::iterator it = std::max_element(n_neighbors.begin(), n_neighbors.end());
+        size_t position = std::distance(n_neighbors.begin(), it);
+        return position;
+    }
+
+
+
+private:
+    CalibrationDataDB db_;
 
 
 

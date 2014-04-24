@@ -27,15 +27,15 @@ using namespace pcl::io;
 
 void printHelp(int argc, char ** argv)
 {
-//    print_info("USAGE: ll_compute_normals_eigenvalues incloud.pcd outcloud.pcd  [options]\n");
-//    print_info("Computes normals and indices of point dispersion as ratio of eigenvalues of local covariance matrix\n");
-//    print_info("Options are:\n");
-//    print_info("-v verbose output\n");
-//    print_info("-t int number of threads to be used\n");
+    print_info("USAGE: %s incloud1.pcd incloud2.pcd [... .pcd] -cp core_points.pcd  [options]\n", argv[0]);
+    print_info("Computes a suitable dataset for clibrating lidar devices\n");
+    print_info("Options are:\n");
+    print_info("-cp cloud.pcd are the core points (mandatory)\n");
+    print_info("-sr float is the search radius to use (optional. defualt is 0.1)\n");
 //    print_info("-r radius used for neighbors search\n");
 //    print_info("-c concatenate the original fields in the indices files, add also normals and eigenvalues - save everything\n");
 //    print_info("-a save as ascii pcd file instead of binary compressed (default)\n");
-//    print_info("-h this help\n");
+    print_info("-h this help\n");
 
 }
 
@@ -59,6 +59,14 @@ int main (int argc, char ** argv)
 
     float def_radius = 0.1;
     int def_n_threads = 2;
+
+    if (argc ==     1)
+        printHelp(argc, argv);
+
+    bool ask_help = find_argument(argc, argv, "-h");
+    if (ask_help)
+        printHelp(argc, argv);
+
 
 
     //ids of the cloud files
@@ -87,6 +95,13 @@ int main (int argc, char ** argv)
     calibrator.compute();
 
     spc::CalibrationDataDB db = calibrator.getCalibrationDB();
+
+    //now filter out normal
+    spc::CorePointsFilter f;
+    f.setInputCalibrationDataDB(db);
+    f.fixUniqueNormals();
+    f.recomputeScatteringAngles();
+
 
     db.writeToAsciiFile("./out.txt");
 
