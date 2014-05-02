@@ -156,15 +156,15 @@ public:
 
 private:
 
-    /** \brief The Gaussian distance kernel.
-      * \param[in] x the spatial distance
-      * \param[in] sigma standard deviation of the Gaussian function
-      */
-    inline double
-    kernel (double x, double sigma)
-    {
-        return (exp (- (x*x)/(2*sigma*sigma)));
-    }
+//    /** \brief The Gaussian distance kernel.
+//      * \param[in] x the spatial distance
+//      * \param[in] sigma standard deviation of the Gaussian function
+//      */
+//    inline double
+//    kernel (double x, double sigma)
+//    {
+//        return (exp (- (x*x)/(2*sigma*sigma)));
+//    }
 
     inline std::vector<float>
     getFieldValuesInDownsampled(const std::vector<int> ids)

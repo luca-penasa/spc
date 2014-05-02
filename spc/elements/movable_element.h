@@ -7,7 +7,10 @@
 #include <spc/elements/generic_cloud.h>
 #include <pcl/point_types.h>
 
+#include <spc/io/element_io.h>
+
 using namespace boost;
+
 
 
 namespace spc
@@ -44,9 +47,11 @@ public:
 
     void positionFromCentroid(pcl::PointCloud<pcl::PointXYZ> &cloud);
 
+
 protected:
 
     Vector3f position_;
+
 
 //    friend class boost::serialization::access;
 

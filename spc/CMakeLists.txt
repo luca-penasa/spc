@@ -7,6 +7,7 @@ add_subdirectory(estimators)
 add_subdirectory(methods)
 add_subdirectory(io)
 add_subdirectory(devices)
+add_subdirectory(calibration)
 add_subdirectory(external)
 add_subdirectory(flann)
 

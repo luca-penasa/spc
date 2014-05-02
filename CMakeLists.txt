@@ -50,10 +50,13 @@ endif()
 #include_directories("{OpenMP_INCLUDE_DIRS}")
 #message(${OpenMP_INCLUDE_DIR})
 
-include(FindProtobuf)
-find_package(Protobuf REQUIRED)
-include_directories(${PROTOBUF_INCLUDE_DIR})
+#include(FindProtobuf)
+#find_package(Protobuf REQUIRED)
+#include_directories(${PROTOBUF_INCLUDE_DIR})
 
+add_subdirectory(external)
+
+include_directories(external/cereal/include)
 
 
 ############################################################################################################
@@ -63,6 +66,7 @@ set(PCL_DEFINITIONS "") #my definitions
 
 ############################# OPTIONS ######################################################################
 option(BUILD_SPC_SHARED "Build spc library as a shared lib." ON)
+option(BUILD_WITH_GPROF "Build with -pg flags for profiling." OFF)
 option(BUILD_TOOLS "Build the tools." OFF)
 option(BUILD_TOOLS "Build really experimental staff." OFF)
 option(BUILD_SANDBOX_TOOLS "Build sandbox tools." OFF)
@@ -126,6 +130,9 @@ if(USE_PARALLEL_OPENMP) # a definition if use parallelization where possible
 endif()
 
 
+if (BUILD_WITH_GPROF)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg" )
+endif()
 
 
 #micmac lib part
