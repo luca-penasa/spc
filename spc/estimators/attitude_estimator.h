@@ -55,6 +55,7 @@ public:
     typedef CloudT::Ptr CloudPtrT;
 
     typedef  boost::shared_ptr<AttitudeEstimator> Ptr;
+    typedef  boost::shared_ptr<const AttitudeEstimator> ConstPtr;
 
     /// def const
     AttitudeEstimator();

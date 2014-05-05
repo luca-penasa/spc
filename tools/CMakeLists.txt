@@ -126,3 +126,8 @@ target_link_libraries(${MY_TOOLS_PREFIX}append_orientations_to_pcd ${PCL_LIBRARI
 
 spc_add_executable(${MY_TOOLS_PREFIX}compute_calibration_dataset compute_calibration_dataset)
 target_link_libraries(${MY_TOOLS_PREFIX}compute_calibration_dataset ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
+
+
+
+spc_add_executable(${MY_TOOLS_PREFIX}compute_intensity_calibration compute_intensity_calibration.cpp)
+target_link_libraries(${MY_TOOLS_PREFIX}compute_intensity_calibration ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})

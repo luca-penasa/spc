@@ -63,14 +63,7 @@ std::ostream &operator<<(std::ostream &os, const spc::CorePointData &obj)
     return os;
 }
 
-std::vector<size_t> extractPropertyAsVector(const std::vector<CorePointData::Ptr> db, const std::string prop_name)
-{
-    std::vector<size_t> out;
-    BOOST_FOREACH(CorePointData::Ptr entry, db)
-            out.push_back(boost::any_cast<size_t> (entry->value(prop_name)));
 
-    return out;
-}
 
 
 }//end nspace

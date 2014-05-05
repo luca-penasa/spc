@@ -160,7 +160,7 @@ CorePointData::Ptr CalibrationDataEstimator::computeCorePointParameters(const si
     out->value("ray") = ray;
 
     // the id of the core point
-    out->value("core_point_id") = core_point_id;
+    out->value("core_id") = core_point_id;
 
     // cloud on which it was computed
     out->value("cloud_name") = current_cloud_name_;

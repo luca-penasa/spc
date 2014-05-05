@@ -164,9 +164,10 @@ int main (int argc, char ** argv)
     }
 
 
-
+    db.printOutStuff();
 
     db.writeToAsciiFile("./out.txt");
+
 
 
     return 1;

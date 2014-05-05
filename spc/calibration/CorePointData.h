@@ -21,15 +21,21 @@ public:
 
     //!empty const
     CorePointData() {}
+//    }
 
-    boost::any & value(const std::string name)
+    template <typename T> void setValue (const std::string name, const T &value)
+    {
+        datadb[name] = value;
+    }
+
+    boost::any & value(const std::string &name)
     {
         return datadb[name];
     }
 
-    boost::any value(const std::string name) const
+    template <typename T> T value (const std::string name) const
     {
-        return datadb.at(name);
+        return boost::any_cast<T> (datadb.at(name));
     }
 
 
@@ -46,19 +52,20 @@ public:
 
     void writeLine(std::ostringstream &stream)
     {
-        stream    << boost::any_cast<float> (this->value("distance")) << " "
-                  << boost::any_cast<float> (this->value("intensity")) << " "
-                  << boost::any_cast<float> (this->value("angle")) << " "
-                  << boost::any_cast<size_t> (this->value("cloud_id")) << " "
-                  << boost::any_cast<size_t> (this->value("core_point_id")) << " "
-                  << boost::any_cast<size_t> (this->value("n_neighbors")) << std::endl;
+        stream    << value<float>("distance") << " "
+                  << value<float>("intensity") << " "
+                  << value<float>("angle") << " "
+                  << value<size_t>("cloud_id") << " "
+                  << value<size_t>("core_id") << " "
+                  << value<size_t>("n_neighbors") << std::endl;
     }
+
 
     bool isValid() const
     {
-        return ( std::isfinite(boost::any_cast<float> (this->value("distance")) ) &
-                 std::isfinite(boost::any_cast<float> (this->value("intensity")) ) &
-                 std::isfinite(boost::any_cast<float> (this->value("angle")) ));
+        return ( std::isfinite(value<float>("distance") ) &
+                 std::isfinite(value<float>("intensity") ) &
+                 std::isfinite(value<float>("angle") ));
 
 
     }
@@ -76,8 +83,15 @@ private:
 // streaming for CorePointData
 std::ostream& operator<<(std::ostream& os, const CorePointData& obj);
 
-// easy accessor
-std::vector<size_t> extractPropertyAsVector(const std::vector<CorePointData::Ptr> db, const std::string prop_name);
+template <typename T>
+std::vector<T> extractPropertyAsVector(const std::vector<CorePointData::Ptr> db, const std::string prop_name)
+{
+    std::vector<T> out;
+    BOOST_FOREACH(CorePointData::Ptr entry, db)
+            out.push_back(entry->value<T>(prop_name));
+
+    return out;
+}
 
 }//end nspace
 
