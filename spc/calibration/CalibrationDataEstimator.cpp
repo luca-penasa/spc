@@ -150,7 +150,7 @@ CorePointData::Ptr CalibrationDataEstimator::computeCorePointParameters(const si
     out->value("lambdas") = lambdas;
 
     //the local centroid
-    out->value("local_centroid") = c;
+    out->value("centroid") = c;
 
 
     //position of sensor

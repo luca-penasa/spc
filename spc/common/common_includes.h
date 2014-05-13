@@ -21,6 +21,7 @@
 
 // PCL
 #include <pcl/console/print.h>
+
 namespace  spc {
 
 #ifndef NAN

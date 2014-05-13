@@ -10,7 +10,7 @@ Eigen::VectorXf IntensityCalibrationModelBase::getCorrectedIntensities(Calibrati
     size_t counter = 0;
     BOOST_FOREACH(CorePointData::ConstPtr point, in_data->getDataDB())
     {
-        out(counter++) = point->value<float>("intensity") * this->getOverallCorrectionFactor(point);
+        out(counter++) = point->value<float>("intensity") / this->getOverallCorrectionFactor(point);
     }
 
     return out;
@@ -23,7 +23,7 @@ Eigen::VectorXf IntensityCalibrationModelBase::getPredictedIntensities(Calibrati
     size_t counter = 0;
     BOOST_FOREACH(CorePointData::ConstPtr point, in_data->getDataDB())
     {
-        out(counter++) = 1.0f / this->getOverallCorrectionFactor(point);
+        out(counter++) =  this->getOverallCorrectionFactor(point);
     }
 
     return out;

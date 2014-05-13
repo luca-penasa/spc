@@ -75,8 +75,10 @@ public:
     {
         pcl::console::print_debug("%s called\n", BOOST_CURRENT_FUNCTION);
 
-        Eigen::VectorXf pred = model_->getPredictedIntensities(db_);
-        return pred - observed_intensities_;
+        Eigen::VectorXf corr = model_->getPredictedIntensities(db_);
+//        Eigen::VectorXf ones = Eigen::VectorXf::Zero(corr.size());
+
+        return observed_intensities_- corr;
     }
 
 
@@ -133,13 +135,16 @@ public:
         FunctorSimple functor(this);
 
 
-        Eigen::NumericalDiff<FunctorSimple> numDiff(functor, 1e-8f);
+        Eigen::NumericalDiff<FunctorSimple> numDiff(functor, 1e-2f);
 
 
         Eigen::LevenbergMarquardt<Eigen::NumericalDiff<FunctorSimple>, float> lm(numDiff);
+        lm.parameters.maxfev  = 1000000000000;
 
         //        std::cout <<  << std::endl;
         pcl::console::print_debug("starting minimization\n ");
+
+
 
         Eigen::LevenbergMarquardtSpace::Status status = lm.minimize(pars);
         std::cout << "status: " << status << std::endl;

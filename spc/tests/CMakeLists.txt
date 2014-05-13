@@ -1,2 +1,12 @@
 add_executable(spc_test_attitude attitude.cpp)
 target_link_libraries(spc_test_attitude spc_elements)
+
+add_executable(spc_test_boost_eval test_boost_eval.cpp)
+#target_link_libraries(test_boost_eval spc_elements)
+
+#add_executable(spc_test_boost_eval2 test_boost_eval2.cpp)
+#target_link_libraries(spc_test_boost_eval2 spc_calibration spc_external)
+
+add_executable(spc_test_boost_eval3 test_boost_eval3.cpp)
+target_link_libraries(spc_test_boost_eval3 spc_calibration spc_external)
+

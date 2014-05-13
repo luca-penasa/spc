@@ -97,7 +97,18 @@ int main (int argc, char ** argv)
     calibrator.setModel(model);
     calibrator.optimize();
 
-//    Eigen::VectorXf out = model->getPredictedIntensities(db);
+    Eigen::VectorXf out = model->getPredictedIntensities(db);
+
+    ofstream myfile;
+      myfile.open ("_predicted.txt");
+      myfile << out;
+      myfile.close();
+
+       out = model->getCorrectedIntensities(db);
+
+        myfile.open ("_corrected.txt");
+        myfile << out;
+        myfile.close();
 
 //    std::cout << out << std::endl;
 

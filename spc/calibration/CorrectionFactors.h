@@ -20,7 +20,7 @@ public:
 
     //! we pass a CalibrationDataDB because some factors may require to know some stuff before everything
     //! see for example CorrectionFactorCloudDependentMultiplier
-    CorrectionFactorBase (CalibrationDataDB::ConstPtr db)
+    CorrectionFactorBase (CalibrationDataDB::ConstPtr db): is_fixed_(false)
     {
         // we extract here informations that may be of interest for the factors - for inizialization etc
         n_clouds_ = db->getNumberOfDifferentClouds();
@@ -53,7 +53,8 @@ public:
 
     virtual void setParameters(const Eigen::VectorXf &pars)
     {
-        parameters_ = pars;
+        if (!is_fixed_)
+            parameters_ = pars;
     }
 
     virtual void initParameters()
@@ -61,12 +62,22 @@ public:
         this->setParameters(this->getInitParameters());
     }
 
+    // if called before initParameters(); you get a segfault.
+    virtual void setLock(const bool is_fixed = true)
+    {
+        is_fixed_ = is_fixed;
+    }
+
 
 protected:
     Eigen::VectorXf parameters_;
 
     size_t n_clouds_;
+
+    bool is_fixed_;
 };
+
+
 
 ///
 /// \brief The CorrectionFactorDistanceExp class is a correction for distance based on D^a with a parameter
@@ -90,7 +101,7 @@ public:
     virtual Eigen::VectorXf getInitParameters() const
     {
         Eigen::VectorXf p(1);
-        p(0) = 2.0;
+        p(0) = -2.0;
         return p;
     }
 };
@@ -116,10 +127,15 @@ public:
     virtual Eigen::VectorXf getInitParameters() const
     {
         Eigen::VectorXf p(1);
-        p(0) = -1.0f;
+        p(0) = 1.0f;
         return p;
     }
 };
+
+
+
+
+
 
 //! a simple multiplier in exp-form
 class CorrectionFactorFixedMultiplier: public CorrectionFactorBase
@@ -134,14 +150,14 @@ public:
 
     virtual float getFactor(CorePointData::ConstPtr input_data) const
     {
-        return exp( parameters_(0) );
+        return  parameters_(0) ;
     }
 
     //! get suggested initialization parameters for this correction factor
     virtual Eigen::VectorXf getInitParameters() const
     {
         Eigen::VectorXf p(1);
-        p(0) = 0;
+        p(0) = 1;
         return p;
     }
 };
@@ -172,6 +188,8 @@ public:
     }
 };
 
+
+
 //! multiplier dependent on the cloud it is applied on
 class CorrectionFactorCloudDependentMultiplier: public CorrectionFactorBase
 {
@@ -186,14 +204,14 @@ public:
     virtual float getFactor(CorePointData::ConstPtr input_data) const
     {
         size_t cloud_id = input_data->value<size_t>("cloud_id");
-        return exp( parameters_(cloud_id) );
+        return parameters_(cloud_id) ;
     }
 
     virtual Eigen::VectorXf getInitParameters() const
     {
         Eigen::VectorXf p(n_clouds_) ;
         for (size_t i = 0 ; i < n_clouds_; ++i)
-            p(i) = 0.0;
+            p(i) = 1.0;
         return p;
     }
 

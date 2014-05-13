@@ -193,17 +193,28 @@ public:
     {
         CorrectionFactorDistancePowerLaw::Ptr dist_f (new CorrectionFactorDistancePowerLaw(db));
         CorrectionFactorCosPowerAngle::Ptr ang_f (new CorrectionFactorCosPowerAngle(db));
-        CorrectionFactorFixedMultiplier::Ptr mul_f;
-        if (fixed_mul)
-            mul_f = CorrectionFactorFixedMultiplier::Ptr (new CorrectionFactorFixedMultiplier(db));
-        else
-            mul_f = CorrectionFactorCloudDependentMultiplier::Ptr (new CorrectionFactorCloudDependentMultiplier(db));
+
+        CorrectionFactorBase::Ptr mul_fixed = CorrectionFactorFixedMultiplier::Ptr (new CorrectionFactorFixedMultiplier(db));
+
+        CorrectionFactorBase::Ptr mul_per_cloud = CorrectionFactorCloudDependentMultiplier::Ptr (new CorrectionFactorCloudDependentMultiplier(db));
+
+
+
 
         this->appendFactor(dist_f);
         this->appendFactor(ang_f);
-        this->appendFactor(mul_f);
+        this->appendFactor(mul_fixed);
+        this->appendFactor(mul_per_cloud);
+
+
 
         this->initParametersInFactors();
+
+        dist_f->setLock();
+        ang_f->setLock();
+
+
+
 
     }
 };
