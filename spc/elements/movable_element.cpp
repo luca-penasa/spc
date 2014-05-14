@@ -49,4 +49,3 @@ void spcMovableElement::positionFromCentroid(pcl::PointCloud<pcl::PointXYZ> &clo
 } //end nspace
 
 
-//BOOST_CLASS_EXPORT_GUID(spc::spcMovableElement, "spcMovableElement")

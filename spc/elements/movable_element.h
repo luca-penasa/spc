@@ -7,14 +7,14 @@
 #include <spc/elements/generic_cloud.h>
 #include <pcl/point_types.h>
 
-#include <spc/io/element_io.h>
-
-using namespace boost;
+//#include <spc/io/element_io.h>
 
 
+#include <spc/common/eigen_serialization.hpp>
 
 namespace spc
 {
+
 class spcMovableElement: public spcElementBase
 {
 public:
@@ -47,21 +47,18 @@ public:
 
     void positionFromCentroid(pcl::PointCloud<pcl::PointXYZ> &cloud);
 
+    template<class Archive>
+    void serialize(Archive & archive)
+    {
+//        archive( position_ );
+    }
+
 
 protected:
 
     Vector3f position_;
 
 
-//    friend class boost::serialization::access;
-
-//    template <class Archive>
-//    void serialize(Archive &ar, const unsigned int version)
-//    {
-//        ar & BOOST_SERIALIZATION_NVP( position_);
-//        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(spcElementBase);
-
-//    }
 
 };
 
@@ -69,4 +66,4 @@ protected:
 
 
 
-#endif // POINT3D_H
+#endif // END SAFEGFUARD

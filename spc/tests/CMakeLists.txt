@@ -10,3 +10,6 @@ add_executable(spc_test_boost_eval test_boost_eval.cpp)
 add_executable(spc_test_boost_eval3 test_boost_eval3.cpp)
 target_link_libraries(spc_test_boost_eval3 spc_calibration spc_external)
 
+add_executable(spc_test_cereal_serialize cereal_serialize.cpp)
+target_link_libraries(spc_test_cereal_serialize spc_calibration spc_external)
+
