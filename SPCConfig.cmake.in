@@ -3,8 +3,19 @@
 #  SPC_LIBRARY_DIRS - the path to the libraries
 #  SPC_LIBRARIES    - libraries to link against
 #  SPC_DEFINITIONS  - the definitions used to compile SPC/PCL
+#  CEREAL_IS_INTERNAL  - if spc was compiled with an "internal version" of cereal or, if FALSE was a system-wide
 
 set(SPC_INCLUDE_DIRS "@INSTALL_INCLUDE_DIR@")
 set(SPC_LIBRARY_DIRS "@INSTALL_LIB_DIR@")
 set(SPC_LIBRARIES "@SPC_LIBRARIES@")
 set(SPC_DEFINITIONS "@SPC_DEFINITIONS@")
+
+set(CEREAL_IS_INTERNAL @CEREAL_IS_INTERNAL@)
+
+if (${CEREAL_IS_INTERNAL})
+    message("cereal is internal")
+    set(SPC_INCLUDE_DIRS ${SPC_INCLUDE_DIRS} ${SPC_INCLUDE_DIRS}/spc/3rdParty)
+else()
+    ## here we should use a find_package for finding the system' cereal lib
+    ## nothing for now. It is a TODO.
+endif()

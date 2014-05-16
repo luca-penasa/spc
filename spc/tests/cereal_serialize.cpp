@@ -9,6 +9,9 @@
 
 #include <boost/shared_ptr.hpp>
 
+#include <spc/common/common_includes.h>
+
+
 namespace cereal
 {
 template <class Archive> inline
@@ -39,7 +42,7 @@ class ClassBase
 {
 
 public:
-    typedef boost::shared_ptr<ClassBase> Ptr;
+    typedef SHARED_PTR<ClassBase> Ptr;
 
     virtual void printSomething() = 0;
 
@@ -48,7 +51,7 @@ public:
 class ClassA: public ClassBase
 {
 public:
-    typedef boost::shared_ptr<ClassA> Ptr;
+    typedef SHARED_PTR<ClassA> Ptr;
 
     ClassA()
     {

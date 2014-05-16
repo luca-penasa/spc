@@ -88,7 +88,7 @@ public:
     /// \param field_name the name of the field to be logged
     /// \note this var is mandatory
     ///
-    void setLogFieldName(std::string field_name) {y_field_name_ = field_name;}
+    void setYFieldName(std::string field_name) {y_field_name_ = field_name;}
 
     ///
     /// \brief setIndices use only these points for estimatig the time series!

@@ -14,7 +14,7 @@ SerializedTimeSeriesGenerator::compute()
         generator.setSamplingStep(sampling_step_);
 //        generator.setInputReader(in_reader_);
         generator.setXFieldName(x_field_name_);
-        generator.setLogFieldName(y_field_name_);
+        generator.setYFieldName(y_field_name_);
         if (!generator.compute())
             return -1;
 

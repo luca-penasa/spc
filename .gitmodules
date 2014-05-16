@@ -1,3 +1,6 @@
-[submodule "external/cereal"]
-	path = external/cereal
+[submodule "submodules/Boost.NumPy"]
+	path = submodules/Boost.NumPy
+	url = git@github.com:ndarray/Boost.NumPy.git
+[submodule "submodules/cereal"]
+	path = submodules/cereal
 	url = git@github.com:USCiLab/cereal.git

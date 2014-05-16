@@ -12,9 +12,13 @@
 
 
 //BOOST STUFF
-#include <boost/smart_ptr.hpp>
+//#include <boost/smart_ptr.hpp>
+#include <boost/shared_ptr.hpp>
 #include <boost/foreach.hpp>
 #include <boost/algorithm/string.hpp>
+
+#include <memory>
+
 
 // EIGEN
 #include <Eigen/Core>
@@ -26,6 +30,10 @@ namespace  spc {
 
 #ifndef NAN
     #define NAN  std::numeric_limits<float>::quiet_NaN();
+#endif
+
+#ifndef SHARED_PTR
+    #define SHARED_PTR std::shared_ptr
 #endif
 
 }

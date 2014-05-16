@@ -33,30 +33,20 @@ else()
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -std=c++11 -fopenmp" )
 endif()
 
+add_subdirectory(submodules)
 
 
-##############################################################################
+############ CEREAL ####################################
+set(CEREAL_INCLUDE_DIRS "submodules/cereal/include")
 
+include_directories(${CEREAL_INCLUDE_DIRS})
 
-#FIND_PACKAGE( OpenMP REQUIRED)
-#if(OPENMP_FOUND)
-#    message("OPENMP FOUND")
-#    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-#    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
-#endif()
+set( BOOL CEREAL_IS_INTERNAL TRUE)
 
-#find_package(OpenMP)
-#include_directories("{OpenMP_INCLUDE_DIRS}")
-#message(${OpenMP_INCLUDE_DIR})
+set(CEREAL_IS_INTERNAL TRUE CACHE BOOL "if internal cereal is used")
 
-#include(FindProtobuf)
-#find_package(Protobuf REQUIRED)
-#include_directories(${PROTOBUF_INCLUDE_DIR})
+######################################################
 
-add_subdirectory(external)
-
-include_directories(external/cereal/include)
 
 
 ############################################################################################################
@@ -137,7 +127,7 @@ endif()
 
 #micmac lib part
 if(BUILD_MICMAC_RELATED)
-    add_subdirectory(external)
+#    add_subdirectory(external)
     set(CULTURE_3D_BUILD_DIR "/home/luca/Code/culture3d/build" CACHE STRING "path where a culture3d build has been compiled is located. This is my default. you should change to your needs")
     set(CULTURE_3D_SOURCE_DIR "/home/luca/Code/culture3d" CACHE STRING "path where culture 3d source resides. This is my default. Change o your needs")
     link_directories(${CULTURE_3D_BUILD_DIR}/src)
@@ -181,14 +171,14 @@ export(TARGETS ${SPC_LIBRARIES} FILE "${PROJECT_BINARY_DIR}/SPCTargets.cmake")
 # (this registers the build-tree with a global CMake-registry)
 export(PACKAGE SPC)
 
-file(RELATIVE_PATH REL_INCLUDE_DIR "${INSTALL_CMAKE_DIR}" "${INSTALL_INCLUDE_DIR}")
+#file(RELATIVE_PATH REL_INCLUDE_DIR "${INSTALL_CMAKE_DIR}" "${INSTALL_INCLUDE_DIR}")
 
-# ... for the build tree
-set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}")
-configure_file(SPCConfig.cmake.in "${PROJECT_BINARY_DIR}/SPCConfig.cmake" @ONLY)
+## ... for the build tree - to be done!
+#set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}")
+#configure_file(SPCConfig.cmake.in "${PROJECT_BINARY_DIR}/SPCConfig.cmake" @ONLY)
 
-# ... for the install tree
-set(CONF_INCLUDE_DIRS "\${SPC_CMAKE_DIR}/${REL_INCLUDE_DIR}")
+## ... for the install tree
+#set(CONF_INCLUDE_DIRS "\${SPC_CMAKE_DIR}/${REL_INCLUDE_DIR}")
 configure_file(SPCConfig.cmake.in "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/SPCConfig.cmake" @ONLY)
 # ... for both
 configure_file(SPCConfigVersion.cmake.in "${PROJECT_BINARY_DIR}/SPCConfigVersion.cmake" @ONLY)
