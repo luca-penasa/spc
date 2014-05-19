@@ -1,6 +1,6 @@
-#ifndef SPC_STRATIGRAPHIC_MODEL_BASE_H
-#define SPC_STRATIGRAPHIC_MODEL_BASE_H
-
+#pragma once
+#ifndef DYNAMIC_SCALAR_FIELD_GENERATOR_H
+#define DYNAMIC_SCALAR_FIELD_GENERATOR_H
 
 #include <Eigen/Core>
 #include <boost/shared_ptr.hpp>
@@ -22,15 +22,15 @@ using namespace Eigen;
 /// stratigraphy. It is inherit by all models that permits to evaluate a stratigraphic position
 /// and a stratigraphic normal in the 3D space
 ///!
-class spcStratigraphicModelBase
+class DynamicScalarFieldGenerator
 {  
 public:
 
-    typedef  boost::shared_ptr<spcStratigraphicModelBase> Ptr;
-    typedef  boost::shared_ptr<const spcStratigraphicModelBase> ConstPtr;
+    typedef  boost::shared_ptr<DynamicScalarFieldGenerator> Ptr;
+    typedef  boost::shared_ptr<const DynamicScalarFieldGenerator> ConstPtr;
 
     //! Def constructor
-    spcStratigraphicModelBase();
+    DynamicScalarFieldGenerator();
 
 
     ////////////////////////// MANDATORY METHODS ///////////////////////////////////////////////
@@ -39,31 +39,31 @@ public:
     //! \param point is the 3d point
     //! \return the stratigraphic position of that point
     //!
-    virtual float getStratigraphicPosition(const Vector3f &point) const = 0;
+    virtual float getScalarFieldValue(const Vector3f &point) const = 0;
 
     //!
     //! \brief getStratigraphicNormal get the normal for a given point in 3d
     //! \param point isthe 3d point
     //! \return the normal for that point
     //!
-    virtual Vector3f getStratigraphicNormal(const Vector3f &point) const = 0;
+    virtual Vector3f getScalarFieldGradient(const Vector3f &point) const = 0;
 
 
 
-    ///////////////////////// METHODS DEENDING UPON THE MANDATORY ONES ////////////////////////////
+    ///////////////////////// METHODS DEPENDING ON THE MANDATORY ONES ////////////////////////////
     //!
     //! \brief getStratigraphicPositions as getStratigraphicPosition but for a whole cloud!
     //! \param cloud
     //! \return a vector of stratigraphic positions computed according this model
     //!
-    virtual std::vector<float> getStratigraphicPositions(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
+    virtual std::vector<float> getScalarFieldValues(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
 
     //!
     //! \brief getStratigraphicPositions is for the wrapper type of SPC
     //! \param cloud
     //! \return
     //!
-    virtual std::vector<float> getStratigraphicPositions(spcGenericCloud * cloud);
+    virtual std::vector<float> getScalarFieldValues(spcGenericCloud * cloud);
 
     //!
     //! \brief getStratigraphicPositions with indices
@@ -71,14 +71,14 @@ public:
     //! \param indices
     //! \return the stratigraphic positions
     //!
-    virtual std::vector<float> getStratigraphicPositions(spcGenericCloud *cloud, const std::vector<int> &indices);
+    virtual std::vector<float> getScalarFieldValues(spcGenericCloud *cloud, const std::vector<int> &indices);
 
 
     /// also from shared pointer
-    virtual std::vector<float> getStratigraphicPositions(spcGenericCloud::Ptr cloud, const std::vector<int> &indices);
+    virtual std::vector<float> getScalarFieldValues(spcGenericCloud::Ptr cloud, const std::vector<int> &indices);
 
 
-    virtual std::vector<float> getStratigraphicPositions(spcGenericCloud::Ptr cloud);
+    virtual std::vector<float> getScalarFieldValues(spcGenericCloud::Ptr cloud);
 
     //!
     //! \brief getStratigraphicPositions as getStratigraphicPosition but for a whole cloud!
@@ -86,7 +86,7 @@ public:
     //! \param indices the indices for which to compute the sp
     //! \return a vector of stratigraphic positions computed according this model
     //!
-    virtual std::vector<float> getStratigraphicPositions(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, const std::vector<int> &indices);
+    virtual std::vector<float> getScalarFieldValues(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, const std::vector<int> &indices);
 
 
 

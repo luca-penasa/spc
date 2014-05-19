@@ -17,7 +17,7 @@ namespace spc {
 /// witht the base locate at the center of the point provided with the movable element
 /// and with length and radius as in parameters
 ///
-class Cylinder: public spcMovableElement
+class Cylinder: public PositionableElement
 {
 public:
     typedef boost::shared_ptr<Cylinder> Ptr;
@@ -29,7 +29,7 @@ public:
 
     }
 
-    Cylinder(const Cylinder & cyl) : spcMovableElement(cyl)
+    Cylinder(const Cylinder & cyl) : PositionableElement(cyl)
     {
         //TODO we'll need to copy some other staff
     }

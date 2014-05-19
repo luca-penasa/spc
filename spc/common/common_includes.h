@@ -17,6 +17,8 @@
 #include <boost/foreach.hpp>
 #include <boost/algorithm/string.hpp>
 
+#include <boost/lexical_cast.hpp>
+
 #include <memory>
 
 
@@ -31,6 +33,7 @@ namespace  spc {
 #ifndef NAN
     #define NAN  std::numeric_limits<float>::quiet_NaN();
 #endif
+
 
 #ifndef SHARED_PTR
     #define SHARED_PTR std::shared_ptr

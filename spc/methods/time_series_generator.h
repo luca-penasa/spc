@@ -7,7 +7,7 @@
 #include <spc/io/pointcloud2_reader.h>
 #include <spc/elements/generic_cloud.h>
 
-#include <spc/stratigraphy/stratigraphic_model_base.h>
+#include <spc/scalar_fields_generators/DynamicScalarFieldGenerator.h>
 
 #include <spc/methods/kernelsmoothing2.h>
 
@@ -40,7 +40,7 @@ public:
 
     ///! set the stratigraphic model to use for interpretation
     /// you can set a field with setXFieldName if if the stratigraphic positions were pre-computed
-    void setStratigraphicModel(spcStratigraphicModelBase::Ptr model)
+    void setStratigraphicModel(DynamicScalarFieldGenerator::Ptr model)
     {
         model_ = model;
     }
@@ -140,7 +140,7 @@ protected:
             x_d = in_cloud_->getField(x_field_name_, indices_);
 
         else // we should have a stratigrahic model
-            x_d= model_->getStratigraphicPositions(in_cloud_, indices_);
+            x_d= model_->getScalarFieldValues(in_cloud_, indices_);
 
         std::vector<float> y_d = in_cloud_->getField(y_field_name_, indices_);
 
@@ -150,7 +150,7 @@ protected:
 
     }
 
-    spcStratigraphicModelBase::Ptr model_;
+    DynamicScalarFieldGenerator::Ptr model_;
 
     spcGenericCloud::Ptr in_cloud_;
 

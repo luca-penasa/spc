@@ -2,12 +2,12 @@
 namespace spc{
 
 
-float spcSingleAttitudeModel::getStratigraphicPosition(const Vector3f &point) const
+float SingleAttitudeModel::getScalarFieldValue(const Vector3f &point) const
 {
     return attitude_->distanceTo(point) + additional_shift_;
 }
 
-Vector3f spcSingleAttitudeModel::getStratigraphicNormal(const Vector3f &point) const
+Vector3f SingleAttitudeModel::getScalarFieldGradient(const Vector3f &point) const
 {
     return attitude_->getUnitNormal();
 }

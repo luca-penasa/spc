@@ -21,19 +21,29 @@ TimeSeriesGenerator::compute()
         return -1;
     }
 
-    if(!in_cloud_ | !model_)
+    if(!in_cloud_)
     {
-        pcl::console::print_error("No model and/or input cloud");
+        pcl::console::print_error("No input cloud");
         return -1;
     }
 
+
+    // extract fields before to check
     doExtractFields();
 
-    if ((x_field_.empty()) || (y_field_.empty()))
+    // now check
+    if((!model_) && (x_field_.empty() || y_field_.empty()))
     {
-        pcl::console::print_error("No suitable scalar field for computing the series. Wrong names?");
+        std::cout << model_ << x_field_.empty() << y_field_.empty() << std::endl;
+        pcl::console::print_error("No input model or no x/y field names ");
         return -1;
     }
+
+//    if ((x_field_.empty()) || (y_field_.empty()))
+//    {
+//        pcl::console::print_error("No suitable scalar field for computing the series. Wrong names?");
+//        return -1;
+//    }
 
     SparseTimeSeries<ScalarT>::Ptr series (new SparseTimeSeries<ScalarT> (x_field_, y_field_)); //the input series
 

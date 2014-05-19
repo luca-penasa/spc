@@ -21,30 +21,30 @@ namespace spc
 /// \brief The PlaneModel class is the model of a plane in space
 /// we represent the plane as a normal plus a point in space
 ///
-class spcPlane: public spcMovableElement
+class Plane: public PositionableElement
 
 {
 public:
 
 
-    typedef boost::shared_ptr<spcPlane> Ptr;
-    typedef boost::shared_ptr<const spcPlane> ConstPtr;
+    typedef boost::shared_ptr<Plane> Ptr;
+    typedef boost::shared_ptr<const Plane> ConstPtr;
 
 
 
     /// Def const
-    spcPlane()
+    Plane()
     {
     }
 
     /// copy const
-    spcPlane(const spcPlane &plane): spcMovableElement(plane)
+    Plane(const Plane &plane): PositionableElement(plane)
     {
         normal_ = plane.normal_;
     }
 
     /// a Plane from direction of the normal and passing for a given point
-    spcPlane(const Vector3f normal, const Vector3f point): spcMovableElement(point)
+    Plane(const Vector3f normal, const Vector3f point): PositionableElement(point)
     {
         normal_.setNormal(normal);
     }

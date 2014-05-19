@@ -17,7 +17,7 @@ namespace spc
 
 
 
-Transform<float, 3, Affine, AutoAlign> spcPlane::get2DArbitraryRefSystem() const
+Transform<float, 3, Affine, AutoAlign> Plane::get2DArbitraryRefSystem() const
 {
     Transform<float, 3, Affine, AutoAlign> T;
 

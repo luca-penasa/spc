@@ -29,6 +29,10 @@ public:
 
     virtual bool isSPCSerializable() {return true;}
 
+    virtual bool canBeSavedAsAscii() const
+    {
+        return false;
+    }
 
     template<class Archive>
     void serialize(Archive & archive)

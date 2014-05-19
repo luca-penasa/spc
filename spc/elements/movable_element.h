@@ -15,19 +15,19 @@
 namespace spc
 {
 
-class spcMovableElement: public spcElementBase
+class PositionableElement: public spcElementBase
 {
 public:
 
-    typedef boost::shared_ptr<spcMovableElement> Ptr;
-    typedef boost::shared_ptr<const spcMovableElement> ConstPtr;
+    typedef boost::shared_ptr<PositionableElement> Ptr;
+    typedef boost::shared_ptr<const PositionableElement> ConstPtr;
 
 
-    spcMovableElement();
+    PositionableElement();
 
-    spcMovableElement(const float x, const float y, const float z);
+    PositionableElement(const float x, const float y, const float z);
 
-    spcMovableElement ( const Vector3f point);
+    PositionableElement ( const Vector3f point);
 
     Vector3f getPosition() const
     {
@@ -41,7 +41,7 @@ public:
 
     /// move this measure to this new position
     /// this imply updating the d parameters of the plane
-    void setPosition(const spcMovableElement el);
+    void setPosition(const PositionableElement el);
 
     void setPosition(const Vector3f position);
 

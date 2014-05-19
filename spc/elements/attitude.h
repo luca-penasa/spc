@@ -13,35 +13,35 @@ namespace spc
 /// \brief an spcAttitude is a more sophisticated way to rapresent a plane in space
 /// It is actually the same thing of a Plane object with a position in space that localize the measure
 /// \note Typical notation for an attitude is 10/245 with 10 dip angle (0-90) and 245 is azimut from N (0-360) - the dip.
-class spcAttitude: public spcPlane
+class Attitude: public Plane
 {
 public:
 
-    typedef boost::shared_ptr<spcAttitude> Ptr;
-    typedef boost::shared_ptr<const spcAttitude> ConstPtr;
+    typedef boost::shared_ptr<Attitude> Ptr;
+    typedef boost::shared_ptr<const Attitude> ConstPtr;
 
 
 
     /// def contructor
-    spcAttitude();
+    Attitude();
 
     ///
     /// \brief spcAttitude
     /// \param direction is the normal of the plane
     /// \param position is the position in space for this attitude measure
     ///
-    spcAttitude(const Vector3f &direction, const Vector3f &position);
+    Attitude(const Vector3f &direction, const Vector3f &position);
 
     ///
     /// \brief spcAttitude constructor (geologic-aware)
     /// \param dip is the azimutal angle of dip direction with the north [0-360]
     /// \param dipAngle formed with the orizontal plane
     ///
-    spcAttitude(const float dipAngle, const float dip, Vector3f position = Vector3f::Zero());
+    Attitude(const float dipAngle, const float dip, Vector3f position = Vector3f::Zero());
 
 
     //copy const
-    spcAttitude(const spcAttitude & att): spcPlane(att) {}
+    Attitude(const Attitude & att): Plane(att) {}
 
 
     //////////////////////////////////////
@@ -76,26 +76,12 @@ public:
     ///format dip and dip angle as astring
     std::string getDipAndDipAngleAsString() const;
 
-//protected:
-
-//    friend class boost::serialization::access;
-
-//    template <class Archive>
-//    void serialize(Archive &ar, const unsigned int version)
-//    {
-////        ar & boost::serialization::make_nvp("position",boost::serialization::base_object<spcMovableElement >(*this));
-////        ar & boost::serialization::make_nvp("normal", normal_);
-
-
-//        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(spcPlane);
-//    }
-
 
 
 };
 
 /// print out as stream
-std::ostream& operator<<(std::ostream& os, const spcAttitude& obj);
+std::ostream& operator<<(std::ostream& os, const Attitude& obj);
 
 }//end nspace
 

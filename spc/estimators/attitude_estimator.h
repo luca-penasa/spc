@@ -1,7 +1,7 @@
 #ifndef SINGLE_PLANE_MODEL_FROM_MULTI_CLOUD_ESTIMATOR_H
 #define SINGLE_PLANE_MODEL_FROM_MULTI_CLOUD_ESTIMATOR_H
 
-#include <spc/stratigraphy/single_attitude_model.h>
+#include <spc/scalar_fields_generators/single_attitude_model.h>
 
 #include <unsupported/Eigen/NonLinearOptimization>
 #include <unsupported/Eigen/NumericalDiff>
@@ -68,7 +68,7 @@ public:
     /// please use getEstimatedAttitudes() for having an attitude for each input
     /// cloud.
     ///
-    spcAttitude::Ptr getEstimatedAttitude()
+    Attitude::Ptr getEstimatedAttitude()
     {
         return model_.getAttitude();
     }
@@ -78,13 +78,13 @@ public:
     /// \return  a vector of attitudes. each centered in the centroid of its
     /// parent cloud.
     ///
-    std::vector<spcAttitude> getEstimatedAttitudes();
+    std::vector<Attitude> getEstimatedAttitudes();
 
     ///
     /// \brief getEstimatedSingleAttitudeModel
     /// \return the model correspondent to the estimated attitude/s
     ///
-    spcSingleAttitudeModel getEstimatedSingleAttitudeModel()
+    SingleAttitudeModel getEstimatedSingleAttitudeModel()
     {
         return model_;
     }
@@ -166,7 +166,7 @@ private:
     std::vector<CloudPtrT> clouds_;
 
     /// the current model
-    spcSingleAttitudeModel model_;
+    SingleAttitudeModel model_;
 
     /// stratigraphic position for each point into the clouds
     std::vector<std::vector<float>> s_positions_;

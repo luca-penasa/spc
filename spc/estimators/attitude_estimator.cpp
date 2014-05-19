@@ -8,15 +8,15 @@ AttitudeEstimator::AttitudeEstimator()
 {
 }
 
-std::vector<spcAttitude> AttitudeEstimator::getEstimatedAttitudes()
+std::vector<Attitude> AttitudeEstimator::getEstimatedAttitudes()
 {
-    std::vector<spcAttitude> atts;
-    spcAttitude::Ptr att = getEstimatedAttitude();
+    std::vector<Attitude> atts;
+    Attitude::Ptr att = getEstimatedAttitude();
     std::cout << "att: \n" << att->getNormal() << std::endl;
     Vector3f n = att->getUnitNormal();
 
     for (int i = 0; i < clouds_.size(); ++i) {
-        spcAttitude new_att(n, centroids_.at(i));
+        Attitude new_att(n, centroids_.at(i));
         atts.push_back(new_att);
     }
 
@@ -55,7 +55,7 @@ void AttitudeEstimator::updateSPs()
     s_positions_.clear();
     BOOST_FOREACH(CloudPtrT cloud, clouds_)
     {
-        std::vector<float> vec = model_.getStratigraphicPositions(cloud);
+        std::vector<float> vec = model_.getScalarFieldValues(cloud);
         s_positions_.push_back(vec);
     }
 }

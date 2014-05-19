@@ -14,6 +14,8 @@
 
 #include <pcl/io/pcd_io.h>
 
+#include <spc/common/common_includes.h>
+
 void dotest();
 
 #ifdef PCL_VER_LESS_1_7
@@ -77,6 +79,12 @@ typedef uint32_t u_int32_t;
 
 namespace spc
 {
+
+template<typename Stype>
+std::string asString(const Stype & number)
+{
+    return boost::lexical_cast<std::string>(number);
+}
 
 template <typename nType>
 std::vector<nType> subdivideRange(const nType start, const nType end,

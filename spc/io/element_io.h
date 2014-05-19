@@ -23,7 +23,7 @@ public:
 
     }
 
-    void serialize(const spcMovableElement & element, const std::string filename)
+    void serialize(const PositionableElement & element, const std::string filename)
     {
 
         std::ofstream os(filename);

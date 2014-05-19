@@ -1,13 +1,12 @@
-#include "stratigraphic_evaluator.h"
-
+#include "DynamicScalarFieldEvaluator.h"
 namespace spc
 {
 
-StratigraphicEvaluator::StratigraphicEvaluator()
+DynamicScalarFieldEvaluator::DynamicScalarFieldEvaluator()
 {
 }
 
-int StratigraphicEvaluator::compute()
+int DynamicScalarFieldEvaluator::compute()
 {
     //clear the output
     output_.clear();
@@ -46,7 +45,7 @@ int StratigraphicEvaluator::compute()
     {
         int id = indices_.at(i);
         Eigen::Vector3f point = in_cloud_->getPoint(id);
-        out.at(i) = model_->getStratigraphicPosition(point);
+        out.at(i) = model_->getScalarFieldValue(point);
 
     }
 

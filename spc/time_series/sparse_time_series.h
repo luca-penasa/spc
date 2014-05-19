@@ -40,7 +40,7 @@ public:
     /// \param x_ vector of x positions
     /// \param y_ vector of y values
     ///
-    SparseTimeSeries(vector<ScalarT> x, vector<ScalarT> y);
+    SparseTimeSeries(const vector<ScalarT> &x, const vector<ScalarT> &y);
 
 
     ///

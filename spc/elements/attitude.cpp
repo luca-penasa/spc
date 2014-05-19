@@ -6,16 +6,16 @@
 
 namespace spc
 {
-spcAttitude::spcAttitude()
+Attitude::Attitude()
 {
 }
 
-spcAttitude::spcAttitude( const Vector3f &direction, const Vector3f &position): spcPlane(direction, position)
+Attitude::Attitude( const Vector3f &direction, const Vector3f &position): Plane(direction, position)
 {
 }
 
 
-spcAttitude::spcAttitude(const float dipAngle, const float dip, Vector3f position)
+Attitude::Attitude(const float dipAngle, const float dip, Vector3f position)
 {
 
     if ((dipAngle <= 0.0) | (dipAngle >= 90))
@@ -33,7 +33,7 @@ spcAttitude::spcAttitude(const float dipAngle, const float dip, Vector3f positio
 }
 
 
-Vector3f spc::spcAttitude::getDipDirectionVector() const
+Vector3f spc::Attitude::getDipDirectionVector() const
 {
     //we simply put t 0 the z component
     Vector3f p = getUnitNormal();
@@ -43,14 +43,14 @@ Vector3f spc::spcAttitude::getDipDirectionVector() const
     return p;
 }
 
-Vector3f spcAttitude::getStrikeVector() const
+Vector3f Attitude::getStrikeVector() const
 {
     Vector3f strike = getUnitNormal().cross(getDipDirectionVector());
     strike.normalize();
     return strike;
 }
 
-Vector3f spcAttitude::getDipVector() const
+Vector3f Attitude::getDipVector() const
 {
     Vector3f plane_n = getUnitNormal();
     Vector3f dip_dir = getDipDirectionVector();
@@ -63,7 +63,7 @@ Vector3f spcAttitude::getDipVector() const
     return dipv;
 }
 
-float spcAttitude::getDipAngle() const
+float Attitude::getDipAngle() const
 {
     float angle = acos(getDipVector().dot(getDipDirectionVector())) * 180.0/M_PI;
 
@@ -73,7 +73,7 @@ float spcAttitude::getDipAngle() const
     return angle ;
 }
 
-float spcAttitude::getDip() const
+float Attitude::getDip() const
 {
 
     Vector2f north = Vector2f::UnitX(); // parallel to x axis
@@ -88,7 +88,7 @@ float spcAttitude::getDip() const
 
 }
 
-std::string spcAttitude::getDipAndDipAngleAsString() const
+std::string Attitude::getDipAndDipAngleAsString() const
 {
     char d = 0xb0;
 //    std::string degree = d;

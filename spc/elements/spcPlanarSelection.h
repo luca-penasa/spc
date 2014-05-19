@@ -209,7 +209,7 @@ protected:
     std::vector<pcl::PointXY> verts_2d_;
 
     /// plane on which to perform the projection
-    spcPlane proj_plane_;
+    Plane proj_plane_;
 
     /// a distance limit from the projective plane
     float max_distance_;

@@ -12,7 +12,7 @@
 int main(int argc, char ** argv)
 
 {
-    spc::spcMovableElement  element (0,1,2);
+    spc::PositionableElement  element (0,1,2);
 
     spc::ElementsIO saver;
     saver.serialize(element, "/home/luca/test.xml");

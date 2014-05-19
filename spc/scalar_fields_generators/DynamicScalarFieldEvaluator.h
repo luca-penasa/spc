@@ -1,20 +1,18 @@
-#ifndef STRATIGRAPHIC_EVALUATOR_H
-#define STRATIGRAPHIC_EVALUATOR_H
+#ifndef DYNAMIC_SCALAR_FIELD_EVALUATOR_H
+#define DYNAMIC_SCALAR_FIELD_EVALUATOR_H
 
-#include <spc/stratigraphy/stratigraphic_model_base.h>
-
-
+#include <spc/scalar_fields_generators/DynamicScalarFieldGenerator.h>
 
 namespace spc
 {
 
 
-class StratigraphicEvaluator
+class DynamicScalarFieldEvaluator
 {
 public:
-    StratigraphicEvaluator();
+    DynamicScalarFieldEvaluator();
 
-    void setInputModel(spcStratigraphicModelBase::ConstPtr model)
+    void setGenerator(DynamicScalarFieldGenerator::ConstPtr model)
     {
         //ensure also the indices vector is clear
         model_ = model;
@@ -36,7 +34,7 @@ private:
     /// \brief model_ is a pointer to a stratigraphic model that implements the virtual methods of
     /// a StratigraphicModelBase
     ///
-    spcStratigraphicModelBase::ConstPtr  model_;
+    DynamicScalarFieldGenerator::ConstPtr  model_;
 
 
     //! \brief in_cloud_ is the input cluod on which to compute stratigraphic positions
@@ -54,6 +52,6 @@ private:
 };
 
 } //end nspace
-#endif // STRATIGRAPHIC_EVALUATOR_H
 
+#endif // guard
 
