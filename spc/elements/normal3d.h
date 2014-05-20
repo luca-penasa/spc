@@ -12,8 +12,7 @@ class spcNormal3D: public spcElementBase
 {
 public:
 
-    typedef boost::shared_ptr<spcNormal3D> Ptr;
-    typedef boost::shared_ptr<const spcNormal3D> ConstPtr;
+spcTypedefSmartPointersMacro(spcNormal3D)
 
 
     spcNormal3D();

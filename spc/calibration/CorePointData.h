@@ -16,8 +16,7 @@ public:
     typedef  std::map<std::string, boost::any> DataHolderType;
     typedef  std::pair<std::string, boost::any> PairType;
 
-    typedef boost::shared_ptr<CorePointData> Ptr;
-    typedef const boost::shared_ptr<CorePointData> ConstPtr;
+    spcTypedefSmartPointersMacro(CorePointData)
 
     //!empty const
     CorePointData() {}
@@ -87,7 +86,7 @@ template <typename T>
 std::vector<T> extractPropertyAsVector(const std::vector<CorePointData::Ptr> db, const std::string prop_name)
 {
     std::vector<T> out;
-    BOOST_FOREACH(CorePointData::Ptr entry, db)
+    spcForEachMacro(CorePointData::Ptr entry, db)
             out.push_back(entry->value<T>(prop_name));
 
     return out;

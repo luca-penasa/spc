@@ -13,8 +13,8 @@ class spcSerializableContainer: public spcSerializableObject
 {
 
 public:
-    typedef boost::shared_ptr<spcSerializableContainer> Ptr;
-    typedef boost::shared_ptr<const spcSerializableContainer> ConstPtr;
+
+    spcTypedefSmartPointersMacro(spcSerializableContainer)
 public:
     spcSerializableContainer()
     {

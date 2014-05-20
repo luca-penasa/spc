@@ -24,10 +24,10 @@ class KernelSmoothing2
 
 public:
     typedef SparseTimeSeries<ScalarT> SparseT;
-    typedef boost::shared_ptr<SparseT> SparsePtrT;
+    typedef spcSharedPtrMacro<SparseT> SparsePtrT;
 
     typedef EquallySpacedTimeSeries<ScalarT> EquallyT;
-    typedef boost::shared_ptr<EquallyT> EquallyPtrT;
+    typedef spcSharedPtrMacro<EquallyT> EquallyPtrT;
 
 
 
@@ -80,13 +80,13 @@ protected:
     ScalarT bandwidth_;
 
 
-    boost::shared_ptr<FLANNIndex> flann_index_;
+    spcSharedPtrMacro<FLANNIndex> flann_index_;
 
     //compute gaussian weights on a vector
     inline void
     gaussian(const std::vector<ScalarT> &values, std::vector<ScalarT> &gaussian_values)
     {
-        BOOST_FOREACH (float val, values)
+        spcForEachMacro (float val, values)
         {
             gaussian_values.push_back(gaussian(val));
         }

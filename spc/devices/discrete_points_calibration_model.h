@@ -13,8 +13,8 @@ class DiscretePointsCalibrationModel: public CalibrationModelBase, public spcEle
 {
 public:
 
-    typedef boost::shared_ptr<DiscretePointsCalibrationModel> Ptr;
-    typedef boost::shared_ptr<const DiscretePointsCalibrationModel> ConstPtr;
+    typedef spcSharedPtrMacro<DiscretePointsCalibrationModel> Ptr;
+    typedef spcSharedPtrMacro<const DiscretePointsCalibrationModel> ConstPtr;
 
     DiscretePointsCalibrationModel();
 

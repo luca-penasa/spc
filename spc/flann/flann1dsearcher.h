@@ -1,9 +1,8 @@
 #ifndef SPC_FLANN1DSEARCHER_H
 #define SPC_FLANN1DSEARCHER_H
 
-#include <boost/shared_ptr.hpp>
 #include <flann/flann.hpp>
-
+#include <spc/common/macros.h>
 namespace spc {
 
 
@@ -12,9 +11,7 @@ template <typename ScalarT>
 class Flann1DSearcher
 {
 public:
-
-    typedef boost::shared_ptr<Flann1DSearcher<ScalarT> > Ptr;
-    typedef boost::shared_ptr<const Flann1DSearcher<ScalarT> > ConstPtr;
+    spcTypedefSmartPointersMacro(Flann1DSearcher)
 
     Flann1DSearcher(std::vector<ScalarT> v);
 
@@ -27,7 +24,7 @@ protected:
     // the "searchable" vector
     std::vector<ScalarT> v_;
 
-    boost::shared_ptr<FLANNIndex> flann_index_;
+    spcSharedPtrMacro<FLANNIndex> flann_index_;
 
 };
 

@@ -20,8 +20,7 @@ class CalibrationDataDB
 {
 public:
 
-    typedef boost::shared_ptr<CalibrationDataDB> Ptr;
-    typedef const boost::shared_ptr<CalibrationDataDB> ConstPtr;
+    spcTypedefSmartPointersMacro(CalibrationDataDB)
 
     //! empty constructor
     CalibrationDataDB() {}
@@ -54,7 +53,7 @@ public:
 
     void printOutStuff()
     {
-        BOOST_FOREACH(CorePointData::Ptr entry, db_)
+        spcForEachMacro(CorePointData::Ptr entry, db_)
                 std::cout << *entry << std::endl;
     }
 
@@ -72,7 +71,7 @@ public:
         core_ids_indices_list_.resize(getVectorOfUniqueCorePoints().size());
 
 
-        BOOST_FOREACH(CorePointData::Ptr core, db_)
+        spcForEachMacro(CorePointData::Ptr core, db_)
         {
             size_t current_id = core->value<size_t>("core_id");
             core_ids_indices_list_.at(current_id).push_back(core);
@@ -84,7 +83,7 @@ public:
         // first get the core points ids as a vector list
         std::vector<size_t> core_points_ids;
 
-        BOOST_FOREACH( CorePointData::Ptr core, db_ )
+        spcForEachMacro( CorePointData::Ptr core, db_ )
         {
             size_t current_id = core->value<size_t>("core_id");
             if(!spc::element_exists<size_t>(core_points_ids, current_id))
@@ -99,7 +98,7 @@ public:
         // first get the core points ids as a vector list
         std::vector<size_t> cloud_ids;
 
-        BOOST_FOREACH( CorePointData::ConstPtr core, db_ )
+        spcForEachMacro( CorePointData::ConstPtr core, db_ )
         {
             size_t current_id = core->value<size_t>("cloud_id");
             if(!spc::element_exists<size_t>(cloud_ids, current_id))
@@ -115,7 +114,7 @@ public:
     {
         stream << "distance intensity angle cloud_id core_point_id n_neighbors " << std::endl;
 
-        BOOST_FOREACH(CorePointData::Ptr meas, db_)
+        spcForEachMacro(CorePointData::Ptr meas, db_)
                 meas->writeLine(stream);
     }
 
@@ -130,7 +129,7 @@ public:
     CalibrationDataDB getValidDataOnly() const
     {
         CalibrationDataDB new_db;
-        BOOST_FOREACH(const CorePointData::Ptr data, db_)
+        spcForEachMacro(const CorePointData::Ptr data, db_)
         {
             if(data->isValid())
                 new_db.pushBack(data);

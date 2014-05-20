@@ -24,7 +24,7 @@ class KernelSmoothing
     typedef typename flann::Matrix<ScalarT> FLANNMat;
 
     typedef spc::EquallySpacedTimeSeries<ScalarT> OutSeriesT;
-    typedef boost::shared_ptr<OutSeriesT> OutSeriesPtrT;
+    typedef spcSharedPtrMacro<OutSeriesT> OutSeriesPtrT;
 
 
     //a shorthand for vector type
@@ -142,7 +142,7 @@ private:  //props
     bool compute_var_; //would you like to compute variance?
 
     //Flann index
-    boost::shared_ptr<FLANNIndex> flann_index_;
+    spcSharedPtrMacro<FLANNIndex> flann_index_;
 
     bool use_weights_;
     vType weights_;

@@ -5,6 +5,7 @@
 #include <spc/calibration/CorrectionFactors.h>
 #include <spc/calibration/CalibrationDataDB.h>
 
+
 namespace spc
 {
 
@@ -13,8 +14,7 @@ class IntensityCalibrationModelBase
 {
 public:
 
-    typedef boost::shared_ptr<IntensityCalibrationModelBase> Ptr;
-    typedef const boost::shared_ptr<IntensityCalibrationModelBase> ConstPtr;
+    spcTypedefSmartPointersMacro(IntensityCalibrationModelBase)
 
     IntensityCalibrationModelBase() {}
 
@@ -33,7 +33,7 @@ public:
         parameters_ = pars;
     }
 
-    void setCalibrationData(CalibrationDataDB::ConstPtr db)
+    void setCalibrationData(CalibrationDataDB::Ptr db)
     {
         db_ = db;
     }
@@ -62,8 +62,8 @@ class IntensityCalibratrionModelFactorsBased: public IntensityCalibrationModelBa
 {
 public:
 
-    typedef boost::shared_ptr<IntensityCalibratrionModelFactorsBased> Ptr;
-    typedef const boost::shared_ptr<IntensityCalibratrionModelFactorsBased> ConstPtr;
+    typedef spcSharedPtrMacro<IntensityCalibratrionModelFactorsBased> Ptr;
+    typedef const spcSharedPtrMacro<IntensityCalibratrionModelFactorsBased> ConstPtr;
 
     IntensityCalibratrionModelFactorsBased() {}
 
@@ -105,7 +105,7 @@ public:
 
     void initParametersInFactors()
     {
-        BOOST_FOREACH (CorrectionFactorBase::Ptr fac, factors_)
+        spcForEachMacro (CorrectionFactorBase::Ptr fac, factors_)
         {
             fac->initParameters();
         }
@@ -114,7 +114,7 @@ public:
     void readParametersFromFactors()
     {
         size_t tot_n_pars = 0;
-        BOOST_FOREACH(CorrectionFactorBase::Ptr fac, factors_)
+        spcForEachMacro(CorrectionFactorBase::Ptr fac, factors_)
         {
             tot_n_pars += fac->getNumberOfParameters();
         }
@@ -122,7 +122,7 @@ public:
         Eigen::VectorXf par(tot_n_pars); // clean pars
 
         size_t counter = 0;
-        BOOST_FOREACH (CorrectionFactorBase::Ptr fac, factors_)
+        spcForEachMacro (CorrectionFactorBase::Ptr fac, factors_)
         {
             Eigen::VectorXf v = fac->getParameters();
 
@@ -142,7 +142,7 @@ public:
     void writeParametersToFactors(const Eigen::VectorXf &pars)
     {
         int position_in_parameters = 0;
-        BOOST_FOREACH (CorrectionFactorBase::Ptr fac, factors_)
+        spcForEachMacro (CorrectionFactorBase::Ptr fac, factors_)
         {
             size_t n_pars = fac->getNumberOfParameters();
 
@@ -157,7 +157,7 @@ public:
     virtual float getOverallCorrectionFactor(const CorePointData::ConstPtr point)
     {
         float out = 1;
-        BOOST_FOREACH (CorrectionFactorBase::Ptr fac, factors_)
+        spcForEachMacro (CorrectionFactorBase::Ptr fac, factors_)
         {
             out *= (fac->getFactor(point));
         }
@@ -186,8 +186,7 @@ class JutzyModel: public IntensityCalibratrionModelFactorsBased
 {
 public:
 
-    typedef boost::shared_ptr<JutzyModel> Ptr;
-    typedef const boost::shared_ptr<JutzyModel> ConstPtr;
+spcTypedefSmartPointersMacro(JutzyModel)
 
     JutzyModel(CalibrationDataDB::ConstPtr db, const bool fixed_mul = true)
     {

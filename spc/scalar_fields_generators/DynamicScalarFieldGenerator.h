@@ -3,7 +3,7 @@
 #define DYNAMIC_SCALAR_FIELD_GENERATOR_H
 
 #include <Eigen/Core>
-#include <boost/shared_ptr.hpp>
+//#include <boost/shared_ptr.hpp>
 
 
 #include <pcl/point_cloud.h>
@@ -26,8 +26,7 @@ class DynamicScalarFieldGenerator
 {  
 public:
 
-    typedef  boost::shared_ptr<DynamicScalarFieldGenerator> Ptr;
-    typedef  boost::shared_ptr<const DynamicScalarFieldGenerator> ConstPtr;
+    spcTypedefSmartPointersMacro(DynamicScalarFieldGenerator)
 
     //! Def constructor
     DynamicScalarFieldGenerator();
@@ -56,14 +55,14 @@ public:
     //! \param cloud
     //! \return a vector of stratigraphic positions computed according this model
     //!
-    virtual std::vector<float> getScalarFieldValues(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud);
+    virtual std::vector<float> getScalarFieldValues(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud) const;
 
     //!
     //! \brief getStratigraphicPositions is for the wrapper type of SPC
     //! \param cloud
     //! \return
     //!
-    virtual std::vector<float> getScalarFieldValues(spcGenericCloud * cloud);
+    virtual std::vector<float> getScalarFieldValues(spcGenericCloud * cloud) const;
 
     //!
     //! \brief getStratigraphicPositions with indices
@@ -71,14 +70,14 @@ public:
     //! \param indices
     //! \return the stratigraphic positions
     //!
-    virtual std::vector<float> getScalarFieldValues(spcGenericCloud *cloud, const std::vector<int> &indices);
+    virtual std::vector<float> getScalarFieldValues(spcGenericCloud *cloud, const std::vector<int> &indices) const;
 
 
     /// also from shared pointer
-    virtual std::vector<float> getScalarFieldValues(spcGenericCloud::Ptr cloud, const std::vector<int> &indices);
+    virtual std::vector<float> getScalarFieldValues(spcGenericCloud::Ptr cloud, const std::vector<int> &indices) const;
 
 
-    virtual std::vector<float> getScalarFieldValues(spcGenericCloud::Ptr cloud);
+    virtual std::vector<float> getScalarFieldValues(spcGenericCloud::Ptr cloud) const;
 
     //!
     //! \brief getStratigraphicPositions as getStratigraphicPosition but for a whole cloud!
@@ -86,7 +85,7 @@ public:
     //! \param indices the indices for which to compute the sp
     //! \return a vector of stratigraphic positions computed according this model
     //!
-    virtual std::vector<float> getScalarFieldValues(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, const std::vector<int> &indices);
+    virtual std::vector<float> getScalarFieldValues(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, const std::vector<int> &indices) const;
 
 
 

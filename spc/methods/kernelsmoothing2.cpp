@@ -47,7 +47,7 @@ int KernelSmoothing2<ScalarT>::compute()
     int count = 0;
 
     std::vector<ScalarT> x_val = out_series_->getX();
-    BOOST_FOREACH( ScalarT x, x_val)
+    spcForEachMacro( ScalarT x, x_val)
     {
         evaluateKS(x, value);
         out_series_->getY(count++) = value;
@@ -113,7 +113,7 @@ int KernelSmoothing2<ScalarT>::radiusSearch(const ScalarT &position, const Scala
     flann_index_->radiusSearch(FLANNMat(&pos[0], 1, 1), ids_mat , distances_mat, radius2, search_params);
 
     int counter = 0 ;
-    BOOST_FOREACH (const float d, distances)
+    spcForEachMacro (const float d, distances)
     {
        distances.at(counter++) = sqrt(d);
     }
@@ -144,7 +144,7 @@ int KernelSmoothing2<ScalarT>::evaluateKS(const ScalarT &position, ScalarT &valu
     }
 
     int counter = 0 ;
-    BOOST_FOREACH(const float d, distances)
+    spcForEachMacro(const float d, distances)
     {
         distances.at(counter++) = d/bandwidth_;
     }

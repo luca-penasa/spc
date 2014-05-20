@@ -36,8 +36,7 @@ class IntensityCalibrator
 {
 public:
 
-    typedef boost::shared_ptr<IntensityCalibrator> Ptr;
-    typedef boost::shared_ptr<const IntensityCalibrator> ConstPtr;
+    spcTypedefSmartPointersMacro(IntensityCalibrator)
 
     IntensityCalibrator();
 
@@ -60,7 +59,7 @@ public:
         observed_intensities_.resize(db->size());
 
         size_t counter = 0;
-        BOOST_FOREACH (CorePointData::Ptr core, db->getDataDB())
+        spcForEachMacro (CorePointData::Ptr core, db->getDataDB())
         {
             observed_intensities_(counter++) = core->value<float>("intensity");
         }
@@ -76,7 +75,7 @@ public:
         pcl::console::print_debug("%s called\n", BOOST_CURRENT_FUNCTION);
 
         Eigen::VectorXf corr = model_->getPredictedIntensities(db_);
-//        Eigen::VectorXf ones = Eigen::VectorXf::Zero(corr.size());
+        //        Eigen::VectorXf ones = Eigen::VectorXf::Zero(corr.size());
 
         return observed_intensities_- corr;
     }

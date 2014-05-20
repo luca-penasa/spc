@@ -15,10 +15,7 @@ namespace spc
 class SingleAttitudeModel: public DynamicScalarFieldGenerator, public spcElementBase
 {
 public:
-
-
-    typedef boost::shared_ptr<SingleAttitudeModel> Ptr;
-    typedef boost::shared_ptr<const SingleAttitudeModel> ConstPtr;
+    spcTypedefSmartPointersMacro(SingleAttitudeModel)
 
     /// def const
     SingleAttitudeModel() : additional_shift_(0.0)
@@ -38,7 +35,7 @@ public:
     {
         additional_shift_ = 0.0;
 
-        attitude_ = boost::make_shared<Attitude>(attitude);
+        attitude_ = spcMakeSharedPtrMacro<Attitude>(attitude);
     }
 
     SingleAttitudeModel(const Attitude::Ptr attitude)
@@ -52,11 +49,9 @@ public:
 
 
     /// inherited from StratigraphicModelBase
-    virtual float getScalarFieldValue(const Vector3f &point) const
-        override;
+    virtual float getScalarFieldValue(const Vector3f &point) const;
 
-    virtual Vector3f getScalarFieldGradient(const Vector3f &point) const
-        override;
+    virtual Vector3f getScalarFieldGradient(const Vector3f &point) const;
 
     Vector3f getPointAtStratigraphicPosition(float sp) const
     {

@@ -21,7 +21,7 @@ public:
     typedef std::vector<Indices> IndicesContainer;
 
     typedef spc::EquallySpacedTimeSeries<ScalarT> OutSeriesT;
-    typedef boost::shared_ptr<OutSeriesT> OutSeriesPtrT;
+    typedef spcSharedPtrMacro<OutSeriesT> OutSeriesPtrT;
 
 
 public:

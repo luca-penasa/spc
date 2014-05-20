@@ -11,9 +11,10 @@ template <typename PointT>
 class spcPCLCloud: public spcGenericCloud
 {
 public:
+    spcTypedefSmartPointersMacro(spcPCLCloud<PointT>)
 
-    typedef boost::shared_ptr<spcPCLCloud<PointT> > Ptr;
-    typedef boost::shared_ptr<const spcPCLCloud<PointT> > ConstPtr;
+    //    typedef spcSharedPtrMacro<spcPCLCloud<PointT> > Ptr;
+    //    typedef spcSharedPtrMacro<const spcPCLCloud<PointT> > ConstPtr;
 
     typedef boost::shared_ptr<pcl::PointCloud<PointT> > CloudPtrT;
 
@@ -22,7 +23,7 @@ public:
     spcPCLCloud(const pcl::PointCloud<PointT> &cloud);
 
     virtual void getPoint(const int id, float &x, float &y, float &z) const
-        override;
+    override;
 
     virtual void setPoint(const int id, const float x, const float y,
                           const float z) override;

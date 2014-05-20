@@ -2,7 +2,7 @@
 #define SPC_STD_HELPERS_IMPL_H
 
 #include "std_helpers.h"
-#include <boost/foreach.hpp>
+#include <spc/common/macros.h>
 
 namespace spc
 {
@@ -42,8 +42,8 @@ ScalarT
 get_sum(const std::vector<ScalarT> &input)
 {
     ScalarT sum = 0;
-   BOOST_FOREACH (auto &elem, input)
-      sum += elem;
+    spcForEachMacro (const ScalarT &elem, input)
+            sum += elem;
 
     return sum;
 }

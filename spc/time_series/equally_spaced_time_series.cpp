@@ -57,7 +57,7 @@ EquallySpacedTimeSeries<ScalarT>::getX() const
 {
     std::vector<ScalarT> x(this->y_.size());
     int counter = 0;
-    BOOST_FOREACH (ScalarT &x_pos, x)
+    spcForEachMacro (ScalarT &x_pos, x)
     {
         x_pos = counter++ * x_step + x_start;
     }

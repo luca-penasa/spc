@@ -39,9 +39,9 @@ public:
     void setIndices(std::vector<int> indices) {indices_ = indices;}
 
 #ifdef QGEO
-    void resetInputs() {in_cloud_ = boost::shared_ptr<pcl::PCLPointCloud2>(); in_cloud_cc_ = 0;}
+    void resetInputs() {in_cloud_ = spcSharedPtrMacro<pcl::PCLPointCloud2>(); in_cloud_cc_ = 0;}
 #else
-    void resetInputs() {in_cloud_ = boost::shared_ptr<pcl::PCLPointCloud2>();}
+    void resetInputs() {in_cloud_.reset();}
 #endif
     template <typename ScalarT>
     typename std::vector<ScalarT> * getScalarFieldAsStdVector(std::string &field_name);

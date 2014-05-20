@@ -17,8 +17,6 @@ int DynamicScalarFieldEvaluator::compute()
         return -1;
     }
 
-    std::cout << "HERE" << model_ << std::endl;
-
     if (!in_cloud_)
     {
         pcl::console::print_error("in cloud not found. set one before to compute");
@@ -45,8 +43,8 @@ int DynamicScalarFieldEvaluator::compute()
     {
         int id = indices_.at(i);
         Eigen::Vector3f point = in_cloud_->getPoint(id);
-        out.at(i) = model_->getScalarFieldValue(point);
-
+        float val = model_->getScalarFieldValue(point);
+        out.at(i) = val;
     }
 
 

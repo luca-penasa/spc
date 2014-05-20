@@ -19,6 +19,7 @@
 
 #include <boost/bind.hpp>
 #include <boost/ref.hpp>
+
 namespace spc
 {
 
@@ -40,12 +41,12 @@ class EstimateAverageSamplingStep: public Filter<PointT>
 
 public:
 
-    typedef boost::shared_ptr< EstimateAverageSamplingStep<PointT> > Ptr;
-    typedef boost::shared_ptr< const EstimateAverageSamplingStep<PointT> > ConstPtr;
+    typedef spcSharedPtrMacro< EstimateAverageSamplingStep<PointT> > Ptr;
+    typedef spcSharedPtrMacro< const EstimateAverageSamplingStep<PointT> > ConstPtr;
 
     EstimateAverageSamplingStep():
-        step_avg_(std::numeric_limits<float>::quiet_NaN()),
-        step_std_(std::numeric_limits<float>::quiet_NaN())
+        step_avg_(spcNANMacro),
+        step_std_(spcNANMacro)
     {
         filter_name_ = "EstimateAverageSamplingStep";
     }

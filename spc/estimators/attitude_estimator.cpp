@@ -30,7 +30,7 @@ void AttitudeEstimator::initializeModel()
 
     std::vector<Vector3f> normals;
 
-    BOOST_FOREACH (auto &elem, clouds_) {
+    spcForEachMacro (auto &elem, clouds_) {
       CloudPtrT cloud = elem;
         if (cloud->size() < 3)
             continue;
@@ -53,7 +53,7 @@ void AttitudeEstimator::initializeModel()
 void AttitudeEstimator::updateSPs()
 {
     s_positions_.clear();
-    BOOST_FOREACH(CloudPtrT cloud, clouds_)
+    spcForEachMacro(CloudPtrT cloud, clouds_)
     {
         std::vector<float> vec = model_.getScalarFieldValues(cloud);
         s_positions_.push_back(vec);
@@ -66,7 +66,7 @@ void AttitudeEstimator::computeAveragedSPs()
 
     est_s_positions_.clear(); // clear it
 
-    BOOST_FOREACH(std::vector<float> sps, s_positions_)
+    spcForEachMacro(std::vector<float> sps, s_positions_)
     {
         float avg_sp = std::accumulate(sps.begin(), sps.end(), 0.0);
         avg_sp /= sps.size();
@@ -83,7 +83,7 @@ void AttitudeEstimator::updateDeviations()
         std::vector<float> devs;
         CloudPtrT cloud = clouds_.at(i);
         float est_sp = est_s_positions_.at(i); // its sp
-        BOOST_FOREACH(float this_sp, s_positions_.at(i))
+        spcForEachMacro(float this_sp, s_positions_.at(i))
         {
             float diff = est_sp - this_sp;
             devs.push_back(diff * diff);
@@ -109,7 +109,7 @@ float AttitudeEstimator::getAveragedSquareDeviations()
     updateDeviations(); // be sure are updated
     float acc = 0;
     int counter = 0;
-    BOOST_FOREACH(std::vector<float> devs, sq_deviations_)
+    spcForEachMacro(std::vector<float> devs, sq_deviations_)
     {
         acc += std::accumulate(devs.begin(), devs.end(), 0.0f);
         counter += devs.size();
@@ -126,6 +126,9 @@ std::vector<float> AttitudeEstimator::getStratigraphicPositionsOfClouds()
 int AttitudeEstimator::estimate()
 {
     initializeModel();
+
+    if (clouds_.size() == 1)
+        return 1;
 
     VectorXf start = model_.getAttitude()->getUnitNormal();
 

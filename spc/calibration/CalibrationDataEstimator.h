@@ -37,6 +37,8 @@ class CalibrationDataEstimator
 {
 public:
 
+    spcTypedefSmartPointersMacro(CalibrationDataDB)
+
     enum NORMAL_COMPUTATION_METHOD {FULL_NORMALS_ESTIMATION = 0, PRECOMPUTED_NORMALS};
 
     enum INTENSITY_ESTIMATION_METHOD {SIMPLE_AVERAGE = 0, GAUSSIAN_ESTIMATION};
@@ -63,7 +65,7 @@ public:
         db_ = CalibrationDataDB(); //ensure is clean, we should reset instead
 
         current_cloud_id_ = 0;
-        BOOST_FOREACH (std::string fname, input_fnames_)
+        spcForEachMacro (std::string fname, input_fnames_)
         {
             current_cloud_name_ = fname;
             pcl::console::print_info("started working on %s ", fname.c_str());
@@ -136,10 +138,10 @@ public:
             return in_cloud->at(indices.at(0)).intensity;
 
         if ((indices.size() == 1) & (exclude_first_id))
-            return std::numeric_limits<float>::quiet_NaN();
+            return spcNANMacro;
 
         if (indices.size() == 0)
-            return std::numeric_limits<float>::quiet_NaN();
+            return spcNANMacro;
 
         // compute weights
         std::vector<float> weights (indices.size());

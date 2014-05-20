@@ -89,7 +89,7 @@ CloudSerializedSlicerOnField::compute()
 
 
 
-    BOOST_FOREACH(float pos, intervals)
+    spcForEachMacro(float pos, intervals)
     {
         std::vector<int> indices;
         std::vector<float> dist;

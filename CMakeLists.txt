@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 project(spc)
 
+set(SPC_DEFINITIONS "") #my definitions
+
 
 option(BUILD_WITH_CLANG "Build spc library using clang isntead of gcc." OFF)
 if(BUILD_WITH_CLANG)
@@ -51,11 +53,12 @@ set(CEREAL_IS_INTERNAL TRUE CACHE BOOL "if internal cereal is used")
 
 ############################################################################################################
 set(SPC_LIBRARIES CACHE INTERNAL "SPC libs" FORCE) #this will collect all the modular libs spc will create
-set(PCL_DEFINITIONS "") #my definitions
+
 ############################################################################################################
 
 ############################# OPTIONS ######################################################################
 option(BUILD_SPC_SHARED "Build spc library as a shared lib." ON)
+option(BUILD_STD_SHARED_PTR "Build spc library as a shared lib." ON)
 option(BUILD_WITH_GPROF "Build with -pg flags for profiling." OFF)
 option(BUILD_TOOLS "Build the tools." OFF)
 option(BUILD_TOOLS "Build really experimental staff." OFF)
@@ -83,6 +86,10 @@ endif()
 
 set(INSTALL_CMAKE_DIR ${DEF_INSTALL_CMAKE_DIR} CACHE PATH  "Installation directory for CMake files")
 
+if (BUILD_STD_SHARED_PTR)
+    add_definitions(-DUSE_STD_SHARED_PTR)
+    set(SPC_DEFINITIONS "${SPC_DEFINITIONS} -DUSE_STD_SHARED_PTR" )
+endif()
 
 #make relative path absolute
 foreach(p LIB BIN INCLUDE CMAKE)

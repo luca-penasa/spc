@@ -57,7 +57,7 @@ void spc::CalibrationDataDB::fromFile(const std::string filename)
         CorePointData::Ptr cp (new CorePointData);
 
         size_t col_count = 0;
-        BOOST_FOREACH(std::string fieldname, fields)
+        spcForEachMacro(std::string fieldname, fields)
         {
 
             std::string word = vec.at(col_count++);

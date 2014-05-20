@@ -40,7 +40,7 @@ std::vector<ScalarT> * PointCloud2Reader::getScalarFieldAsStdVector(std::string 
 
         if (size == sizeof(ScalarT)) //simple copy!
         {
-            BOOST_FOREACH (int i, indices_)
+            spcForEachMacro (int i, indices_)
             {
                 memcpy(out_vector->data() + count++, in_cloud_->data.data() + i*point_step + offset, sizeof(ScalarT));
             }
@@ -51,7 +51,7 @@ std::vector<ScalarT> * PointCloud2Reader::getScalarFieldAsStdVector(std::string 
             if (size == 4) //float or int
             {
                 float data;
-                BOOST_FOREACH(int i, indices_)
+                spcForEachMacro(int i, indices_)
                 {
                     memcpy(&data, in_cloud_->data.data() + i*point_step + offset, sizeof(float));
                     out_vector->at(count++) = (ScalarT) data;
@@ -60,7 +60,7 @@ std::vector<ScalarT> * PointCloud2Reader::getScalarFieldAsStdVector(std::string 
             else if (size == 8) //double
             {
                 double data;
-                BOOST_FOREACH (int i, indices_)
+                spcForEachMacro (int i, indices_)
                 {
                     memcpy(&data, in_cloud_->data.data() + i*point_step + offset, sizeof(double));
                     out_vector->at(count++) = (ScalarT) data;

@@ -227,7 +227,7 @@ KernelSmoothing<ScalarT>::getExternalWeightsForIds(const idvType ids, vType &wei
     weights.resize(ids.size());
 
     size_t counter = 0;
-    BOOST_FOREACH (int id, ids)
+    spcForEachMacro (int id, ids)
     {
         weights.at(counter++) = this->weights_.at(id);
     }

@@ -1,5 +1,5 @@
 #include "spcPCLCloud.h"
-
+#include <boost/make_shared.hpp>
 
 
 namespace spc
@@ -14,7 +14,7 @@ spcPCLCloud<PointT>::spcPCLCloud(CloudPtrT cloud)
 template <typename PointT>
 spcPCLCloud<PointT>::spcPCLCloud(const pcl::PointCloud<PointT> &cloud)
 {
-    cloud_ = boost::make_shared<pcl::PointCloud<PointT> > (cloud);
+    cloud_ = boost::make_shared< pcl::PointCloud<PointT> > (cloud);
 }
 
 template <typename PointT>

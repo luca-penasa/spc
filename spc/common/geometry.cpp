@@ -1,6 +1,7 @@
 #include "geometry.h"
 #include <pcl/common/distances.h>
-#include <boost/foreach.hpp>
+
+#include <spc/common/macros.h>
 
 namespace spc
 {
@@ -33,7 +34,7 @@ getAverageDistanceFromSensor(const pcl::PointCloud<PointT> & cloud, const std::v
 
     std::vector<float> dists;
 
-    BOOST_FOREACH(int id, ids)
+    spcForEachMacro (int id, ids)
     {
         dists.push_back(pcl::euclideanDistance (cloud.points[id], this_origin));
     }

@@ -36,17 +36,17 @@ void CalibrationDataEstimator::getNearestNormal(const pcl::PointXYZI &point, flo
 
     if (ids.empty() )
     {
-        nx = NAN;
-        ny = NAN;
-        nz = NAN;
+        nx = spcNANMacro;
+        ny = spcNANMacro;
+        nz = spcNANMacro;
         return;
     }
 
     if ( (sq_dists.at(0) >= sq_dist_limit))
     {
-        nx = std::numeric_limits<float>::quiet_NaN();
-        ny = std::numeric_limits<float>::quiet_NaN();
-        nz = std::numeric_limits<float>::quiet_NaN();
+        nx = spcNANMacro;
+        ny = spcNANMacro;
+        nz = spcNANMacro;
         return;
     }
 
@@ -79,12 +79,12 @@ CorePointData::Ptr CalibrationDataEstimator::computeCorePointParameters(const si
 
     ////////////////////////////////// NORMAL ESTIMATION /////////////////////////////
     //compute normal and average distance
-    float nx(NAN);
-    float ny(NAN);
-    float nz(NAN);
-    float lam0(NAN);
-    float lam1(NAN);
-    float lam2(NAN);
+    float nx(spcNANMacro);
+    float ny(spcNANMacro);
+    float nz(spcNANMacro);
+    float lam0(spcNANMacro);
+    float lam1(spcNANMacro);
+    float lam2(spcNANMacro);
 
 
     if (normal_estimation_method_ == FULL_NORMALS_ESTIMATION)
@@ -99,7 +99,7 @@ CorePointData::Ptr CalibrationDataEstimator::computeCorePointParameters(const si
     }
 
     /////////////////////// DISTANCE ESTIMATION ////////////////////////////
-    Eigen::Vector4f _c(NAN, NAN, NAN, NAN); //tmp_var
+    Eigen::Vector4f _c( spcNANMacro, spcNANMacro, spcNANMacro, spcNANMacro); //tmp_var
 
     if (ids.size() > 0)
     {
@@ -118,7 +118,7 @@ CorePointData::Ptr CalibrationDataEstimator::computeCorePointParameters(const si
 
 
     //////////////////////// INTENSITY ESTIMATION ////////////////////////
-    float intensity = NAN;
+    float intensity = spcNANMacro;
 
     if (intensity_estimation_method_ == SIMPLE_AVERAGE)
         intensity = this->getAverageIntensity(*current_point_cloud_, ids);
@@ -198,10 +198,10 @@ float CalibrationDataEstimator::getMinimumAngleBetweenVectors(const Vector3f x_,
 float CalibrationDataEstimator::getAverageIntensity(const pcl::PointCloud<pcl::PointXYZI> &cloud, std::vector<int> ids)
 {
     if (ids.size() == 0)
-        return NAN;
+        return spcNANMacro;
 
     float sum = 0;
-    BOOST_FOREACH(int id, ids)
+    spcForEachMacro(int id, ids)
             sum += cloud.at(id).intensity ;
 
     sum /= ids.size();

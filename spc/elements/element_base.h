@@ -3,7 +3,6 @@
 
 #include <Eigen/Geometry>
 #include <Eigen/Core>
-#include <boost/smart_ptr.hpp>
 
 #include <iostream>
 #include <sstream>
@@ -17,8 +16,9 @@
 //#include <boost/serialization/string.hpp> // so that boost know how to serialize std::string
 //#include <boost/serialization/export.hpp>
 
+#include <spc/common/common_includes.h>
 
-#include <boost/foreach.hpp>
+//#include <boost/foreach.hpp>
 
 
 using namespace Eigen;
@@ -29,12 +29,19 @@ namespace spc
 class spcElementBase: public spcSerializableObject
 {
 public:
-    typedef boost::shared_ptr<spcElementBase> Ptr;
-    typedef boost::shared_ptr<const spcElementBase> ConstPtr;
+spcTypedefSmartPointersMacro(spcElementBase)
 
 
-    spcElementBase () {}
+    spcElementBase (): modified_(false) {}
 
+//    spcSetMacro(Modified, modified_, bool)
+//    spcGetMacro(Modified, modified_,  bool)
+
+    // this may be useful in a future
+    void modified()
+    {
+        modified_ = true;
+    }
 
 protected:
 //    friend class boost::serialization::access;
@@ -49,6 +56,8 @@ protected:
     {
         return typeid(this).name();
     }
+
+    bool modified_;
 
 
 

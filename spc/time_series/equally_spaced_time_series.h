@@ -26,8 +26,8 @@ class EquallySpacedTimeSeries: public spc::GenericTimeSeries<ScalarT>
 
 
 public:
-    typedef boost::shared_ptr<EquallySpacedTimeSeries<ScalarT> > Ptr;
-    typedef boost::shared_ptr<const EquallySpacedTimeSeries<ScalarT> > ConstPtr;
+    typedef spcSharedPtrMacro<EquallySpacedTimeSeries<ScalarT> > Ptr;
+    typedef spcSharedPtrMacro<const EquallySpacedTimeSeries<ScalarT> > ConstPtr;
 
     using typename spc::GenericTimeSeries<ScalarT>::VectorT;
 

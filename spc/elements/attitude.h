@@ -17,8 +17,7 @@ class Attitude: public Plane
 {
 public:
 
-    typedef boost::shared_ptr<Attitude> Ptr;
-    typedef boost::shared_ptr<const Attitude> ConstPtr;
+    spcTypedefSmartPointersMacro(Attitude)
 
 
 

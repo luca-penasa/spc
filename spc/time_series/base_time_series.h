@@ -30,8 +30,8 @@ public:
 
     GenericTimeSeries() {}
 
-    typedef boost::shared_ptr<GenericTimeSeries<ScalarT> > Ptr;
-    typedef boost::shared_ptr<const GenericTimeSeries<ScalarT> > ConstPtr;
+    typedef spcSharedPtrMacro<GenericTimeSeries<ScalarT> > Ptr;
+    typedef spcSharedPtrMacro<const GenericTimeSeries<ScalarT> > ConstPtr;
 
     typedef std::vector<ScalarT> VectorT;
     typedef ScalarT ScaT;

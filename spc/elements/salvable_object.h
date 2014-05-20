@@ -1,7 +1,8 @@
 #ifndef SPC_SALVABLE_OBJECT_H
 #define SPC_SALVABLE_OBJECT_H
 
-#include <boost/shared_ptr.hpp>
+//#include <boost/shared_ptr.hpp>
+#include <spc/common/macros.h>
 
 //#include <cereal/cereal.hpp>
 #include <Eigen/Dense>
@@ -20,8 +21,7 @@ namespace spc
 class spcSerializableObject
 {
 public:
-    typedef boost::shared_ptr<spcSerializableObject> Ptr;
-    typedef boost::shared_ptr<const spcSerializableObject> ConstPtr;
+spcTypedefSmartPointersMacro(spcSerializableObject)
 
 
 public:

@@ -18,8 +18,8 @@ class SparseTimeSeries: public GenericTimeSeries<ScalarT>
 {
 public:
 
-    typedef boost::shared_ptr<SparseTimeSeries<ScalarT> > Ptr;
-    typedef boost::shared_ptr< const SparseTimeSeries<ScalarT> > ConstPtr;
+    typedef spcSharedPtrMacro<SparseTimeSeries<ScalarT> > Ptr;
+    typedef spcSharedPtrMacro< const SparseTimeSeries<ScalarT> > ConstPtr;
 
     typedef typename GenericTimeSeries<ScalarT>::VectorT VectorT;
 

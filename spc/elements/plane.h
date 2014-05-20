@@ -26,9 +26,7 @@ class Plane: public PositionableElement
 {
 public:
 
-
-    typedef boost::shared_ptr<Plane> Ptr;
-    typedef boost::shared_ptr<const Plane> ConstPtr;
+spcTypedefSmartPointersMacro(Plane)
 
 
 

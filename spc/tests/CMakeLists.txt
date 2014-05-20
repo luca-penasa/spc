@@ -13,3 +13,10 @@ target_link_libraries(spc_test_boost_eval3 spc_calibration spc_external)
 add_executable(spc_test_cereal_serialize cereal_serialize.cpp)
 target_link_libraries(spc_test_cereal_serialize spc_calibration spc_external)
 
+
+
+add_executable(spc_uuid uuid.cpp)
+target_link_libraries(spc_uuid spc_elements)
+
+add_executable(spc_sample sample.cpp)
+target_link_libraries(spc_sample spc_elements)

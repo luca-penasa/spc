@@ -13,6 +13,9 @@ namespace spc
 class CalibrationDataFilter
 {
 public:
+
+    spcTypedefSmartPointersMacro(CalibrationDataFilter)
+
     CalibrationDataFilter() {}
     void setInputCalibrationDataDB(CalibrationDataDB data)
     {
@@ -24,7 +27,7 @@ public:
 
 
         std::vector<size_t> unique_cores = db_.getVectorOfUniqueCorePoints();
-        BOOST_FOREACH (size_t id, unique_cores)
+        spcForEachMacro (size_t id, unique_cores)
         {
 
 
@@ -42,7 +45,7 @@ public:
             Eigen::Vector3f best_normal = current_core_points.at(best_id)->value<Eigen::Vector3f>("normal");
 
             //now we force ALL the other core points to have the same normal
-            BOOST_FOREACH (CorePointData::Ptr core_meas, current_core_points)
+            spcForEachMacro (CorePointData::Ptr core_meas, current_core_points)
             {
                 core_meas->value<Eigen::Vector3f>("normal") = best_normal;
             }
@@ -57,7 +60,7 @@ public:
      */
     void recomputeScatteringAngles()
     {
-        BOOST_FOREACH(CorePointData::Ptr core, db_.getDataDB())
+        spcForEachMacro(CorePointData::Ptr core, db_.getDataDB())
         {
             Eigen::Vector3f normal = core->value<Eigen::Vector3f>("normal");
             Eigen::Vector3f ray = core->value<Eigen::Vector3f>("ray");

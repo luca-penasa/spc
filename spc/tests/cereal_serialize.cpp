@@ -42,7 +42,7 @@ class ClassBase
 {
 
 public:
-    typedef SHARED_PTR<ClassBase> Ptr;
+    typedef spcSharedPtrMacro<ClassBase> Ptr;
 
     virtual void printSomething() = 0;
 
@@ -51,7 +51,7 @@ public:
 class ClassA: public ClassBase
 {
 public:
-    typedef SHARED_PTR<ClassA> Ptr;
+    typedef spcSharedPtrMacro<ClassA> Ptr;
 
     ClassA()
     {
@@ -83,7 +83,7 @@ class ClassB: public ClassA
 {
 public:
 
-    typedef boost::shared_ptr<ClassB> Ptr;
+    typedef spcSharedPtrMacro<ClassB> Ptr;
 
     ClassB() { v2 = Eigen::Vector3f::Random();}
 
@@ -116,12 +116,12 @@ int main() {
 
     {
 
-        ClassBase::Ptr  a (new ClassA);
+//        ClassBase::Ptr  a (new ClassA);
 
 
-        std::ofstream out ("test.json");
-        cereal::JSONOutputArchive archive_o(out);
-        archive_o(a);
+//        std::ofstream out ("test.json");
+//        cereal::JSONOutputArchive archive_o(out);
+//        archive_o(a);
 
 
     }

@@ -18,7 +18,7 @@ std::vector<float> spc::spcGenericCloud::getField(const std::string fieldname, s
     }
 
     float val;
-    BOOST_FOREACH(int i, indices)
+    spcForEachMacro(int i, indices)
     {
         getFieldValue(i, fieldname, val);
         out.push_back(val);

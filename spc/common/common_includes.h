@@ -8,18 +8,21 @@
 #include <numeric>
 #include <map>
 #include <iostream>
+#include <string>
 
 
 
 //BOOST STUFF
 //#include <boost/smart_ptr.hpp>
-#include <boost/shared_ptr.hpp>
-#include <boost/foreach.hpp>
+//#include <boost/shared_ptr.hpp>
+
 #include <boost/algorithm/string.hpp>
 
 #include <boost/lexical_cast.hpp>
 
 #include <memory>
+
+
 
 
 // EIGEN
@@ -28,17 +31,6 @@
 // PCL
 #include <pcl/console/print.h>
 
-namespace  spc {
-
-#ifndef NAN
-    #define NAN  std::numeric_limits<float>::quiet_NaN();
-#endif
-
-
-#ifndef SHARED_PTR
-    #define SHARED_PTR std::shared_ptr
-#endif
-
-}
+#include <spc/common/macros.h>
 
 #endif // SPC_COMMON_INCLUDES_H

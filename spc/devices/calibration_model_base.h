@@ -1,7 +1,7 @@
 #ifndef CALIBRATION_MODEL_BASE_H
 #define CALIBRATION_MODEL_BASE_H
 
-#include <boost/shared_ptr.hpp>
+#include <spc/common/macros.h>
 
 namespace spc
 {
@@ -9,8 +9,7 @@ namespace spc
 class CalibrationModelBase
 {
 public:
-    typedef boost::shared_ptr<CalibrationModelBase> Ptr;
-    typedef boost::shared_ptr<const CalibrationModelBase> ConstPtr;
+    spcTypedefSmartPointersMacro(CalibrationModelBase)
 
 
     CalibrationModelBase();

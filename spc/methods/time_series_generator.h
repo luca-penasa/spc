@@ -27,7 +27,7 @@ public:
 
     typedef float ScalarT;
     typedef spc::EquallySpacedTimeSeries<ScalarT> OutSeriesT;
-    typedef boost::shared_ptr<OutSeriesT> OutSeriesPtrT;
+    typedef spcSharedPtrMacro<OutSeriesT> OutSeriesPtrT;
 
 
     ///

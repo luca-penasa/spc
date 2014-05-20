@@ -18,8 +18,7 @@ class spcPlanarSelection: public spcElementBase
 {
 public:
 
-    typedef boost::shared_ptr<spcPlanarSelection> Ptr;
-    typedef boost::shared_ptr<const spcPlanarSelection> ConstPtr;
+    spcTypedefSmartPointersMacro(spcPlanarSelection)
 
 
     typedef pcl::PointCloud<pcl::PointXYZ> cloudT;
@@ -106,7 +105,7 @@ public:
         pcl::PointCloud<pcl::PointXYZ> cloud;
         cloud.resize(indices.size());
 
-        BOOST_FOREACH (auto id, indices)
+        spcForEachMacro (auto id, indices)
         {
             Vector3f point = in_cloud->getPoint(id);
             pcl::PointXYZ p;
@@ -179,7 +178,7 @@ protected:
         pcl::PointCloud<pcl::PointXYZ> projected = spcPCLCloud<pcl::PointXYZ>(verts_3d_).applyTransform(proj_plane_.get2DArbitraryRefSystem());
 
 
-        BOOST_FOREACH (auto &elem, projected)
+        spcForEachMacro (auto &elem, projected)
         {
             pcl::PointXY p2d;
             pcl::PointXYZ p3d;
@@ -227,14 +226,14 @@ protected:
 
 
 
-//    friend class boost::serialization::access;
+    //    friend class boost::serialization::access;
 
-//    template <class Archive>
-//    void serialize(Archive &ar, const unsigned int version)
-//    {
-//        ar & BOOST_SERIALIZATION_NVP(verts_3d_);
-//        ar & BOOST_SERIALIZATION_NVP(max_distance_);
-//    }
+    //    template <class Archive>
+    //    void serialize(Archive &ar, const unsigned int version)
+    //    {
+    //        ar & BOOST_SERIALIZATION_NVP(verts_3d_);
+    //        ar & BOOST_SERIALIZATION_NVP(max_distance_);
+    //    }
 
 
 

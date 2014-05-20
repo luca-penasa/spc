@@ -15,8 +15,7 @@ namespace spc
 class CorrectionFactorBase
 {
 public:
-    typedef boost::shared_ptr<CorrectionFactorBase> Ptr;
-    typedef const boost::shared_ptr<CorrectionFactorBase> ConstPtr;
+    spcTypedefSmartPointersMacro(CorrectionFactorBase)
 
     //! we pass a CalibrationDataDB because some factors may require to know some stuff before everything
     //! see for example CorrectionFactorCloudDependentMultiplier

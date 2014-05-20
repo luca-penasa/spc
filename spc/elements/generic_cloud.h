@@ -20,8 +20,7 @@ class spcGenericCloud: public spcElementBase
 {
 public:
 
-    typedef boost::shared_ptr<spcGenericCloud> Ptr;
-    typedef boost::shared_ptr<const spcGenericCloud> ConstPtr;
+spcTypedefSmartPointersMacro(spcGenericCloud)
 
 
     spcGenericCloud();

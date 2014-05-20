@@ -6,7 +6,7 @@ namespace spc
 std::ostream &operator<<(std::ostream &os, const spc::CorePointData &obj)
 {
     // write obj to stream
-    BOOST_FOREACH (CorePointData::PairType iter, obj.getDB())
+    spcForEachMacro (CorePointData::PairType iter, obj.getDB())
     {
         os << iter.first << ": ";
 
@@ -14,7 +14,7 @@ std::ostream &operator<<(std::ostream &os, const spc::CorePointData &obj)
         {
             std::vector<int>  ids = boost::any_cast<std::vector<int> > (iter.second);
 
-            BOOST_FOREACH (int i, ids)
+            spcForEachMacro (int i, ids)
                     os << i << " " ;
 
             os << std::endl;
@@ -24,7 +24,7 @@ std::ostream &operator<<(std::ostream &os, const spc::CorePointData &obj)
         {
             std::vector<float>  ids = boost::any_cast<std::vector<float> > (iter.second);
 
-            BOOST_FOREACH (float i, ids)
+            spcForEachMacro (float i, ids)
                     os << i << " " ;
 
             os << std::endl;

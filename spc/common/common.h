@@ -165,7 +165,7 @@ std::vector<int> getSortingIds(const std::vector<Stype> &v)
     std::vector<pairT> order;
 
     size_t n = 0;
-    BOOST_FOREACH(const Stype & e, v)
+    spcForEachMacro(const Stype & e, v)
     {
         order.push_back(std::make_pair(n++, (myiter) & e));
     }

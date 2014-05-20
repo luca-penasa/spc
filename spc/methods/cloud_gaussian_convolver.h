@@ -33,8 +33,8 @@ class GaussianConvolver: public Filter<PointT>
 
 public:
 
-    typedef boost::shared_ptr< GaussianConvolver<PointT> > Ptr;
-    typedef boost::shared_ptr< const GaussianConvolver<PointT> > ConstPtr;
+    typedef spcSharedPtrMacro< GaussianConvolver<PointT> > Ptr;
+    typedef spcSharedPtrMacro< const GaussianConvolver<PointT> > ConstPtr;
 
     GaussianConvolver(): filter_field_name_("intensity"), squared_sigma_(1.0f), down_width_(0.1f), support_factor_(2.0)
     {

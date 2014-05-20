@@ -19,8 +19,7 @@ class PositionableElement: public spcElementBase
 {
 public:
 
-    typedef boost::shared_ptr<PositionableElement> Ptr;
-    typedef boost::shared_ptr<const PositionableElement> ConstPtr;
+spcTypedefSmartPointersMacro(PositionableElement)
 
 
     PositionableElement();

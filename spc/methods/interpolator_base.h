@@ -14,8 +14,8 @@ class InterpolatorBase: public spcElementBase
 public:
 
 
-    typedef boost::shared_ptr<InterpolatorBase> Ptr;
-    typedef boost::shared_ptr<const InterpolatorBase> ConstPtr;
+    typedef spcSharedPtrMacro<InterpolatorBase> Ptr;
+    typedef spcSharedPtrMacro<const InterpolatorBase> ConstPtr;
 
     InterpolatorBase();
 
@@ -30,7 +30,7 @@ public:
 
 
         int c = 0;
-        BOOST_FOREACH(const float x, new_x)
+        spcForEachMacro(const float x, new_x)
         {
             out.at(c++) = getInterpolatedValue(x);
         }

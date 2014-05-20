@@ -54,8 +54,8 @@ public:
     typedef pcl::PointCloud<PointT> CloudT;
     typedef CloudT::Ptr CloudPtrT;
 
-    typedef  boost::shared_ptr<AttitudeEstimator> Ptr;
-    typedef  boost::shared_ptr<const AttitudeEstimator> ConstPtr;
+    typedef  spcSharedPtrMacro<AttitudeEstimator> Ptr;
+    typedef  spcSharedPtrMacro<const AttitudeEstimator> ConstPtr;
 
     /// def const
     AttitudeEstimator();

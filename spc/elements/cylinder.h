@@ -20,8 +20,7 @@ namespace spc {
 class Cylinder: public PositionableElement
 {
 public:
-    typedef boost::shared_ptr<Cylinder> Ptr;
-    typedef boost::shared_ptr<const Cylinder> ConstPtr;
+spcTypedefSmartPointersMacro(Cylinder)
 
     /// def constrcutor
     Cylinder()

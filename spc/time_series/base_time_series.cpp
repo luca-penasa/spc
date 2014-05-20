@@ -10,7 +10,7 @@ namespace spc {
 //    boost::random::random_device rng;
 //    boost::random::uniform_real_distribution<> index_dist(min, max);
 
-//    BOOST_FOREACH (ScalarT& y, this->getY())
+//    spcForEachMacro (ScalarT& y, this->getY())
 //    {
 //        y = index_dist(rng) ;
 //    }
