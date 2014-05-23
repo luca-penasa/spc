@@ -14,7 +14,7 @@ class CalibrationDataFilter
 {
 public:
 
-    spcTypedefSmartPointersMacro(CalibrationDataFilter)
+    SPC_OBJECT(CalibrationDataFilter)
 
     CalibrationDataFilter() {}
     void setInputCalibrationDataDB(CalibrationDataDB data)

@@ -1,5 +1,10 @@
 #include "movable_element.h"
 
+#include <spc/common/eigen_serialization.hpp>
+#include <spc/elements/SerializableObject.h>
+#include <pcl/common/centroid.h>
+#include <spc/elements/generic_cloud.h>
+
 
 
 
@@ -14,12 +19,31 @@ PositionableElement::PositionableElement() : position_(0,0,0)
 
 PositionableElement::PositionableElement(const float x, const float y, const float z)
 {
-    position_ = Vector3f(x, y, z);
+    position_ = Eigen::Vector3f(x, y, z);
 }
 
-PositionableElement::PositionableElement(const Vector3f point)
+PositionableElement::PositionableElement(const Eigen::Vector3f point)
 {
     position_ = point;
+}
+
+void PositionableElement::getPosition(float &x, float &y, float &z) const
+{
+    x = position_(0);
+    y = position_(1);
+    z = position_(2);
+}
+
+
+
+Eigen::Vector3f &PositionableElement::getPosition()
+{
+    return position_;
+}
+
+Eigen::Vector3f PositionableElement::getPosition() const
+{
+    return position_;
 }
 
 
@@ -28,7 +52,7 @@ void PositionableElement::setPosition(const PositionableElement el)
     setPosition(el.getPosition());
 }
 
-void PositionableElement::setPosition(const Vector3f position)
+void PositionableElement::setPosition(const Eigen::Vector3f position)
 {
     position_ = position;
 }
@@ -47,5 +71,6 @@ void PositionableElement::positionFromCentroid(pcl::PointCloud<pcl::PointXYZ> &c
 
 
 } //end nspace
+
 
 

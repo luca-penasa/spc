@@ -20,7 +20,7 @@ class CalibrationDataDB
 {
 public:
 
-    spcTypedefSmartPointersMacro(CalibrationDataDB)
+    SPC_OBJECT(CalibrationDataDB)
 
     //! empty constructor
     CalibrationDataDB() {}

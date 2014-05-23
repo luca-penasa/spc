@@ -2,19 +2,21 @@
 #define CALIBRATION_MODEL_BASE_H
 
 #include <spc/common/macros.h>
+#include <spc/elements/spcObject.h>
 
 namespace spc
 {
 
-class CalibrationModelBase
+class CalibrationModelBase: public spcObject
 {
 public:
-    spcTypedefSmartPointersMacro(CalibrationModelBase)
+    SPC_OBJECT(CalibrationModelBase)
 
 
     CalibrationModelBase();
 
     virtual float getDistanceCorrection(const float &distance) = 0;
+
 
 };
 

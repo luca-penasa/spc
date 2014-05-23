@@ -5,11 +5,6 @@ namespace spc
 {
 
 
-template <typename ScalarT>
-EquallySpacedTimeSeries<ScalarT>::EquallySpacedTimeSeries(): x_start(0.0f), x_step(1.0f)
-{
-
-}
 
 template<typename ScalarT>
 EquallySpacedTimeSeries<ScalarT>::EquallySpacedTimeSeries(const EquallySpacedTimeSeries &other)
@@ -51,18 +46,8 @@ EquallySpacedTimeSeries<ScalarT>::EquallySpacedTimeSeries(ScalarT x_min_, Scalar
 }
 
 
-template <typename ScalarT>
-vector<ScalarT>
-EquallySpacedTimeSeries<ScalarT>::getX() const
-{
-    std::vector<ScalarT> x(this->y_.size());
-    int counter = 0;
-    spcForEachMacro (ScalarT &x_pos, x)
-    {
-        x_pos = counter++ * x_step + x_start;
-    }
-    return x;
-}
+
+
 
 
 /// INSTANTIATIONS

@@ -5,38 +5,38 @@
 #include <Eigen/Dense>
 #include <fstream>
 #include <cereal/types/polymorphic.hpp>
-//#include <spc/common/eigen_serialization.hpp>
+#include <spc/common/eigen_serialization.hpp>
 
 #include <boost/shared_ptr.hpp>
 
 #include <spc/common/common_includes.h>
 
 
-namespace cereal
-{
-template <class Archive> inline
-void
-save (Archive & ar, const Eigen::Vector3f &v)
-{
+//namespace cereal
+//{
+//template <class Archive> inline
+//void
+//save (Archive & ar, const Eigen::Vector3f &v)
+//{
 
-    float x,y,z;
-    x = v(0);
-    y = v(1);
-    z = v(2);
-    ar( cereal::make_nvp("x",x ),cereal::make_nvp("y",y  ), cereal::make_nvp("z",z  ));
+//    float x,y,z;
+//    x = v(0);
+//    y = v(1);
+//    z = v(2);
+//    ar( cereal::make_nvp("x",x ),cereal::make_nvp("y",y  ), cereal::make_nvp("z",z  ));
 
-}
+//}
 
-template <class Archive> inline
-void
-load (Archive & ar, Eigen::Vector3f &v)
-{
-    ar( cereal::make_nvp("x",v(0)) );
-    ar( cereal::make_nvp("y",v(1))  );
-    ar( cereal::make_nvp("z",v(2))  );
-}
+//template <class Archive> inline
+//void
+//load (Archive & ar, Eigen::Vector3f &v)
+//{
+//    ar( cereal::make_nvp("x",v(0)) );
+//    ar( cereal::make_nvp("y",v(1))  );
+//    ar( cereal::make_nvp("z",v(2))  );
+//}
 
-}
+//}
 
 class ClassBase
 {
@@ -93,7 +93,6 @@ public:
     void serialize(Archive & ar)
     {
         ar( cereal::base_class<ClassA>( this ), v2 );
-
     }
 
 
@@ -116,12 +115,12 @@ int main() {
 
     {
 
-//        ClassBase::Ptr  a (new ClassA);
+        ClassBase::Ptr  a (new ClassA);
 
 
-//        std::ofstream out ("test.json");
-//        cereal::JSONOutputArchive archive_o(out);
-//        archive_o(a);
+        std::ofstream out ("test.json");
+        cereal::JSONOutputArchive archive_o(out);
+        archive_o(a);
 
 
     }

@@ -1,39 +1,38 @@
 #ifndef NORMAL3D_H
 #define NORMAL3D_H
-#include <spc/elements/element_base.h>
+#include <spc/elements/spcObject.h>
 #include <pcl/features/normal_3d.h>
+#include <cereal/types/polymorphic.hpp>
 
 
 namespace spc
 {
-
-
-class spcNormal3D: public spcElementBase
+class spcNormal3D: public spcObject
 {
+
+SPC_OBJECT(spcNormal3D)
+
 public:
-
-spcTypedefSmartPointersMacro(spcNormal3D)
-
 
     spcNormal3D();
 
     spcNormal3D(float x, float y, float z)
     {
-        normal_ = Vector3f(x,y,z);
+        normal_ = Eigen::Vector3f(x,y,z);
     }
 
-    spcNormal3D(const Vector3f v)
+    spcNormal3D(const Eigen::Vector3f v)
     {
         normal_ = v;
     }
 
     /// this project a given 3d point onto the normal
-    Vector3f projectPoint(const Vector3f &point) const
+    Eigen::Vector3f projectPoint(const Eigen::Vector3f &point) const
     {
         return (this->getUnitNormal() * this->getUnitNormal().dot(point));
     }
 
-    void setNormal(const Vector3f n)
+    void setNormal(const Eigen::Vector3f n)
     {
         normal_ = n;
     }
@@ -45,34 +44,19 @@ spcTypedefSmartPointersMacro(spcNormal3D)
 
 
 
-    Vector3f getNormal() const
+    Eigen::Vector3f getNormal() const
     {
         return normal_;
     }
 
-    void normalize()
-    {
-        normal_.normalize();
-    }
+    void normalize();
 
-    Vector3f getUnitNormal() const
-    {
-        Vector3f unit = normal_;
-        unit.normalize();
-        return unit;
-    }
+    Eigen::Vector3f getUnitNormal() const;
 
     /// invert the direction of the normal.
-    void flipNormal()
-    {
-        normal_ = - normal_;
-    }
+    void flipNormal();
 
-    void setUnitAxis(const int ax_id = 2)
-    {
-        normal_.setZero();
-        normal_(ax_id) = 1.0;
-    }
+    void setUnitAxis(const int ax_id = 2);
 
     void normalFromBestFit(pcl::PointCloud<pcl::PointXYZ> & cloud);
 
@@ -80,17 +64,18 @@ protected:
 
 
 
-    Vector3f normal_;
+    Eigen::Vector3f normal_;
 
-//    friend class boost::serialization::access;
 
-//    template <class Archive>
-//    void serialize(Archive &ar, const unsigned int version)
-//    {
-////        ar & boost::serialization::make_nvp("normal", normal_);
-//        ar & BOOST_SERIALIZATION_NVP(normal_);
-//        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(spcElementBase);
-//    }
+private:
+    friend class cereal::access;
+
+    template <class Archive>
+    void serialize( Archive & ar )
+    {
+        ar( make_nvp("spcObject", cereal::base_class<spcObject>( this )),
+            CEREAL_NVP(normal_) );
+    }
 
 
 };

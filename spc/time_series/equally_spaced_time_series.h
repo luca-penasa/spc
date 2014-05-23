@@ -4,6 +4,7 @@
 #include <spc/time_series/base_time_series.h>
 #include <algorithm>
 #include <limits>
+#include <cereal/types/vector.hpp>
 
 namespace spc
 {
@@ -23,18 +24,19 @@ template <typename ScalarT>
 ///
 class EquallySpacedTimeSeries: public spc::GenericTimeSeries<ScalarT>
 {
-
-
 public:
-    typedef spcSharedPtrMacro<EquallySpacedTimeSeries<ScalarT> > Ptr;
-    typedef spcSharedPtrMacro<const EquallySpacedTimeSeries<ScalarT> > ConstPtr;
+
+    SPC_OBJECT(EquallySpacedTimeSeries)
 
     using typename spc::GenericTimeSeries<ScalarT>::VectorT;
 
     ///
     /// \brief EquallySpacedTimeSeries default constructor
     ///
-    EquallySpacedTimeSeries();
+    EquallySpacedTimeSeries(): x_start(0), x_step(1)
+    {
+
+    }
 
     ///
     /// \brief EquallySpacedTimeSeries copy const
@@ -95,7 +97,16 @@ public:
     /// \brief getX
     /// \return a vector of the x positions
     ///
-    virtual std::vector<ScalarT> getX() const;
+    virtual std::vector<ScalarT> getX() const
+    {
+        std::vector<ScalarT> x(this->y_.size());
+        int counter = 0;
+        spcForEachMacro (ScalarT &x_pos, x)
+        {
+            x_pos = counter++ * x_step + x_start;
+        }
+        return x;
+    }
 
 
     ///
@@ -122,6 +133,17 @@ public:
 
     virtual ScalarT getMaxX() const {return x_start + x_step * this->getNumberOfSamples();}
 
+
+private:
+    friend class cereal::access;
+
+    template <class Archive>
+    void serialize( Archive & ar )
+    {
+        ar(  cereal::base_class<spc::GenericTimeSeries<ScalarT>>( this ),
+             CEREAL_NVP(x_start),
+             CEREAL_NVP(x_step));
+    }
 
 
 protected:

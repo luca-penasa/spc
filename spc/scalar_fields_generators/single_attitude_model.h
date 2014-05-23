@@ -2,20 +2,22 @@
 #define SINGLE_PLANE_NORMAL_MODEL_H
 
 #include <spc/elements/attitude.h>
-#include <spc/scalar_fields_generators/DynamicScalarFieldGenerator.h>
+//#include <spc/scalar_fields_generators/DynamicScalarFieldGenerator.h>
+#include <spc/scalar_fields_generators/StratigraphicModelBase.h>
 //#include <boost/serialization/shared_ptr.hpp>
 
 namespace spc
 {
 
+
 ///
 /// \brief The SingleAttitudeModel class represent a stratigraphic "meter" or model.
 ///
 ///
-class SingleAttitudeModel: public DynamicScalarFieldGenerator, public spcElementBase
+class SingleAttitudeModel: public StratigraphicModelBase, public spcObject
 {
 public:
-    spcTypedefSmartPointersMacro(SingleAttitudeModel)
+    SPC_OBJECT(SingleAttitudeModel)
 
     /// def const
     SingleAttitudeModel() : additional_shift_(0.0)

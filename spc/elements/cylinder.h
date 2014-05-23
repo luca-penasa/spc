@@ -1,16 +1,12 @@
 #ifndef SPC_CYLINDER_H
 #define SPC_CYLINDER_H
 
-#include <Eigen/Dense>
-#include <Eigen/Core>
-
-#include <Eigen/Geometry>
-
-
 #include <spc/elements/movable_element.h>
 #include <spc/elements/normal3d.h>
+#include <spc/elements/generic_cloud.h>
 
 namespace spc {
+
 
 ///
 /// \brief The Cylinder class represent a cylinder in space
@@ -20,7 +16,7 @@ namespace spc {
 class Cylinder: public PositionableElement
 {
 public:
-spcTypedefSmartPointersMacro(Cylinder)
+SPC_OBJECT(Cylinder)
 
     /// def constrcutor
     Cylinder()
@@ -33,10 +29,7 @@ spcTypedefSmartPointersMacro(Cylinder)
         //TODO we'll need to copy some other staff
     }
 
-    Cylinder(const Vector3f dir)
-    {
-        direction_ = spcNormal3D(dir);
-    }
+    Cylinder(const Eigen::Vector3f dir);
 
 
     spcNormal3D getDirection() const
@@ -49,7 +42,7 @@ spcTypedefSmartPointersMacro(Cylinder)
         direction_ = dir;
     }
 
-    void setDirection(Vector3f dir)
+    void setDirection(Eigen::Vector3f dir)
     {
         direction_.setNormal(dir);
     }
@@ -67,56 +60,12 @@ spcTypedefSmartPointersMacro(Cylinder)
 
     /// distance is always positive, clearly
     /// this is the distance of your point from the axis of the cyclinder
-    void getPointToCylinderDistances(const Vector3f point, float &to_axis, float & to_origin) const
-    {
-        // we project the point onto the direction of the cyclinder
-        Vector3f point_proj = direction_.projectPoint(point);
-
-        //the distance from the cylinder origin along the direction
-        auto to_point = point_proj - this->getPosition();
-        to_origin = to_point.dot(direction_.getUnitNormal()); //signed dist
-
-        //now the distance from the cyclinder axis
-        Vector3f point_to_ax = point - point_proj;
-        to_axis = point_to_ax.norm(); //unsigned dist
-    }
+    void getPointToCylinderDistances(const Eigen::Vector3f point, float &to_axis, float & to_origin) const;
 
     /// the test for inside/outside from the cyclinder.
-    bool isPointWithinCylinder(const Vector3f point) const
-    {
-        float radial;
-        float along;
+    bool isPointWithinCylinder(const Eigen::Vector3f point) const;
 
-
-
-        this->getPointToCylinderDistances(point, radial, along);
-
-        std::cout << "distance from axis " << radial << std::endl;
-        std::cout << "distance from origin " << along << std::endl;
-        if ((radial > radius_) | (along > length_) | (along <= 0))
-            return false;
-        else
-            return true;
-    }
-
-    std::vector<int> getIndicesInside(spcGenericCloud::ConstPtr cloud)
-    {
-        std::vector<int> ids;
-        auto siz = cloud->size();
-        for (int i = 0; i < siz; ++i)
-        {
-            Vector3f p = cloud->getPoint(i);
-            if (this->isPointWithinCylinder(p))
-                ids.push_back(i);
-        }
-
-        return ids;
-    }
-
-
-
-
-
+    std::vector<int> getIndicesInside(spcGenericCloud::ConstPtr cloud);
 
 private:
     spcNormal3D direction_;
@@ -124,6 +73,17 @@ private:
     float length_;
 
     float radius_;
+
+private:
+    friend class cereal::access;
+
+    template <class Archive>
+    void sserialize( Archive & ar )
+    {
+        ar( CEREAL_NVP(direction_),
+            CEREAL_NVP(length_),
+            CEREAL_NVP(radius_));
+    }
 };
 
 

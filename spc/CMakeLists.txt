@@ -1,16 +1,24 @@
 
+# ORDER MATTERS: the next library will be linked againte the previous ones only!
+# Note: not a good way of doing this, we should add a kind of dependency between modules,
+# so that one may possibly disable/enable certain modules
 
-add_subdirectory(time_series)
+
 add_subdirectory(common)
 add_subdirectory(elements)
+add_subdirectory(time_series)
+add_subdirectory(tables)
+add_subdirectory(io)
+add_subdirectory(flann)
 add_subdirectory(scalar_fields_generators)
 add_subdirectory(estimators)
 add_subdirectory(methods)
-add_subdirectory(io)
 add_subdirectory(devices)
 add_subdirectory(calibration)
 add_subdirectory(external)
-add_subdirectory(flann)
+
+
+
 
 
 if(BUILD_EXPERIMENTAL)

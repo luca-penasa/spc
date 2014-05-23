@@ -11,7 +11,7 @@ template <typename ScalarT>
 class Flann1DSearcher
 {
 public:
-    spcTypedefSmartPointersMacro(Flann1DSearcher)
+    SPC_OBJECT(Flann1DSearcher)
 
     Flann1DSearcher(std::vector<ScalarT> v);
 

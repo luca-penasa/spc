@@ -9,7 +9,7 @@ namespace spc
 {
 
 
-class CalibrateDiscretePointsModel: public spcElementBase
+class CalibrateDiscretePointsModel: public spcObject
 {
 public:
     CalibrateDiscretePointsModel(): model_(new DiscretePointsCalibrationModel)

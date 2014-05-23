@@ -1,7 +1,7 @@
 #ifndef SPCPLANARSELECTION_H
 #define SPCPLANARSELECTION_H
 
-#include <spc/elements/element_base.h>
+#include <spc/elements/spcObject.h>
 #include <spc/elements/spcPCLCloud.h>
 #include <spc/elements/plane.h>
 #include <pcl/io/pcd_io.h> //for debug only
@@ -14,11 +14,11 @@ namespace spc
 
 
 
-class spcPlanarSelection: public spcElementBase
+class spcPlanarSelection: public spcObject
 {
 public:
 
-    spcTypedefSmartPointersMacro(spcPlanarSelection)
+    SPC_OBJECT(spcPlanarSelection)
 
 
     typedef pcl::PointCloud<pcl::PointXYZ> cloudT;

@@ -1,7 +1,7 @@
 #ifndef SPC_PLANE_MODEL_H
 #define SPC_PLANE_MODEL_H
 
-#include <spc/elements/element_base.h>
+#include <spc/elements/spcObject.h>
 #include <spc/elements/movable_element.h>
 #include <spc/elements/normal3d.h>
 #include <Eigen/Dense>
@@ -11,7 +11,11 @@
 
 //#include <boost/serialization/base_object.hpp>
 
+#include <cereal/cereal.hpp>
 
+#include<cereal/types/polymorphic.hpp>
+
+#include <spc/common/eigen_serialization.hpp>
 
 using namespace Eigen;
 namespace spc
@@ -24,14 +28,14 @@ namespace spc
 class Plane: public PositionableElement
 
 {
-public:
-
-spcTypedefSmartPointersMacro(Plane)
 
 
+    SPC_OBJECT(Plane)
+    public:
 
-    /// Def const
-    Plane()
+
+        /// Def const
+        Plane()
     {
     }
 
@@ -96,20 +100,26 @@ protected:
 
     spcNormal3D normal_;
 
-//    friend class boost::serialization::access;
 
-//    template <class Archive>
-//    void serialize(Archive &ar, const unsigned int version)
-//    {
-//        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(spcMovableElement);
-//        ar & BOOST_SERIALIZATION_NVP(normal_);
-//    }
+private:
+    friend class cereal::access;
 
+    template <class Archive>
+    void serialize( Archive & ar)
+    {
+        ar(
+            CEREAL_NVP(normal_) );
+
+    }
 
 
 };
 
+//CEREAL_CLASS_VERSION( Plane, 1)
 } //end nspace
+
+
+
 
 #endif // NORMAL_MODEL_H
 

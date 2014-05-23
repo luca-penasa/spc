@@ -37,7 +37,7 @@ class CalibrationDataEstimator
 {
 public:
 
-    spcTypedefSmartPointersMacro(CalibrationDataDB)
+    SPC_OBJECT(CalibrationDataDB)
 
     enum NORMAL_COMPUTATION_METHOD {FULL_NORMALS_ESTIMATION = 0, PRECOMPUTED_NORMALS};
 

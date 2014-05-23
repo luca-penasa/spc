@@ -16,7 +16,7 @@ public:
     typedef  std::map<std::string, boost::any> DataHolderType;
     typedef  std::pair<std::string, boost::any> PairType;
 
-    spcTypedefSmartPointersMacro(CorePointData)
+    SPC_OBJECT(CorePointData)
 
     //!empty const
     CorePointData() {}

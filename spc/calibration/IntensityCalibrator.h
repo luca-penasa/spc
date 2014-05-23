@@ -36,7 +36,7 @@ class IntensityCalibrator
 {
 public:
 
-    spcTypedefSmartPointersMacro(IntensityCalibrator)
+    SPC_OBJECT(IntensityCalibrator)
 
     IntensityCalibrator();
 

@@ -26,7 +26,7 @@ class DynamicScalarFieldGenerator
 {  
 public:
 
-    spcTypedefSmartPointersMacro(DynamicScalarFieldGenerator)
+    SPC_OBJECT(DynamicScalarFieldGenerator)
 
     //! Def constructor
     DynamicScalarFieldGenerator();

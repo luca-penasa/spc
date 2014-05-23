@@ -3,8 +3,10 @@
 
 #include <spc/time_series/equally_spaced_time_series.h>
 #include <spc/time_series/sparse_time_series.h>
+
 namespace spc
 {
+
 template <typename ScalarT>
 class TimeSeriesWriter
 {

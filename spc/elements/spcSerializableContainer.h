@@ -1,9 +1,8 @@
 #ifndef SPCSERIALIZABLECONTAINER_H
 #define SPCSERIALIZABLECONTAINER_H
 
-#include "salvable_object.h"
-//#include <boost/serialization/shared_ptr.hpp>
-//#include <boost/serialization/vector.hpp>
+#include "SerializableObject.h"
+#include <vector>
 
 namespace spc
 {
@@ -14,7 +13,7 @@ class spcSerializableContainer: public spcSerializableObject
 
 public:
 
-    spcTypedefSmartPointersMacro(spcSerializableContainer)
+    SPC_OBJECT(spcSerializableContainer)
 public:
     spcSerializableContainer()
     {
@@ -39,15 +38,6 @@ public:
 
 
 protected:
-//    friend class boost::serialization::access;
-
-//    template <class Archive>
-//    void serialize(Archive &ar, const unsigned int version)
-//    {
-//        ar & BOOST_SERIALIZATION_NVP(data_);
-//        ar & BOOST_SERIALIZATION_BASE_OBJECT_NVP(spcSerializableObject);
-//    }
-
 
     std::vector<spc::spcSerializableObject *> data_;
 

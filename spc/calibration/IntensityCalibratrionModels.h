@@ -14,7 +14,7 @@ class IntensityCalibrationModelBase
 {
 public:
 
-    spcTypedefSmartPointersMacro(IntensityCalibrationModelBase)
+    SPC_OBJECT(IntensityCalibrationModelBase)
 
     IntensityCalibrationModelBase() {}
 
@@ -186,7 +186,7 @@ class JutzyModel: public IntensityCalibratrionModelFactorsBased
 {
 public:
 
-spcTypedefSmartPointersMacro(JutzyModel)
+SPC_OBJECT(JutzyModel)
 
     JutzyModel(CalibrationDataDB::ConstPtr db, const bool fixed_mul = true)
     {

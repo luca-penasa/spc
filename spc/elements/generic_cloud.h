@@ -1,10 +1,9 @@
 #ifndef GENERIC_CLOUD_H
 #define GENERIC_CLOUD_H
 
-#include "element_base.h"
+#include "spcObject.h"
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
-//#include <pcl/PCLPointCloud2.h>
 #include <pcl/io/io.h>
 
 #include <spc/common/common.h>
@@ -13,20 +12,17 @@
 namespace spc
 {
 
-
-
-
-class spcGenericCloud: public spcElementBase
+class spcGenericCloud
 {
+
 public:
 
-spcTypedefSmartPointersMacro(spcGenericCloud)
-
+    spcTypedefSharedPtrs(spcGenericCloud)
 
     spcGenericCloud();
 
 
-//    virtual int toStreamMeOnly(std::stringstream &stream) {/*nothing for now*/}
+    //    virtual int toStreamMeOnly(std::stringstream &stream) {/*nothing for now*/}
 
 
     /// a generic cloud must implement these method
@@ -44,12 +40,7 @@ spcTypedefSmartPointersMacro(spcGenericCloud)
 
 
     /// some always-working methods
-    virtual Vector3f getPoint (const int id) const
-    {
-        float x,y,z;
-        getPoint(id, x, y, z);
-        return Vector3f(x, y, z);
-    }
+    virtual Eigen::Vector3f getPoint (const int id) const;
 
 
     virtual std::vector<float> getField(const std::string fieldname, std::vector<int> indices) ;
@@ -60,7 +51,7 @@ spcTypedefSmartPointersMacro(spcGenericCloud)
 
         if (!hasField(fieldname))
         {
-            pcl::console::print_warn("[Error in %s] asked for field %s", getClassName().c_str(), fieldname.c_str());
+            pcl::console::print_warn("[Error in point cloud] asked for field %s", fieldname.c_str());
             return out;
         }
 
@@ -76,23 +67,7 @@ spcTypedefSmartPointersMacro(spcGenericCloud)
     }
 
 
-
-
-    pcl::PointCloud<pcl::PointXYZ> applyTransform(const Transform<float, 3, Affine, AutoAlign> &T)
-    {
-        pcl::PointCloud<pcl::PointXYZ> cloud;
-
-
-
-        for (int i = 0; i < size(); ++i)
-        {
-            Vector3f point = T * getPoint(i);
-            pcl::PointXYZ p(point(0), point(1), point(2));
-            cloud.push_back(p);
-        }
-
-        return cloud;
-    }
+    pcl::PointCloud<pcl::PointXYZ> applyTransform(const Eigen::Transform<float, 3, Eigen::Affine, Eigen::AutoAlign> &T);
 
 
 };

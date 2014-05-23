@@ -38,5 +38,30 @@ load(Archive & ar, Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _Max
 }
 
 
+template <class Archive> inline
+void
+save (Archive & ar, const Eigen::Vector3f &v)
+{
+
+    float x,y,z;
+    x = v(0);
+    y = v(1);
+    z = v(2);
+    ar( cereal::make_nvp("x",x ),cereal::make_nvp("y",y  ), cereal::make_nvp("z",z  ));
+
+}
+
+template <class Archive> inline
+void
+load (Archive & ar, Eigen::Vector3f &v)
+{
+    ar( cereal::make_nvp("x",v(0)) );
+    ar( cereal::make_nvp("y",v(1))  );
+    ar( cereal::make_nvp("z",v(2))  );
+}
+
+
+
+
 }
 #endif // EIGEN_SERIALIZATION_HPP

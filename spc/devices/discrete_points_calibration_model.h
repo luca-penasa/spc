@@ -9,12 +9,11 @@
 namespace spc
 {
 
-class DiscretePointsCalibrationModel: public CalibrationModelBase, public spcElementBase
+class DiscretePointsCalibrationModel: public CalibrationModelBase
 {
 public:
 
-    typedef spcSharedPtrMacro<DiscretePointsCalibrationModel> Ptr;
-    typedef spcSharedPtrMacro<const DiscretePointsCalibrationModel> ConstPtr;
+    SPC_OBJECT(DiscretePointsCalibrationModel)
 
     DiscretePointsCalibrationModel();
 
@@ -44,7 +43,7 @@ protected:
     {
         if (!discrete_points_distance_)
         {
-            pcl::console::print_error("[Error in %s] first you should set up a set of discrete points to be used", getClassName().c_str());
+            pcl::console::print_error("[Error in %s] first you should set up a set of discrete points to be used", this->getClassName().c_str());
             return -1;
         }
 

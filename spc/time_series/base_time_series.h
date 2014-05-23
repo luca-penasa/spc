@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 #include <assert.h>
-#include <spc/elements/element_base.h>
+#include <spc/elements/spcObject.h>
 
 #include <boost/random/random_device.hpp>
 
@@ -24,7 +24,7 @@ template <typename ScalarT>
 /// \brief The GenericTimeSeries class is a Generic class for time series-like (TS) objects.
 /// \ingroup time_series
 ///
-class GenericTimeSeries: public spcElementBase
+class GenericTimeSeries: public spcObject
 {
 public:
 
@@ -108,6 +108,17 @@ protected:
     /// \brief y is the vector of values of the TS
     ///
     std::vector<ScalarT> y_;
+
+private:
+    friend class cereal::access;
+
+    template <class Archive>
+    void serialize( Archive & ar )
+    {
+        ar(  cereal::base_class<spc::spcObject>( this ),
+             CEREAL_NVP(y_));
+    }
+
 
 };
 

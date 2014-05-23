@@ -17,7 +17,7 @@ class Attitude: public Plane
 {
 public:
 
-    spcTypedefSmartPointersMacro(Attitude)
+    SPC_OBJECT(Attitude)
 
 
 
@@ -75,7 +75,14 @@ public:
     ///format dip and dip angle as astring
     std::string getDipAndDipAngleAsString() const;
 
+private:
+    friend class cereal::access;
 
+    template <class Archive>
+    void serialize( Archive & ar )
+    {
+        ar( make_nvp("Plane", cereal::base_class<spc::Plane>( this )));
+    }
 
 };
 

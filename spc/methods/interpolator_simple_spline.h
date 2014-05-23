@@ -15,6 +15,8 @@ class InterpolatorSimpleSpline : public InterpolatorBase
 public:
     InterpolatorSimpleSpline();
 
+    SPC_OBJECT(InterpolatorSimpleSpline)
+
     virtual float getInterpolatedValue(const float x_val) override {
         return spline_(x_val);
     }

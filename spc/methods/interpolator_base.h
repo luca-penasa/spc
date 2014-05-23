@@ -9,13 +9,11 @@
 namespace spc
 {
 
-class InterpolatorBase: public spcElementBase
+class InterpolatorBase: public spcObject
 {
 public:
 
-
-    typedef spcSharedPtrMacro<InterpolatorBase> Ptr;
-    typedef spcSharedPtrMacro<const InterpolatorBase> ConstPtr;
+    SPC_OBJECT(InterpolatorBase)
 
     InterpolatorBase();
 

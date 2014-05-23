@@ -15,7 +15,7 @@ namespace spc
 class CorrectionFactorBase
 {
 public:
-    spcTypedefSmartPointersMacro(CorrectionFactorBase)
+    SPC_OBJECT(CorrectionFactorBase)
 
     //! we pass a CalibrationDataDB because some factors may require to know some stuff before everything
     //! see for example CorrectionFactorCloudDependentMultiplier

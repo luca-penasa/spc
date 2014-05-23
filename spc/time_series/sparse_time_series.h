@@ -3,6 +3,8 @@
 
 #include <spc/time_series/base_time_series.h>
 #include <algorithm>
+
+#include <cereal/types/vector.hpp>
 namespace  spc {
 
 using namespace std;
@@ -17,9 +19,7 @@ template <typename ScalarT>
 class SparseTimeSeries: public GenericTimeSeries<ScalarT>
 {
 public:
-
-    typedef spcSharedPtrMacro<SparseTimeSeries<ScalarT> > Ptr;
-    typedef spcSharedPtrMacro< const SparseTimeSeries<ScalarT> > ConstPtr;
+    SPC_OBJECT(SparseTimeSeries)
 
     typedef typename GenericTimeSeries<ScalarT>::VectorT VectorT;
 
@@ -40,7 +40,11 @@ public:
     /// \param x_ vector of x positions
     /// \param y_ vector of y values
     ///
-    SparseTimeSeries(const vector<ScalarT> &x, const vector<ScalarT> &y);
+    SparseTimeSeries(const vector<ScalarT> &x, const vector<ScalarT> &y)
+    {
+        assert(x.size() == y.size()); //must have same size
+        x_ = x; this->y_ = y;
+    }
 
 
     ///
@@ -112,6 +116,16 @@ protected:
     /// added to the base class attributes
     ///
     vector<ScalarT> x_;
+
+private:
+    friend class cereal::access;
+
+    template <class Archive>
+    void serialize( Archive & ar )
+    {
+        ar(  cereal::base_class<GenericTimeSeries<ScalarT>>( this ),
+             CEREAL_NVP(x_));
+    }
 
 };
 

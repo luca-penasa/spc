@@ -1,62 +1,50 @@
 #ifndef POINT3D_H
 #define POINT3D_H
 
-#include <spc/elements/element_base.h>
-#include <spc/elements/salvable_object.h>
-#include <pcl/common/centroid.h>
-#include <spc/elements/generic_cloud.h>
+#include <spc/elements/spcObject.h>
+#include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
-
-//#include <spc/io/element_io.h>
-
-
-#include <spc/common/eigen_serialization.hpp>
 
 namespace spc
 {
-
-class PositionableElement: public spcElementBase
+class PositionableElement: public spcObject
 {
 public:
-
-spcTypedefSmartPointersMacro(PositionableElement)
-
+    SPC_OBJECT(PositionableElement)
 
     PositionableElement();
 
     PositionableElement(const float x, const float y, const float z);
 
-    PositionableElement ( const Vector3f point);
+    PositionableElement ( const Eigen::Vector3f point);
 
-    Vector3f getPosition() const
-    {
-        return position_;
-    }
+    Eigen::Vector3f getPosition() const;
 
-    Vector3f &getPosition()
-    {
-        return position_;
-    }
+    Eigen::Vector3f &getPosition();
+
+    void getPosition (float &x,float &y,float &z) const;
 
     /// move this measure to this new position
     /// this imply updating the d parameters of the plane
     void setPosition(const PositionableElement el);
 
-    void setPosition(const Vector3f position);
+    void setPosition(const Eigen::Vector3f position);
 
     void positionFromCentroid(pcl::PointCloud<pcl::PointXYZ> &cloud);
 
-    template<class Archive>
-    void serialize(Archive & archive)
-    {
-//        archive( position_ );
-    }
-
-
 protected:
 
-    Vector3f position_;
+    Eigen::Vector3f position_;
 
+private:
+    friend class cereal::access;
+
+    template <class Archive>
+    void serialize( Archive & ar )
+    {
+        ar( make_nvp("spcObject", cereal::base_class<spcObject>( this ) ),
+            CEREAL_NVP(position_) );
+    }
 
 
 };

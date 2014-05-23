@@ -1,19 +1,9 @@
 #include <spc/elements/plane.h>
+
+
 using namespace Eigen;
 namespace spc
 {
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -84,4 +74,6 @@ Transform<float, 3, Affine, AutoAlign> Plane::get2DArbitraryRefSystem() const
 
 
 }//end nspace
-//BOOST_CLASS_EXPORT_GUID(spc::spcPlane, "spcPlane")
+
+
+

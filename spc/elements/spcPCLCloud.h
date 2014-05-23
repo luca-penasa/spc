@@ -10,9 +10,9 @@ namespace spc
 template <typename PointT>
 class spcPCLCloud: public spcGenericCloud
 {
-public:
-    spcTypedefSmartPointersMacro(spcPCLCloud<PointT>)
 
+    SPC_OBJECT(spcPCLCloud<PointT>)
+public:
     //    typedef spcSharedPtrMacro<spcPCLCloud<PointT> > Ptr;
     //    typedef spcSharedPtrMacro<const spcPCLCloud<PointT> > ConstPtr;
 

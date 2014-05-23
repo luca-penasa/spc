@@ -8,7 +8,7 @@ int main(int argc, char ** argv)
 {
 
 
-    spc::UniversalUniqueObject a;
+    spc::UniversalUniqueID a;
 
     std::cout << a.getUUIDAsString() << std::endl;
 

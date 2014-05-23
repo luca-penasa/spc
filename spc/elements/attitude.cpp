@@ -3,7 +3,6 @@
 #include <Eigen/Geometry>
 #include <sstream>
 #include <string>
-
 namespace spc
 {
 Attitude::Attitude()
@@ -101,4 +100,5 @@ std::string Attitude::getDipAndDipAngleAsString() const
 
 
 }//end nspace
-//BOOST_CLASS_EXPORT_GUID(spc::spcAttitude, "spcAttitude")
+
+

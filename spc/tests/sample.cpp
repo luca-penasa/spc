@@ -1,18 +1,23 @@
-#include <spc/elements/UniversalUniqueObject.h>
+#include "spc/elements/UniversalUniqueObject.h"
+
+#include "spc/tables/UnorderedDataTable.h"
 
 #include <iostream>
-#include <ostream>
+//#include <ostream>
+
+
 
 int main(int argc, char ** argv)
 
 {
 
+    spc::UnorderedDataRecord record;
+    record.property("ciao") = 2.2 ;
+    record.property("ciao") = 1 ;
+    record.property("ecco") = "well done" ;
+    record.property("vector") = Eigen::Vector3f(0.0, 0.1, 290.29);
 
-    spc::UniversalUniqueObject a;
-
-    std::cout << a.getUUIDAsString() << std::endl;
-
-
+    std::cout << record << std::endl;
 
 
 

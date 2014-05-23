@@ -2,41 +2,44 @@
 #ifndef UNIVERSALUNIQUEOBJECT_H
 #define UNIVERSALUNIQUEOBJECT_H
 
-#include <string>
-#include <boost/uuid/uuid.hpp>
+#include <spc/elements/UniversalUniqueID.h>
 
-#include <spc/common/macros.h>
-
-
+namespace cereal
+{
+class access;
+}
 
 namespace spc
 {
 
+class UniversalUniqueID;
+
 class UniversalUniqueObject
 {
 public:
-    spcTypedefSmartPointersMacro(UniversalUniqueObject)
+    UniversalUniqueObject() {}
 
-    UniversalUniqueObject();
+    // the uuid element
+    spcGetMacro(UniversalUUID, universal_id_, UniversalUniqueID)
 
-    explicit UniversalUniqueObject(int state);
 
-    UniversalUniqueObject(UniversalUniqueObject const& rhs);
-
-    bool operator==(UniversalUniqueObject const& rhs) const;
-
-    UniversalUniqueObject& operator=(UniversalUniqueObject const& rhs);
-
-    boost::uuids::uuid getUUID() const;
-
-    std::string getUUIDAsString() const;
+protected:
+    UniversalUniqueID universal_id_;
 
 private:
-    boost::uuids::uuid tag;
+    friend class cereal::access;
 
 
+    template <class Archive>
+    void serialize( Archive & ar )
+    {
+        ar( CEREAL_NVP(universal_id_) );
+    }
 
 };
+
+
+
 
 
 } // end nspace
