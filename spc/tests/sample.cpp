@@ -1,6 +1,6 @@
-#include "spc/elements/UniversalUniqueObject.h"
+//#include "spc/elements/UniversalUniqueObject.h"
 
-#include "spc/tables/UnorderedDataTable.h"
+#include <spc/elements/VariantDataRecord.h>
 
 #include <iostream>
 //#include <ostream>
@@ -11,7 +11,7 @@ int main(int argc, char ** argv)
 
 {
 
-    spc::UnorderedDataRecord record;
+    spc::VariantDataRecord record;
     record.property("ciao") = 2.2 ;
     record.property("ciao") = 1 ;
     record.property("ecco") = "well done" ;

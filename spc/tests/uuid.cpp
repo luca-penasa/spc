@@ -1,5 +1,4 @@
-#include <spc/elements/UniversalUniqueObject.h>
-
+#include <spc/elements/UniversalUniqueID.h>
 #include <iostream>
 #include <ostream>
 

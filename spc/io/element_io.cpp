@@ -1,14 +1,17 @@
 #include "element_io.h"
 
 #include <cereal/types/polymorphic.hpp>
-
+#include <pcl/console/print.h>
 
 
 
 namespace spc
 {
+namespace io
+{
 
-int ElementsIO::serializeToFile(const spcSerializableObject::Ptr element, std::string filename, const ARCHIVE_TYPE &type)
+
+int serializeToFile(const spcObject::Ptr element, std::string filename, const ARCHIVE_TYPE &type)
 {
     if (!element->isSPCSerializable())
     {
@@ -38,10 +41,10 @@ int ElementsIO::serializeToFile(const spcSerializableObject::Ptr element, std::s
 
 }
 
-spcSerializableObject::Ptr ElementsIO::deserializeFromFile(const std::string filename)
+spcObject::Ptr deserializeFromFile(const std::string filename)
 {
 
-    spc::spcSerializableObject::Ptr ptr; // a null pointer
+    spc::spcObject::Ptr ptr; // a null pointer
     if (!boost::filesystem::exists( filename ))
     {
         pcl::console::print_error("Trying to deserialize a non existent-file. Null Pointer returned\n ");
@@ -72,7 +75,7 @@ spcSerializableObject::Ptr ElementsIO::deserializeFromFile(const std::string fil
 
 }
 
-int ElementsIO::serializeToStream(const spcSerializableObject::Ptr element, std::ostream &stream, const ARCHIVE_TYPE &type)
+int serializeToStream(const spcObject::Ptr element, std::ostream &stream, const ARCHIVE_TYPE &type)
 {
 
     if (type == XML)
@@ -94,9 +97,9 @@ int ElementsIO::serializeToStream(const spcSerializableObject::Ptr element, std:
     }
 }
 
-spcSerializableObject::Ptr ElementsIO::deserializeFromStream(std::istream &stream, const ARCHIVE_TYPE &type)
+spcObject::Ptr deserializeFromStream(std::istream &stream, const ARCHIVE_TYPE &type)
 {
-    spcSerializableObject::Ptr ptr;
+    spcObject::Ptr ptr;
 
     if (type == XML)
     {
@@ -117,7 +120,7 @@ spcSerializableObject::Ptr ElementsIO::deserializeFromStream(std::istream &strea
     return ptr;
 }
 
-int ElementsIO::serializeToString(const spcSerializableObject::Ptr element, std::string &string, const ElementsIO::ARCHIVE_TYPE &type)
+int serializeToString(const spcObject::Ptr element, std::string &string, const io::ARCHIVE_TYPE &type)
 {
     std::stringstream sstream;
     serializeToStream(element, sstream, type);
@@ -125,22 +128,13 @@ int ElementsIO::serializeToString(const spcSerializableObject::Ptr element, std:
     return 1;
 }
 
-spcSerializableObject::Ptr ElementsIO::deserializeFromString(std::string &string, const ElementsIO::ARCHIVE_TYPE &type)
+spcObject::Ptr deserializeFromString(std::string &string, const io::ARCHIVE_TYPE &type)
 {
-
-    //    std::stringstream sstream(string.c_str());
-    //    return deserializeFromStream(sstream, type);
-
     std::stringstream sstream("");
     sstream.write(string.data(), string.size());
-
-
-    //    sstream.write(&(*string.begin()), string.size()) ;
-    //    std::cout << string.c_str() << std::endl;
-
     return deserializeFromStream(sstream, type);
 }
 
 
-
+}
 }

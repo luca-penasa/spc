@@ -1,18 +1,15 @@
-#include <spc/elements/attitude.h>
+#include <spc/elements/Attitude.h>
 #include <iostream>
 
 
-#include <spc/elements/movable_element.h>
+#include <spc/elements/MovableElement.h>
 #include <fstream>
 
 #include <spc/io/element_io.h>
-#include <spc/elements/UniversalUniqueObject.h>
-
 #include <cereal/archives/json.hpp>
-
-#include <spc/elements/attitude.h>
-#include <spc/time_series/sparse_time_series.h>
-#include <spc/time_series/equally_spaced_time_series.h>
+#include <spc/elements/Attitude.h>
+#include <spc/elements/TimeSeriesSparse.h>
+#include <spc/elements/TimeSeriesEquallySpaced.h>
 
 int main(int argc, char ** argv)
 {
@@ -24,36 +21,36 @@ int main(int argc, char ** argv)
         spc::spcObject::Ptr  element (new  spc::EquallySpacedTimeSeries<float>(0.0f, 100.0f, 10.0f) );
 
 
-        spc::ElementsIO::ARCHIVE_TYPE type = spc::ElementsIO::XML;
+        spc::io::ARCHIVE_TYPE type = spc::io::XML;
 
         std::string a;
-        spc::ElementsIO::serializeToString(element, a, type);
+        spc::io::serializeToString(element, a, type);
 
 
         std::cout << a.c_str() << std::endl;
 
-        spc::spcSerializableObject::Ptr b = spc::ElementsIO::deserializeFromString(a, type);
+        spc::spcObject::Ptr b = spc::io::deserializeFromString(a, type);
 
         std::cout << "done" << std::endl;
 
         std::stringstream newstream ;
-        spc::ElementsIO::serializeToStream(b, newstream, spc::ElementsIO::JSON);
+        spc::io::serializeToStream(b, newstream, spc::io::JSON);
 
         std::cout << newstream.str().c_str() << std::endl;
 
 
 
 
-        spc::ElementsIO::serializeToFile(element, "/home/luca/test_serial", spc::ElementsIO::JSON);
+        spc::io::serializeToFile(element, "/home/luca/test_serial", spc::io::JSON);
 
-        spc::ElementsIO::serializeToFile(element, "/home/luca/test_serial", spc::ElementsIO::XML);
+        spc::io::serializeToFile(element, "/home/luca/test_serial", spc::io::XML);
 
-        spc::ElementsIO::serializeToFile(element, "/home/luca/test_serial", spc::ElementsIO::SPC);
+        spc::io::serializeToFile(element, "/home/luca/test_serial", spc::io::SPC);
 
 
-        spc::spcSerializableObject::Ptr obj_xml = spc::ElementsIO::deserializeFromFile("/home/luca/test_serial.xml");
-        spc::spcSerializableObject::Ptr obj_spc = spc::ElementsIO::deserializeFromFile("/home/luca/test_serial.spc");
-        spc::spcSerializableObject::Ptr obj_json = spc::ElementsIO::deserializeFromFile("/home/luca/test_serial.json");
+        spc::spcObject::Ptr obj_xml = spc::io::deserializeFromFile("/home/luca/test_serial.xml");
+        spc::spcObject::Ptr obj_spc = spc::io::deserializeFromFile("/home/luca/test_serial.spc");
+        spc::spcObject::Ptr obj_json = spc::io::deserializeFromFile("/home/luca/test_serial.json");
 
 
         spc::EquallySpacedTimeSeries<float>::Ptr ts_xml =  spcStaticPointerCast<spc::EquallySpacedTimeSeries<float>> (obj_xml );

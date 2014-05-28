@@ -2,7 +2,7 @@
 
 #include <boost/uuid/uuid_io.hpp>
 #include <boost/uuid/uuid_generators.hpp>
-#include <spc/common/cereal_types.hpp>
+#include <spc/io/cereal_types.hpp>
 
 #include <boost/lexical_cast.hpp>
 namespace spc
@@ -12,26 +12,26 @@ namespace spc
 UniversalUniqueID::UniversalUniqueID() : has_valid_uuid_(false)
 
 {
-    this->renewUUID();
+
 }
 
 
 std::string UniversalUniqueID::getUUIDAsString() const
 {
-    return boost::lexical_cast<std::string>(getUUID());
+    return boost::lexical_cast<std::string>(uuid_);
 }
 
 UniversalUniqueID::IDType UniversalUniqueID::operator ()() const
 {
-    return getUUID();
+    return uuid_;
 }
 
 bool UniversalUniqueID::operator ==(const UniversalUniqueID &other)
 {
-    if (getHasValidUUID() ==  false)
+    if (hasValidUUID() ==  false)
         return false;
     else
-        return other.getUUID() == this->getUUID();
+        return other.uuid_ == uuid_;
 }
 
 void UniversalUniqueID::renewUUID()

@@ -25,13 +25,13 @@ endmacro()
 macro(spc_add_library)
     get_filename_component(libname ${CMAKE_CURRENT_SOURCE_DIR}  NAME)
 
-    file(GLOB SOURCES *.cpp)
-    file(GLOB HEADERS *.h)
-    file(GLOB IMPLS *.hpp)
-    file(GLOB UIS *.ui) #this when compiling
-    file(GLOB QRCS *.qrc) #qt resources ?
+    file(GLOB_RECURSE SOURCES *.cpp)
+    file(GLOB_RECURSE HEADERS *.h)
+    file(GLOB_RECURSE IMPLS *.hpp)
+#    file(GLOB_RECURSE UIS *.ui) #this when compiling
+#    file(GLOB_RECURSE QRCS *.qrc) #qt resources ?
 
-    set(sources ${SOURCES} ${HEADERS} ${IMPLS} ${HEADERS_MOC} ${HEADERS_UIS} ${QRCS_RES})
+    set(sources ${SOURCES} ${HEADERS} ${IMPLS})
     set(libs ${SPC_LIBRARIES} ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES} ${PCL_FILTERS_LIBRARIES} ${PCL_FEATURES_LIBRARIES} ${additional_libs})
     spc_compile_and_link(spc_${libname} "${sources}" "${libs}")
     spc_set_properties_public_header({${HEADERS}})

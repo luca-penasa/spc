@@ -8,7 +8,7 @@
 #include <boost/filesystem.hpp>
 
 
-#include <spc/common/common.h>
+#include <spc/methods/common.h>
 
 namespace spc
 {

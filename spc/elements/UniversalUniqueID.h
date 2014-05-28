@@ -2,23 +2,26 @@
 #ifndef UNIVERSALUNIQUEID_H
 #define UNIVERSALUNIQUEID_H
 
-#include <spc/elements/spcObject.h>
 #include <boost/uuid/uuid.hpp>
+#include <spc/elements/macros.h>
+#include <cereal/cereal.hpp>
 
 namespace  spc {
 
-class UniversalUniqueID: public spcObject
+class UniversalUniqueID
 {
 public:
-    SPC_OBJECT(UniversalUniqueID)
+
+    spcTypedefSharedPtrs(UniversalUniqueID)
 
     typedef typename  boost::uuids::uuid IDType;
 
-    UniversalUniqueID();
+    UniversalUniqueID();    
 
-    spcGetMacro(HasValidUUID, has_valid_uuid_, bool)
-
-    spcGetMacro(UUID, uuid_, IDType)
+    bool hasValidUUID() const
+    {
+        return has_valid_uuid_;
+    }
 
     std::string getUUIDAsString() const;
 
@@ -27,10 +30,12 @@ public:
     bool operator == (const UniversalUniqueID &other);
 
 protected:
-    void renewUUID();
+    void renewUUID();    
 
-
-    spcSetMacro(UUID, uuid_, IDType)
+    void setUUID(IDType uuid)
+    {
+        uuid_ = uuid;
+    }
 
 protected:
     boost::uuids::uuid uuid_;
@@ -43,8 +48,7 @@ private:
     template <class Archive>
     void serialize( Archive & ar )
     {
-        ar(cereal::base_class<spcObject>( this ),
-            CEREAL_NVP(uuid_),
+        ar( CEREAL_NVP(uuid_),
             CEREAL_NVP(has_valid_uuid_) );
     }
 

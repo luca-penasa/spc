@@ -5,11 +5,11 @@
 #include <Eigen/Dense>
 #include <fstream>
 #include <cereal/types/polymorphic.hpp>
-#include <spc/common/eigen_serialization.hpp>
+#include <spc/io/eigen_serialization.hpp>
 
 #include <boost/shared_ptr.hpp>
 
-#include <spc/common/common_includes.h>
+#include <spc/elements/macros.h>
 
 
 //namespace cereal

@@ -1,8 +1,8 @@
 #ifndef TIME_SERIES_WRITER_H
 #define TIME_SERIES_WRITER_H
 
-#include <spc/time_series/equally_spaced_time_series.h>
-#include <spc/time_series/sparse_time_series.h>
+#include <spc/elements/TimeSeriesEquallySpaced.h>
+#include <spc/elements/TimeSeriesSparse.h>
 
 namespace spc
 {

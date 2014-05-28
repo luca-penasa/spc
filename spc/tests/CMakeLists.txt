@@ -1,5 +1,8 @@
+project(testing)
+
+
 add_executable(spc_test_attitude attitude.cpp)
-target_link_libraries(spc_test_attitude spc_elements spc_time_series spc_io)
+target_link_libraries(spc_test_attitude spc_elements spc_external spc_methods)
 
 add_executable(spc_test_boost_eval test_boost_eval.cpp)
 #target_link_libraries(test_boost_eval spc_elements)
@@ -8,15 +11,15 @@ add_executable(spc_test_boost_eval test_boost_eval.cpp)
 #target_link_libraries(spc_test_boost_eval2 spc_calibration spc_external)
 
 add_executable(spc_test_boost_eval3 test_boost_eval3.cpp)
-target_link_libraries(spc_test_boost_eval3 spc_calibration spc_external)
+target_link_libraries(spc_test_boost_eval3   spc_elements spc_external spc_methods)
 
 add_executable(spc_test_cereal_serialize cereal_serialize.cpp)
-target_link_libraries(spc_test_cereal_serialize spc_calibration spc_external)
+target_link_libraries(spc_test_cereal_serialize  spc_elements spc_external spc_methods)
 
 
 
 add_executable(spc_uuid uuid.cpp)
-target_link_libraries(spc_uuid spc_elements)
+target_link_libraries(spc_uuid  spc_elements spc_external spc_methods)
 
 add_executable(spc_sample sample.cpp)
-target_link_libraries(spc_sample spc_elements spc_tables)
+target_link_libraries(spc_sample  spc_elements spc_external spc_methods)

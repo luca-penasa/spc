@@ -1,7 +1,7 @@
-#include <spc/io/pointcloud2_reader.h>
+#include "pointcloud2_reader.h"
 #include <pcl/io/io.h>
 
-#include <spc/common/common.h>
+#include <spc/methods/common.h>
 
 namespace spc
 {
