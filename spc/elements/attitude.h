@@ -81,7 +81,7 @@ private:
     template <class Archive>
     void serialize( Archive & ar )
     {
-        ar( make_nvp("Plane", cereal::base_class<spc::Plane>( this )));
+        ar( cereal::base_class<spc::Plane>( this ));
     }
 
 };

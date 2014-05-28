@@ -11,9 +11,9 @@ AttitudeEstimator::AttitudeEstimator()
 std::vector<Attitude> AttitudeEstimator::getEstimatedAttitudes()
 {
     std::vector<Attitude> atts;
-    Attitude::Ptr att = getEstimatedAttitude();
-    std::cout << "att: \n" << att->getNormal() << std::endl;
-    Vector3f n = att->getUnitNormal();
+    Attitude att = getEstimatedAttitude();
+    std::cout << "att: \n" << att.getNormal() << std::endl;
+    Vector3f n = att.getUnitNormal();
 
     for (int i = 0; i < clouds_.size(); ++i) {
         Attitude new_att(n, centroids_.at(i));
@@ -130,7 +130,7 @@ int AttitudeEstimator::estimate()
     if (clouds_.size() == 1)
         return 1;
 
-    VectorXf start = model_.getAttitude()->getUnitNormal();
+    VectorXf start = model_.getAttitude().getUnitNormal();
 
     my_functor Functor(this);
 
@@ -141,7 +141,7 @@ int AttitudeEstimator::estimate()
 
     int info = lm.minimize(start);
 
-    start = model_.getAttitude()->getUnitNormal();
+    start = model_.getAttitude().getUnitNormal();
     std::cout << "AFTER: " << start(0) << " " << start(1) << " " << start(2)
               << "with info " << info << std::endl;
 

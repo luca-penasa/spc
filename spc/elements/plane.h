@@ -107,7 +107,7 @@ private:
     template <class Archive>
     void serialize( Archive & ar)
     {
-        ar(
+        ar( cereal::base_class<spc::PositionableElement>( this ),
             CEREAL_NVP(normal_) );
 
     }

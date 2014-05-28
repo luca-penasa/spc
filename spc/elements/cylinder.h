@@ -16,7 +16,7 @@ namespace spc {
 class Cylinder: public PositionableElement
 {
 public:
-SPC_OBJECT(Cylinder)
+    SPC_OBJECT(Cylinder)
 
     /// def constrcutor
     Cylinder()
@@ -80,7 +80,8 @@ private:
     template <class Archive>
     void sserialize( Archive & ar )
     {
-        ar( CEREAL_NVP(direction_),
+        ar( cereal::base_class<spc::PositionableElement>(this),
+            CEREAL_NVP(direction_),
             CEREAL_NVP(length_),
             CEREAL_NVP(radius_));
     }

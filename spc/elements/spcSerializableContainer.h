@@ -3,6 +3,7 @@
 
 #include "SerializableObject.h"
 #include <vector>
+#include <cereal/cereal.hpp>
 
 namespace spc
 {
@@ -20,7 +21,7 @@ public:
 
     }
 
-    void push_back(spc::spcSerializableObject * el)
+    void push_back(spc::spcSerializableObject::Ptr el)
     {
         data_.push_back(el);
     }
@@ -30,16 +31,26 @@ public:
         return data_.size();
     }
 
-    spc::spcSerializableObject * at(size_t id) const
+    spc::spcSerializableObject::Ptr at(size_t id) const
     {
         return data_.at(id);
+    }
+
+private:
+    friend class cereal::access;
+
+    template <class Archive>
+    void serialize( Archive & ar )
+    {
+        ar( cereal::base_class<spcSerializableObject>( this ),
+            CEREAL_NVP(data_));
     }
 
 
 
 protected:
 
-    std::vector<spc::spcSerializableObject *> data_;
+    std::vector<spc::spcSerializableObject::Ptr> data_;
 
 };
 

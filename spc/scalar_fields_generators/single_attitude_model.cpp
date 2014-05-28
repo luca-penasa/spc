@@ -4,12 +4,12 @@ namespace spc{
 
 float SingleAttitudeModel::getScalarFieldValue(const Vector3f &point) const
 {
-    return attitude_->distanceTo(point) + additional_shift_;
+    return attitude_.distanceTo(point) + additional_shift_;
 }
 
 Vector3f SingleAttitudeModel::getScalarFieldGradient(const Vector3f &point) const
 {
-    return attitude_->getUnitNormal();
+    return attitude_.getUnitNormal();
 }
 
 

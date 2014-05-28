@@ -24,11 +24,6 @@ class ElementsIO: public ModificableElement
 {
 
 public:
-    ElementsIO(): archive_type_(JSON)
-    {
-
-    }
-
     enum ARCHIVE_TYPE {XML, JSON, SPC}; // spc is cereal-binary
 
     /**
@@ -39,22 +34,31 @@ public:
      * @return
      * Note the filename must be with no extension. Extension is automatically appended depending on the type
      */
-    int serializeToFile(const spcSerializableObject::Ptr element,
-                        std::string filename,
-                        const std::string cereal_outname = "SPC Dataset");
+    static int serializeToFile(const spcSerializableObject::Ptr element,
+                               std::string filename,
+                               const ARCHIVE_TYPE &type = SPC);
 
     /**
      * @brief deserializeFromFile get a filename and gives back an scpSerializableObject::Ptr
-     * @param filename
+     * @param filename with extension, we will guess the right archive from that
      * @return
      */
-    spcSerializableObject::Ptr deserializeFromFile(const std::string filename);
+    static spcSerializableObject::Ptr deserializeFromFile(const std::string filename);
 
-    spcGetMacro(ArchiveType, archive_type_, ARCHIVE_TYPE)
-    spcSetMacro(ArchiveType, archive_type_, ARCHIVE_TYPE)
 
-    private:
-        ARCHIVE_TYPE archive_type_;
+    static int serializeToStream(const spcSerializableObject::Ptr element,
+                                 std::ostream &stream,
+                                 const ARCHIVE_TYPE &type = SPC);
+
+    static spcSerializableObject::Ptr deserializeFromStream(std::istream &stream,
+                                                            const ARCHIVE_TYPE &type = SPC);
+
+    static int serializeToString(const spcSerializableObject::Ptr element,
+                                 std::string &string,
+                                 const ARCHIVE_TYPE &type = SPC);
+
+    static spcSerializableObject::Ptr deserializeFromString(std::string &string,
+                                                            const ARCHIVE_TYPE &type = SPC);
 
 };
 

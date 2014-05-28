@@ -115,7 +115,7 @@ private:
     template <class Archive>
     void serialize( Archive & ar )
     {
-        ar(  cereal::base_class<spc::spcObject>( this ),
+        ar(  make_nvp("spcObject", cereal::base_class<spc::spcObject>( this )),
              CEREAL_NVP(properties_));
     }
 

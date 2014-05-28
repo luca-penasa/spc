@@ -3,6 +3,11 @@
 namespace spc
 {
 
+spc::spcSerializableObject::spcSerializableObject()
+{
+
+}
+
 
 
 

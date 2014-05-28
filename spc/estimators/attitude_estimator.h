@@ -68,7 +68,7 @@ public:
     /// please use getEstimatedAttitudes() for having an attitude for each input
     /// cloud.
     ///
-    Attitude::Ptr getEstimatedAttitude()
+    Attitude getEstimatedAttitude()
     {
         return model_.getAttitude();
     }

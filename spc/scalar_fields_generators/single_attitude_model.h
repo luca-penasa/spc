@@ -22,7 +22,7 @@ public:
     /// def const
     SingleAttitudeModel() : additional_shift_(0.0)
     {
-        attitude_ = Attitude::Ptr(new Attitude);
+
     }
 
     /// copy const
@@ -37,14 +37,14 @@ public:
     {
         additional_shift_ = 0.0;
 
-        attitude_ = spcMakeSharedPtrMacro<Attitude>(attitude);
+        attitude_ = attitude;
     }
 
     SingleAttitudeModel(const Attitude::Ptr attitude)
     {
         additional_shift_ = 0.0;
 
-        attitude_ = attitude;
+        attitude_ = *attitude;
     }
 
 
@@ -57,7 +57,7 @@ public:
 
     Vector3f getPointAtStratigraphicPosition(float sp) const
     {
-        return attitude_->getPosition() + attitude_->getUnitNormal() * (sp - additional_shift_ );
+        return attitude_.getPosition() + attitude_.getUnitNormal() * (sp - additional_shift_ );
     }
 
 
@@ -72,29 +72,39 @@ public:
     }
 
 
-    void setAttitude(Attitude::Ptr &attitude)
+    void setAttitude(const Attitude &attitude)
     {
         attitude_ = attitude;
     }
 
 
-    Attitude::Ptr getAttitude() const
+    Attitude getAttitude() const
     {
         return attitude_;
     }
 
     void setNormal (Vector3f n)
     {
-        attitude_->setNormal(n);
+        attitude_.setNormal(n);
     }
 
+private:
+    friend class cereal::access;
 
+    template <class Archive>
+    void serialize( Archive & ar )
+    {
+        ar( cereal::base_class<spc::StratigraphicModelBase>( this ),
+            cereal::base_class<spc::spcObject>( this ),
+            additional_shift_,
+            attitude_);
+    }
 
 
 protected:
     float additional_shift_;
 
-    Attitude::Ptr attitude_;
+    Attitude attitude_;
 
 };
 

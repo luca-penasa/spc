@@ -12,7 +12,8 @@
 namespace spc
 {
 
-
+/// NOTE this class must be splitted in a filter and a serializable object
+/// it is not good that an object does operations on data. Filters do them.
 
 class spcPlanarSelection: public spcObject
 {
@@ -220,25 +221,15 @@ protected:
     /// z is the distance from the proj_plane_
     pcl::PointCloud<pcl::PointXYZ> projected_cloud_;
 
+private:
+    friend class cereal::access;
 
-
-protected:
-
-
-
-    //    friend class boost::serialization::access;
-
-    //    template <class Archive>
-    //    void serialize(Archive &ar, const unsigned int version)
-    //    {
-    //        ar & BOOST_SERIALIZATION_NVP(verts_3d_);
-    //        ar & BOOST_SERIALIZATION_NVP(max_distance_);
-    //    }
-
-
-
-
-
+    template <class Archive>
+    void serialize( Archive & ar )
+    {
+        ar( cereal::base_class<spc::spcObject>( this ),
+            max_distance_);
+    }
 
 };
 

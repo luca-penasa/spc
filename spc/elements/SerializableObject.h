@@ -1,23 +1,19 @@
 #ifndef SPC_SALVABLE_OBJECT_H
 #define SPC_SALVABLE_OBJECT_H
 #include <spc/common/macros.h>
-
+#include <ostream>
+#include <iostream>
+//#include <spc/io/element_io.h>
 
 namespace spc
 {
-
 
 class spcSerializableObject
 {
 public:
     SPC_OBJECT(spcSerializableObject)
 
-
-    public:
-        spcSerializableObject()
-    {
-
-    }
+    spcSerializableObject();
 
     /**
      * @brief isSPCSerializable
@@ -36,11 +32,13 @@ public:
         return false;
     }
 
+
     template<class Archive>
     void serialize(Archive & archive)
     {
         // nothing for now
     }
+
 
 };
 
