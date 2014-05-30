@@ -71,7 +71,9 @@ option(BUILD_MICMAC_RELATED "Build MICMAC-related code." OFF)
 option(BUILD_PYTHON_WRAPPINGS "Build python interface for the library. Only some classes have been wrapped!" OFF)
 option(BUILD_SPC_DOC "Build SPC doc" OFF)
 option(BUILD_TESTS "Do tests" OFF)
+option(SPC_ENABLE_INSTALL "Enable/Disable the install target" OFF)
 option(SWIG_WRAPPINGS "Use swigs to generate wrappings for some methods" OFF)
+
 option(USE_PARALLEL_OPENMP "Enable paralellization of some algorithms via OpenMP" OFF)
 option(BUILD_TESTING_TOOLS "Build the tools contained into the tests folder" OFF)
 #############################################################################################################
@@ -211,20 +213,22 @@ configure_file(SPCConfig.cmake.in "${PROJECT_BINARY_DIR}/SPCConfig.cmake" @ONLY)
 configure_file(SPCConfigVersion.cmake.in "${PROJECT_BINARY_DIR}/SPCConfigVersion.cmake" @ONLY)
 
 #### INSTALL TREE
-## reset conf_include_dirs for the install tree
-set (CONF_INCLUDE_DIRS "${INSTALL_INCLUDE_DIR}")
-set (CONF_CEREAL_INCLUDE_DIRS "${INSTALL_INCLUDE_DIR}/spc/3rdParty")
-set (CONF_LIBRARY_DIRS "${INSTALL_LIB_DIR}")
+if(SPC_ENABLE_INSTALL)
+    ## reset conf_include_dirs for the install tree
+    set (CONF_INCLUDE_DIRS "${INSTALL_INCLUDE_DIR}")
+    set (CONF_CEREAL_INCLUDE_DIRS "${INSTALL_INCLUDE_DIR}/spc/3rdParty")
+    set (CONF_LIBRARY_DIRS "${INSTALL_LIB_DIR}")
 
-## reconfigure the SPCConfig.cmake putting it in a subdirectory of the build tree
-configure_file(SPCConfig.cmake.in "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/SPCConfig.cmake" @ONLY)
+    ## reconfigure the SPCConfig.cmake putting it in a subdirectory of the build tree
+    configure_file(SPCConfig.cmake.in "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/SPCConfig.cmake" @ONLY)
 
 
-# Install the FooBarConfig.cmake and FooBarConfigVersion.cmake in the install tree
-install(FILES "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/SPCConfig.cmake"
-              "${PROJECT_BINARY_DIR}/SPCConfigVersion.cmake"
-  DESTINATION "${INSTALL_CMAKE_DIR}" COMPONENT dev)
+    # Install the FooBarConfig.cmake and FooBarConfigVersion.cmake in the install tree
+    install(FILES "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/SPCConfig.cmake"
+                  "${PROJECT_BINARY_DIR}/SPCConfigVersion.cmake"
+      DESTINATION "${INSTALL_CMAKE_DIR}" COMPONENT dev)
 
-## Install the export set for use with the install-tree
-install(EXPORT SPCTargets DESTINATION
-               "${INSTALL_CMAKE_DIR}" COMPONENT dev)
+    ## Install the export set for use with the install-tree
+    install(EXPORT SPCTargets DESTINATION
+                   "${INSTALL_CMAKE_DIR}" COMPONENT dev)
+endif()

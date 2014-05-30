@@ -34,7 +34,9 @@ macro(spc_add_library)
     spc_compile_and_link(spc_${libname} "${sources}" "${libs}")
     set_target_properties(spc_${libname} PROPERTIES PUBLIC_HEADER "${HEADERS};${IMPLS}")
 
-    spc_install_target_library_libs(${libname})
+    if(SPC_ENABLE_INSTALL)
+        spc_install_target_library_libs(${libname})
+    endif()
 endmacro()
 
 ##http://stackoverflow.com/questions/7787823/cmake-how-to-get-the-name-of-all-subdirectories-of-a-directory
@@ -53,7 +55,10 @@ endmacro()
 #add an executable
 macro(spc_add_executable name codefiles)
     add_executable(${name} ${codefiles})
-    install(TARGETS ${name} EXPORT ${name} RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT bin)
+
+    if(SPC_ENABLE_INSTALL)
+        install(TARGETS ${name} EXPORT ${name} RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT bin)
+    endif()
 endmacro()
 
 ##install hedears
@@ -63,12 +68,14 @@ endmacro()
 
 #install a library
 macro(spc_install_target_library_libs libname)
-    install(TARGETS "spc_${libname}"
-            EXPORT SPCTargets
-            ARCHIVE DESTINATION "${INSTALL_LIB_DIR}" ## installing static lib in the same place.
-            LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
-            COMPONENT shlib
-            PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/spc/${libname}")
+    if(SPC_ENABLE_INSTALL)
+        install(TARGETS "spc_${libname}"
+                EXPORT SPCTargets
+                ARCHIVE DESTINATION "${INSTALL_LIB_DIR}" ## installing static lib in the same place.
+                LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
+                COMPONENT shlib
+                PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/spc/${libname}")
+    endif()
 endmacro()
 
 
