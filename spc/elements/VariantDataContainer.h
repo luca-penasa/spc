@@ -14,59 +14,55 @@ struct to_string_visitor : boost::static_visitor<>
 {
     std::string str;
 
-    template <typename T>
-    void operator()(T const& item);
+    template <typename T> void operator()(T const &item);
 
-    void operator()(Eigen::Vector3f const & v);
+    void operator()(Eigen::Vector3f const &v);
 
-    void operator()(std::string const & s);
+    void operator()(std::string const &s);
 };
 
-class spcVariant
+class VariantDataContainer
 {
 public:
-    SPC_OBJECT(spcVariant)
+    SPC_OBJECT(VariantDataContainer)
 
     // ALLOWED TYPES!
-    typedef boost::variant<int, float, std::string, Eigen::Vector3f>  VarianT;
+    typedef boost::variant<int, float, std::string, Eigen::Vector3f> VarianT;
 
-    spcVariant()
+    VariantDataContainer()
     {
     }
 
-    spcVariant(const VarianT value);
+    VariantDataContainer(const VarianT value);
 
-    template <typename T>
-    spcVariant &operator = (const T &data)
+    template <typename T> VariantDataContainer &operator=(const T &data)
     {
         data_ = VarianT(data);
         return *this;
     }
 
-    spcVariant &operator = (const double &data);
+    VariantDataContainer &operator=(const double &data);
 
-    bool operator == (const spcVariant & other) const;
+    bool operator==(const VariantDataContainer &other) const;
 
-    VarianT &value ();
+    VarianT &value();
 
     std::string asString() const;
 
-    friend std::ostream& operator<<(std::ostream& os, const spcVariant& obj);
+    friend std::ostream &operator<<(std::ostream &os, const VariantDataContainer &obj);
 
 private:
     friend class cereal::access;
 
-    template <class Archive>
-    void serialize( Archive & ar )
+    template <class Archive> void serialize(Archive &ar)
     {
-        ar( CEREAL_NVP(data_));
+        ar(CEREAL_NVP(data_));
     }
 
 protected:
     VarianT data_;
-
 };
 
-}//end nspace
+} // end nspace
 
 #endif

@@ -1,29 +1,19 @@
 #include "StratigraphicModelSingleAttitude.h"
-namespace spc{
+namespace spc
+{
 
-
-float SingleAttitudeModel::getScalarFieldValue(const Vector3f &point) const
+float StratigraphicModelSingleAttitude::getScalarFieldValue(const Vector3f &point) const
 {
     return attitude_.distanceTo(point) + additional_shift_;
 }
 
-Vector3f SingleAttitudeModel::getScalarFieldGradient(const Vector3f &point) const
+Vector3f StratigraphicModelSingleAttitude::getScalarFieldGradient(const Vector3f
+                                                     &point) const
 {
     return attitude_.getUnitNormal();
 }
 
+} // end nspace
 
-
-
-
-
-
-
-
-
-
-
-}//end nspace
-
-
-//BOOST_CLASS_EXPORT_GUID(spc::spcSingleAttitudeModel, "spcSingleAttitudeModel")
+// BOOST_CLASS_EXPORT_GUID(spc::spcSingleAttitudeModel,
+// "spcSingleAttitudeModel")

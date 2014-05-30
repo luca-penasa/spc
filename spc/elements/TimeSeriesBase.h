@@ -1,7 +1,6 @@
 #ifndef SPC_BASE_TIME_SERIES_H
 #define SPC_BASE_TIME_SERIES_H
 
-
 #include <string>
 #include <vector>
 #include <assert.h>
@@ -10,7 +9,6 @@
 #include <boost/random/random_device.hpp>
 
 #include <boost/random/uniform_real_distribution.hpp>
-
 
 namespace spc
 {
@@ -21,17 +19,18 @@ namespace spc
 using namespace std;
 template <typename ScalarT>
 ///
-/// \brief The GenericTimeSeries class is a Generic class for time series-like (TS) objects.
+/// \brief The GenericTimeSeries class is a Generic class for time series-like
+/// (TS) objects.
 /// \ingroup time_series
 ///
-class GenericTimeSeries: public spcObject
+class TimeSeriesBase : public ElementBase
 {
 public:
+    SPC_OBJECT(TimeSeriesBase)
 
-    GenericTimeSeries() {}
-
-    typedef spcSharedPtrMacro<GenericTimeSeries<ScalarT> > Ptr;
-    typedef spcSharedPtrMacro<const GenericTimeSeries<ScalarT> > ConstPtr;
+    TimeSeriesBase()
+    {
+    }
 
     typedef std::vector<ScalarT> VectorT;
     typedef ScalarT ScaT;
@@ -42,15 +41,17 @@ public:
     }
 
     /// by default will generate in -1 to 1 range
-    //void fillRandomY(ScalarT min=-1, ScalarT max=1);
-
+    // void fillRandomY(ScalarT min=-1, ScalarT max=1);
 
     ///
     /// \brief getNumberOfSamples in time series
     /// \return the number of samples
     ///
 
-    size_t getNumberOfSamples() const {return y_.size();}
+    size_t getNumberOfSamples() const
+    {
+        return y_.size();
+    }
 
     ///
     /// \brief getX positions
@@ -80,7 +81,10 @@ public:
     ///
     /// \brief setY values
     ///
-    void setY(vector<ScalarT> y) {y_ = y;}
+    void setY(vector<ScalarT> y)
+    {
+        y_ = y;
+    }
 
     ///
     /// \brief Provide a way to resize the time series
@@ -94,7 +98,7 @@ public:
     /// \return the min value of the x positions
     /// Must be implemented in each derived class
     ///
-    virtual ScalarT getMinX() const = 0 ;
+    virtual ScalarT getMinX() const = 0;
 
     ///
     /// \brief getMaxX for the higher value of the x positions
@@ -112,17 +116,11 @@ protected:
 private:
     friend class cereal::access;
 
-    template <class Archive>
-    void serialize( Archive & ar )
+    template <class Archive> void serialize(Archive &ar)
     {
-        ar(  cereal::base_class<spc::spcObject>( this ),
-             CEREAL_NVP(y_));
+        ar(cereal::base_class<spc::ElementBase>(this), CEREAL_NVP(y_));
     }
-
-
 };
 
-
-
-} //end namespace spc
+} // end namespace spc
 #endif // GENERICTIMESERIES_H

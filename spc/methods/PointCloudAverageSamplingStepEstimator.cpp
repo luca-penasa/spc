@@ -2,8 +2,4 @@
 namespace spc
 {
 
-
-
-
-
-}//end nspace
+} // end nspace

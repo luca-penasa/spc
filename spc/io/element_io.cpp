@@ -3,19 +3,17 @@
 #include <cereal/types/polymorphic.hpp>
 #include <pcl/console/print.h>
 
-
-
 namespace spc
 {
 namespace io
 {
 
-
-int serializeToFile(const spcObject::Ptr element, std::string filename, const ARCHIVE_TYPE &type)
+int serializeToFile(const ElementBase::Ptr element, std::string filename,
+                    const ARCHIVE_TYPE &type)
 {
-    if (!element->isSPCSerializable())
-    {
-        pcl::console::print_error("Trying to serialize an unserializable object. Nothing Done.\n");
+    if (!element->isSPCSerializable()) {
+        pcl::console::print_error(
+            "Trying to serialize an unserializable object. Nothing Done.\n");
         return -1;
     }
 
@@ -36,18 +34,15 @@ int serializeToFile(const spcObject::Ptr element, std::string filename, const AR
     serializeToStream(element, os, type);
 
     return 1;
-
-
-
 }
 
-spcObject::Ptr deserializeFromFile(const std::string filename)
+ElementBase::Ptr deserializeFromFile(const std::string filename)
 {
 
-    spc::spcObject::Ptr ptr; // a null pointer
-    if (!boost::filesystem::exists( filename ))
-    {
-        pcl::console::print_error("Trying to deserialize a non existent-file. Null Pointer returned\n ");
+    spc::ElementBase::Ptr ptr; // a null pointer
+    if (!boost::filesystem::exists(filename)) {
+        pcl::console::print_error("Trying to deserialize a non existent-file. "
+                                  "Null Pointer returned\n ");
         return ptr;
     }
 
@@ -56,9 +51,10 @@ spcObject::Ptr deserializeFromFile(const std::string filename)
 
     ARCHIVE_TYPE matched_type;
 
-    if (!((extension == ".xml") || (extension == ".json") || (extension == ".spc")))
-    {
-        pcl::console::print_error("Extension not supported. Returned null pointer.\n");
+    if (!((extension == ".xml") || (extension == ".json")
+          || (extension == ".spc"))) {
+        pcl::console::print_error(
+            "Extension not supported. Returned null pointer.\n");
         return ptr;
     }
 
@@ -72,47 +68,40 @@ spcObject::Ptr deserializeFromFile(const std::string filename)
     std::ifstream is(filename); // open filename
 
     return deserializeFromStream(is, matched_type);
-
 }
 
-int serializeToStream(const spcObject::Ptr element, std::ostream &stream, const ARCHIVE_TYPE &type)
+int serializeToStream(const ElementBase::Ptr element, std::ostream &stream,
+                      const ARCHIVE_TYPE &type)
 {
 
-    if (type == XML)
-    {
+    if (type == XML) {
         cereal::XMLOutputArchive archive(stream);
-        archive(cereal::make_nvp("SPCDataset",element));
+        archive(cereal::make_nvp("SPCDataset", element));
     }
 
-    if (type == JSON)
-    {
+    if (type == JSON) {
         cereal::JSONOutputArchive archive(stream);
         archive(cereal::make_nvp("SPCDataset", element));
     }
 
-    if (type == SPC)
-    {
+    if (type == SPC) {
         cereal::BinaryOutputArchive archive(stream);
         archive(cereal::make_nvp("SPCDataset", element));
     }
 }
 
-spcObject::Ptr deserializeFromStream(std::istream &stream, const ARCHIVE_TYPE &type)
+ElementBase::Ptr deserializeFromStream(std::istream &stream,
+                                     const ARCHIVE_TYPE &type)
 {
-    spcObject::Ptr ptr;
+    ElementBase::Ptr ptr;
 
-    if (type == XML)
-    {
+    if (type == XML) {
         cereal::XMLInputArchive archive(stream);
         archive(cereal::make_nvp("SPCDataset", ptr));
-    }
-    else if (type == JSON)
-    {
+    } else if (type == JSON) {
         cereal::JSONInputArchive archive(stream);
         archive(cereal::make_nvp("SPCDataset", ptr));
-    }
-    else if (type == SPC)
-    {
+    } else if (type == SPC) {
         cereal::BinaryInputArchive archive(stream);
         archive(cereal::make_nvp("SPCDataset", ptr));
     }
@@ -120,21 +109,21 @@ spcObject::Ptr deserializeFromStream(std::istream &stream, const ARCHIVE_TYPE &t
     return ptr;
 }
 
-int serializeToString(const spcObject::Ptr element, std::string &string, const io::ARCHIVE_TYPE &type)
+int serializeToString(const ElementBase::Ptr element, std::string &string,
+                      const io::ARCHIVE_TYPE &type)
 {
     std::stringstream sstream;
     serializeToStream(element, sstream, type);
-    string = sstream.str() ;
+    string = sstream.str();
     return 1;
 }
 
-spcObject::Ptr deserializeFromString(std::string &string, const io::ARCHIVE_TYPE &type)
+ElementBase::Ptr deserializeFromString(std::string &string,
+                                     const io::ARCHIVE_TYPE &type)
 {
     std::stringstream sstream("");
     sstream.write(string.data(), string.size());
     return deserializeFromStream(sstream, type);
 }
-
-
 }
 }

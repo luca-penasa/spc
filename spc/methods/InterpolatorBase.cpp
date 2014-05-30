@@ -5,5 +5,4 @@ InterpolatorBase::InterpolatorBase()
 {
 }
 
-
-}//end nspace
+} // end nspace

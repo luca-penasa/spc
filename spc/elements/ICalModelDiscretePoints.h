@@ -1,6 +1,6 @@
 #ifndef KERNEL_SMOOTHING_CALIBRATION_MODEL_H
 #define KERNEL_SMOOTHING_CALIBRATION_MODEL_H
-#include <spc/elements/IntensityCalibration/ModelBase.h>
+#include <spc/elements/ICalModelBase.h>
 #include <spc/elements/TimeSeriesBase.h>
 #include <spc/methods/InterpolatorSpline.h>
 
@@ -9,46 +9,44 @@
 namespace spc
 {
 
-class DiscretePointsCalibrationModel: public CalibrationModelBase
+class ModelDiscretePoints : public CalibrationModelBase
 {
 public:
+    SPC_OBJECT(ModelDiscretePoints)
 
-    SPC_OBJECT(DiscretePointsCalibrationModel)
+    ModelDiscretePoints();
 
-    DiscretePointsCalibrationModel();
-
-    virtual float getDistanceCorrection(const float &distance) override {
+    virtual float getDistanceCorrection(const float &distance) override
+    {
         if (!interpolator_)
             setUpInterpolator();
 
         return interpolator_->getInterpolatedValue(distance);
     }
 
-
-    void setDiscretePoints(spc::GenericTimeSeries<float>::Ptr points)
+    void setDiscretePoints(spc::TimeSeriesBase<float>::Ptr points)
     {
         discrete_points_distance_ = points;
     }
 
-    spc::GenericTimeSeries<float>::Ptr getTS()
+    spc::TimeSeriesBase<float>::Ptr getTS()
     {
         return discrete_points_distance_;
     }
 
-
 protected:
-
-
     int setUpInterpolator()
     {
-        if (!discrete_points_distance_)
-        {
-            pcl::console::print_error("[Error in %s] first you should set up a set of discrete points to be used", this->getClassName().c_str());
+        if (!discrete_points_distance_) {
+            pcl::console::print_error("[Error in %s] first you should set up a "
+                                      "set of discrete points to be used",
+                                      this->getClassName().c_str());
             return -1;
         }
 
         // for now only this kind of interpolation is supported
-        interpolator_ = spc::InterpolatorSimpleSpline::Ptr(new spc::InterpolatorSimpleSpline);
+        interpolator_ = spc::InterpolatorSimpleSpline::Ptr(
+            new spc::InterpolatorSimpleSpline);
 
         interpolator_->setInputSeries(discrete_points_distance_);
 
@@ -56,18 +54,18 @@ protected:
     }
 
     ///
-    /// \brief discrete_points_distance_ is a TS that set a series of passing points for
+    /// \brief discrete_points_distance_ is a TS that set a series of passing
+    /// points for
     /// the correction function f(d)= ...
     /// these passing points will be interpolated to get a continous function
     ///
-    spc::GenericTimeSeries<float>::Ptr discrete_points_distance_;
+    spc::TimeSeriesBase<float>::Ptr discrete_points_distance_;
 
     /// we need an interpolator to interpolate between points
     /// any derived interpolator from interpolator base is fine
     spc::InterpolatorBase::Ptr interpolator_;
 };
 
-
-}//end nspace
+} // end nspace
 
 #endif // KERNEL_SMOOTHING_CALIBRATION_MODEL_H

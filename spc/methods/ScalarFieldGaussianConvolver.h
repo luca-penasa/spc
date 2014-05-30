@@ -19,8 +19,7 @@ using namespace pcl; // so when it will be merged in PCL no problem
 
 ///
 /// \brief Convolve an existent scalar field with a gaussian kernel
-template <typename PointT>
-class GaussianConvolver: public Filter<PointT>
+template <typename PointT> class GaussianConvolver : public Filter<PointT>
 {
     using Filter<PointT>::input_;
     using Filter<PointT>::filter_name_;
@@ -32,11 +31,12 @@ class GaussianConvolver: public Filter<PointT>
     typedef typename pcl::search::Search<PointT>::Ptr SearcherPtr;
 
 public:
+    typedef spcSharedPtrMacro<GaussianConvolver<PointT>> Ptr;
+    typedef spcSharedPtrMacro<const GaussianConvolver<PointT>> ConstPtr;
 
-    typedef spcSharedPtrMacro< GaussianConvolver<PointT> > Ptr;
-    typedef spcSharedPtrMacro< const GaussianConvolver<PointT> > ConstPtr;
-
-    GaussianConvolver(): filter_field_name_("intensity"), squared_sigma_(1.0f), down_width_(0.1f), support_factor_(2.0)
+    GaussianConvolver()
+        : filter_field_name_("intensity"), squared_sigma_(1.0f),
+          down_width_(0.1f), support_factor_(2.0)
     {
         filter_name_ = "GaussianConvolver";
     }
@@ -44,7 +44,7 @@ public:
     void setInputCloud(const PointCloudPtr &cloud)
     {
         input_ = cloud;
-        downsampled_.reset(); //reset its downsampled version
+        downsampled_.reset(); // reset its downsampled version
     }
 
     std::vector<float> getOutput()
@@ -54,7 +54,8 @@ public:
 
     void setKernelSigma(const float sigma)
     {
-        squared_sigma_ = sigma * sigma; //we keep it as squared so it is pre-computed
+        squared_sigma_ = sigma
+                         * sigma; // we keep it as squared so it is pre-computed
         computeSupportSize();
     }
 
@@ -63,8 +64,6 @@ public:
         support_factor_ = fact;
         computeSupportSize();
     }
-
-
 
     void setFieldName(const std::string fieldname)
     {
@@ -77,113 +76,107 @@ public:
         downsampled_.reset();
     }
 
-    virtual void
-    applyFilter (PointCloud &output)
+    virtual void applyFilter(PointCloud &output)
     {
-        //do nohing for now
+        // do nohing for now
     }
 
-    void applyFilter ()
+    void applyFilter()
     {
-        // In case a search method has not been given, initialize it using some defaults
-        if (!tree_)
-        {
+        // In case a search method has not been given, initialize it using some
+        // defaults
+        if (!tree_) {
             // For organized datasets, use an OrganizedDataIndex
-            tree_.reset (new pcl::search::KdTree<PointT> (false));
+            tree_.reset(new pcl::search::KdTree<PointT>(false));
         }
 
-        if (!input_)
-        {
-            PCL_ERROR ("[pcl::GaussianConvolver::applyFilter] Need an input cloud befere continuing.\n");
+        if (!input_) {
+            PCL_ERROR("[pcl::GaussianConvolver::applyFilter] Need an input "
+                      "cloud befere continuing.\n");
             return;
         }
 
-//        if (input_->is_dense) # this is simply wrong -> check out the meaning of is_dense please. You mean isOrganized maybe
-//        {
-//            PCL_ERROR ("[pcl::%s::applyFilter] This method ony works on sparse clouds.\n", getClassName ().c_str ());
-//            return;
-//        }
+        //        if (input_->is_dense) # this is simply wrong -> check out the
+        // meaning of is_dense please. You mean isOrganized maybe
+        //        {
+        //            PCL_ERROR ("[pcl::%s::applyFilter] This method ony works
+        // on sparse clouds.\n", getClassName ().c_str ());
+        //            return;
+        //        }
 
         if (!downsampled_)
             prepareDownsampledVersion();
 
+        // was for debug
+        //        pcl::io::savePCDFileBinary("/home/luca/tmp.pcd",
+        // *downsampled_);
 
-
-//was for debug
-//        pcl::io::savePCDFileBinary("/home/luca/tmp.pcd", *downsampled_);
-
-
-
-
-        tree_->setInputCloud (downsampled_);
-
+        tree_->setInputCloud(downsampled_);
 
         // Copy the input data into the output
 
         smoothed_values_.resize(input_->size());
 
 #ifdef USE_OPENMP
-    #pragma omp parallel for shared (smoothed_values_)
+#pragma omp parallel for shared(smoothed_values_)
 #endif
-        for (int i = 0 ; i < input_->size(); ++i)
-        {
+        for (int i = 0; i < input_->size(); ++i) {
             PointT point = input_->at(i);
             std::vector<int> ids;
             std::vector<float> sq_dists;
 
             tree_->radiusSearch(point, support_size_, ids, sq_dists);
 
-
             std::vector<float> values = getFieldValuesInDownsampled(ids);
 
             // now compute weights
             std::vector<float> w(values.size());
 
-            for (int ix = 0 ; ix < ids.size(); ++ix)
-                w.at(ix) = exp (- (sq_dists.at(ix))/(2*squared_sigma_));
+            for (int ix = 0; ix < ids.size(); ++ix)
+                w.at(ix) = exp(-(sq_dists.at(ix)) / (2 * squared_sigma_));
 
             std::vector<float> mult(ids.size());
-            std::transform(values.begin(), values.end(), w.begin(), mult.begin(), std::multiplies<float>());
+            std::transform(values.begin(), values.end(), w.begin(),
+                           mult.begin(), std::multiplies<float>());
             float sum = std::accumulate(mult.begin(), mult.end(), 0.0f);
             float sum_w = std::accumulate(w.begin(), w.end(), 0.0f);
 
-            smoothed_values_.at(i) = sum/sum_w;
-
+            smoothed_values_.at(i) = sum / sum_w;
         }
-
     }
 
-
 private:
+    //    /** \brief The Gaussian distance kernel.
+    //      * \param[in] x the spatial distance
+    //      * \param[in] sigma standard deviation of the Gaussian function
+    //      */
+    //    inline double
+    //    kernel (double x, double sigma)
+    //    {
+    //        return (exp (- (x*x)/(2*sigma*sigma)));
+    //    }
 
-//    /** \brief The Gaussian distance kernel.
-//      * \param[in] x the spatial distance
-//      * \param[in] sigma standard deviation of the Gaussian function
-//      */
-//    inline double
-//    kernel (double x, double sigma)
-//    {
-//        return (exp (- (x*x)/(2*sigma*sigma)));
-//    }
-
-    inline std::vector<float>
-    getFieldValuesInDownsampled(const std::vector<int> ids)
+    inline std::vector<float> getFieldValuesInDownsampled(const std::vector
+                                                          <int> ids)
     {
         std::vector<pcl::PCLPointField> fields;
-        int distance_idx = pcl::getFieldIndex (*input_, filter_field_name_, fields);
-        if (distance_idx == -1)
-        {
-            PCL_WARN ("[pcl::%s::applyFilter] Unable to find field name in point type.\n", getClassName ().c_str ());
-            return std::vector<float>(0); //a zero length vector
+        int distance_idx
+            = pcl::getFieldIndex(*input_, filter_field_name_, fields);
+        if (distance_idx == -1) {
+            PCL_WARN("[pcl::%s::applyFilter] Unable to find field name in "
+                     "point type.\n",
+                     getClassName().c_str());
+            return std::vector<float>(0); // a zero length vector
         }
 
         std::vector<float> out;
         out.resize(ids.size());
 
-        for (int i = 0 ; i < ids.size(); ++i)
-        {
-            const uint8_t* pt_data = reinterpret_cast<const uint8_t*> (&downsampled_->points[ids[i]]);
-            memcpy (&out[i], pt_data + fields[distance_idx].offset, sizeof (float));
+        for (int i = 0; i < ids.size(); ++i) {
+            const uint8_t *pt_data = reinterpret_cast
+                <const uint8_t *>(&downsampled_->points[ids[i]]);
+            memcpy(&out[i], pt_data + fields[distance_idx].offset,
+                   sizeof(float));
         }
 
         return out;
@@ -199,7 +192,7 @@ private:
 
         pcl::VoxelGrid<PointT> gridder;
         gridder.setInputCloud(input_);
-        gridder.setDownsampleAllData(true); //downsample also fields
+        gridder.setDownsampleAllData(true); // downsample also fields
         gridder.setLeafSize(down_width_, down_width_, down_width_);
         gridder.filter(*downsampled_);
     }
@@ -209,7 +202,6 @@ private:
         support_size_ = support_factor_ * sqrt(squared_sigma_);
     }
 
-
 protected:
     /**
      * @brief squared_sigma_ for the gaussian kernel
@@ -217,7 +209,8 @@ protected:
     float squared_sigma_;
 
     /**
-     * @brief down_width_ leaf size for voxelgridding the input cloud and its fields
+     * @brief down_width_ leaf size for voxelgridding the input cloud and its
+     * fields
      */
     float down_width_;
     /**
@@ -248,9 +241,8 @@ protected:
 
     /** \brief A pointer to the spatial search object. */
     SearcherPtr tree_;
-
 };
 
-}//end nspace
+} // end nspace
 
 #endif // CLOUD_GAUSSIAN_CONVOLVER_H

@@ -5,16 +5,19 @@
 #  SPC_DEFINITIONS  - the definitions used to compile SPC/PCL
 #  CEREAL_IS_INTERNAL  - if spc was compiled with an "internal version" of cereal or, if FALSE was a system-wide
 
-set(SPC_INCLUDE_DIRS "@INSTALL_INCLUDE_DIR@")
-set(SPC_LIBRARY_DIRS "@INSTALL_LIB_DIR@")
+set(SPC_INCLUDE_DIRS "@CONF_INCLUDE_DIRS@")
+set(SPC_LIBRARY_DIRS "@CONF_LIBRARY_DIRS@")
 set(SPC_LIBRARIES "@SPC_LIBRARIES@")
 set(SPC_DEFINITIONS "@SPC_DEFINITIONS@")
 
 set(CEREAL_IS_INTERNAL @CEREAL_IS_INTERNAL@)
 
+get_filename_component(SPC_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+include("${SPC_CMAKE_DIR}/SPCTargets.cmake")
+
 if (${CEREAL_IS_INTERNAL})
     message("cereal is internal")
-    set(SPC_INCLUDE_DIRS ${SPC_INCLUDE_DIRS} ${SPC_INCLUDE_DIRS}/spc/3rdParty)
+    set(SPC_INCLUDE_DIRS "${SPC_INCLUDE_DIRS}" "@CONF_CEREAL_INCLUDE_DIRS@")
 else()
     ## here we should use a find_package for finding the system' cereal lib
     ## nothing for now. It is a TODO.

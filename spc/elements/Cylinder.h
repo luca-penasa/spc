@@ -5,15 +5,16 @@
 #include <spc/elements/Normal3D.h>
 #include <spc/elements/PointCloudBase.h>
 
-namespace spc {
-
+namespace spc
+{
 
 ///
 /// \brief The Cylinder class represent a cylinder in space
-/// witht the base locate at the center of the point provided with the movable element
+/// witht the base locate at the center of the point provided with the movable
+/// element
 /// and with length and radius as in parameters
 ///
-class Cylinder: public PositionableElement
+class Cylinder : public MovableElement
 {
 public:
     SPC_OBJECT(Cylinder)
@@ -21,23 +22,21 @@ public:
     /// def constrcutor
     Cylinder()
     {
-
     }
 
-    Cylinder(const Cylinder & cyl) : PositionableElement(cyl)
+    Cylinder(const Cylinder &cyl) : MovableElement(cyl)
     {
-        //TODO we'll need to copy some other staff
+        // TODO we'll need to copy some other staff
     }
 
     Cylinder(const Eigen::Vector3f dir);
 
-
-    spcNormal3D getDirection() const
+    Normal3D getDirection() const
     {
         return direction_;
     }
 
-    void setDirection(spcNormal3D dir)
+    void setDirection(Normal3D dir)
     {
         direction_ = dir;
     }
@@ -46,7 +45,6 @@ public:
     {
         direction_.setNormal(dir);
     }
-
 
     void setLength(float len)
     {
@@ -60,15 +58,16 @@ public:
 
     /// distance is always positive, clearly
     /// this is the distance of your point from the axis of the cyclinder
-    void getPointToCylinderDistances(const Eigen::Vector3f point, float &to_axis, float & to_origin) const;
+    void getPointToCylinderDistances(const Eigen::Vector3f point,
+                                     float &to_axis, float &to_origin) const;
 
     /// the test for inside/outside from the cyclinder.
     bool isPointWithinCylinder(const Eigen::Vector3f point) const;
 
-    std::vector<int> getIndicesInside(spcGenericCloud::ConstPtr cloud);
+    std::vector<int> getIndicesInside(PointCloudBase::ConstPtr cloud);
 
 private:
-    spcNormal3D direction_;
+    Normal3D direction_;
 
     float length_;
 
@@ -77,18 +76,13 @@ private:
 private:
     friend class cereal::access;
 
-    template <class Archive>
-    void sserialize( Archive & ar )
+    template <class Archive> void sserialize(Archive &ar)
     {
-        ar( cereal::base_class<spc::PositionableElement>(this),
-            CEREAL_NVP(direction_),
-            CEREAL_NVP(length_),
-            CEREAL_NVP(radius_));
+        ar(cereal::base_class<spc::MovableElement>(this),
+           CEREAL_NVP(direction_), CEREAL_NVP(length_), CEREAL_NVP(radius_));
     }
 };
 
-
-}//end nspace
-
+} // end nspace
 
 #endif // CYLINDER_H

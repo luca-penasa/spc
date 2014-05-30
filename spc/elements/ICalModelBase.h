@@ -7,20 +7,16 @@
 namespace spc
 {
 
-class CalibrationModelBase: public spcObject
+class CalibrationModelBase : public ElementBase
 {
 public:
     SPC_OBJECT(CalibrationModelBase)
 
-
     CalibrationModelBase();
 
     virtual float getDistanceCorrection(const float &distance) = 0;
-
-
 };
 
-
-}//end nspace
+} // end nspace
 
 #endif // CALIBRATION_MODEL_BASE_H

@@ -27,7 +27,7 @@ using namespace boost::accumulators;
 ///
 /// \brief Convolve an existent scalar field with a gaussian kernel
 template <typename PointT>
-class EstimateAverageSamplingStep: public Filter<PointT>
+class EstimateAverageSamplingStep : public Filter<PointT>
 {
     using Filter<PointT>::input_;
     using Filter<PointT>::filter_name_;
@@ -39,13 +39,12 @@ class EstimateAverageSamplingStep: public Filter<PointT>
     typedef typename pcl::search::Search<PointT>::Ptr SearcherPtr;
 
 public:
+    typedef spcSharedPtrMacro<EstimateAverageSamplingStep<PointT>> Ptr;
+    typedef spcSharedPtrMacro
+        <const EstimateAverageSamplingStep<PointT>> ConstPtr;
 
-    typedef spcSharedPtrMacro< EstimateAverageSamplingStep<PointT> > Ptr;
-    typedef spcSharedPtrMacro< const EstimateAverageSamplingStep<PointT> > ConstPtr;
-
-    EstimateAverageSamplingStep():
-        step_avg_(spcNANMacro),
-        step_std_(spcNANMacro)
+    EstimateAverageSamplingStep()
+        : step_avg_(spcNANMacro), step_std_(spcNANMacro)
     {
         filter_name_ = "EstimateAverageSamplingStep";
     }
@@ -65,41 +64,34 @@ public:
         return step_std_;
     }
 
-    virtual void
-    applyFilter (PointCloud &output)
+    virtual void applyFilter(PointCloud &output)
     {
-        //do nohing for now
+        // do nohing for now
     }
 
-    void applyFilter ()
+    void applyFilter()
     {
-        // In case a search method has not been given, initialize it using some defaults
-        if (!tree_)
-        {
+        // In case a search method has not been given, initialize it using some
+        // defaults
+        if (!tree_) {
             // For organized datasets, use an OrganizedDataIndex
-            tree_.reset (new pcl::search::KdTree<PointT> (false));
+            tree_.reset(new pcl::search::KdTree<PointT>(false));
         }
 
-        if (!input_)
-        {
-            PCL_ERROR ("[pcl::EstimateAverageSamplingStep::applyFilter] Need an input cloud befere continuing.\n");
+        if (!input_) {
+            PCL_ERROR("[pcl::EstimateAverageSamplingStep::applyFilter] Need an "
+                      "input cloud befere continuing.\n");
             return;
         }
 
-
-        tree_->setInputCloud (input_);
-
-
-
+        tree_->setInputCloud(input_);
 
         std::vector<float> all_dists(input_->size());
 
-
 #ifdef USE_OPENMP
-#pragma omp parallel for shared (all_dists)
+#pragma omp parallel for shared(all_dists)
 #endif
-        for (int i = 0 ; i < input_->size(); ++i)
-        {
+        for (int i = 0; i < input_->size(); ++i) {
             PointT point = input_->at(i);
             std::vector<int> ids;
             std::vector<float> sq_dists;
@@ -109,24 +101,17 @@ public:
             all_dists.at(i) = sqrt(sq_dists.at(1));
         }
 
-        //now we use boost for getting mean and variance
-        accumulator_set<float, stats<tag::mean, tag::variance> > acc;
+        // now we use boost for getting mean and variance
+        accumulator_set<float, stats<tag::mean, tag::variance>> acc;
 
-        std::for_each(all_dists.begin(), all_dists.end(), boost::bind<void>( boost::ref(acc), _1 ) );
-
-
+        std::for_each(all_dists.begin(), all_dists.end(),
+                      boost::bind<void>(boost::ref(acc), _1));
 
         step_avg_ = mean(acc);
         step_std_ = sqrt(variance(acc));
 
-//        std::cout << step_std_ << " " << step_avg_ << std::endl;
-
-
-
-
+        //        std::cout << step_std_ << " " << step_avg_ << std::endl;
     }
-
-
 
 protected:
     /**
@@ -136,13 +121,10 @@ protected:
 
     float step_std_;
 
-
-
     /** \brief A pointer to the spatial search object. */
     SearcherPtr tree_;
-
 };
 
-}//end nspace
+} // end nspace
 
 #endif // CLOUD_GAUSSIAN_CONVOLVER_H

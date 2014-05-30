@@ -6,5 +6,4 @@ InterpolatorSimpleSpline::InterpolatorSimpleSpline()
 {
 }
 
-
-}//end nspace
+} // end nspace

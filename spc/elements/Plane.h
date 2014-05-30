@@ -13,7 +13,7 @@
 
 #include <cereal/cereal.hpp>
 
-#include<cereal/types/polymorphic.hpp>
+#include <cereal/types/polymorphic.hpp>
 
 #include <spc/io/eigen_serialization.hpp>
 
@@ -25,29 +25,30 @@ namespace spc
 /// \brief The PlaneModel class is the model of a plane in space
 /// we represent the plane as a normal plus a point in space
 ///
-class Plane: public PositionableElement
+class Plane : public MovableElement
 
 {
     SPC_OBJECT(Plane)
-    public:
-        /// Def const
-        Plane()
+public:
+    /// Def const
+    Plane()
     {
     }
 
     /// copy const
-    Plane(const Plane &plane): PositionableElement(plane)
+    Plane(const Plane &plane) : MovableElement(plane)
     {
         normal_ = plane.normal_;
     }
 
     /// a Plane from direction of the normal and passing for a given point
-    Plane(const Vector3f normal, const Vector3f point): PositionableElement(point)
+    Plane(const Vector3f normal, const Vector3f point)
+        : MovableElement(point)
     {
         normal_.setNormal(normal);
     }
 
-    void setNormal (Vector3f n)
+    void setNormal(Vector3f n)
     {
         normal_.setNormal(n);
     }
@@ -66,13 +67,11 @@ class Plane: public PositionableElement
     {
         Vector3f n = getUnitNormal();
         return v - v.dot(n) * n;
-
     }
-
 
     /// distance of a point to this plane
     /// distance is signed (+ if in the same half-space of normal_)
-    float distanceTo( const Vector3f &point) const
+    float distanceTo(const Vector3f &point) const
     {
         return normal_.getUnitNormal().dot(point) + getP();
     }
@@ -81,7 +80,7 @@ class Plane: public PositionableElement
     /// in normal hessian form: n.dot(x) = -P with n unit normal vector
     float getP() const
     {
-        return  - normal_.getUnitNormal().dot(getPosition());
+        return -normal_.getUnitNormal().dot(getPosition());
     }
 
     /// get the matrix that would project a point on a two-d ref system
@@ -90,29 +89,20 @@ class Plane: public PositionableElement
     /// on the plane. Z coordinate will simply be the distance from the plane
     Transform<float, 3, Affine, AutoAlign> get2DArbitraryRefSystem() const;
 
-
 protected:
-    spcNormal3D normal_;
-
+    Normal3D normal_;
 
 private:
     friend class cereal::access;
 
-    template <class Archive>
-    void serialize( Archive & ar)
+    template <class Archive> void serialize(Archive &ar)
     {
-        ar( cereal::base_class<spc::PositionableElement>( this ),
-            CEREAL_NVP(normal_) );
+        ar(cereal::base_class<spc::MovableElement>(this),
+           CEREAL_NVP(normal_));
     }
-
-
 };
 
-//CEREAL_CLASS_VERSION( Plane, 1)
-} //end nspace
-
-
-
+// CEREAL_CLASS_VERSION( Plane, 1)
+} // end nspace
 
 #endif // NORMAL_MODEL_H
-

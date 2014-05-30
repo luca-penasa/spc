@@ -3,12 +3,10 @@
 
 #include <flann/flann.hpp>
 #include <spc/elements/macros.h>
-namespace spc {
+namespace spc
+{
 
-
-
-template <typename ScalarT>
-class Flann1DSearcher
+template <typename ScalarT> class Flann1DSearcher
 {
 public:
     SPC_OBJECT(Flann1DSearcher)
@@ -19,17 +17,13 @@ public:
     typedef typename flann::Index<distType> FLANNIndex;
     typedef typename flann::Matrix<ScalarT> FLANNMat;
 
-
 protected:
     // the "searchable" vector
     std::vector<ScalarT> v_;
 
     spcSharedPtrMacro<FLANNIndex> flann_index_;
-
 };
 
-
-
-} //end nspace
+} // end nspace
 
 #endif // SPC_FLANN1DSEARCHER_H

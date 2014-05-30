@@ -6,16 +6,17 @@
 #include <cereal/cereal.hpp>
 #include <spc/elements/UniversalUniqueID.h>
 
-
 namespace spc
 {
 
-class spcObject
+class ElementBase
 {
 public:
-    SPC_OBJECT(spcObject)
+    SPC_OBJECT(ElementBase)
 
-    spcObject (): modified_(false) {}
+    ElementBase() : modified_(false)
+    {
+    }
 
     // this may be useful in a future
     virtual void modified();
@@ -24,7 +25,8 @@ public:
 
     /**
      * @brief isSPCSerializable
-     * This may be overloaded for forcing an spcSerializableObject to be non-serializable
+     * This may be overloaded for forcing an spcSerializableObject to be
+     * non-serializable
      * Normally ALL spcObjects are serializable.
      * So def is true
      * @return true if serializable
@@ -42,16 +44,12 @@ protected:
 private:
     friend class cereal::access;
 
-    template <class Archive>
-    void serialize( Archive & ar)
+    template <class Archive> void serialize(Archive &ar)
     {
-        ar(CEREAL_NVP(modified_),
-           CEREAL_NVP(universal_id_));
+        ar(CEREAL_NVP(modified_), CEREAL_NVP(universal_id_));
     }
 };
 
-}//end nspace
-
-
+} // end nspace
 
 #endif // ELEMENT_BASE_H

@@ -5,7 +5,8 @@
 #include <algorithm>
 
 #include <cereal/types/vector.hpp>
-namespace  spc {
+namespace spc
+{
 
 using namespace std;
 template <typename ScalarT>
@@ -16,22 +17,19 @@ template <typename ScalarT>
 /// They must have the same size!
 /// \ingroup time_series
 ///
-class SparseTimeSeries: public GenericTimeSeries<ScalarT>
+class TimeSeriesSparse : public TimeSeriesBase<ScalarT>
 {
 public:
-    SPC_OBJECT(SparseTimeSeries)
+    SPC_OBJECT(TimeSeriesSparse)
 
-    typedef typename GenericTimeSeries<ScalarT>::VectorT VectorT;
+    typedef typename TimeSeriesBase<ScalarT>::VectorT VectorT;
 
 public:
-
-
     ///
     /// \brief SparseTimeSeries def const. does nothing
     ///
-    SparseTimeSeries()
+    TimeSeriesSparse()
     {
-
     }
 
     ///
@@ -40,12 +38,12 @@ public:
     /// \param x_ vector of x positions
     /// \param y_ vector of y values
     ///
-    SparseTimeSeries(const vector<ScalarT> &x, const vector<ScalarT> &y)
+    TimeSeriesSparse(const vector<ScalarT> &x, const vector<ScalarT> &y)
     {
-        assert(x.size() == y.size()); //must have same size
-        x_ = x; this->y_ = y;
+        assert(x.size() == y.size()); // must have same size
+        x_ = x;
+        this->y_ = y;
     }
-
 
     ///
     /// \brief getX get x positions
@@ -71,7 +69,6 @@ public:
     {
         return x_.at(id);
     }
-
 
     ///
     /// \brief resize the x and y vectors
@@ -102,7 +99,7 @@ public:
     /// \return the maximum value o the x vector
     /// reimplemented from base class nan if void
     ///
-    virtual ScalarT getMaxX()  const
+    virtual ScalarT getMaxX() const
     {
         if (!x_.empty())
             return *std::max_element(x_.begin(), x_.end());
@@ -120,15 +117,12 @@ protected:
 private:
     friend class cereal::access;
 
-    template <class Archive>
-    void serialize( Archive & ar )
+    template <class Archive> void serialize(Archive &ar)
     {
-        ar(  cereal::base_class<GenericTimeSeries<ScalarT>>( this ),
-             CEREAL_NVP(x_));
+        ar(cereal::base_class<TimeSeriesBase<ScalarT>>(this),
+           CEREAL_NVP(x_));
     }
-
 };
 
-
-} //end namespace sp
+} // end namespace sp
 #endif

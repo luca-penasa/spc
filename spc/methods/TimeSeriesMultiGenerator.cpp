@@ -3,8 +3,7 @@
 namespace spc
 {
 
-int
-SerializedTimeSeriesGenerator::compute()
+int SerializedTimeSeriesGenerator::compute()
 {
     spcForEachMacro(std::vector<int> id_list, all_indices_)
     {
@@ -12,7 +11,7 @@ SerializedTimeSeriesGenerator::compute()
         generator.setBandwidth(bandwidth_);
         generator.setIndices(id_list);
         generator.setSamplingStep(sampling_step_);
-//        generator.setInputReader(in_reader_);
+        //        generator.setInputReader(in_reader_);
         generator.setXFieldName(x_field_name_);
         generator.setYFieldName(y_field_name_);
         if (!generator.compute())
@@ -25,9 +24,4 @@ SerializedTimeSeriesGenerator::compute()
     return 1;
 }
 
-
-
-
-}//end nspace
-
-
+} // end nspace

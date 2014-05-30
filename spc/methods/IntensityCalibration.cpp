@@ -7,6 +7,4 @@ IntensityCalibrator::IntensityCalibrator()
 {
 }
 
-
-
-} //end nspace
+} // end nspace

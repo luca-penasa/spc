@@ -8,7 +8,6 @@
 #include <pcl/point_cloud.h>
 #include <pcl/io/pcd_io.h>
 
-
 #include <spc/methods/common.h>
 
 #include <string>
@@ -18,22 +17,21 @@
 namespace spc
 {
 
-int 
-loadCSVFile(const std::string &in_filename, pcl::PCLPointCloud2 &output,
-						const int x_id, const int y_id, const int z_id, const int i_id, 
-						const int k, const std::string s);
+int loadCSVFile(const std::string &in_filename, pcl::PCLPointCloud2 &output,
+                const int x_id, const int y_id, const int z_id, const int i_id,
+                const int k, const std::string s);
 
+int loadCSVTimeSeries(const std::string in_filename,
+                      const std::string separator,
+                      std::vector<std::vector<float>> &tseries);
 
-int
-loadCSVTimeSeries(const std::string in_filename, const std::string separator, std::vector< std::vector<float> > &tseries);
+template <typename T>
+int saveAsCSV(const std::string &filename, const std::string &separator,
+              const std::vector<std::vector<T>> &columns,
+              const int precision = 6);
 
-template<typename T>
-int
-saveAsCSV(const std::string &filename, const std::string &separator, const std::vector<std::vector<T> > &columns, const int precision=6);
+int savePCDBinaryCompressed(const std::string &filename,
+                            const pcl::PCLPointCloud2 &cloud);
+} // end namespace
 
-int
-savePCDBinaryCompressed(const std::string &filename, const pcl::PCLPointCloud2 &cloud);
-}//end namespace
-
-
-#endif //SPC_IO_HELPER
+#endif // SPC_IO_HELPER

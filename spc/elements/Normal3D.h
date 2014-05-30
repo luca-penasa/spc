@@ -4,24 +4,22 @@
 #include <pcl/features/normal_3d.h>
 #include <cereal/types/polymorphic.hpp>
 
-
 namespace spc
 {
-class spcNormal3D: public spcObject
+class Normal3D : public ElementBase
 {
 
-SPC_OBJECT(spcNormal3D)
+    SPC_OBJECT(Normal3D)
 
 public:
+    Normal3D();
 
-    spcNormal3D();
-
-    spcNormal3D(float x, float y, float z)
+    Normal3D(float x, float y, float z)
     {
-        normal_ = Eigen::Vector3f(x,y,z);
+        normal_ = Eigen::Vector3f(x, y, z);
     }
 
-    spcNormal3D(const Eigen::Vector3f v)
+    Normal3D(const Eigen::Vector3f v)
     {
         normal_ = v;
     }
@@ -37,12 +35,10 @@ public:
         normal_ = n;
     }
 
-    void setNormal(const spcNormal3D n)
+    void setNormal(const Normal3D n)
     {
         *this = n;
     }
-
-
 
     Eigen::Vector3f getNormal() const
     {
@@ -58,26 +54,20 @@ public:
 
     void setUnitAxis(const int ax_id = 2);
 
-    void normalFromBestFit(pcl::PointCloud<pcl::PointXYZ> & cloud);
+    void normalFromBestFit(pcl::PointCloud<pcl::PointXYZ> &cloud);
 
 protected:
     Eigen::Vector3f normal_;
 
-
 private:
     friend class cereal::access;
 
-    template <class Archive>
-    void serialize( Archive & ar )
+    template <class Archive> void serialize(Archive &ar)
     {
-        ar( cereal::base_class<spcObject>( this ),
-            CEREAL_NVP(normal_) );
+        ar(cereal::base_class<ElementBase>(this), CEREAL_NVP(normal_));
     }
-
-
 };
 
-
-} //end nspace
+} // end nspace
 
 #endif // NORMAL3D_H

@@ -1,26 +1,28 @@
 #ifndef SPC_CORRECTION_FACTORS_H
 #define SPC_CORRECTION_FACTORS_H
 
-
 //#include <spc/calibration/CorePointData.h>
 
-#include <spc/elements/IntensityCalibration/DataDB.h>
+#include <spc/elements/ICalDataDB.h>
 namespace spc
 {
 
 //!
-//! \brief The CorrectionFactorBase class is the virtual base class for each correction factor
+//! \brief The CorrectionFactorBase class is the virtual base class for each
+//correction factor
 //!
 class CorrectionFactorBase
 {
 public:
     SPC_OBJECT(CorrectionFactorBase)
 
-    //! we pass a CalibrationDataDB because some factors may require to know some stuff before everything
+    //! we pass a CalibrationDataDB because some factors may require to know
+    //some stuff before everything
     //! see for example CorrectionFactorCloudDependentMultiplier
-    CorrectionFactorBase (CalibrationDataDB::ConstPtr db): is_fixed_(false)
+    CorrectionFactorBase(DataDB::ConstPtr db) : is_fixed_(false)
     {
-        // we extract here informations that may be of interest for the factors - for inizialization etc
+        // we extract here informations that may be of interest for the factors
+        // - for inizialization etc
         n_clouds_ = db->getNumberOfDifferentClouds();
     }
 
@@ -33,7 +35,7 @@ public:
     /** in most of the cases input data will be a vector with distance and angle
     /** but it may contain other information used for predicting the factor
      */
-    virtual float getFactor(CorePointData::ConstPtr input_data) const = 0;
+    virtual float getFactor(CorePoint::ConstPtr input_data) const = 0;
 
     //! get suggested initialization parameters for this correction factor
     virtual Eigen::VectorXf getInitParameters() const = 0;
@@ -66,7 +68,6 @@ public:
         is_fixed_ = is_fixed;
     }
 
-
 protected:
     Eigen::VectorXf parameters_;
 
@@ -75,22 +76,24 @@ protected:
     bool is_fixed_;
 };
 
-
-
 ///
-/// \brief The CorrectionFactorDistanceExp class is a correction for distance based on D^a with a parameter
+/// \brief The CorrectionFactorDistanceExp class is a correction for distance
+/// based on D^a with a parameter
 ///
-class CorrectionFactorDistancePowerLaw: public CorrectionFactorBase
+class CorrectionFactorDistancePowerLaw : public CorrectionFactorBase
 {
 public:
-    CorrectionFactorDistancePowerLaw(CalibrationDataDB::ConstPtr db): CorrectionFactorBase(db) {}
+    CorrectionFactorDistancePowerLaw(DataDB::ConstPtr db)
+        : CorrectionFactorBase(db)
+    {
+    }
 
     virtual std::string getCorrectionName() const
     {
         return "R^k";
     }
 
-    virtual float getFactor(CorePointData::ConstPtr input_data) const
+    virtual float getFactor(CorePoint::ConstPtr input_data) const
     {
         return pow(input_data->value<float>("distance"), parameters_(0));
     }
@@ -105,17 +108,20 @@ public:
 };
 
 //! cos-law in an exponential form
-class CorrectionFactorCosPowerAngle: public CorrectionFactorBase
+class CorrectionFactorCosPowerAngle : public CorrectionFactorBase
 {
 public:
-    CorrectionFactorCosPowerAngle(CalibrationDataDB::ConstPtr db): CorrectionFactorBase(db) {}
+    CorrectionFactorCosPowerAngle(DataDB::ConstPtr db)
+        : CorrectionFactorBase(db)
+    {
+    }
 
     virtual std::string getCorrectionName() const
     {
         return "cos^k(angle)";
     }
 
-    virtual float getFactor(CorePointData::ConstPtr input_data) const
+    virtual float getFactor(CorePoint::ConstPtr input_data) const
     {
         float cosangle = cos(input_data->value<float>("angle") / 180 * M_PI);
         return pow(cosangle, parameters_(0));
@@ -130,25 +136,23 @@ public:
     }
 };
 
-
-
-
-
-
 //! a simple multiplier in exp-form
-class CorrectionFactorFixedMultiplier: public CorrectionFactorBase
+class CorrectionFactorFixedMultiplier : public CorrectionFactorBase
 {
 public:
-    CorrectionFactorFixedMultiplier(CalibrationDataDB::ConstPtr db): CorrectionFactorBase(db) {}
+    CorrectionFactorFixedMultiplier(DataDB::ConstPtr db)
+        : CorrectionFactorBase(db)
+    {
+    }
 
     virtual std::string getCorrectionName() const
     {
         return "exp(k)";
     }
 
-    virtual float getFactor(CorePointData::ConstPtr input_data) const
+    virtual float getFactor(CorePoint::ConstPtr input_data) const
     {
-        return  parameters_(0) ;
+        return parameters_(0);
     }
 
     //! get suggested initialization parameters for this correction factor
@@ -161,62 +165,63 @@ public:
 };
 
 //! two way correction for atmosphere
-class CorrectionFactorAtmosphericTwoWay: public CorrectionFactorBase
+class CorrectionFactorAtmosphericTwoWay : public CorrectionFactorBase
 {
 public:
-    CorrectionFactorAtmosphericTwoWay(CalibrationDataDB::ConstPtr db): CorrectionFactorBase(db) {}
-
+    CorrectionFactorAtmosphericTwoWay(DataDB::ConstPtr db)
+        : CorrectionFactorBase(db)
+    {
+    }
 
     virtual std::string getCorrectionName() const
     {
         return "exp(2kR)";
     }
 
-    virtual float getFactor(CorePointData::ConstPtr input_data) const
+    virtual float getFactor(CorePoint::ConstPtr input_data) const
     {
         float R = input_data->value<float>("distance");
-        return exp( 2*R*parameters_(0) );
+        return exp(2 * R * parameters_(0));
     }
 
     virtual Eigen::VectorXf getInitParameters() const
     {
-        Eigen::VectorXf p(1) ;
+        Eigen::VectorXf p(1);
         p(0) = 0.0;
         return p;
     }
 };
 
-
-
 //! multiplier dependent on the cloud it is applied on
-class CorrectionFactorCloudDependentMultiplier: public CorrectionFactorBase
+class CorrectionFactorCloudDependentMultiplier : public CorrectionFactorBase
 {
 public:
-    CorrectionFactorCloudDependentMultiplier(CalibrationDataDB::ConstPtr db): CorrectionFactorBase(db) {}
+    CorrectionFactorCloudDependentMultiplier(DataDB::ConstPtr db)
+        : CorrectionFactorBase(db)
+    {
+    }
 
     virtual std::string getCorrectionName() const
     {
-        return "exp(k_n) for n in {0, 1, ... , N}, with N number of different input clouds";
+        return "exp(k_n) for n in {0, 1, ... , N}, with N number of different "
+               "input clouds";
     }
 
-    virtual float getFactor(CorePointData::ConstPtr input_data) const
+    virtual float getFactor(CorePoint::ConstPtr input_data) const
     {
         size_t cloud_id = input_data->value<size_t>("cloud_id");
-        return parameters_(cloud_id) ;
+        return parameters_(cloud_id);
     }
 
     virtual Eigen::VectorXf getInitParameters() const
     {
-        Eigen::VectorXf p(n_clouds_) ;
-        for (size_t i = 0 ; i < n_clouds_; ++i)
+        Eigen::VectorXf p(n_clouds_);
+        for (size_t i = 0; i < n_clouds_; ++i)
             p(i) = 1.0;
         return p;
     }
-
-
 };
 
-}//end nspace
+} // end nspace
 
 #endif
-

@@ -1,20 +1,18 @@
 #ifndef CALIBRATE_MODEL_H
 #define CALIBRATE_MODEL_H
 
-#include <spc/elements/IntensityCalibration/ModelDiscretePoints.h>
+#include <spc/elements/ICalModelDiscretePoints.h>
 #include <spc/elements/PointCloudPcl.h>
 #include <spc/methods/KernelSmoothing2.h>
 
 namespace spc
 {
 
-
-class CalibrateDiscretePointsModel: public spcObject
+class CalibrateDiscretePointsModel : public ElementBase
 {
 public:
-    CalibrateDiscretePointsModel(): model_(new DiscretePointsCalibrationModel)
+    CalibrateDiscretePointsModel() : model_(new ModelDiscretePoints)
     {
-
     }
 
     void setDistanceField(const std::string d_field)
@@ -37,30 +35,34 @@ public:
         bandwidth_ = band;
     }
 
-    void setInputCloud(spcGenericCloud::Ptr cloud)
+    void setInputCloud(PointCloudBase::Ptr cloud)
     {
         cloud_ = cloud;
     }
 
     int compute() const
     {
-        if (!cloud_)
-        {
-            pcl::console::print_error("[Error in %s] you should set an input cluod!", getClassName().c_str());
+        if (!cloud_) {
+            pcl::console::print_error(
+                "[Error in %s] you should set an input cluod!",
+                getClassName().c_str());
             return -1;
         }
 
-        if (!cloud_->hasField(distace_field_) | !cloud_->hasField(intensity_field_))
-        {
-            pcl::console::print_error("[Error in %s] Cannot find the distance and/or the distance fields you requested!", getClassName().c_str());
+        if (!cloud_->hasField(distace_field_)
+            | !cloud_->hasField(intensity_field_)) {
+            pcl::console::print_error("[Error in %s] Cannot find the distance "
+                                      "and/or the distance fields you "
+                                      "requested!",
+                                      getClassName().c_str());
             return -1;
         }
-
 
         std::vector<float> dist = cloud_->getField(distace_field_);
         std::vector<float> intens = cloud_->getField(intensity_field_);
 
-        SparseTimeSeries<float>::Ptr serie(new SparseTimeSeries<float>(dist, intens));
+        TimeSeriesSparse
+            <float>::Ptr serie(new TimeSeriesSparse<float>(dist, intens));
 
         KernelSmoothing2<float> ks;
 
@@ -69,37 +71,26 @@ public:
         ks.setInputSeries(serie);
         ks.compute();
 
-        EquallySpacedTimeSeries<float>::Ptr out = ks.getOutputSeries();
+        TimeSeriesEquallySpaced<float>::Ptr out = ks.getOutputSeries();
 
         model_->setDiscretePoints(out);
-
     }
 
-
-    DiscretePointsCalibrationModel::Ptr getModel() const
+    ModelDiscretePoints::Ptr getModel() const
     {
         return model_;
     }
 
-
 protected:
-    DiscretePointsCalibrationModel::Ptr model_;
-    spcGenericCloud::Ptr cloud_;
+    ModelDiscretePoints::Ptr model_;
+    PointCloudBase::Ptr cloud_;
 
     std::string distace_field_;
     std::string intensity_field_;
 
-
     float s_step_;
     float bandwidth_;
-
-
-
-
-
 };
 
-
-
-}//end nspace
+} // end nspace
 #endif // CALIBRATE_MODEL_H

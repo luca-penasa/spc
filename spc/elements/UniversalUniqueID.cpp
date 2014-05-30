@@ -8,27 +8,24 @@
 namespace spc
 {
 
-
 UniversalUniqueID::UniversalUniqueID() : has_valid_uuid_(false)
 
 {
-
 }
-
 
 std::string UniversalUniqueID::getUUIDAsString() const
 {
     return boost::lexical_cast<std::string>(uuid_);
 }
 
-UniversalUniqueID::IDType UniversalUniqueID::operator ()() const
+UniversalUniqueID::IDType UniversalUniqueID::operator()() const
 {
     return uuid_;
 }
 
-bool UniversalUniqueID::operator ==(const UniversalUniqueID &other)
+bool UniversalUniqueID::operator==(const UniversalUniqueID &other)
 {
-    if (hasValidUUID() ==  false)
+    if (hasValidUUID() == false)
         return false;
     else
         return other.uuid_ == uuid_;
@@ -40,8 +37,4 @@ void UniversalUniqueID::renewUUID()
     has_valid_uuid_ = true;
 }
 
-
-
-}//end nsapce
-
-
+} // end nsapce

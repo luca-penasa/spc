@@ -11,25 +11,25 @@
 
 #include <spc/elements/macros.h>
 
-
-//namespace cereal
+// namespace cereal
 //{
-//template <class Archive> inline
-//void
-//save (Archive & ar, const Eigen::Vector3f &v)
+// template <class Archive> inline
+// void
+// save (Archive & ar, const Eigen::Vector3f &v)
 //{
 
 //    float x,y,z;
 //    x = v(0);
 //    y = v(1);
 //    z = v(2);
-//    ar( cereal::make_nvp("x",x ),cereal::make_nvp("y",y  ), cereal::make_nvp("z",z  ));
+//    ar( cereal::make_nvp("x",x ),cereal::make_nvp("y",y  ),
+// cereal::make_nvp("z",z  ));
 
 //}
 
-//template <class Archive> inline
-//void
-//load (Archive & ar, Eigen::Vector3f &v)
+// template <class Archive> inline
+// void
+// load (Archive & ar, Eigen::Vector3f &v)
 //{
 //    ar( cereal::make_nvp("x",v(0)) );
 //    ar( cereal::make_nvp("y",v(1))  );
@@ -45,10 +45,9 @@ public:
     typedef spcSharedPtrMacro<ClassBase> Ptr;
 
     virtual void printSomething() = 0;
-
 };
 
-class ClassA: public ClassBase
+class ClassA : public ClassBase
 {
 public:
     typedef spcSharedPtrMacro<ClassA> Ptr;
@@ -59,14 +58,11 @@ public:
         v = Eigen::Vector3f::Random();
     }
 
-
-    template <class Archive>
-    void serialize(Archive & ar)
+    template <class Archive> void serialize(Archive &ar)
     {
-        ar(cereal::make_nvp("x",x));
+        ar(cereal::make_nvp("x", x));
         ar(v);
     }
-
 
     float x;
     Eigen::Vector3f v;
@@ -79,72 +75,61 @@ public:
     }
 };
 
-class ClassB: public ClassA
+class ClassB : public ClassA
 {
 public:
-
     typedef spcSharedPtrMacro<ClassB> Ptr;
 
-    ClassB() { v2 = Eigen::Vector3f::Random();}
+    ClassB()
+    {
+        v2 = Eigen::Vector3f::Random();
+    }
 
     Eigen::Vector3f v2;
 
-    template <class Archive>
-    void serialize(Archive & ar)
+    template <class Archive> void serialize(Archive &ar)
     {
-        ar( cereal::base_class<ClassA>( this ), v2 );
+        ar(cereal::base_class<ClassA>(this), v2);
     }
-
 
     // ClassBase interface
 public:
     virtual void printSomething()
     {
-        std::cout << "I am class B, derived from class A, derived from Base" << std::endl;
+        std::cout << "I am class B, derived from class A, derived from Base"
+                  << std::endl;
     }
 };
-
 
 CEREAL_REGISTER_TYPE(ClassA)
 CEREAL_REGISTER_TYPE(ClassB)
 
-
-int main() {
-
-
+int main()
+{
 
     {
 
-        ClassBase::Ptr  a (new ClassA);
+        ClassBase::Ptr a(new ClassA);
 
-
-        std::ofstream out ("test.json");
+        std::ofstream out("test.json");
         cereal::JSONOutputArchive archive_o(out);
         archive_o(a);
-
-
     }
 
+    //    std::ifstream in ("test.json");
 
+    //    cereal::JSONInputArchive archive_i(in);
 
-//    std::ifstream in ("test.json");
+    //    ClassB b;
+    //    archive_i( b);
 
-//    cereal::JSONInputArchive archive_i(in);
-
-//    ClassB b;
-//    archive_i( b);
-
-//    //    std::cout << b.x << "\n" << b.v << std::endl;
-//    std::cout << b.x << "\n" << b.v << " v2\n" <<b.v2 << std::endl;
-
-
-
+    //    //    std::cout << b.x << "\n" << b.v << std::endl;
+    //    std::cout << b.x << "\n" << b.v << " v2\n" <<b.v2 << std::endl;
 }
 
-//int main()
+// int main()
 //{
 ////    std::stringstream ss; // any stream can be used
-
 
 //    {
 
@@ -156,7 +141,6 @@ int main() {
 //        oarchive(m1, m2, m3); // Write the data to the archive
 
 ////        out.close();
-
 
 //    }
 
@@ -171,4 +155,3 @@ int main() {
 //        iarchive(c); // Read the data from the archive
 //    }
 //}
-

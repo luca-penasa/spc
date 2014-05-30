@@ -2,12 +2,8 @@
 namespace spc
 {
 
-
-spcPlanarSelection::spcPlanarSelection(): max_distance_ (1.0)
+SelectionRubberband::SelectionRubberband() : max_distance_(1.0)
 {
-
 }
 
-
-
-}//end nspace
+} // end nspace

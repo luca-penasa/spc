@@ -7,46 +7,42 @@
 namespace spc
 {
 
-
 ///
-/// \brief The SingleAttitudeModel class represent a stratigraphic "meter" or model.
+/// \brief The SingleAttitudeModel class represent a stratigraphic "meter" or
+/// model.
 ///
 ///
-class SingleAttitudeModel: public StratigraphicModelBase, public spcObject
+class StratigraphicModelSingleAttitude : public StratigraphicModelBase, public ElementBase
 {
 public:
-    SPC_OBJECT(SingleAttitudeModel)
+    SPC_OBJECT(StratigraphicModelSingleAttitude)
 
     /// def const
-    SingleAttitudeModel() : additional_shift_(0.0)
+    StratigraphicModelSingleAttitude() : additional_shift_(0.0)
     {
-
     }
 
     /// copy const
-    SingleAttitudeModel(const SingleAttitudeModel & model)
+    StratigraphicModelSingleAttitude(const StratigraphicModelSingleAttitude &model)
     {
-        additional_shift_ =  model.getAdditionalShift();
+        additional_shift_ = model.getAdditionalShift();
         attitude_ = model.attitude_;
     }
 
     /// copy from an attitude
-    SingleAttitudeModel(const Attitude & attitude)
+    StratigraphicModelSingleAttitude(const Attitude &attitude)
     {
         additional_shift_ = 0.0;
 
         attitude_ = attitude;
     }
 
-    SingleAttitudeModel(const Attitude::Ptr attitude)
+    StratigraphicModelSingleAttitude(const Attitude::Ptr attitude)
     {
         additional_shift_ = 0.0;
 
         attitude_ = *attitude;
     }
-
-
-
 
     /// inherited from StratigraphicModelBase
     virtual float getScalarFieldValue(const Vector3f &point) const;
@@ -55,9 +51,9 @@ public:
 
     Vector3f getPointAtStratigraphicPosition(float sp) const
     {
-        return attitude_.getPosition() + attitude_.getUnitNormal() * (sp - additional_shift_ );
+        return attitude_.getPosition() + attitude_.getUnitNormal()
+                                         * (sp - additional_shift_);
     }
-
 
     float getAdditionalShift() const
     {
@@ -69,19 +65,17 @@ public:
         additional_shift_ = additional_shift;
     }
 
-
     void setAttitude(const Attitude &attitude)
     {
         attitude_ = attitude;
     }
-
 
     Attitude getAttitude() const
     {
         return attitude_;
     }
 
-    void setNormal (Vector3f n)
+    void setNormal(Vector3f n)
     {
         attitude_.setNormal(n);
     }
@@ -89,23 +83,19 @@ public:
 private:
     friend class cereal::access;
 
-    template <class Archive>
-    void serialize( Archive & ar )
+    template <class Archive> void serialize(Archive &ar)
     {
-        ar( cereal::base_class<spc::StratigraphicModelBase>( this ),
-            cereal::base_class<spc::spcObject>( this ),
-            additional_shift_,
-            attitude_);
+        ar(cereal::base_class<spc::StratigraphicModelBase>(this),
+           cereal::base_class<spc::ElementBase>(this), additional_shift_,
+           attitude_);
     }
-
 
 protected:
     float additional_shift_;
 
     Attitude attitude_;
-
 };
 
-}//end nspace
+} // end nspace
 
 #endif // SINGLE_PLANE_NORMAL_MODEL_H

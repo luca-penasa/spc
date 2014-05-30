@@ -14,50 +14,44 @@
 
 #include <pcl/io/pcd_io.h>
 
-
 #include <spc/elements/macros.h>
 
 void dotest();
 
 #ifdef PCL_VER_LESS_1_7
-	#include <sensor_msgs/PointCloud2.h>
+#include <sensor_msgs/PointCloud2.h>
 
-	namespace pcl
-	{	
-		typedef sensor_msgs::PointCloud2 PCLPointCloud2;
-		typedef sensor_msgs::PointField PCLPointField;
-		typedef std_msgs::Header PCLHeader;
+namespace pcl
+{
+typedef sensor_msgs::PointCloud2 PCLPointCloud2;
+typedef sensor_msgs::PointField PCLPointField;
+typedef std_msgs::Header PCLHeader;
 
-
-		#define fromPCLPointCloud2 fromROSMsg
-		#define toPCLPointCloud2 toROSMsg
-	}
+#define fromPCLPointCloud2 fromROSMsg
+#define toPCLPointCloud2 toROSMsg
+}
 
 #else
-	#include <pcl/PCLPointCloud2.h>
+#include <pcl/PCLPointCloud2.h>
 #endif
 
-
 #if defined(_WIN32)
- 
+
 #include <stdint.h>
- 
+
 typedef uint8_t u_int8_t;
 typedef uint16_t u_int16_t;
 typedef uint32_t u_int32_t;
 
-
- 
 #endif
-
 
 //#ifdef PCL_VER_1_6_OR_OLDER
 //
 //#include <pcl/ros/conversions.h>
 //#include <sensor_msgs/PointCloud2.h>
-//#include <sensor_msgs/PointField.h	
-//typedef sensor_msgs::PointCloud2 PCLCloud;
-//typedef sensor_msgs::PointField PCLScalarField;
+//#include <sensor_msgs/PointField.h
+// typedef sensor_msgs::PointCloud2 PCLCloud;
+// typedef sensor_msgs::PointField PCLScalarField;
 //#define FROM_PCL_CLOUD pcl::fromROSMsg
 //#define TO_PCL_CLOUD pcl::toROSMsg
 //
@@ -65,24 +59,17 @@ typedef uint32_t u_int32_t;
 //
 //#include <pcl/PCLPointCloud2.h>
 //#include <pcl/PCLPointField.h>
-//typedef pcl::PCLPointCloud2 PCLCloud;
-//typedef pcl::PCLPointField PCLScalarField;
+// typedef pcl::PCLPointCloud2 PCLCloud;
+// typedef pcl::PCLPointField PCLScalarField;
 //#define FROM_PCL_CLOUD pcl::fromPCLPointCloud2
 //#define TO_PCL_CLOUD pcl::toPCLPointCloud2
 //
 //#endif
 
-
-
-
-
-
-
 namespace spc
 {
 
-template<typename Stype>
-std::string asString(const Stype & number)
+template <typename Stype> std::string asString(const Stype &number)
 {
     return boost::lexical_cast<std::string>(number);
 }
@@ -125,22 +112,22 @@ void fill_nan_rbf(std::vector<nType> &x, std::vector<nType> &y)
     // get nans ids
     std::vector<int> nans_id = get_nans_id(y);
 
-     std::vector<nType> x_stripped;
-         std::vector<nType> y_stripped;
+    std::vector<nType> x_stripped;
+    std::vector<nType> y_stripped;
 
     for (auto &elem : nans_id) {
-    // remove this ids from the original dataset
-   x_stripped = erease_ids(x, nans_id);
-    y_stripped = erease_ids(y, nans_id);
+        // remove this ids from the original dataset
+        x_stripped = erease_ids(x, nans_id);
+        y_stripped = erease_ids(y, nans_id);
     }
     // now create a rbf interpolator
-    spc::RBFInterpolator<nType> rbf;
+    spc::InterpolatorRBF<nType> rbf;
     rbf.setInputPoints(x_stripped);
     rbf.setInputValues(y_stripped);
     rbf.updateAll();
 
     for (auto &elem : nans_id) {
-      int this_id = elem;
+        int this_id = elem;
         nType this_x_position = x[this_id];
         Eigen::Matrix<nType, Eigen::Dynamic, 1> x_point;
         x_point.resize(1);

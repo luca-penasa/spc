@@ -30,12 +30,13 @@ void AttitudeEstimator::initializeModel()
 
     std::vector<Vector3f> normals;
 
-    spcForEachMacro (auto &elem, clouds_) {
-      CloudPtrT cloud = elem;
+    spcForEachMacro(auto & elem, clouds_)
+    {
+        CloudPtrT cloud = elem;
         if (cloud->size() < 3)
             continue;
         else {
-            spcNormal3D n;
+            Normal3D n;
             n.normalFromBestFit(*cloud);
             normals.push_back(n.getUnitNormal());
         }

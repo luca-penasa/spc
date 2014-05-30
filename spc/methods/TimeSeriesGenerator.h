@@ -15,32 +15,33 @@ namespace spc
 {
 
 ///
-/// \brief The TimeSeriesGenerator class estimates time series starting from two fields of a cloud
-/// the results is always a TimeSeries equally spaced. If you want to evaluate non-equally spaced time series
+/// \brief The TimeSeriesGenerator class estimates time series starting from two
+/// fields of a cloud
+/// the results is always a TimeSeries equally spaced. If you want to evaluate
+/// non-equally spaced time series
 /// have a look directly to the KernelSmoothing method that permits to do that.
 ///
-/// You can also chose to set as input a stratigraphic model + a cloud as a generic cloud
+/// You can also chose to set as input a stratigraphic model + a cloud as a
+/// generic cloud
 ///
 class TimeSeriesGenerator
 {
 public:
-
     typedef float ScalarT;
-    typedef spc::EquallySpacedTimeSeries<ScalarT> OutSeriesT;
+    typedef spc::TimeSeriesEquallySpaced<ScalarT> OutSeriesT;
     typedef spcSharedPtrMacro<OutSeriesT> OutSeriesPtrT;
-
 
     ///
     /// \brief TimeSeriesGenerator def constructor
     ///
-    TimeSeriesGenerator(): min_x_(0.0), max_x_ (0.0)
+    TimeSeriesGenerator() : min_x_(0.0), max_x_(0.0)
     {
-
     }
 
     ///! set the stratigraphic model to use for interpretation
-    /// you can set a field with setXFieldName if if the stratigraphic positions were pre-computed
-    void setStratigraphicModel(DynamicScalarFieldGenerator::Ptr model)
+    /// you can set a field with setXFieldName if if the stratigraphic positions
+    /// were pre-computed
+    void setStratigraphicModel(VariableScalarFieldBase::Ptr model)
     {
         model_ = model;
     }
@@ -49,24 +50,29 @@ public:
     /// \brief setInputCloud the input cloud
     /// \param cloud
     ///
-    void setInputCloud( const spcGenericCloud::Ptr cloud)
+    void setInputCloud(const PointCloudBase::Ptr cloud)
     {
         in_cloud_ = cloud;
     }
-
-
 
     ///
     /// \brief setBandwidth
     /// \param bandwidth is the bandwidth used in the KernelSmoothing method
     ///
-    void setBandwidth(ScalarT bandwidth) {bandwidth_ = bandwidth;}
+    void setBandwidth(ScalarT bandwidth)
+    {
+        bandwidth_ = bandwidth;
+    }
 
     ///
     /// \brief setSamplingStep
-    /// \param sampling_step is the step distance at which evaluate the time series values
+    /// \param sampling_step is the step distance at which evaluate the time
+    /// series values
     ///
-    void setSamplingStep(ScalarT sampling_step) {sampling_step_ = sampling_step;}
+    void setSamplingStep(ScalarT sampling_step)
+    {
+        sampling_step_ = sampling_step;
+    }
 
     ///
     /// \brief setXFieldName
@@ -74,8 +80,10 @@ public:
     /// if you prefer you can use a model and estimate the X field on the fly
     /// notice that if a model is set it is always used
     ///
-    void setXFieldName(std::string field_name) {x_field_name_ = field_name;}
-
+    void setXFieldName(std::string field_name)
+    {
+        x_field_name_ = field_name;
+    }
 
     void setMinMaxLog(float min, float max)
     {
@@ -88,24 +96,30 @@ public:
     /// \param field_name the name of the field to be logged
     /// \note this var is mandatory
     ///
-    void setYFieldName(std::string field_name) {y_field_name_ = field_name;}
+    void setYFieldName(std::string field_name)
+    {
+        y_field_name_ = field_name;
+    }
 
     ///
     /// \brief setIndices use only these points for estimatig the time series!
     /// if not given all the points will be used!
     /// \param indices
     ///
-    void setIndices(std::vector<int> indices) {indices_ = indices;}
+    void setIndices(std::vector<int> indices)
+    {
+        indices_ = indices;
+    }
 
     ///
     /// \brief getOutputSeries
     /// \return the resulting series
     ///
-    inline
-    OutSeriesPtrT getOutputSeries()
+    inline OutSeriesPtrT getOutputSeries()
     {
         if (!out_series_)
-            pcl::console::print_error("out series is void. Null pointer returned!");
+            pcl::console::print_error(
+                "out series is void. Null pointer returned!");
 
         return out_series_;
     }
@@ -117,17 +131,18 @@ public:
     int compute();
 
     ///
-    /// \brief setFixedMinMax permits to create a bunch of ts all with the same extension - where nothing can be said you'll find nans
+    /// \brief setFixedMinMax permits to create a bunch of ts all with the same
+    /// extension - where nothing can be said you'll find nans
     /// \param min minx value of the time series
     /// \param max maxx value of the time series
     ///
-    void setFixedMinMax(ScalarT min, ScalarT max) {min_x_ = min; max_x_=max;}
-
-
-
+    void setFixedMinMax(ScalarT min, ScalarT max)
+    {
+        min_x_ = min;
+        max_x_ = max;
+    }
 
 protected:
-
     void fillIndicesIfNeeded();
 
     void doExtractFields()
@@ -140,19 +155,17 @@ protected:
             x_d = in_cloud_->getField(x_field_name_, indices_);
 
         else // we should have a stratigrahic model
-            x_d= model_->getScalarFieldValues(in_cloud_, indices_);
+            x_d = model_->getScalarFieldValues(in_cloud_, indices_);
 
         std::vector<float> y_d = in_cloud_->getField(y_field_name_, indices_);
 
-
         x_field_ = x_d;
         y_field_ = y_d;
-
     }
 
-    DynamicScalarFieldGenerator::Ptr model_;
+    VariableScalarFieldBase::Ptr model_;
 
-    spcGenericCloud::Ptr in_cloud_;
+    PointCloudBase::Ptr in_cloud_;
 
     ScalarT sampling_step_;
 
@@ -186,6 +199,6 @@ private:
     KernelSmoothing2<ScalarT> ks_;
 };
 
-}//end nspace
+} // end nspace
 
 #endif // TIME_SERIES_GENERATOR_H

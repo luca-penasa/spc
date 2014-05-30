@@ -6,13 +6,15 @@
 namespace spc
 {
 
-class StratigraphicModelBase: public DynamicScalarFieldGenerator
+class StratigraphicModelBase : public VariableScalarFieldBase
 {
 public:
     SPC_OBJECT(StratigraphicModelBase)
 
-    StratigraphicModelBase() {}
+    StratigraphicModelBase()
+    {
+    }
 };
 
-} //end nspace
+} // end nspace
 #endif // STRATIGRAPHICMODELBASE_H

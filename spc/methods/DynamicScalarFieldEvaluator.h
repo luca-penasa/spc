@@ -6,21 +6,26 @@
 namespace spc
 {
 
-
 class DynamicScalarFieldEvaluator
 {
 public:
     DynamicScalarFieldEvaluator();
 
-    void setGenerator(DynamicScalarFieldGenerator::ConstPtr model)
+    void setGenerator(VariableScalarFieldBase::ConstPtr model)
     {
-        //ensure also the indices vector is clear
+        // ensure also the indices vector is clear
         model_ = model;
     }
 
-    void setInputCloud( spc::spcGenericCloud::ConstPtr in_cloud) {in_cloud_ = in_cloud;}
+    void setInputCloud(spc::PointCloudBase::ConstPtr in_cloud)
+    {
+        in_cloud_ = in_cloud;
+    }
 
-    void setIndices(const std::vector<int> indices) {indices_ = indices;}
+    void setIndices(const std::vector<int> indices)
+    {
+        indices_ = indices;
+    }
 
     int compute();
 
@@ -31,27 +36,24 @@ public:
 
 private:
     ///
-    /// \brief model_ is a pointer to a stratigraphic model that implements the virtual methods of
+    /// \brief model_ is a pointer to a stratigraphic model that implements the
+    /// virtual methods of
     /// a StratigraphicModelBase
     ///
-    DynamicScalarFieldGenerator::ConstPtr  model_;
+    VariableScalarFieldBase::ConstPtr model_;
 
+    //! \brief in_cloud_ is the input cluod on which to compute stratigraphic
+    //positions
+    spc::PointCloudBase::ConstPtr in_cloud_;
 
-    //! \brief in_cloud_ is the input cluod on which to compute stratigraphic positions
-    spc::spcGenericCloud::ConstPtr in_cloud_;
-
-
-    //! \brief indices_ the set of int indices for which to compute the strat position
+    //! \brief indices_ the set of int indices for which to compute the strat
+    //position
     std::vector<int> indices_;
-
 
     //! \brief output_ it the results of all computations
     std::vector<float> output_;
-
-
 };
 
-} //end nspace
+} // end nspace
 
 #endif // guard
-

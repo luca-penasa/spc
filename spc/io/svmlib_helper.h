@@ -17,7 +17,7 @@ namespace spc
 /// \param filename
 ///
 void writeToSVMlibFile(const std::vector
-                       <std::vector<std::vector<float> > > &fields,
+                       <std::vector<std::vector<float>>> &fields,
                        const std::string filename);
 
 } // end nspace

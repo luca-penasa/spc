@@ -17,15 +17,17 @@ public:
 
     SPC_OBJECT(InterpolatorSimpleSpline)
 
-    virtual float getInterpolatedValue(const float x_val) override {
+    virtual float getInterpolatedValue(const float x_val) override
+    {
         return spline_(x_val);
     }
 
-    virtual int updateInternals() override {
+    virtual int updateInternals() override
+    {
         // clear current
         spline_ = magnet::math::Spline();
 
-        for (int i = 0; i < input_->getX().size(); ++i )
+        for (int i = 0; i < input_->getX().size(); ++i)
             spline_.addPoint(input_->getX().at(i), input_->getY().at(i));
 
         return 1;
@@ -35,7 +37,5 @@ protected:
     magnet::math::Spline spline_;
 };
 
-
-
-}//end nspace
+} // end nspace
 #endif // INTERPOLATOR_SIMPLE_LINEAR_H

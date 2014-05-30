@@ -3,25 +3,26 @@
 namespace spc
 {
 
-
-DynamicScalarFieldGenerator::DynamicScalarFieldGenerator()
+VariableScalarFieldBase::VariableScalarFieldBase()
 {
 }
 
-std::vector<float> DynamicScalarFieldGenerator::getScalarFieldValues(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, const std::vector<int> &indices) const
+std::vector<float> VariableScalarFieldBase::getScalarFieldValues(
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
+    const std::vector<int> &indices) const
 {
     std::vector<float> out;
-    spcForEachMacro (int id , indices)
+    spcForEachMacro(int id, indices)
     {
         pcl::PointXYZ p = cloud->at(id);
         out.push_back(this->getScalarFieldValue(Vector3f(p.x, p.y, p.z)));
     }
 
     return out;
-
 }
 
-std::vector<float> DynamicScalarFieldGenerator::getScalarFieldValues(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud) const
+std::vector<float> VariableScalarFieldBase::getScalarFieldValues(
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud) const
 {
     std::vector<float> out;
     spcForEachMacro(pcl::PointXYZ p, *cloud)
@@ -31,10 +32,11 @@ std::vector<float> DynamicScalarFieldGenerator::getScalarFieldValues(pcl::PointC
     }
 
     return out;
-
 }
 
-std::vector<float> DynamicScalarFieldGenerator::getScalarFieldValues(spc::spcGenericCloud *cloud) const
+std::vector<float>
+VariableScalarFieldBase::getScalarFieldValues(spc::PointCloudBase
+                                                  *cloud) const
 {
     std::vector<float> out;
     int n = cloud->size();
@@ -42,65 +44,62 @@ std::vector<float> DynamicScalarFieldGenerator::getScalarFieldValues(spc::spcGen
     out.resize(n);
 
     float x, y, z;
-    for (int i = 0 ; i < n; i++)
-    {
+    for (int i = 0; i < n; i++) {
         cloud->getPoint(i, x, y, z);
-        out.at(i) = this->getScalarFieldValue(Vector3f(x,y,z));
+        out.at(i) = this->getScalarFieldValue(Vector3f(x, y, z));
     }
 
     return out;
 }
 
-
-std::vector<float> DynamicScalarFieldGenerator::getScalarFieldValues(spcGenericCloud *cloud, const std::vector<int> &indices) const
+std::vector<float> VariableScalarFieldBase::getScalarFieldValues(
+    PointCloudBase *cloud, const std::vector<int> &indices) const
 {
     std::vector<float> out;
     out.resize(indices.size());
 
     float x, y, z;
-    int counter  =0;
-    spcForEachMacro (int i, indices)
+    int counter = 0;
+    spcForEachMacro(int i, indices)
     {
         cloud->getPoint(i, x, y, z);
-        out.at(counter++) = this->getScalarFieldValue(Vector3f(x,y,z));
+        out.at(counter++) = this->getScalarFieldValue(Vector3f(x, y, z));
     }
 
     return out;
 }
 
-std::vector<float> DynamicScalarFieldGenerator::getScalarFieldValues(spcGenericCloud::Ptr cloud, const std::vector<int> &indices) const
+std::vector<float> VariableScalarFieldBase::getScalarFieldValues(
+    PointCloudBase::Ptr cloud, const std::vector<int> &indices) const
 {
     std::vector<float> out;
     out.resize(indices.size());
 
     float x, y, z;
-    int counter  =0;
-    spcForEachMacro (int i, indices)
+    int counter = 0;
+    spcForEachMacro(int i, indices)
     {
         cloud->getPoint(i, x, y, z);
-        out.at(counter++) = this->getScalarFieldValue(Vector3f(x,y,z));
+        out.at(counter++) = this->getScalarFieldValue(Vector3f(x, y, z));
     }
 
     return out;
 }
 
-std::vector<float> DynamicScalarFieldGenerator::getScalarFieldValues(spcGenericCloud::Ptr cloud) const
+std::vector<float> VariableScalarFieldBase::getScalarFieldValues(
+    PointCloudBase::Ptr cloud) const
 {
     std::vector<float> out;
     out.resize(cloud->size());
 
     float x, y, z;
 
-    for (int i = 0; i < cloud->size(); ++i)
-    {
+    for (int i = 0; i < cloud->size(); ++i) {
         cloud->getPoint(i, x, y, z);
-        out.at(i) = this->getScalarFieldValue(Vector3f(x,y,z));
+        out.at(i) = this->getScalarFieldValue(Vector3f(x, y, z));
     }
 
     return out;
 }
 
-
-
-
-} //end nspace
+} // end nspace

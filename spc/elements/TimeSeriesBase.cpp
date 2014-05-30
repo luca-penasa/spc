@@ -1,10 +1,10 @@
 #include <spc/elements/TimeSeriesBase.h>
 
-namespace spc {
+namespace spc
+{
 
-
-//template<typename ScalarT>
-//void GenericTimeSeries<ScalarT>::fillRandomY(ScalarT min, ScalarT max)
+// template<typename ScalarT>
+// void GenericTimeSeries<ScalarT>::fillRandomY(ScalarT min, ScalarT max)
 //{
 
 //    boost::random::random_device rng;
@@ -16,15 +16,7 @@ namespace spc {
 //    }
 //}
 
-///INSTANTIATIONS
-template class GenericTimeSeries<float>;
-template class GenericTimeSeries<double>;
-
-
-
-
-
-
-
+/// INSTANTIATIONS
+template class TimeSeriesBase<float>;
+template class TimeSeriesBase<double>;
 }
-

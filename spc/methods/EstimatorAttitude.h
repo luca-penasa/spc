@@ -54,8 +54,8 @@ public:
     typedef pcl::PointCloud<PointT> CloudT;
     typedef CloudT::Ptr CloudPtrT;
 
-    typedef  spcSharedPtrMacro<AttitudeEstimator> Ptr;
-    typedef  spcSharedPtrMacro<const AttitudeEstimator> ConstPtr;
+    typedef spcSharedPtrMacro<AttitudeEstimator> Ptr;
+    typedef spcSharedPtrMacro<const AttitudeEstimator> ConstPtr;
 
     /// def const
     AttitudeEstimator();
@@ -84,7 +84,7 @@ public:
     /// \brief getEstimatedSingleAttitudeModel
     /// \return the model correspondent to the estimated attitude/s
     ///
-    SingleAttitudeModel getEstimatedSingleAttitudeModel()
+    StratigraphicModelSingleAttitude getEstimatedSingleAttitudeModel()
     {
         return model_;
     }
@@ -166,7 +166,7 @@ private:
     std::vector<CloudPtrT> clouds_;
 
     /// the current model
-    SingleAttitudeModel model_;
+    StratigraphicModelSingleAttitude model_;
 
     /// stratigraphic position for each point into the clouds
     std::vector<std::vector<float>> s_positions_;

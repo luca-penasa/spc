@@ -2,14 +2,7 @@
 namespace spc
 {
 
-
-
-
-
 ///// INSTANTIATIONS //////////
-template class SparseTimeSeries<float>;
-template class SparseTimeSeries<double>;
-
-
-
+template class TimeSeriesSparse<float>;
+template class TimeSeriesSparse<double>;
 }

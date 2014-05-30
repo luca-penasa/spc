@@ -4,6 +4,10 @@ project(spc)
 set(SPC_DEFINITIONS "") #my definitions
 
 
+# all libraries into a single dir for the build tree
+SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
+
+
 option(BUILD_WITH_CLANG "Build spc library using clang isntead of gcc." OFF)
 if(BUILD_WITH_CLANG)
     message("Using Clang as compiler! This may not work properly")
@@ -77,6 +81,23 @@ set(INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries")
 set(INSTALL_BIN_DIR bin CACHE PATH "Installation directory for executables")
 set(INSTALL_INCLUDE_DIR include CACHE PATH "Installation directory for header files")
 
+if(WIN32 AND NOT CYGWIN)
+  set(DEF_INSTALL_CMAKE_DIR CMake)
+else()
+  set(DEF_INSTALL_CMAKE_DIR lib/CMake/SPC)
+endif()
+set(INSTALL_CMAKE_DIR ${DEF_INSTALL_CMAKE_DIR} CACHE PATH
+  "Installation directory for CMake files")
+
+# Make relative paths absolute (needed later on)
+foreach(p LIB BIN INCLUDE CMAKE)
+  set(var INSTALL_${p}_DIR)
+  if(NOT IS_ABSOLUTE "${${var}}")
+    set(${var} "${CMAKE_INSTALL_PREFIX}/${${var}}")
+  endif()
+endforeach()
+
+message("${INSTALL_LIB_DIR}")
 
 if(WIN32 AND NOT CYGWIN)
   set(DEF_INSTALL_CMAKE_DIR CMake)
@@ -84,7 +105,6 @@ else()
   set(DEF_INSTALL_CMAKE_DIR lib/CMake/spc)
 endif()
 
-set(INSTALL_CMAKE_DIR ${DEF_INSTALL_CMAKE_DIR} CACHE PATH  "Installation directory for CMake files")
 
 if (BUILD_STD_SHARED_PTR)
     add_definitions(-DUSE_STD_SHARED_PTR)
@@ -168,6 +188,7 @@ endif()
 message("${PCL_DEFINITIONS}")
 message("${PCL_LIBRARIES}")
 
+
 # The interesting stuff goes here
 # ===============================
 
@@ -178,23 +199,32 @@ export(TARGETS ${SPC_LIBRARIES} FILE "${PROJECT_BINARY_DIR}/SPCTargets.cmake")
 # (this registers the build-tree with a global CMake-registry)
 export(PACKAGE SPC)
 
-#file(RELATIVE_PATH REL_INCLUDE_DIR "${INSTALL_CMAKE_DIR}" "${INSTALL_INCLUDE_DIR}")
-
+#### BUILD TREE
 ## ... for the build tree - to be done!
-#set(CONF_INCLUDE_DIRS "${PROJECT_SOURCE_DIR}" "${PROJECT_BINARY_DIR}")
-#configure_file(SPCConfig.cmake.in "${PROJECT_BINARY_DIR}/SPCConfig.cmake" @ONLY)
+set (CONF_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}")
+set (CONF_CEREAL_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/submodules/cereal/include")
+set (CONF_LIBRARY_DIRS "${LIBRARY_OUTPUT_PATH}")
 
-## ... for the install tree
-#set(CONF_INCLUDE_DIRS "\${SPC_CMAKE_DIR}/${REL_INCLUDE_DIR}")
-configure_file(SPCConfig.cmake.in "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/SPCConfig.cmake" @ONLY)
-# ... for both
+configure_file(SPCConfig.cmake.in "${PROJECT_BINARY_DIR}/SPCConfig.cmake" @ONLY)
+
+## the ConfigVersion.cmake
 configure_file(SPCConfigVersion.cmake.in "${PROJECT_BINARY_DIR}/SPCConfigVersion.cmake" @ONLY)
 
-# Install the FooBarConfig.cmake and FooBarConfigVersion.cmake
+#### INSTALL TREE
+## reset conf_include_dirs for the install tree
+set (CONF_INCLUDE_DIRS "${INSTALL_INCLUDE_DIR}")
+set (CONF_CEREAL_INCLUDE_DIRS "${INSTALL_INCLUDE_DIR}/spc/3rdParty")
+set (CONF_LIBRARY_DIRS "${INSTALL_LIB_DIR}")
+
+## reconfigure the SPCConfig.cmake putting it in a subdirectory of the build tree
+configure_file(SPCConfig.cmake.in "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/SPCConfig.cmake" @ONLY)
+
+
+# Install the FooBarConfig.cmake and FooBarConfigVersion.cmake in the install tree
 install(FILES "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/SPCConfig.cmake"
               "${PROJECT_BINARY_DIR}/SPCConfigVersion.cmake"
   DESTINATION "${INSTALL_CMAKE_DIR}" COMPONENT dev)
 
 ## Install the export set for use with the install-tree
-#install(EXPORT SpcTargets DESTINATION
-#               "${INSTALL_CMAKE_DIR}" COMPONENT dev)
+install(EXPORT SPCTargets DESTINATION
+               "${INSTALL_CMAKE_DIR}" COMPONENT dev)

@@ -8,7 +8,7 @@ macro(spc_compile_and_link name files libs)
 
     target_link_libraries(${name} ${libs})
 
-    spc_install_target_library_libs(${name})
+#    spc_install_target_library_libs(${name})
 
     #update the variable keeping the libarires
     set(SPC_LIBRARIES ${SPC_LIBRARIES} ${name} CACHE INTERNAL "SPC libs")
@@ -17,9 +17,9 @@ macro(spc_compile_and_link name files libs)
 endmacro()
 
 
-macro(spc_set_properties_public_header headers)
-    set_target_properties(${name} PROPERTIES PUBLIC_HEADER "${headers}")
-endmacro()
+#macro(spc_set_properties_public_header headers)
+#    set_target_properties(${name} PROPERTIES PUBLIC_HEADER "${headers}")
+#endmacro()
 
 # this macro add a library to SPC
 macro(spc_add_library)
@@ -28,34 +28,44 @@ macro(spc_add_library)
     file(GLOB_RECURSE SOURCES *.cpp)
     file(GLOB_RECURSE HEADERS *.h)
     file(GLOB_RECURSE IMPLS *.hpp)
-#    file(GLOB_RECURSE UIS *.ui) #this when compiling
-#    file(GLOB_RECURSE QRCS *.qrc) #qt resources ?
 
     set(sources ${SOURCES} ${HEADERS} ${IMPLS})
     set(libs ${SPC_LIBRARIES} ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES} ${PCL_FILTERS_LIBRARIES} ${PCL_FEATURES_LIBRARIES} ${additional_libs})
     spc_compile_and_link(spc_${libname} "${sources}" "${libs}")
-    spc_set_properties_public_header({${HEADERS}})
+    set_target_properties(spc_${libname} PROPERTIES PUBLIC_HEADER "${HEADERS};${IMPLS}")
 
-    set(all_heads ${HEADERS} ${IMPLS})
-    spc_install_target_library_headers(${libname} "${all_heads}")
+    spc_install_target_library_libs(${libname})
 endmacro()
+
+##http://stackoverflow.com/questions/7787823/cmake-how-to-get-the-name-of-all-subdirectories-of-a-directory
+#MACRO(SUBDIRLIST result curdir)
+#  FILE(GLOB children RELATIVE ${curdir} ${curdir}/*)
+#  SET(dirlist "")
+#  FOREACH(child ${children})
+#    IF(IS_DIRECTORY ${curdir}/${child})
+#        SET(dirlist ${dirlist} ${child})
+#    ENDIF()
+#  ENDFOREACH()
+#  SET(${result} ${dirlist})
+#ENDMACRO()
+
 
 #add an executable
 macro(spc_add_executable name codefiles)
     add_executable(${name} ${codefiles})
-    install(TARGETS ${name} DESTINATION bin)
+    install(TARGETS ${name} EXPORT ${name} RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT bin)
 endmacro()
 
-#install hedears
-macro(spc_install_target_library_headers libname headers)
-    install(FILES ${headers} DESTINATION include/spc/${libname})
-endmacro()
+##install hedears
+#macro(spc_install_target_library_headers libname headers)
+#    install(FILES ${headers} DESTINATION include/spc/${libname})
+#endmacro()
 
 #install a library
 macro(spc_install_target_library_libs libname)
-    install(TARGETS "${libname}"
-            EXPORT SpcTargets
-            ARCHIVE DESTINATION lib
+    install(TARGETS "spc_${libname}"
+            EXPORT SPCTargets
+            ARCHIVE DESTINATION "${INSTALL_LIB_DIR}" ## installing static lib in the same place.
             LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
             COMPONENT shlib
             PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/spc/${libname}")

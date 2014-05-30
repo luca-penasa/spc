@@ -6,17 +6,17 @@
 #include <spc/elements/macros.h>
 #include <cereal/cereal.hpp>
 
-namespace  spc {
+namespace spc
+{
 
 class UniversalUniqueID
 {
 public:
-
     spcTypedefSharedPtrs(UniversalUniqueID)
 
-    typedef typename  boost::uuids::uuid IDType;
+    typedef typename boost::uuids::uuid IDType;
 
-    UniversalUniqueID();    
+    UniversalUniqueID();
 
     bool hasValidUUID() const
     {
@@ -25,12 +25,12 @@ public:
 
     std::string getUUIDAsString() const;
 
-    IDType operator () () const;
+    IDType operator()() const;
 
-    bool operator == (const UniversalUniqueID &other);
+    bool operator==(const UniversalUniqueID &other);
 
 protected:
-    void renewUUID();    
+    void renewUUID();
 
     void setUUID(IDType uuid)
     {
@@ -45,15 +45,12 @@ protected:
 private:
     friend class cereal::access;
 
-    template <class Archive>
-    void serialize( Archive & ar )
+    template <class Archive> void serialize(Archive &ar)
     {
-        ar( CEREAL_NVP(uuid_),
-            CEREAL_NVP(has_valid_uuid_) );
+        ar(CEREAL_NVP(uuid_), CEREAL_NVP(has_valid_uuid_));
     }
-
 };
 
-}//end nspace
+} // end nspace
 
 #endif // UNIVERSALUNIQUEID_H

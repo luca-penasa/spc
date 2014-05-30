@@ -13,22 +13,24 @@
 namespace spc
 {
 
-class VariantDataRecord: public spcObject
+class VariantDataRecord : public ElementBase
 {
 public:
     SPC_OBJECT(VariantDataRecord)
 
-    typedef std::pair<std::string, spcVariant> pairT;
-    typedef std::unordered_map<std::string, spcVariant> mapT;
+    typedef std::pair<std::string, VariantDataContainer> pairT;
+    typedef std::unordered_map<std::string, VariantDataContainer> mapT;
 
-    VariantDataRecord() {}
+    VariantDataRecord()
+    {
+    }
 
-    bool operator ==  (const VariantDataRecord & other)
+    bool operator==(const VariantDataRecord &other)
     {
         return (properties_ == other.properties_);
     }
 
-    bool operator != (const VariantDataRecord &other)
+    bool operator!=(const VariantDataRecord &other)
     {
         return !(properties_ == other.properties_);
     }
@@ -42,34 +44,29 @@ public:
     bool hasPropertyWithName(const std::string &name) const;
 
     // this will create a new one if your prop does not exists
-    spcVariant & property(const std::string & name);
+    VariantDataContainer &property(const std::string &name);
 
     // a const one - YOU ARE RESPONSABLE FOR THE EXISTENCE OF SUCH A KEY
-    spcVariant property(const std::string & name) const;
+    VariantDataContainer property(const std::string &name) const;
 
     std::string toString() const;
 
-    friend std::ostream& operator<<(std::ostream& os, const VariantDataRecord& obj);
-
-
+    friend std::ostream &operator<<(std::ostream &os,
+                                    const VariantDataRecord &obj);
 
 private:
     friend class cereal::access;
 
-    template <class Archive>
-    void serialize( Archive & ar )
+    template <class Archive> void serialize(Archive &ar)
     {
-        ar(  make_nvp("spcObject", cereal::base_class<spc::spcObject>( this )),
-             CEREAL_NVP(properties_));
+        ar(make_nvp("spcObject", cereal::base_class<spc::ElementBase>(this)),
+           CEREAL_NVP(properties_));
     }
 
 protected:
-
     // this will grant me unique names
     mapT properties_;
 };
 
-
-
-}//end nspace
+} // end nspace
 #endif

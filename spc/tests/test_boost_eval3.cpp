@@ -20,15 +20,15 @@
 //#include <functional>
 //#include <string>
 
-//using namespace std;
-//using namespace boost::spirit;
+// using namespace std;
+// using namespace boost::spirit;
 
 /////////////////////////////////////////////////////////////////////////////////
 ////
 ////  Semantic actions
 ////
 /////////////////////////////////////////////////////////////////////////////////
-//struct push_num
+// struct push_num
 //{
 //    push_num(stack<double>& eval_)
 //    : eval(eval_) {}
@@ -42,8 +42,8 @@
 //    stack<double>& eval;
 //};
 
-//template <typename op>
-//struct do_op
+// template <typename op>
+// struct do_op
 //{
 //    do_op(op const& the_op, stack<double>& eval_)
 //    : m_op(the_op), eval(eval_) {}
@@ -64,14 +64,14 @@
 //    stack<double>& eval;
 //};
 
-//template <class op>
-//do_op<op>
-//make_op(op const& the_op, stack<double>& eval)
+// template <class op>
+// do_op<op>
+// make_op(op const& the_op, stack<double>& eval)
 //{
 //    return do_op<op>(the_op, eval);
 //}
 
-//struct do_negate
+// struct do_negate
 //{
 //    do_negate(stack<double>& eval_)
 //    : eval(eval_) {}
@@ -89,7 +89,7 @@
 //    stack<double>& eval;
 //};
 
-//struct get_var
+// struct get_var
 //{
 //    get_var(stack<double>& eval_)
 //    : eval(eval_) {}
@@ -103,7 +103,7 @@
 //    stack<double>& eval;
 //};
 
-//struct set_var
+// struct set_var
 //{
 //    set_var(double*& var_)
 //    : var(var_) {}
@@ -116,7 +116,7 @@
 //    double*& var;
 //};
 
-//struct redecl_var
+// struct redecl_var
 //{
 //    void operator()(double& /*n*/) const
 //    {
@@ -124,7 +124,7 @@
 //    }
 //};
 
-//struct do_assign
+// struct do_assign
 //{
 //    do_assign(double*& var_, stack<double>& eval_)
 //    : var(var_), eval(eval_) {}
@@ -147,7 +147,7 @@
 ////  Our calculator grammar
 ////
 /////////////////////////////////////////////////////////////////////////////////
-//struct calculator : public grammar<calculator>
+// struct calculator : public grammar<calculator>
 //{
 //    calculator(stack<double>& eval_)
 //    : eval(eval_) {}
@@ -166,7 +166,8 @@
 
 //            term =
 //                factor
-//                >> *(   ('*' >> factor)[make_op(multiplies<double>(), self.eval)]
+//                >> *(   ('*' >> factor)[make_op(multiplies<double>(),
+// self.eval)]
 //                    |   ('/' >> factor)[make_op(divides<double>(), self.eval)]
 //                    )
 //                    ;
@@ -217,45 +218,44 @@
 //  Main program
 //
 ///////////////////////////////////////////////////////////////////////////////
-int
-main()
+int main()
 {
-//    cout << "/////////////////////////////////////////////////////////\n\n";
-//    cout << "\t\tThe calculator with variables...\n\n";
-//    cout << "/////////////////////////////////////////////////////////\n\n";
-//    cout << "Type a statement...or [q or Q] to quit\n\n";
-//    cout << "Variables may be declared:\t\tExample: var i, j, k\n";
-//    cout << "Assigning to a variable:\t\tExample: i = 10 * j\n";
-//    cout << "To evaluate an expression:\t\tExample: ? i * 3.33E-3\n\n";
+    //    cout <<
+    // "/////////////////////////////////////////////////////////\n\n";
+    //    cout << "\t\tThe calculator with variables...\n\n";
+    //    cout <<
+    // "/////////////////////////////////////////////////////////\n\n";
+    //    cout << "Type a statement...or [q or Q] to quit\n\n";
+    //    cout << "Variables may be declared:\t\tExample: var i, j, k\n";
+    //    cout << "Assigning to a variable:\t\tExample: i = 10 * j\n";
+    //    cout << "To evaluate an expression:\t\tExample: ? i * 3.33E-3\n\n";
 
-//    stack<double>   eval;
-//    calculator      calc(eval); //  Our parser
+    //    stack<double>   eval;
+    //    calculator      calc(eval); //  Our parser
 
-//    string str;
-//    while (getline(cin, str))
-//    {
-//        if (str.empty() || str[0] == 'q' || str[0] == 'Q')
-//            break;
+    //    string str;
+    //    while (getline(cin, str))
+    //    {
+    //        if (str.empty() || str[0] == 'q' || str[0] == 'Q')
+    //            break;
 
-//        parse_info<> info = parse(str.c_str(), calc, space_p);
+    //        parse_info<> info = parse(str.c_str(), calc, space_p);
 
-//        if (info.full)
-//        {
-//            cout << "-------------------------\n";
-//            cout << "Parsing succeeded\n";
-//            cout << "-------------------------\n";
-//        }
-//        else
-//        {
-//            cout << "-------------------------\n";
-//            cout << "Parsing failed\n";
-//            cout << "stopped at: \": " << info.stop << "\"\n";
-//            cout << "-------------------------\n";
-//        }
-//    }
+    //        if (info.full)
+    //        {
+    //            cout << "-------------------------\n";
+    //            cout << "Parsing succeeded\n";
+    //            cout << "-------------------------\n";
+    //        }
+    //        else
+    //        {
+    //            cout << "-------------------------\n";
+    //            cout << "Parsing failed\n";
+    //            cout << "stopped at: \": " << info.stop << "\"\n";
+    //            cout << "-------------------------\n";
+    //        }
+    //    }
 
-//    cout << "Bye... :-) \n\n";
+    //    cout << "Bye... :-) \n\n";
     return 0;
 }
-
-

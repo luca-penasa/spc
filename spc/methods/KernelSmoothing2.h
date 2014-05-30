@@ -15,26 +15,19 @@ using namespace flann;
 namespace spc
 {
 
-
-
-
-template <typename ScalarT>
-class KernelSmoothing2
+template <typename ScalarT> class KernelSmoothing2
 {
 
 public:
-    typedef SparseTimeSeries<ScalarT> SparseT;
+    typedef TimeSeriesSparse<ScalarT> SparseT;
     typedef spcSharedPtrMacro<SparseT> SparsePtrT;
 
-    typedef EquallySpacedTimeSeries<ScalarT> EquallyT;
+    typedef TimeSeriesEquallySpaced<ScalarT> EquallyT;
     typedef spcSharedPtrMacro<EquallyT> EquallyPtrT;
-
-
 
     typedef typename flann::L2_Simple<ScalarT> distType;
     typedef typename flann::Index<distType> FLANNIndex;
     typedef typename flann::Matrix<ScalarT> FLANNMat;
-
 
     KernelSmoothing2();
 
@@ -48,7 +41,6 @@ public:
         out_series_ = out;
     }
 
-
     void setStep(ScalarT step)
     {
         step_ = step;
@@ -59,7 +51,6 @@ public:
         bandwidth_ = bandwidth;
     }
 
-
     EquallyPtrT getOutputSeries() const
     {
         return out_series_;
@@ -68,7 +59,6 @@ public:
     int compute();
 
 protected:
-
     void initFlann();
 
     SparsePtrT sparse_;
@@ -79,42 +69,32 @@ protected:
     ScalarT step_;
     ScalarT bandwidth_;
 
-
     spcSharedPtrMacro<FLANNIndex> flann_index_;
 
-    //compute gaussian weights on a vector
-    inline void
-    gaussian(const std::vector<ScalarT> &values, std::vector<ScalarT> &gaussian_values)
+    // compute gaussian weights on a vector
+    inline void gaussian(const std::vector<ScalarT> &values,
+                         std::vector<ScalarT> &gaussian_values)
     {
-        spcForEachMacro (float val, values)
+        spcForEachMacro(float val, values)
         {
             gaussian_values.push_back(gaussian(val));
         }
     }
 
-
-    //compute gaussian weights on a single numeric value
-    inline ScalarT
-    gaussian(const ScalarT &value)
+    // compute gaussian weights on a single numeric value
+    inline ScalarT gaussian(const ScalarT &value)
     {
-        return 1.0/sqrt(2.0*M_PI) * exp(-0.5*value*value);
+        return 1.0 / sqrt(2.0 * M_PI) * exp(-0.5 * value * value);
     }
 
-    void
-    initKDTree();
+    void initKDTree();
 
-    int
-    radiusSearch(const ScalarT &position,const ScalarT &radius, std::vector<int> &ids, std::vector<ScalarT> &distances);
+    int radiusSearch(const ScalarT &position, const ScalarT &radius,
+                     std::vector<int> &ids, std::vector<ScalarT> &distances);
 
-    int
-    evaluateKS(const ScalarT &position, ScalarT &value);
-
-
-
-
-
+    int evaluateKS(const ScalarT &position, ScalarT &value);
 };
 
-}//end nspace
+} // end nspace
 
 #endif // KERNELSMOOTHING2_H

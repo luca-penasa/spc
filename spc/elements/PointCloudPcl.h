@@ -1,29 +1,27 @@
 #ifndef VOMBAT_SPCPCLCLOUD_H
 #define VOMBAT_SPCPCLCLOUD_H
 
-
 #include <spc/elements/PointCloudBase.h>
 
 namespace spc
 {
 
-template <typename PointT>
-class spcPCLCloud: public spcGenericCloud
+template <typename PointT> class PointCloudPcl : public PointCloudBase
 {
 
-    SPC_OBJECT(spcPCLCloud<PointT>)
+    SPC_OBJECT(PointCloudPcl<PointT>)
 public:
     //    typedef spcSharedPtrMacro<spcPCLCloud<PointT> > Ptr;
     //    typedef spcSharedPtrMacro<const spcPCLCloud<PointT> > ConstPtr;
 
-    typedef boost::shared_ptr<pcl::PointCloud<PointT> > CloudPtrT;
+    typedef boost::shared_ptr<pcl::PointCloud<PointT>> CloudPtrT;
 
-    spcPCLCloud(CloudPtrT cloud);
+    PointCloudPcl(CloudPtrT cloud);
 
-    spcPCLCloud(const pcl::PointCloud<PointT> &cloud);
+    PointCloudPcl(const pcl::PointCloud<PointT> &cloud);
 
     virtual void getPoint(const int id, float &x, float &y, float &z) const
-    override;
+        override;
 
     virtual void setPoint(const int id, const float x, const float y,
                           const float z) override;
@@ -43,7 +41,5 @@ protected:
     CloudPtrT cloud_;
 };
 
-
-
-}//end nspace
+} // end nspace
 #endif // SPCPCLCLOUD_H

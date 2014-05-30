@@ -1,22 +1,20 @@
 #ifndef SPC_CALIBRATION_DATA_FILTER_H
 #define SPC_CALIBRATION_DATA_FILTER_H
 
-
 #include <spc/methods/IntensityCalibrationDataEstimator.h>
-
 
 namespace spc
 {
 
-
 class CalibrationDataFilter
 {
 public:
-
     SPC_OBJECT(CalibrationDataFilter)
 
-    CalibrationDataFilter() {}
-    void setInputCalibrationDataDB(CalibrationDataDB data)
+    CalibrationDataFilter()
+    {
+    }
+    void setInputCalibrationDataDB(DataDB data)
     {
         db_ = data;
     }
@@ -24,33 +22,30 @@ public:
     void fixUniqueNormals()
     {
 
-
         std::vector<size_t> unique_cores = db_.getVectorOfUniqueCorePoints();
-        spcForEachMacro (size_t id, unique_cores)
+        spcForEachMacro(size_t id, unique_cores)
         {
 
-
-            //just some verbosity
-            if (id % 100 == 0)
-            {
-                pcl::console::print_info("core # %i\n",id);
+            // just some verbosity
+            if (id % 100 == 0) {
+                pcl::console::print_info("core # %i\n", id);
             }
 
-            std::vector<CorePointData::Ptr> current_core_points = db_.getDataForCorePointID(id);
+            std::vector<CorePoint::Ptr> current_core_points
+                = db_.getDataForCorePointID(id);
 
-            size_t best_id = estimateBestCorePointForNormals(current_core_points);
+            size_t best_id
+                = estimateBestCorePointForNormals(current_core_points);
 
-            //extract the normal for the best core point
-            Eigen::Vector3f best_normal = current_core_points.at(best_id)->value<Eigen::Vector3f>("normal");
+            // extract the normal for the best core point
+            Eigen::Vector3f best_normal = current_core_points.at(best_id)->value
+                                          <Eigen::Vector3f>("normal");
 
-            //now we force ALL the other core points to have the same normal
-            spcForEachMacro (CorePointData::Ptr core_meas, current_core_points)
+            // now we force ALL the other core points to have the same normal
+            spcForEachMacro(CorePoint::Ptr core_meas, current_core_points)
             {
                 core_meas->value<Eigen::Vector3f>("normal") = best_normal;
             }
-
-
-
         }
     }
 
@@ -59,36 +54,33 @@ public:
      */
     void recomputeScatteringAngles()
     {
-        spcForEachMacro(CorePointData::Ptr core, db_.getDataDB())
+        spcForEachMacro(CorePoint::Ptr core, db_.getDataDB())
         {
             Eigen::Vector3f normal = core->value<Eigen::Vector3f>("normal");
             Eigen::Vector3f ray = core->value<Eigen::Vector3f>("ray");
-            //overwrite old measure
-            core->value("angle") = CalibrationDataEstimator::getMinimumAngleBetweenVectors(normal, ray);
+            // overwrite old measure
+            core->value("angle")
+                = CalibrationDataEstimator::getMinimumAngleBetweenVectors(
+                    normal, ray);
         }
     }
 
     // this is a temptative to get the best normal for a given core point
-    size_t estimateBestCorePointForNormals(const std::vector<CorePointData::Ptr> & data)
+    size_t estimateBestCorePointForNormals(const std::vector
+                                           <CorePoint::Ptr> &data)
     {
-        std::vector<size_t> n_neighbors = extractPropertyAsVector<size_t>(data, "n_neighbors");
-        std::vector<size_t>::iterator it = std::max_element(n_neighbors.begin(), n_neighbors.end());
+        std::vector<size_t> n_neighbors = extractPropertyAsVector
+            <size_t>(data, "n_neighbors");
+        std::vector<size_t>::iterator it
+            = std::max_element(n_neighbors.begin(), n_neighbors.end());
         size_t position = std::distance(n_neighbors.begin(), it);
         return position;
     }
 
-
-
 private:
-    CalibrationDataDB db_;
-
-
-
-
+    DataDB db_;
 };
 
-
-} //end nspace
-
+} // end nspace
 
 #endif

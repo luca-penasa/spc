@@ -8,7 +8,7 @@ namespace spc
 
 
 template<typename nType> nType
-RBFInterpolator<nType>::evaluateRbf(VectorT &point)
+InterpolatorRBF<nType>::evaluateRbf(VectorT &point)
 {
 	nType distance;
 	nType sumw = 0.0;
@@ -26,7 +26,7 @@ RBFInterpolator<nType>::evaluateRbf(VectorT &point)
 
 
 template<typename nType> void
-RBFInterpolator<nType>::updateMatrixOfDistances()
+InterpolatorRBF<nType>::updateMatrixOfDistances()
 {
 	for (int i = 0; i < n_points_; ++i)
 	{
@@ -45,7 +45,7 @@ RBFInterpolator<nType>::updateMatrixOfDistances()
 }
 
 template<typename nType> void
-RBFInterpolator<nType>::updateMatrixOfCoefficients()
+InterpolatorRBF<nType>::updateMatrixOfCoefficients()
 {
 	for (int i = 0; i < n_points_; ++i)
 	{
@@ -57,7 +57,7 @@ RBFInterpolator<nType>::updateMatrixOfCoefficients()
 }
 
 template<typename nType> void
-RBFInterpolator<nType>::computeNodes()
+InterpolatorRBF<nType>::computeNodes()
 {
 	
 	//Solve the linear system

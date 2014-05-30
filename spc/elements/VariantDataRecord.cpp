@@ -11,26 +11,25 @@
 namespace spc
 {
 
-std::ostream& operator<<(std::ostream& os, const VariantDataRecord& obj)
+std::ostream &operator<<(std::ostream &os, const VariantDataRecord &obj)
 {
     std::vector<std::string> keys = obj.getKeysList();
 
     size_t counter = 0;
-    size_t n = keys.size() -1;
+    size_t n = keys.size() - 1;
 
     spcForEachMacro(std::string k, keys)
     {
-        spcVariant p =obj.property(k);
+        VariantDataContainer p = obj.property(k);
         os << k << ": " << p << ";";
         if (counter != n)
-            os << " " ;
+            os << " ";
 
         counter++;
     }
 
     return os;
 }
-
 
 size_t VariantDataRecord::size() const
 {
@@ -41,7 +40,7 @@ std::vector<std::string> VariantDataRecord::getKeysList() const
 {
     std::vector<std::string> l;
     spcForEachMacro(pairT el, properties_)
-            l.push_back(el.first);
+    l.push_back(el.first);
 
     return l;
 }
@@ -61,7 +60,7 @@ bool VariantDataRecord::hasPropertyWithName(const std::string &name) const
     return false;
 }
 
-spcVariant VariantDataRecord::property(const std::string &name) const
+VariantDataContainer VariantDataRecord::property(const std::string &name) const
 {
     if (this->hasPropertyWithName(name))
         return properties_.at(name);
@@ -74,9 +73,9 @@ std::string VariantDataRecord::toString() const
     return stream.str();
 }
 
-spcVariant &VariantDataRecord::property(const std::string &name)
+VariantDataContainer &VariantDataRecord::property(const std::string &name)
 {
     return properties_[name];
 }
 
-}//end nspace
+} // end nspace
