@@ -6,9 +6,9 @@
 
 #include <boost/filesystem.hpp>
 
-#include <spc/common/common.h>
-#include <spc/common/strings.h>
-#include <spc/common/io_helper.h>
+#include <spc/methods/common.h>
+#include <spc/methods/strings.h>
+#include <spc/io/io_helper.h>
 
 #include <spc/methods/linear_interpolator.h>
 

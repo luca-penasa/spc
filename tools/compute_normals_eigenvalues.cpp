@@ -6,12 +6,12 @@
 #include <pcl/common/centroid.h>
 #include <Eigen/Dense>
 
-#include <spc/common/strings.h>
+#include <spc/methods/strings.h>
 
 #include <pcl/features/normal_3d.h>
 
-#include <spc/methods/compute_eigen_indices.h>
-#include <spc/common/io_helper.h>
+#include <spc/methods/PointCloudEigenIndicesEstimator.h>
+#include <spc/io/io_helper.h>
 
 
 using namespace std;

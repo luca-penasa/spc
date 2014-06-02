@@ -8,7 +8,7 @@
 
 #include <pcl/filters/extract_indices.h>
 
-#include <spc/common/io_helper.h>
+#include <spc/io/io_helper.h>
 
 using namespace pcl;
 using namespace std;

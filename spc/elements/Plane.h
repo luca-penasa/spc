@@ -28,8 +28,9 @@ namespace spc
 class Plane : public MovableElement
 
 {
-    SPC_OBJECT(Plane)
 public:
+    SPC_OBJECT(Plane)
+
     /// Def const
     Plane()
     {

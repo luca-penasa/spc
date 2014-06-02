@@ -1,7 +1,6 @@
 #ifndef UNORDERED_DATA_TABLE_H
 #define UNORDERED_DATA_TABLE_H
 
-#include <spc/elements/ElementBase.h>
 #include <Eigen/Dense>
 
 #include <unordered_map>
@@ -13,7 +12,7 @@
 namespace spc
 {
 
-class VariantDataRecord : public ElementBase
+class VariantDataRecord
 {
 public:
     SPC_OBJECT(VariantDataRecord)
@@ -59,8 +58,7 @@ private:
 
     template <class Archive> void serialize(Archive &ar)
     {
-        ar(make_nvp("spcObject", cereal::base_class<spc::ElementBase>(this)),
-           CEREAL_NVP(properties_));
+        ar(CEREAL_NVP(properties_));
     }
 
 protected:

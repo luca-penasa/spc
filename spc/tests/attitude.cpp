@@ -14,6 +14,15 @@ int main(int argc, char **argv)
 {
     {
 
+
+        spc::MovableElement::Ptr obj(new spc::MovableElement);
+        std::string a1;
+        spc::io::serializeToString(obj, a1, spc::io::XML);
+
+        std::cout << a1.c_str() << std::endl;
+
+        return 1;
+
         std::vector<float> x{ 0, 1, 2, 3 };
         std::vector<float> y{ 0, 1, 2, 3 };
 

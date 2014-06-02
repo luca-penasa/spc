@@ -5,7 +5,6 @@
 #include <boost/uuid/uuid.hpp>
 #include <spc/elements/macros.h>
 #include <cereal/cereal.hpp>
-
 namespace spc
 {
 
@@ -47,7 +46,8 @@ private:
 
     template <class Archive> void serialize(Archive &ar)
     {
-        ar(CEREAL_NVP(uuid_), CEREAL_NVP(has_valid_uuid_));
+        ar(CEREAL_NVP(uuid_),
+           CEREAL_NVP(has_valid_uuid_));
     }
 };
 

@@ -1,15 +1,15 @@
-#include <spc/common/std_helpers.hpp>
+#include <spc/methods/std_helpers.hpp>
 #include <vector>
 
 #include <pcl/console/print.h> //for printing
 #include <pcl/console/parse.h> //for parsing
 #include <pcl/io/pcd_io.h>
 
-#include <spc/common/strings.h>
+#include <spc/methods/strings.h>
 
-#include <spc/common/geometry.h>
+#include <spc/methods/geometry.h>
 
-#include <spc/estimators/estimate_average_sampling_step.h>
+#include <spc/methods/PointCloudAverageSamplingStepEstimator.h>
 
 std::string default_merge = "yes";
 int default_binary = 1;

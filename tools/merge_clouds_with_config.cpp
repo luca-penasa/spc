@@ -3,15 +3,15 @@
 #include <pcl/console/print.h>
 #include <pcl/console/time.h>
 
-#include <spc/common/common.h>
-#include <spc/common/strings.h>
-#include <spc/common/io_helper.h>
+#include <spc/methods/common.h>
+#include <spc/methods/strings.h>
+#include <spc/io/io_helper.h>
 
 //#include <spc/methods/linear_interpolator.h>
 
 #include <math.h>
 
-#include<spc/common/pcl_helper.h>
+#include<spc/methods/pcl_helper.h>
 
 using namespace pcl;
 using namespace pcl::console;

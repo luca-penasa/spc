@@ -5,9 +5,9 @@
 #include <pcl/filters/voxel_grid.h>
 
 #include <spc/time_series/sparse_time_series.h>
-#include <spc/common/common.h>
-#include <spc/common/strings.h>
-#include <spc/common/io_helper.h>
+#include <spc/methods/common.h>
+#include <spc/methods/strings.h>
+#include <spc/io/io_helper.h>
 #include <spc/methods/kernelsmoothing2.h>
 #include <math.h>
 

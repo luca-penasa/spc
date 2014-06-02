@@ -1,16 +1,16 @@
-#include <spc/common/std_helpers.hpp>
+#include <spc/methods/std_helpers.hpp>
 #include <spc/methods/kernel_smoothing.cpp>
 #include <pcl/io/pcd_io.h>
 #include <spc/methods/nn_interpolator.h>
-#include <spc/common/common.h>
+#include <spc/methods/common.h>
 
 //#include <spc/methods/linear_interpolator.h>
 
 #include <pcl/filters/voxel_grid.h>
 
-#include <spc/common/io_helper.h>
+#include <spc/io/io_helper.h>
 
-#include <spc/common/strings.h>
+#include <spc/methods/strings.h>
 #include <spc/common/point_types.h>
 
 #include <boost/lexical_cast.hpp>

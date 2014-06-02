@@ -3,18 +3,17 @@
 #include <pcl/console/print.h>
 #include <pcl/console/time.h>
 
-#include <spc/common/common.h>
-#include <spc/common/strings.h>
-#include <spc/common/io_helper.h>
+#include <spc/methods/common.h>
+#include <spc/methods/strings.h>
+#include <spc/io/io_helper.h>
 
+#include <spc/methods/pcl_helper.h>
 //#include <spc/methods/linear_interpolator.h>
 
 #include <math.h>
 
 #include <pcl/kdtree/kdtree_flann.h>
-
-#include <spc/common/pcl_helper.h>
-#include <spc/common/svmlib_helper.h>
+#include <spc/io/svmlib_helper.h>
 
 
 

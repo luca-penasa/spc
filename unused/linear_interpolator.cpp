@@ -1,5 +1,5 @@
 
-#include <spc/common/common.h>
+#include <spc/methods/common.h>
 #include <spc/methods/linear_interpolator.h>
 
 namespace spc

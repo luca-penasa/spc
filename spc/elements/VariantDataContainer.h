@@ -1,7 +1,8 @@
 #ifndef SPC_VARIANT_H
 #define SPC_VARIANT_H
 
-#include <spc/elements/ElementBase.h>
+//#include <spc/elements/ElementBase.h>
+#include <spc/elements/macros.h>
 #include <Eigen/Dense>
 #include <boost/variant.hpp>
 #include <cereal/types/boost_variant.hpp>

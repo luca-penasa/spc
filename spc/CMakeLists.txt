@@ -21,23 +21,23 @@ if(BUILD_EXPERIMENTAL)
 endif()
 
 
-if (BUILD_PYTHON_WRAPPINGS)
+if (SPC_BUILD_PYTHON_WRAPPINGS)
     add_subdirectory(python_interface)
 endif()
 
-if(BUILD_MICMAC_RELATED)
+if(SPC_BUILD_MICMAC_RELATED)
    add_subdirectory(micmac)
 endif()
 
-if(BUILD_SPC_DOC)
+if(SPC_BUILD_DOC)
     add_subdirectory(doc)
 endif()
 
-if(SWIG_WRAPPINGS)
+if(SPC_SWIG_WRAPPINGS)
     add_subdirectory(wrappings)
 endif()
 
-if(BUILD_TESTS)
+if(SPC_BUILD_TESTS)
     add_subdirectory(tests)
 endif()
 

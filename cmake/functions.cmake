@@ -1,6 +1,6 @@
 #compiles and link a spc_lib
 macro(spc_compile_and_link name files libs)
-    if(BUILD_SPC_SHARED)
+    if(SPC_BUILD_SHARED)
             add_library(${name} SHARED ${files})
     else()
             add_library(${name} STATIC ${files})
@@ -57,7 +57,7 @@ macro(spc_add_executable name codefiles)
     add_executable(${name} ${codefiles})
 
     if(SPC_ENABLE_INSTALL)
-        install(TARGETS ${name} EXPORT ${name} RUNTIME DESTINATION "${INSTALL_BIN_DIR}" COMPONENT bin)
+        install(TARGETS ${name} EXPORT ${name} RUNTIME DESTINATION "${SPC_INSTALL_BIN_DIR}" COMPONENT bin)
     endif()
 endmacro()
 
@@ -71,10 +71,10 @@ macro(spc_install_target_library_libs libname)
     if(SPC_ENABLE_INSTALL)
         install(TARGETS "spc_${libname}"
                 EXPORT SPCTargets
-                ARCHIVE DESTINATION "${INSTALL_LIB_DIR}" ## installing static lib in the same place.
-                LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
+                ARCHIVE DESTINATION "${SPC_INSTALL_LIB_DIR}" ## installing static lib in the same place.
+                LIBRARY DESTINATION "${SPC_INSTALL_LIB_DIR}"
                 COMPONENT shlib
-                PUBLIC_HEADER DESTINATION "${INSTALL_INCLUDE_DIR}/spc/${libname}")
+                PUBLIC_HEADER DESTINATION "${SPC_INSTALL_INCLUDE_DIR}/spc/${libname}")
     endif()
 endmacro()
 

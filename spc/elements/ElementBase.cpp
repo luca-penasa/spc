@@ -2,6 +2,7 @@
 //#include <fstream>
 
 #include <pcl/console/print.h>
+#include <spc/elements/UniversalUniqueID.h>
 
 namespace spc
 {
@@ -34,5 +35,7 @@ UniversalUniqueID ElementBase::getUniversalUUID() const
 {
     return universal_id_;
 }
+
+
 
 } // end nspace

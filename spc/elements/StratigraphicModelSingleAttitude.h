@@ -12,7 +12,7 @@ namespace spc
 /// model.
 ///
 ///
-class StratigraphicModelSingleAttitude : public StratigraphicModelBase, public ElementBase
+class StratigraphicModelSingleAttitude : public StratigraphicModelBase
 {
 public:
     SPC_OBJECT(StratigraphicModelSingleAttitude)
@@ -86,7 +86,6 @@ private:
     template <class Archive> void serialize(Archive &ar)
     {
         ar(cereal::base_class<spc::StratigraphicModelBase>(this),
-           cereal::base_class<spc::ElementBase>(this), additional_shift_,
            attitude_);
     }
 

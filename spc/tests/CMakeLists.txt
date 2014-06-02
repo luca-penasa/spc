@@ -2,7 +2,7 @@ project(testing)
 
 
 add_executable(spc_test_attitude attitude.cpp)
-target_link_libraries(spc_test_attitude spc_elements spc_external spc_methods)
+target_link_libraries(spc_test_attitude spc_elements spc_external spc_methods spc_io)
 
 add_executable(spc_test_boost_eval test_boost_eval.cpp)
 #target_link_libraries(test_boost_eval spc_elements)
@@ -19,7 +19,7 @@ target_link_libraries(spc_test_cereal_serialize  spc_elements spc_external spc_m
 
 
 add_executable(spc_uuid uuid.cpp)
-target_link_libraries(spc_uuid  spc_elements spc_external spc_methods)
+target_link_libraries(spc_uuid  spc_elements spc_external spc_methods spc_io)
 
 add_executable(spc_sample sample.cpp)
 target_link_libraries(spc_sample  spc_elements spc_external spc_methods)

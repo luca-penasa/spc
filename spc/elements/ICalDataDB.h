@@ -11,10 +11,12 @@
 
 #include <boost/algorithm/string.hpp>
 
+#include <iostream>
+
 namespace spc
 {
 
-class DataDB
+class DataDB: public ElementBase
 {
 public:
     SPC_OBJECT(DataDB)
@@ -157,6 +159,14 @@ private:
     std::vector<CorePoint::Ptr> db_;
 
     std::vector<std::vector<CorePoint::Ptr>> core_ids_indices_list_;
+private:
+    friend class cereal::access;
+
+    template <class Archive> void sserialize(Archive &ar)
+    {
+        ar(cereal::base_class<spc::ElementBase>(this),
+           CEREAL_NVP(db_), CEREAL_NVP(core_ids_indices_list_));
+    }
 };
 
 } // end nspace

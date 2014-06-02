@@ -5,11 +5,11 @@
 #include <spc/elements/macros.h>
 #include <map>
 #include <sstream>
-
+#include <spc/elements/ElementBase.h>
 namespace spc
 {
 
-class CorePoint
+class CorePoint: public ElementBase
 {
 public:
     typedef std::map<std::string, boost::any> DataHolderType;
@@ -65,6 +65,15 @@ public:
 
 private:
     DataHolderType datadb;
+
+    friend class cereal::access;
+
+    template <class Archive> void sserialize(Archive &ar)
+    {
+        ar(cereal::base_class<spc::ElementBase>(this),
+           CEREAL_NVP(datadb));
+    }
+
 };
 
 // streaming for CorePointData

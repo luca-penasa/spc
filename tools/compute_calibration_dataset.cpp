@@ -6,14 +6,14 @@
 #include <pcl/common/centroid.h>
 #include <Eigen/Dense>
 
-#include <spc/common/strings.h>
+#include <spc/methods/strings.h>
 
 #include <pcl/features/normal_3d.h>
 
-#include <spc/methods/compute_eigen_indices.h>
-#include <spc/common/io_helper.h>
-#include <spc/calibration/CalibrationDataEstimator.h>
-#include <spc/calibration/CalibrationDataFilter.h>
+#include <spc/methods/PointCloudEigenIndicesEstimator.h>
+#include <spc/io/io_helper.h>
+#include <spc/methods/IntensityCalibrationDataEstimator.h>
+#include <spc/methods/IntensityCalibrationDataFilter.h>
 
 #include <boost/spirit/home/support/detail/hold_any.hpp>
 
@@ -137,7 +137,7 @@ int main (int argc, char ** argv)
 
 
 
-    spc::CalibrationDataDB db = calibrator.getCalibrationDB();
+    spc::DataDB db = calibrator.getCalibrationDB();
     db = db.getValidDataOnly(); //filter out nans
 
     //    db.printOutStuff();

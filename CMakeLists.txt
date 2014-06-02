@@ -8,8 +8,8 @@ set(SPC_DEFINITIONS "") #my definitions
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 
-option(BUILD_WITH_CLANG "Build spc library using clang isntead of gcc." OFF)
-if(BUILD_WITH_CLANG)
+option(SPC_BUILD_WITH_CLANG "Build spc library using clang isntead of gcc." OFF)
+if(SPC_BUILD_WITH_CLANG)
     message("Using Clang as compiler! This may not work properly")
     set(CMAKE_C_COMPILER "clang")
     set(CMAKE_CXX_COMPILER "clang++")
@@ -26,13 +26,6 @@ set(SPC_VERSION ${SPC_MAJOR_VERSION}.${SPC_MINOR_VERSION}.${SPC_PATCH_VERSION})
 
 
 ########################### COMPILER FLAGS ##################################
-#supress warnings from PCL about SHOT etc... - not working!
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations")
-
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++0x -fopenmp -fPIC -lpthread -lgcc_s")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -pipe -std=c++0x -fPIC -Wall -Wno-sign-compare" )
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pipe -std=c++0x -Wall -Wno-long-long -pedantic" )
-
 if (WIN32)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}" )
 else()
@@ -44,6 +37,8 @@ add_subdirectory(submodules)
 
 ############ CEREAL ####################################
 set(CEREAL_INCLUDE_DIRS "submodules/cereal/include")
+
+#right time to try to fine a system-wide install of cereal if any
 
 include_directories(${CEREAL_INCLUDE_DIRS})
 
@@ -57,69 +52,61 @@ set(CEREAL_IS_INTERNAL TRUE CACHE BOOL "if internal cereal is used")
 
 ############################################################################################################
 set(SPC_LIBRARIES CACHE INTERNAL "SPC libs" FORCE) #this will collect all the modular libs spc will create
-
 ############################################################################################################
 
 ############################# OPTIONS ######################################################################
-option(BUILD_SPC_SHARED "Build spc library as a shared lib." OFF)
-option(BUILD_STD_SHARED_PTR "Build spc library as a shared lib." ON)
-option(BUILD_WITH_GPROF "Build with -pg flags for profiling." OFF)
-option(BUILD_TOOLS "Build the tools." OFF)
-option(BUILD_TOOLS "Build really experimental staff." OFF)
-option(BUILD_SANDBOX_TOOLS "Build sandbox tools." OFF)
-option(BUILD_MICMAC_RELATED "Build MICMAC-related code." OFF)
-option(BUILD_PYTHON_WRAPPINGS "Build python interface for the library. Only some classes have been wrapped!" OFF)
-option(BUILD_SPC_DOC "Build SPC doc" OFF)
-option(BUILD_TESTS "Do tests" OFF)
+option(SPC_BUILD_SHARED "Build spc library as a shared lib." OFF)
+option(SPC_BUILD_STD_SHARED_PTR "Build spc library as a shared lib." ON)
+option(SPC_BUILD_WITH_GPROF "Build with -pg flags for profiling." OFF)
+option(SPC_BUILD_TOOLS "Build the tools." OFF)
+option(SPC_BUILD_TOOLS "Build really experimental staff." OFF)
+option(SPC_BUILD_SANDBOX_TOOLS "Build sandbox tools." OFF)
+option(SPC_BUILD_MICMAC_RELATED "Build MICMAC-related code." OFF)
+option(SPC_BUILD_PYTHON_WRAPPINGS "Build python interface for the library. Only some classes have been wrapped!" OFF)
+option(SPC_BUILD_DOC "Build SPC doc" OFF)
+option(SPC_BUILD_TESTS "Do tests" OFF)
 option(SPC_ENABLE_INSTALL "Enable/Disable the install target" OFF)
-option(SWIG_WRAPPINGS "Use swigs to generate wrappings for some methods" OFF)
+option(SPC_SWIG_WRAPPINGS "Use swigs to generate wrappings for some methods" OFF)
 
-option(USE_PARALLEL_OPENMP "Enable paralellization of some algorithms via OpenMP" OFF)
-option(BUILD_TESTING_TOOLS "Build the tools contained into the tests folder" OFF)
+option(SPC_USE_PARALLEL_OPENMP "Enable paralellization of some algorithms via OpenMP" OFF)
+option(SPC_BUILD_TESTING_TOOLS "Build the tools contained into the tests folder" OFF)
 #############################################################################################################
 
 ################################### INSTALL OPTIONS #####################################################
-set(INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries")
-set(INSTALL_BIN_DIR bin CACHE PATH "Installation directory for executables")
-set(INSTALL_INCLUDE_DIR include CACHE PATH "Installation directory for header files")
+set(SPC_INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries")
+set(SPC_INSTALL_BIN_DIR bin CACHE PATH "Installation directory for executables")
+set(SPC_INSTALL_INCLUDE_DIR include CACHE PATH "Installation directory for header files")
 
+##### def dir for cmake files on install
 if(WIN32 AND NOT CYGWIN)
-  set(DEF_INSTALL_CMAKE_DIR CMake)
+  set(SPC_DEF_INSTALL_CMAKE_DIR CMake)
 else()
-  set(DEF_INSTALL_CMAKE_DIR lib/CMake/SPC)
+  set(SPC_DEF_INSTALL_CMAKE_DIR lib/CMake/SPC)
 endif()
-set(INSTALL_CMAKE_DIR ${DEF_INSTALL_CMAKE_DIR} CACHE PATH
-  "Installation directory for CMake files")
+
+set(SPC_INSTALL_CMAKE_DIR ${SPC_DEF_INSTALL_CMAKE_DIR} CACHE PATH "Installation directory for CMake files")
 
 # Make relative paths absolute (needed later on)
 foreach(p LIB BIN INCLUDE CMAKE)
-  set(var INSTALL_${p}_DIR)
+  set(var SPC_INSTALL_${p}_DIR)
   if(NOT IS_ABSOLUTE "${${var}}")
     set(${var} "${CMAKE_INSTALL_PREFIX}/${${var}}")
   endif()
 endforeach()
 
-message("${INSTALL_LIB_DIR}")
-
-if(WIN32 AND NOT CYGWIN)
-  set(DEF_INSTALL_CMAKE_DIR CMake)
-else()
-  set(DEF_INSTALL_CMAKE_DIR lib/CMake/spc)
-endif()
+message("INCLUDE ${SPC_INSTALL_INCLUDE_DIR}")
+message("LIB ${SPC_INSTALL_LIB_DIR}")
+message("BIN ${SPC_INSTALL_BIN_DIR}")
+message("CMAKE ${SPC_INSTALL_CMAKE_DIR}")
 
 
-if (BUILD_STD_SHARED_PTR)
+
+
+
+if (SPC_BUILD_STD_SHARED_PTR)
     add_definitions(-DUSE_STD_SHARED_PTR)
     set(SPC_DEFINITIONS "${SPC_DEFINITIONS} -DUSE_STD_SHARED_PTR" )
 endif()
-
-#make relative path absolute
-foreach(p LIB BIN INCLUDE CMAKE)
-  set(var INSTALL_${p}_DIR)
-  if(NOT IS_ABSOLUTE "${${var}}")
-    set(${var} "${CMAKE_INSTALL_PREFIX}/${${var}}")
-  endif()
-endforeach()
 ############################################################################################################
 
 #########################  PCL! - everybody here will need it ###############################
@@ -128,14 +115,15 @@ include_directories(${PCL_INCLUDE_DIRS})
 message("${PCL_INCLUDE_DIRS}")
 link_directories(${PCL_LIBRARY_DIRS})
 add_definitions(${PCL_DEFINITIONS})
-##################################################################################################
+
 
 message("TESTING PCL !")
 #define the PCL_VER_1_6_OR_OLDER preprocessor to compile qPCL with older versions of PCL
-if ( PCL_VERSION VERSION_LESS  1.7 ) # VERSION_GREATER Works just like "greater or equal"        		
+if( PCL_VERSION VERSION_LESS  1.7 ) # VERSION_GREATER Works just like "greater or equal"
 		message("You are using PCL 1.6 - the 1.7 is out !")
 		set(SPC_DEFINITIONS ${SPC_DEFINITIONS} "-DPCL_VER_LESS_1_7")
 endif()
+##################################################################################################
 
 #add custom functions and macros
 include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/functions.cmake)
@@ -143,19 +131,19 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/functions.cmake)
 # include the current source dir
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-if(USE_PARALLEL_OPENMP) # a definition if use parallelization where possible
+if(SPC_USE_PARALLEL_OPENMP) # a definition if use parallelization where possible
     set(SPC_DEFINITIONS ${SPC_DEFINITIONS} "-DUSE_OPENMP")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -lpthread -lgcc_s" )
 endif()
 
 
-if (BUILD_WITH_GPROF)
+if (SPC_BUILD_WITH_GPROF)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg" )
 endif()
 
 
 #micmac lib part
-if(BUILD_MICMAC_RELATED)
+if(SPC_BUILD_MICMAC_RELATED)
 #    add_subdirectory(external)
     set(CULTURE_3D_BUILD_DIR "/home/luca/Code/culture3d/build" CACHE STRING "path where a culture3d build has been compiled is located. This is my default. you should change to your needs")
     set(CULTURE_3D_SOURCE_DIR "/home/luca/Code/culture3d" CACHE STRING "path where culture 3d source resides. This is my default. Change o your needs")
@@ -172,29 +160,26 @@ add_definitions(${SPC_DEFINITIONS})
 add_subdirectory(spc)
 
 #also tools if needed
-if(BUILD_TOOLS)
+if(SPC_BUILD_TOOLS)
     add_subdirectory(tools)
 endif()
 
 #also tools if needed
-if(BUILD_SANDBOX_TOOLS)
+if(SPC_BUILD_SANDBOX_TOOLS)
     add_subdirectory(sandbox)
 endif()
 
 #also tools if needed
-if(BUILD_TESTING_TOOLS)
+if(SPC_BUILD_TESTING_TOOLS)
     add_subdirectory(tests)
 endif()
 
-
-message("${PCL_DEFINITIONS}")
-message("${PCL_LIBRARIES}")
 
 
 # The interesting stuff goes here
 # ===============================
 
-# Add all targets to the build-tree export set
+# Add all targets to the build-tree export set - also binaries target should be added
 export(TARGETS ${SPC_LIBRARIES} FILE "${PROJECT_BINARY_DIR}/SPCTargets.cmake")
 
 # Export the package for use from the build-tree
@@ -215,16 +200,16 @@ configure_file(SPCConfigVersion.cmake.in "${PROJECT_BINARY_DIR}/SPCConfigVersion
 #### INSTALL TREE
 if(SPC_ENABLE_INSTALL)
     ## reset conf_include_dirs for the install tree
-    set (CONF_INCLUDE_DIRS "${INSTALL_INCLUDE_DIR}")
-    set (CONF_CEREAL_INCLUDE_DIRS "${INSTALL_INCLUDE_DIR}/spc/3rdParty")
-    set (CONF_LIBRARY_DIRS "${INSTALL_LIB_DIR}")
+    set (CONF_INCLUDE_DIRS "${SPC_INSTALL_INCLUDE_DIR}")
+    set (CONF_CEREAL_INCLUDE_DIRS "${SPC_INSTALL_INCLUDE_DIR}/spc/3rdParty")
+    set (CONF_LIBRARY_DIRS "${SPC_INSTALL_LIB_DIR}")
 
     ## reconfigure the SPCConfig.cmake putting it in a subdirectory of the build tree
-    configure_file(SPCConfig.cmake.in "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/SPCConfig.cmake" @ONLY)
+    configure_file(SPCConfig.cmake.in "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIR}/SPCConfig.cmake" @ONLY)
 
 
     # Install the FooBarConfig.cmake and FooBarConfigVersion.cmake in the install tree
-    install(FILES "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/SPCConfig.cmake"
+    install(FILES "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIR}/SPCConfig.cmake"
                   "${PROJECT_BINARY_DIR}/SPCConfigVersion.cmake"
       DESTINATION "${INSTALL_CMAKE_DIR}" COMPONENT dev)
 

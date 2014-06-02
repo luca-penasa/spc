@@ -12,7 +12,7 @@
 #include <pcl/console/parse.h> //for parsing
 
 
-#include <spc/common/strings.h>
+#include <spc/methods/strings.h>
 
 typedef pcl::PointXYZI PointT;
 typedef pcl::PointCloud<PointT> PointCloudT;

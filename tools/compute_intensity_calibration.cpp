@@ -6,18 +6,18 @@
 #include <pcl/common/centroid.h>
 #include <Eigen/Dense>
 
-#include <spc/common/strings.h>
+#include <spc/methods/strings.h>
 
 #include <pcl/features/normal_3d.h>
 
-#include <spc/methods/compute_eigen_indices.h>
-#include <spc/common/io_helper.h>
-#include <spc/calibration/CalibrationDataEstimator.h>
-#include <spc/calibration/CalibrationDataFilter.h>
+#include <spc/methods/PointCloudEigenIndicesEstimator.h>
+#include <spc/io/io_helper.h>
+#include <spc/methods/IntensityCalibrationDataEstimator.h>
+#include <spc/methods/IntensityCalibrationDataFilter.h>
 
 #include <boost/spirit/home/support/detail/hold_any.hpp>
-#include <spc/calibration/IntensityCalibrator.h>
-#include <spc/calibration/IntensityCalibratrionModels.h>
+#include <spc/methods/IntensityCalibration.h>
+#include <spc/elements/ICalModelFactors.h>
 
 using namespace std;
 using namespace pcl;
@@ -85,7 +85,7 @@ int main (int argc, char ** argv)
 
     print_info("Loading the calibration dataset from %s\n", dataset_file.c_str());
 
-    spc::CalibrationDataDB::Ptr db (new spc::CalibrationDataDB);
+    spc::DataDB::Ptr db (new spc::DataDB);
     db->fromFile(dataset_file);
 
     print_info("Found %i core points\n", db->size());

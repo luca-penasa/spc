@@ -7,7 +7,7 @@
 #include <pcl/point_types.h>
 
 #include <spc/elements/PointCloudBase.h>
-
+#include <spc/elements/ElementBase.h>
 namespace spc
 {
 
@@ -20,7 +20,7 @@ using namespace Eigen;
 /// stratigraphic position
 /// and a stratigraphic normal in the 3D space
 ///!
-class VariableScalarFieldBase
+class VariableScalarFieldBase: public ElementBase
 {
 public:
     SPC_OBJECT(VariableScalarFieldBase)
@@ -95,6 +95,14 @@ public:
                                                     <pcl::PointXYZ>::Ptr cloud,
                                                     const std::vector
                                                     <int> &indices) const;
+
+private:
+    friend class cereal::access;
+
+    template <class Archive> void serialize(Archive &ar)
+    {
+        ar(cereal::base_class<spc::ElementBase>(this));
+    }
 };
 }
 

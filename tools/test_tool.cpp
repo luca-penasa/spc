@@ -1,6 +1,6 @@
 #include <iostream>
-#include <spc/common/common.h>
-#include <spc/time_series/equally_spaced_time_series.h>
+#include <spc/methods/common.h>
+#include <spc/elements/TimeSeriesEquallySpaced.h>
 
 #include <pcl/point_types.h>
 #include <pcl/io/pcd_io.h>
@@ -13,7 +13,7 @@
 
 int main (int argc, char ** argv)
 {
-	spc::EquallySpacedTimeSeries<float> ts;
+    spc::TimeSeriesEquallySpaced<float> ts;
 	std::cout << "test tool" << std::endl; 
 	
     //Sleep(2000); // this works only on win

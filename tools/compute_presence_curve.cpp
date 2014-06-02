@@ -1,12 +1,12 @@
-#include <spc/common/std_helpers.hpp>
+#include <spc/methods/std_helpers.hpp>
 
 #include <pcl/io/pcd_io.h>
-#include <spc/methods/nn_interpolator.h>
-#include <spc/common/common.h>
+#include <spc/methods/InterpolatorNearestNeighbor.h>
+#include <spc/methods/common.h>
 
 #include <pcl/console/parse.h>
 
-#include <spc/common/point_types.h>
+#include <spc/elements/point_types.h>
 
 #include <pcl/ModelCoefficients.h>
 

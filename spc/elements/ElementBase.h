@@ -5,6 +5,7 @@
 #include <spc/elements/macros.h>
 #include <cereal/cereal.hpp>
 #include <spc/elements/UniversalUniqueID.h>
+#include <spc/elements/VariantDataRecord.h>
 
 namespace spc
 {
@@ -17,6 +18,7 @@ public:
     ElementBase() : modified_(false)
     {
     }
+
 
     // this may be useful in a future
     virtual void modified();
@@ -40,6 +42,9 @@ public:
 protected:
     bool modified_;
     UniversalUniqueID universal_id_;
+
+    //! meta-properties for each object
+    VariantDataRecord properties_;
 
 private:
     friend class cereal::access;

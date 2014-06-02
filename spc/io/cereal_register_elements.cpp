@@ -45,13 +45,31 @@ CEREAL_REGISTER_TYPE_WITH_NAME(spc::Sample, "Sample")
 CEREAL_REGISTER_TYPE_WITH_NAME(spc::ElementBase, "ElementBase")
 
 //#include <spc/elements/UniversalUniqueID.h>
-// CEREAL_REGISTER_TYPE_WITH_NAME(spc::UniversalUniqueID, "UniversalUniqueID")
+//CEREAL_REGISTER_TYPE_WITH_NAME(spc::UniversalUniqueID, "UniversalUniqueID")
 
 #include <spc/elements/VariantDataRecord.h>
 CEREAL_REGISTER_TYPE_WITH_NAME(spc::VariantDataRecord, "VariantDataRecord")
 
 #include <spc/elements/VariantDataContainer.h>
-CEREAL_REGISTER_TYPE_WITH_NAME(spc::VariantDataContainer, "VariantDataContainer")
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::VariantDataContainer,
+                               "VariantDataContainer")
+
+#include <spc/elements/VariableScalarFieldBase.h>
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::VariableScalarFieldBase,
+                               "VariableScalarFieldBase")
+
+#include <spc/elements/StratigraphicModelBase.h>
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::StratigraphicModelBase,
+                               "StratigraphicModelBase")
+
+
+#include <spc/elements/StratigraphicModelSingleAttitude.h>
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::StratigraphicModelSingleAttitude,
+                               "StratigraphicModelSingleAttitude")
+
+#include <spc/elements/TimeSeriesBase.h>
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::TimeSeriesBase<float>,
+                               "TimeSeriesBase")
 
 #include <spc/elements/TimeSeriesEquallySpaced.h>
 CEREAL_REGISTER_TYPE_WITH_NAME(spc::TimeSeriesEquallySpaced<float>,

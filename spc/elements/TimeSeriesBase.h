@@ -10,6 +10,8 @@
 
 #include <boost/random/uniform_real_distribution.hpp>
 
+#include <cereal/types/vector.hpp>
+
 namespace spc
 {
 
