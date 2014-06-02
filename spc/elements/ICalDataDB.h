@@ -10,6 +10,7 @@
 #include <boost/tokenizer.hpp>
 
 #include <boost/algorithm/string.hpp>
+#include <iostream>
 
 #include <iostream>
 
