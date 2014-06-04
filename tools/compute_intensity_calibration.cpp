@@ -18,7 +18,7 @@
 #include <boost/spirit/home/support/detail/hold_any.hpp>
 #include <spc/methods/IntensityCalibration.h>
 #include <spc/elements/ICalModelFactors.h>
-
+#include <spc/io/element_io.h>
 using namespace std;
 using namespace pcl;
 using namespace pcl::console;
@@ -85,8 +85,12 @@ int main (int argc, char ** argv)
 
     print_info("Loading the calibration dataset from %s\n", dataset_file.c_str());
 
-    spc::DataDB::Ptr db (new spc::DataDB);
-    db->fromFile(dataset_file);
+//     (new spc::DataDB);
+
+    spc::ElementBase::Ptr el  = spc::io::deserializeFromFile(dataset_file);
+    spc::DataDB::Ptr db = spcDynamicPointerCast<spc::DataDB> (el);
+
+//    db->fromFile(dataset_file);
 
     print_info("Found %i core points\n", db->size());
 

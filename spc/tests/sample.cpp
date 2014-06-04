@@ -1,6 +1,6 @@
 //#include "spc/elements/UniversalUniqueObject.h"
 
-#include <spc/elements/VariantDataRecord.h>
+#include <spc/elements/VariantPropertiesRecord.h>
 
 #include <iostream>
 //#include <ostream>
@@ -9,7 +9,7 @@ int main(int argc, char **argv)
 
 {
 
-    spc::VariantDataRecord record;
+    spc::VariantPropertiesRecord record;
     record.property("ciao") = 2.2;
     record.property("ciao") = 1;
     record.property("ecco") = "well done";

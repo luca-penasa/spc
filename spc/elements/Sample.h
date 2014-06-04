@@ -3,13 +3,14 @@
 #define SAMPLE_H
 
 #include <spc/elements/MovableElement.h>
-#include <spc/elements/VariantDataRecord.h>
+#include <spc/elements/VariantPropertiesRecord.h>
 #include <spc/elements/macros.h>
+#include <spc/elements/ElementWithVariantProperties.h>
 
 namespace spc
 {
 
-class Sample : public MovableElement
+class Sample : public MovableElement, public ElementWithVariantProperties
 {
 
 public:
@@ -33,7 +34,8 @@ private:
 
     template <class Archive> void serialize(Archive &ar)
     {
-        ar(cereal::base_class<spc::MovableElement>(this));
+        ar(cereal::base_class<MovableElement>(this),
+           cereal::base_class<ElementWithVariantProperties> (this));
     }
 };
 

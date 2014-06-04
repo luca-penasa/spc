@@ -10,14 +10,25 @@
 #include <spc/elements/TimeSeriesSparse.h>
 #include <spc/elements/TimeSeriesEquallySpaced.h>
 
+#include <spc/elements/ICalDataDB.h>
 int main(int argc, char **argv)
 {
     {
 
+        spc::DataDB::Ptr db(new spc::DataDB);
 
-        spc::MovableElement::Ptr obj(new spc::MovableElement);
+
+        spc::CorePoint::Ptr core (new spc::CorePoint);
+        core->setValue("test", 10);
+
+        db->pushBack(core);
+
+
+//        spc::MovableElement::Ptr obj(new spc::MovableElement);
         std::string a1;
-        spc::io::serializeToString(obj, a1, spc::io::XML);
+        spc::io::serializeToString(core, a1, spc::io::XML);
+
+
 
         std::cout << a1.c_str() << std::endl;
 

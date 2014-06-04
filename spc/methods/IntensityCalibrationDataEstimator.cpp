@@ -143,7 +143,7 @@ CalibrationDataEstimator::computeCorePointParameters(const size_t core_point_id,
     ////////////////////  SAVE ALL THE STUFF /////////////////////////
 
     // number and which neighbors used for this dataset
-    out->value("n_neighbors") = ids.size();
+    out->value("n_neighbors") = (int) ids.size();
     out->value("neighbors") = ids;
     out->value("neighbors_dists") = dists;
 
@@ -154,6 +154,8 @@ CalibrationDataEstimator::computeCorePointParameters(const size_t core_point_id,
     // the local centroid
     out->value("centroid") = c;
 
+    out->setPosition(c);
+
     // position of sensor
     out->value("sensor_position") = pos;
 
@@ -161,13 +163,13 @@ CalibrationDataEstimator::computeCorePointParameters(const size_t core_point_id,
     out->value("ray") = ray;
 
     // the id of the core point
-    out->value("core_id") = core_point_id;
+    out->value("core_id") = (int) core_point_id;
 
     // cloud on which it was computed
     out->value("cloud_name") = current_cloud_name_;
 
     // a progressive id for this cloud
-    out->value("cloud_id") = current_cloud_id_;
+    out->value("cloud_id") = (int) current_cloud_id_;
 
     // the average distance of the core point (its center of mass) from the
     // sensor

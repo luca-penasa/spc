@@ -6,14 +6,18 @@
 #include <map>
 #include <sstream>
 #include <spc/elements/ElementBase.h>
+#include <cereal/types/map.hpp>
+#include <cereal/types/boost_variant.hpp>
+#include <boost/variant.hpp>
+
+#include <spc/elements/Sample.h>
 namespace spc
 {
 
-class CorePoint: public ElementBase
+class CorePoint: public Sample
 {
 public:
-    typedef std::map<std::string, boost::any> DataHolderType;
-    typedef std::pair<std::string, boost::any> PairType;
+
 
     SPC_OBJECT(CorePoint)
 
@@ -21,40 +25,30 @@ public:
     CorePoint()
     {
     }
-    //    }
 
     template <typename T> void setValue(const std::string name, const T &value)
     {
-        datadb[name] = value;
+        this->getVariantPropertiesRecord().property(name) = value;
     }
 
-    boost::any &value(const std::string &name)
+    VariantProperty::VarianT &value(const std::string &name)
     {
-        return datadb[name];
+        return this->getVariantPropertiesRecord().property(name).value();
     }
 
     template <typename T> T value(const std::string name) const
     {
-        return boost::any_cast<T>(datadb.at(name));
+        return boost::get<T>(this->getVariantPropertiesRecord().property(name).value());
     }
 
-    DataHolderType getDB()
-    {
-        return datadb;
-    }
 
-    DataHolderType getDB() const // const version
-    {
-        return datadb;
-    }
-
-    void writeLine(std::ostringstream &stream)
-    {
-        stream << value<float>("distance") << " " << value<float>("intensity")
-               << " " << value<float>("angle") << " "
-               << value<size_t>("cloud_id") << " " << value<size_t>("core_id")
-               << " " << value<size_t>("n_neighbors") << std::endl;
-    }
+//    void writeLine(std::ostringstream &stream)
+//    {
+//        stream << value<float>("distance") << " " << value<float>("intensity")
+//               << " " << value<float>("angle") << " "
+//               << value<size_t>("cloud_id") << " " << value<size_t>("core_id")
+//               << " " << value<size_t>("n_neighbors") << std::endl;
+//    }
 
     bool isValid() const
     {
@@ -64,20 +58,18 @@ public:
     }
 
 private:
-    DataHolderType datadb;
 
     friend class cereal::access;
 
     template <class Archive> void sserialize(Archive &ar)
     {
-        ar(cereal::base_class<spc::ElementBase>(this),
-           CEREAL_NVP(datadb));
+        ar(cereal::base_class<spc::Sample>(this));
     }
 
 };
 
 // streaming for CorePointData
-std::ostream &operator<<(std::ostream &os, const CorePoint &obj);
+//std::ostream &operator<<(std::ostream &os, const CorePoint &obj);
 
 template <typename T>
 std::vector<T> extractPropertyAsVector(const std::vector<CorePoint::Ptr> db,

@@ -17,7 +17,7 @@
 
 #include <boost/spirit/home/support/detail/hold_any.hpp>
 
-
+#include <spc/io/element_io.h>
 using namespace std;
 using namespace pcl;
 using namespace pcl::console;
@@ -164,10 +164,15 @@ int main (int argc, char ** argv)
     }
 
 
-    db.printOutStuff();
+//    db.printOutStuff();
 
-    db.writeToAsciiFile("./out.txt");
+    spc::DataDB::Ptr ptr = spcMakeSharedPtrMacro<spc::DataDB> (db);
 
+
+
+//    db.writeToAsciiFile("./out.txt");
+
+    spc::io::serializeToFile(ptr, "./out", spc::io::XML);
 
 
     return 1;

@@ -45,14 +45,14 @@ CEREAL_REGISTER_TYPE_WITH_NAME(spc::Sample, "Sample")
 CEREAL_REGISTER_TYPE_WITH_NAME(spc::ElementBase, "ElementBase")
 
 //#include <spc/elements/UniversalUniqueID.h>
-//CEREAL_REGISTER_TYPE_WITH_NAME(spc::UniversalUniqueID, "UniversalUniqueID")
+// CEREAL_REGISTER_TYPE_WITH_NAME(spc::UniversalUniqueID, "UniversalUniqueID")
 
-#include <spc/elements/VariantDataRecord.h>
-CEREAL_REGISTER_TYPE_WITH_NAME(spc::VariantDataRecord, "VariantDataRecord")
+#include <spc/elements/VariantPropertiesRecord.h>
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::VariantPropertiesRecord,
+                               "VariantPropertiesRecord")
 
-#include <spc/elements/VariantDataContainer.h>
-CEREAL_REGISTER_TYPE_WITH_NAME(spc::VariantDataContainer,
-                               "VariantDataContainer")
+#include <spc/elements/VariantProperty.h>
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::VariantProperty, "VariantProperty")
 
 #include <spc/elements/VariableScalarFieldBase.h>
 CEREAL_REGISTER_TYPE_WITH_NAME(spc::VariableScalarFieldBase,
@@ -62,14 +62,12 @@ CEREAL_REGISTER_TYPE_WITH_NAME(spc::VariableScalarFieldBase,
 CEREAL_REGISTER_TYPE_WITH_NAME(spc::StratigraphicModelBase,
                                "StratigraphicModelBase")
 
-
 #include <spc/elements/StratigraphicModelSingleAttitude.h>
 CEREAL_REGISTER_TYPE_WITH_NAME(spc::StratigraphicModelSingleAttitude,
                                "StratigraphicModelSingleAttitude")
 
 #include <spc/elements/TimeSeriesBase.h>
-CEREAL_REGISTER_TYPE_WITH_NAME(spc::TimeSeriesBase<float>,
-                               "TimeSeriesBase")
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::TimeSeriesBase<float>, "TimeSeriesBase")
 
 #include <spc/elements/TimeSeriesEquallySpaced.h>
 CEREAL_REGISTER_TYPE_WITH_NAME(spc::TimeSeriesEquallySpaced<float>,
@@ -77,3 +75,9 @@ CEREAL_REGISTER_TYPE_WITH_NAME(spc::TimeSeriesEquallySpaced<float>,
 
 #include <spc/elements/TimeSeriesSparse.h>
 CEREAL_REGISTER_TYPE_WITH_NAME(spc::TimeSeriesSparse<float>, "TimeSeriesSparse")
+
+#include <spc/elements/ICalDataDB.h>
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::DataDB, "DataDB")
+
+#include <spc/elements/ICalCorePoint.h>
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::CorePoint, "CorePoint")

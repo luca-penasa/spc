@@ -14,6 +14,8 @@
 
 #include <iostream>
 
+#include <cereal/types/vector.hpp>
+
 namespace spc
 {
 
@@ -52,11 +54,11 @@ public:
         return this->getVectorOfUniqueClouds().size();
     }
 
-    void printOutStuff()
-    {
-        spcForEachMacro(CorePoint::Ptr entry, db_)
-        std::cout << *entry << std::endl;
-    }
+//    void printOutStuff()
+//    {
+////        spcForEachMacro(CorePoint::Ptr entry, db_)
+////        std::cout << *entry << std::endl;
+//    }
 
     std::vector<CorePoint::Ptr> getDataForCorePointID(size_t core_point_id)
     {
@@ -107,14 +109,14 @@ public:
         return cloud_ids;
     }
 
-    void writeFullData(std::ostringstream &stream)
-    {
-        stream << "distance intensity angle cloud_id core_point_id n_neighbors "
-               << std::endl;
+//    void writeFullData(std::ostringstream &stream)
+//    {
+//        stream << "distance intensity angle cloud_id core_point_id n_neighbors "
+//               << std::endl;
 
-        spcForEachMacro(CorePoint::Ptr meas, db_)
-        meas->writeLine(stream);
-    }
+//        spcForEachMacro(CorePoint::Ptr meas, db_)
+//        meas->writeLine(stream);
+//    }
 
     void clear()
     {
@@ -122,7 +124,7 @@ public:
         core_ids_indices_list_.clear();
     }
 
-    void fromFile(const std::string filename);
+//    void fromFile(const std::string filename);
 
     DataDB getValidDataOnly() const
     {
@@ -136,25 +138,25 @@ public:
         return new_db;
     }
 
-    void writeToAsciiFile(const std::string filename)
-    {
+//    void writeToAsciiFile(const std::string filename)
+//    {
 
-        std::ofstream file;
-        file.open(filename.c_str());
+//        std::ofstream file;
+//        file.open(filename.c_str());
 
-        std::ostringstream stream;
-        stream.precision(6);
-        stream.imbue(std::locale::classic());
+//        std::ostringstream stream;
+//        stream.precision(6);
+//        stream.imbue(std::locale::classic());
 
-        this->writeFullData(stream);
+//        this->writeFullData(stream);
 
-        std::string result = stream.str();
-        boost::trim(result);
-        stream.str("");
-        file << result << std::endl;
+//        std::string result = stream.str();
+//        boost::trim(result);
+//        stream.str("");
+//        file << result << std::endl;
 
-        file.close();
-    }
+//        file.close();
+//    }
 
 private:
     std::vector<CorePoint::Ptr> db_;
@@ -163,7 +165,7 @@ private:
 private:
     friend class cereal::access;
 
-    template <class Archive> void sserialize(Archive &ar)
+    template <class Archive> void serialize(Archive &ar)
     {
         ar(cereal::base_class<spc::ElementBase>(this),
            CEREAL_NVP(db_), CEREAL_NVP(core_ids_indices_list_));

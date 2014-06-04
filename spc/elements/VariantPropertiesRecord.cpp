@@ -1,4 +1,4 @@
-#include <spc/elements/VariantDataRecord.h>
+#include <spc/elements/VariantPropertiesRecord.h>
 #include <boost/lexical_cast.hpp>
 
 #include <spc/elements/ElementBase.h>
@@ -11,7 +11,7 @@
 namespace spc
 {
 
-std::ostream &operator<<(std::ostream &os, const VariantDataRecord &obj)
+std::ostream &operator<<(std::ostream &os, const VariantPropertiesRecord &obj)
 {
     std::vector<std::string> keys = obj.getKeysList();
 
@@ -20,7 +20,7 @@ std::ostream &operator<<(std::ostream &os, const VariantDataRecord &obj)
 
     spcForEachMacro(std::string k, keys)
     {
-        VariantDataContainer p = obj.property(k);
+        VariantProperty p = obj.property(k);
         os << k << ": " << p << ";";
         if (counter != n)
             os << " ";
@@ -31,12 +31,12 @@ std::ostream &operator<<(std::ostream &os, const VariantDataRecord &obj)
     return os;
 }
 
-size_t VariantDataRecord::size() const
+size_t VariantPropertiesRecord::size() const
 {
     return properties_.size();
 }
 
-std::vector<std::string> VariantDataRecord::getKeysList() const
+std::vector<std::string> VariantPropertiesRecord::getKeysList() const
 {
     std::vector<std::string> l;
     spcForEachMacro(pairT el, properties_)
@@ -45,12 +45,12 @@ std::vector<std::string> VariantDataRecord::getKeysList() const
     return l;
 }
 
-void VariantDataRecord::clear()
+void VariantPropertiesRecord::clear()
 {
     properties_.clear();
 }
 
-bool VariantDataRecord::hasPropertyWithName(const std::string &name) const
+bool VariantPropertiesRecord::hasPropertyWithName(const std::string &name) const
 {
     spcForEachMacro(pairT el, properties_)
     {
@@ -60,22 +60,24 @@ bool VariantDataRecord::hasPropertyWithName(const std::string &name) const
     return false;
 }
 
-VariantDataContainer VariantDataRecord::property(const std::string &name) const
+VariantProperty VariantPropertiesRecord::property(const std::string &name) const
 {
     if (this->hasPropertyWithName(name))
         return properties_.at(name);
+    else
+        return VariantProperty();
 }
 
-std::string VariantDataRecord::toString() const
+VariantProperty &VariantPropertiesRecord::property(const std::string &name)
+{
+    return properties_[name];
+}
+
+std::string VariantPropertiesRecord::toString() const
 {
     std::stringstream stream;
     stream << *this;
     return stream.str();
-}
-
-VariantDataContainer &VariantDataRecord::property(const std::string &name)
-{
-    return properties_[name];
 }
 
 } // end nspace
