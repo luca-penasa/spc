@@ -1,7 +1,7 @@
-#include <spc/elements/ICalDataDB.h>
+#include <spc/elements/SamplesDB.h>
 #include <pcl/console/print.h>
 
-//void spc::DataDB::fromFile(const std::string filename)
+//void spc::SamplesDB::fromFile(const std::string filename)
 //{
 //    std::ifstream in(filename.c_str());
 //    if (!in.is_open()) {
@@ -46,7 +46,7 @@
 //        vec.clear();
 //        vec.assign(tokens.begin(), tokens.end());
 
-//        CorePoint::Ptr cp(new CorePoint);
+//        Sample::Ptr cp(new Sample);
 
 //        size_t col_count = 0;
 //        spcForEachMacro(std::string fieldname, fields)

@@ -1,25 +1,25 @@
 #ifndef SPC_CORRECTION_FACTORS_H
 #define SPC_CORRECTION_FACTORS_H
 
-//#include <spc/calibration/CorePointData.h>
+//#include <spc/calibration/SampleData.h>
 
-#include <spc/elements/ICalDataDB.h>
+#include <spc/elements/SamplesDB.h>
 namespace spc
 {
 
 //!
 //! \brief The CorrectionFactorBase class is the virtual base class for each
-//correction factor
+//! correction factor
 //!
 class CorrectionFactorBase
 {
 public:
     SPC_OBJECT(CorrectionFactorBase)
 
-    //! we pass a CalibrationDataDB because some factors may require to know
-    //some stuff before everything
+    //! we pass a CalibrationSamplesDB because some factors may require to know
+    //! some stuff before everything
     //! see for example CorrectionFactorCloudDependentMultiplier
-    CorrectionFactorBase(DataDB::ConstPtr db) : is_fixed_(false)
+    CorrectionFactorBase(SamplesDB::ConstPtr db) : is_fixed_(false)
     {
         // we extract here informations that may be of interest for the factors
         // - for inizialization etc
@@ -35,7 +35,7 @@ public:
     /** in most of the cases input data will be a vector with distance and angle
     /** but it may contain other information used for predicting the factor
      */
-    virtual float getFactor(CorePoint::ConstPtr input_data) const = 0;
+    virtual float getFactor(Sample::ConstPtr input_data) const = 0;
 
     //! get suggested initialization parameters for this correction factor
     virtual Eigen::VectorXf getInitParameters() const = 0;
@@ -83,7 +83,7 @@ protected:
 class CorrectionFactorDistancePowerLaw : public CorrectionFactorBase
 {
 public:
-    CorrectionFactorDistancePowerLaw(DataDB::ConstPtr db)
+    CorrectionFactorDistancePowerLaw(SamplesDB::ConstPtr db)
         : CorrectionFactorBase(db)
     {
     }
@@ -93,9 +93,9 @@ public:
         return "R^k";
     }
 
-    virtual float getFactor(CorePoint::ConstPtr input_data) const
+    virtual float getFactor(Sample::ConstPtr input_data) const
     {
-        return pow(input_data->value<float>("distance"), parameters_(0));
+        return pow(input_data->variantPropertyValue<float>("distance"), parameters_(0));
     }
 
     //! get suggested initialization parameters for this correction factor
@@ -111,7 +111,7 @@ public:
 class CorrectionFactorCosPowerAngle : public CorrectionFactorBase
 {
 public:
-    CorrectionFactorCosPowerAngle(DataDB::ConstPtr db)
+    CorrectionFactorCosPowerAngle(SamplesDB::ConstPtr db)
         : CorrectionFactorBase(db)
     {
     }
@@ -121,9 +121,9 @@ public:
         return "cos^k(angle)";
     }
 
-    virtual float getFactor(CorePoint::ConstPtr input_data) const
+    virtual float getFactor(Sample::ConstPtr input_data) const
     {
-        float cosangle = cos(input_data->value<float>("angle") / 180 * M_PI);
+        float cosangle = cos(input_data->variantPropertyValue<float>("angle") / 180 * M_PI);
         return pow(cosangle, parameters_(0));
     }
 
@@ -140,7 +140,7 @@ public:
 class CorrectionFactorFixedMultiplier : public CorrectionFactorBase
 {
 public:
-    CorrectionFactorFixedMultiplier(DataDB::ConstPtr db)
+    CorrectionFactorFixedMultiplier(SamplesDB::ConstPtr db)
         : CorrectionFactorBase(db)
     {
     }
@@ -150,7 +150,7 @@ public:
         return "exp(k)";
     }
 
-    virtual float getFactor(CorePoint::ConstPtr input_data) const
+    virtual float getFactor(Sample::ConstPtr input_data) const
     {
         return parameters_(0);
     }
@@ -168,7 +168,7 @@ public:
 class CorrectionFactorAtmosphericTwoWay : public CorrectionFactorBase
 {
 public:
-    CorrectionFactorAtmosphericTwoWay(DataDB::ConstPtr db)
+    CorrectionFactorAtmosphericTwoWay(SamplesDB::ConstPtr db)
         : CorrectionFactorBase(db)
     {
     }
@@ -178,9 +178,9 @@ public:
         return "exp(2kR)";
     }
 
-    virtual float getFactor(CorePoint::ConstPtr input_data) const
+    virtual float getFactor(Sample::ConstPtr input_data) const
     {
-        float R = input_data->value<float>("distance");
+        float R = input_data->variantPropertyValue<float>("distance");
         return exp(2 * R * parameters_(0));
     }
 
@@ -196,7 +196,7 @@ public:
 class CorrectionFactorCloudDependentMultiplier : public CorrectionFactorBase
 {
 public:
-    CorrectionFactorCloudDependentMultiplier(DataDB::ConstPtr db)
+    CorrectionFactorCloudDependentMultiplier(SamplesDB::ConstPtr db)
         : CorrectionFactorBase(db)
     {
     }
@@ -207,9 +207,9 @@ public:
                "input clouds";
     }
 
-    virtual float getFactor(CorePoint::ConstPtr input_data) const
+    virtual float getFactor(Sample::ConstPtr input_data) const
     {
-        size_t cloud_id = input_data->value<size_t>("cloud_id");
+        size_t cloud_id = input_data->variantPropertyValue<size_t>("cloud_id");
         return parameters_(cloud_id);
     }
 

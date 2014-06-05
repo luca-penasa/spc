@@ -76,8 +76,7 @@ CEREAL_REGISTER_TYPE_WITH_NAME(spc::TimeSeriesEquallySpaced<float>,
 #include <spc/elements/TimeSeriesSparse.h>
 CEREAL_REGISTER_TYPE_WITH_NAME(spc::TimeSeriesSparse<float>, "TimeSeriesSparse")
 
-#include <spc/elements/ICalDataDB.h>
-CEREAL_REGISTER_TYPE_WITH_NAME(spc::DataDB, "DataDB")
+#include <spc/elements/SamplesDB.h>
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::SamplesDB, "SamplesDB")
 
-#include <spc/elements/ICalCorePoint.h>
-CEREAL_REGISTER_TYPE_WITH_NAME(spc::CorePoint, "CorePoint")
+

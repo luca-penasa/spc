@@ -10,83 +10,121 @@
 #include <spc/elements/TimeSeriesSparse.h>
 #include <spc/elements/TimeSeriesEquallySpaced.h>
 
-#include <spc/elements/ICalDataDB.h>
+#include <spc/elements/SamplesDB.h>
+
+#include <spc/elements/StratigraphicModelSingleAttitude.h>
+
+#include <spc/methods/AlignSingleAttitudeStratigraphicModelToSamples.h>
 int main(int argc, char **argv)
 {
-    {
 
-        spc::DataDB::Ptr db(new spc::DataDB);
+    spc::StratigraphicModelSingleAttitude::Ptr model(
+        new spc::StratigraphicModelSingleAttitude);
 
+    model->setNormal(Eigen::Vector3f(0, 0, 100));
 
-        spc::CorePoint::Ptr core (new spc::CorePoint);
-        core->setValue("test", 10);
+    model->setAdditionalShift(2);
 
-        db->pushBack(core);
+    Eigen::Vector3f v1(0, 0, 1);
+    float sp1 = model->getScalarFieldValue(v1);
+    std::cout << v1.transpose() << ": " << sp1 << std::endl;
 
+    Eigen::Vector3f v2(0, 0, 2);
+    float sp2 = model->getScalarFieldValue(v2);
+    std::cout << v2.transpose() << ": " << sp2 << std::endl;
 
-//        spc::MovableElement::Ptr obj(new spc::MovableElement);
-        std::string a1;
-        spc::io::serializeToString(core, a1, spc::io::XML);
+    spc::AlignSingleAttitudeStratigraphicModelToSamples aligner;
 
+    spc::SamplesDB::Ptr db(new spc::SamplesDB);
 
+    spc::Sample::Ptr s = db->addSample();
+    s->setPosition(Eigen::Vector3f(0, 0, 1));
+    s->variantPropertyValue("sp") = 2.1f;
 
-        std::cout << a1.c_str() << std::endl;
+    spc::Sample::Ptr s2 = db->addSample();
+    s2->setPosition(Eigen::Vector3f(0, 0, 2));
+    s2->variantPropertyValue("sp") = 2.9f;
 
-        return 1;
+    spc::Sample::Ptr s3 = db->addSample();
+    s3->setPosition(Eigen::Vector3f(0, 0, 3));
+    s3->variantPropertyValue("sp") = 4.12f;
 
-        std::vector<float> x{ 0, 1, 2, 3 };
-        std::vector<float> y{ 0, 1, 2, 3 };
+    aligner.setStraigraphicModel(model);
+    aligner.setFieldName("sp");
+    aligner.setSamplesDB(db);
 
-        spc::ElementBase::Ptr element(new spc::TimeSeriesEquallySpaced
-                                    <float>(0.0f, 100.0f, 10.0f));
+    std::cout << "before " << model->getAdditionalShift() << std::endl;
+    aligner.compute();
 
-        spc::io::ARCHIVE_TYPE type = spc::io::XML;
+    std::cout << "after " << model->getAdditionalShift() << std::endl;
+    std::cout << "after residual " << aligner.getResiduals().at(0) << " "
+                 << aligner.getResiduals().at(1) << " "
+              << aligner.getResiduals().at(2) << std::endl;
 
-        std::string a;
-        spc::io::serializeToString(element, a, type);
+    return 1;
 
-        std::cout << a.c_str() << std::endl;
+    spc::Sample::Ptr core(new spc::Sample);
+    core->setVariantPropertyValue("test", 10);
 
-        spc::ElementBase::Ptr b = spc::io::deserializeFromString(a, type);
+    db->pushBack(core);
 
-        std::cout << "done" << std::endl;
+    //        spc::MovableElement::Ptr obj(new spc::MovableElement);
+    std::string a1;
+    spc::io::serializeToString(core, a1, spc::io::XML);
 
-        std::stringstream newstream;
-        spc::io::serializeToStream(b, newstream, spc::io::JSON);
+    std::cout << a1.c_str() << std::endl;
 
-        std::cout << newstream.str().c_str() << std::endl;
+    return 1;
 
-        spc::io::serializeToFile(element, "/home/luca/test_serial",
-                                 spc::io::JSON);
+    std::vector<float> x{ 0, 1, 2, 3 };
+    std::vector<float> y{ 0, 1, 2, 3 };
 
-        spc::io::serializeToFile(element, "/home/luca/test_serial",
-                                 spc::io::XML);
+    spc::ElementBase::Ptr element(new spc::TimeSeriesEquallySpaced
+                                  <float>(0.0f, 100.0f, 10.0f));
 
-        spc::io::serializeToFile(element, "/home/luca/test_serial",
-                                 spc::io::SPC);
+    spc::io::ARCHIVE_TYPE type = spc::io::XML;
 
-        spc::ElementBase::Ptr obj_xml
-            = spc::io::deserializeFromFile("/home/luca/test_serial.xml");
-        spc::ElementBase::Ptr obj_spc
-            = spc::io::deserializeFromFile("/home/luca/test_serial.spc");
-        spc::ElementBase::Ptr obj_json
-            = spc::io::deserializeFromFile("/home/luca/test_serial.json");
+    std::string a;
+    spc::io::serializeToString(element, a, type);
 
-        spc::TimeSeriesEquallySpaced<float>::Ptr ts_xml = spcStaticPointerCast
-            <spc::TimeSeriesEquallySpaced<float>>(obj_xml);
+    std::cout << a.c_str() << std::endl;
 
-        spc::TimeSeriesEquallySpaced<float>::Ptr ts_spc = spcStaticPointerCast
-            <spc::TimeSeriesEquallySpaced<float>>(obj_spc);
+    spc::ElementBase::Ptr b = spc::io::deserializeFromString(a, type);
 
-        spc::TimeSeriesEquallySpaced<float>::Ptr ts_json = spcStaticPointerCast
-            <spc::TimeSeriesEquallySpaced<float>>(obj_json);
+    std::cout << "done" << std::endl;
 
-        std::vector<float> x_json = ts_json->getX();
-        std::vector<float> x_spc = ts_spc->getX();
+    std::stringstream newstream;
+    spc::io::serializeToStream(b, newstream, spc::io::JSON);
 
-        for (int i = 0; i < x_json.size(); ++i) {
-            std::cout << x_json.at(i) << " " << x_spc.at(i) << std::endl;
-        }
+    std::cout << newstream.str().c_str() << std::endl;
+
+    spc::io::serializeToFile(element, "/home/luca/test_serial", spc::io::JSON);
+
+    spc::io::serializeToFile(element, "/home/luca/test_serial", spc::io::XML);
+
+    spc::io::serializeToFile(element, "/home/luca/test_serial", spc::io::SPC);
+
+    spc::ElementBase::Ptr obj_xml
+        = spc::io::deserializeFromFile("/home/luca/test_serial.xml");
+    spc::ElementBase::Ptr obj_spc
+        = spc::io::deserializeFromFile("/home/luca/test_serial.spc");
+    spc::ElementBase::Ptr obj_json
+        = spc::io::deserializeFromFile("/home/luca/test_serial.json");
+
+    spc::TimeSeriesEquallySpaced<float>::Ptr ts_xml = spcStaticPointerCast
+        <spc::TimeSeriesEquallySpaced<float>>(obj_xml);
+
+    spc::TimeSeriesEquallySpaced<float>::Ptr ts_spc = spcStaticPointerCast
+        <spc::TimeSeriesEquallySpaced<float>>(obj_spc);
+
+    spc::TimeSeriesEquallySpaced<float>::Ptr ts_json = spcStaticPointerCast
+        <spc::TimeSeriesEquallySpaced<float>>(obj_json);
+
+    std::vector<float> x_json = ts_json->getX();
+    std::vector<float> x_spc = ts_spc->getX();
+
+    for (int i = 0; i < x_json.size(); ++i) {
+        std::cout << x_json.at(i) << " " << x_spc.at(i) << std::endl;
     }
 
     return 1;

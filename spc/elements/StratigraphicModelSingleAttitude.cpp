@@ -15,5 +15,4 @@ Vector3f StratigraphicModelSingleAttitude::getScalarFieldGradient(const Vector3f
 
 } // end nspace
 
-// BOOST_CLASS_EXPORT_GUID(spc::spcSingleAttitudeModel,
-// "spcSingleAttitudeModel")
+

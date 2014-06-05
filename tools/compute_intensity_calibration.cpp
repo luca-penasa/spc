@@ -85,10 +85,10 @@ int main (int argc, char ** argv)
 
     print_info("Loading the calibration dataset from %s\n", dataset_file.c_str());
 
-//     (new spc::DataDB);
+//     (new spc::SamplesDB);
 
     spc::ElementBase::Ptr el  = spc::io::deserializeFromFile(dataset_file);
-    spc::DataDB::Ptr db = spcDynamicPointerCast<spc::DataDB> (el);
+    spc::SamplesDB::Ptr db = spcDynamicPointerCast<spc::SamplesDB> (el);
 
 //    db->fromFile(dataset_file);
 
@@ -97,7 +97,7 @@ int main (int argc, char ** argv)
     spc::IntensityCalibratrionModelFactorsBased::Ptr model(new spc::JutzyModel(db, !mult_use_diff));
 
     spc::IntensityCalibrator calibrator;
-    calibrator.setCalibrationDataDB(db);
+    calibrator.setCalibrationSamplesDB(db);
     calibrator.setModel(model);
     calibrator.optimize();
 

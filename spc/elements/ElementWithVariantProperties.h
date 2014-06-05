@@ -22,6 +22,26 @@ public:
         return properties_;
     }
 
+    template <typename T> void setVariantPropertyValue(const std::string name, const T &value)
+    {
+        this->getVariantPropertiesRecord().property(name) = value;
+    }
+
+    VariantProperty::VarianT &variantPropertyValue(const std::string &name)
+    {
+        return this->getVariantPropertiesRecord().property(name).value();
+    }
+
+    template <typename T> T variantPropertyValue(const std::string name) const
+    {
+        return boost::get<T>(this->getVariantPropertiesRecord().property(name).value());
+    }
+
+    bool hasProperty(const std::string prop_name)
+    {
+        return this->getVariantPropertiesRecord().hasPropertyWithName(prop_name);
+    }
+
 
 
 private:

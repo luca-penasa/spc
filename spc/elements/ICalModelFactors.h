@@ -2,7 +2,7 @@
 #define SPC_INTENSITY_CALIBRATRION_MODELS_H
 
 #include <spc/elements/ICalModelFactors.h>
-#include <spc/elements/ICalDataDB.h>
+#include <spc/elements/SamplesDB.h>
 #include <Eigen/Dense>
 #include <spc/elements/ICalFactors.h>
 
@@ -35,7 +35,7 @@ public:
         parameters_ = pars;
     }
 
-    void setCalibrationData(DataDB::Ptr db)
+    void setCalibrationData(SamplesDB::Ptr db)
     {
         db_ = db;
     }
@@ -45,18 +45,18 @@ public:
 
     //! this method MUST be implemented
     virtual float
-    getOverallCorrectionFactor(const CorePoint::ConstPtr point) = 0;
+    getOverallCorrectionFactor(const Sample::ConstPtr point) = 0;
 
     virtual Eigen::VectorXf
-    getCorrectedIntensities(DataDB::ConstPtr in_data);
+    getCorrectedIntensities(SamplesDB::ConstPtr in_data);
 
     virtual Eigen::VectorXf
-    getPredictedIntensities(DataDB::ConstPtr in_data);
+    getPredictedIntensities(SamplesDB::ConstPtr in_data);
 
 protected:
     Eigen::VectorXf parameters_;
 
-    DataDB::Ptr db_;
+    SamplesDB::Ptr db_;
 };
 
 /** A model based on componible factors, see CorrectionFactors.h
@@ -164,7 +164,7 @@ public:
     }
 
     virtual float
-    getOverallCorrectionFactor(const CorePoint::ConstPtr point)
+    getOverallCorrectionFactor(const Sample::ConstPtr point)
     {
         float out = 1;
         spcForEachMacro(CorrectionFactorBase::Ptr fac, factors_)
@@ -194,7 +194,7 @@ class JutzyModel : public IntensityCalibratrionModelFactorsBased
 public:
     SPC_OBJECT(JutzyModel)
 
-    JutzyModel(DataDB::ConstPtr db, const bool fixed_mul = true)
+    JutzyModel(SamplesDB::ConstPtr db, const bool fixed_mul = true)
     {
         CorrectionFactorDistancePowerLaw::Ptr dist_f(
             new CorrectionFactorDistancePowerLaw(db));

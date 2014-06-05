@@ -3,14 +3,14 @@ namespace spc
 {
 
 Eigen::VectorXf IntensityCalibrationModelBase::getCorrectedIntensities(
-    DataDB::ConstPtr in_data)
+    SamplesDB::ConstPtr in_data)
 {
     Eigen::VectorXf out(in_data->size());
 
     size_t counter = 0;
-    spcForEachMacro(CorePoint::ConstPtr point, in_data->getDataDB())
+    spcForEachMacro(Sample::ConstPtr point, in_data->getSamplesDB())
     {
-        out(counter++) = point->value<float>("intensity")
+        out(counter++) = point->variantPropertyValue<float>("intensity")
                          / this->getOverallCorrectionFactor(point);
     }
 
@@ -18,12 +18,12 @@ Eigen::VectorXf IntensityCalibrationModelBase::getCorrectedIntensities(
 }
 
 Eigen::VectorXf IntensityCalibrationModelBase::getPredictedIntensities(
-    DataDB::ConstPtr in_data)
+    SamplesDB::ConstPtr in_data)
 {
     Eigen::VectorXf out(in_data->size());
 
     size_t counter = 0;
-    spcForEachMacro(CorePoint::ConstPtr point, in_data->getDataDB())
+    spcForEachMacro(Sample::ConstPtr point, in_data->getSamplesDB())
     {
         out(counter++) = this->getOverallCorrectionFactor(point);
     }

@@ -14,7 +14,7 @@ public:
     CalibrationDataFilter()
     {
     }
-    void setInputCalibrationDataDB(DataDB data)
+    void setInputCalibrationSamplesDB(SamplesDB data)
     {
         db_ = data;
     }
@@ -22,7 +22,7 @@ public:
     void fixUniqueNormals()
     {
 
-        std::vector<size_t> unique_cores = db_.getVectorOfUniqueCorePoints();
+        std::vector<size_t> unique_cores = db_.getVectorOfUniqueSamples();
         spcForEachMacro(size_t id, unique_cores)
         {
 
@@ -31,20 +31,20 @@ public:
                 pcl::console::print_info("core # %i\n", id);
             }
 
-            std::vector<CorePoint::Ptr> current_core_points
-                = db_.getDataForCorePointID(id);
+            std::vector<Sample::Ptr> current_core_points
+                = db_.getDataForSampleID(id);
 
             size_t best_id
-                = estimateBestCorePointForNormals(current_core_points);
+                = estimateBestSampleForNormals(current_core_points);
 
             // extract the normal for the best core point
-            Eigen::Vector3f best_normal = current_core_points.at(best_id)->value
+            Eigen::Vector3f best_normal = current_core_points.at(best_id)->variantPropertyValue
                                           <Eigen::Vector3f>("normal");
 
             // now we force ALL the other core points to have the same normal
-            spcForEachMacro(CorePoint::Ptr core_meas, current_core_points)
+            spcForEachMacro(Sample::Ptr core_meas, current_core_points)
             {
-                core_meas->value<Eigen::Vector3f>("normal") = best_normal;
+                core_meas->variantPropertyValue<Eigen::Vector3f>("normal") = best_normal;
             }
         }
     }
@@ -54,22 +54,22 @@ public:
      */
     void recomputeScatteringAngles()
     {
-        spcForEachMacro(CorePoint::Ptr core, db_.getDataDB())
+        spcForEachMacro(Sample::Ptr core, db_.getSamplesDB())
         {
-            Eigen::Vector3f normal = core->value<Eigen::Vector3f>("normal");
-            Eigen::Vector3f ray = core->value<Eigen::Vector3f>("ray");
+            Eigen::Vector3f normal = core->variantPropertyValue<Eigen::Vector3f>("normal");
+            Eigen::Vector3f ray = core->variantPropertyValue<Eigen::Vector3f>("ray");
             // overwrite old measure
-            core->value("angle")
+            core->variantPropertyValue("angle")
                 = CalibrationDataEstimator::getMinimumAngleBetweenVectors(
                     normal, ray);
         }
     }
 
     // this is a temptative to get the best normal for a given core point
-    size_t estimateBestCorePointForNormals(const std::vector
-                                           <CorePoint::Ptr> &data)
+    size_t estimateBestSampleForNormals(const std::vector
+                                           <Sample::Ptr> &data)
     {
-        std::vector<size_t> n_neighbors = extractPropertyAsVector
+        std::vector<size_t> n_neighbors = SamplesDB::extractPropertyAsVector
             <size_t>(data, "n_neighbors");
         std::vector<size_t>::iterator it
             = std::max_element(n_neighbors.begin(), n_neighbors.end());
@@ -78,7 +78,7 @@ public:
     }
 
 private:
-    DataDB db_;
+    SamplesDB db_;
 };
 
 } // end nspace

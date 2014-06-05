@@ -60,9 +60,14 @@ public:
         return additional_shift_;
     }
 
-    void setAdditionalShift(float additional_shift)
+    void setAdditionalShift(const float additional_shift)
     {
         additional_shift_ = additional_shift;
+    }
+
+    void addShift(const float shift)
+    {
+        additional_shift_ += shift;
     }
 
     void setAttitude(const Attitude &attitude)

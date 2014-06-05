@@ -21,7 +21,7 @@ void CalibrationDataEstimator::setInputClouds(std::vector
     input_fnames_ = cloud_names;
 }
 
-void CalibrationDataEstimator::setInputCorePoints(std::string core_points_name)
+void CalibrationDataEstimator::setInputSamples(std::string core_points_name)
 {
     input_core_points_fname_ = core_points_name;
 }
@@ -66,11 +66,11 @@ void CalibrationDataEstimator::setSearchRadius(const float rad)
     normal_estimation_search_radius_ = rad;
 }
 
-CorePoint::Ptr
-CalibrationDataEstimator::computeCorePointParameters(const size_t core_point_id,
+Sample::Ptr
+CalibrationDataEstimator::computeSampleParameters(const size_t core_point_id,
                                                      const float search_radius)
 {
-    CorePoint::Ptr out(new CorePoint);
+    Sample::Ptr out(new Sample);
 
     // get the point coordinates from core point cloud
     pcl::PointXYZI point = core_points_cloud_->at(core_point_id);
@@ -143,43 +143,43 @@ CalibrationDataEstimator::computeCorePointParameters(const size_t core_point_id,
     ////////////////////  SAVE ALL THE STUFF /////////////////////////
 
     // number and which neighbors used for this dataset
-    out->value("n_neighbors") = (int) ids.size();
-    out->value("neighbors") = ids;
-    out->value("neighbors_dists") = dists;
+    out->variantPropertyValue("n_neighbors") = (int) ids.size();
+    out->variantPropertyValue("neighbors") = ids;
+    out->variantPropertyValue("neighbors_dists") = dists;
 
     // normal and goodnees of fit
-    out->value("normal") = n_vec;
-    out->value("lambdas") = lambdas;
+    out->variantPropertyValue("normal") = n_vec;
+    out->variantPropertyValue("lambdas") = lambdas;
 
     // the local centroid
-    out->value("centroid") = c;
+    out->variantPropertyValue("centroid") = c;
 
     out->setPosition(c);
 
     // position of sensor
-    out->value("sensor_position") = pos;
+    out->variantPropertyValue("sensor_position") = pos;
 
     // ray from sensor to the center of mass of the core point
-    out->value("ray") = ray;
+    out->variantPropertyValue("ray") = ray;
 
     // the id of the core point
-    out->value("core_id") = (int) core_point_id;
+    out->variantPropertyValue("core_id") = (int) core_point_id;
 
     // cloud on which it was computed
-    out->value("cloud_name") = current_cloud_name_;
+    out->variantPropertyValue("cloud_name") = current_cloud_name_;
 
     // a progressive id for this cloud
-    out->value("cloud_id") = (int) current_cloud_id_;
+    out->variantPropertyValue("cloud_id") = (int) current_cloud_id_;
 
     // the average distance of the core point (its center of mass) from the
     // sensor
-    out->value("distance") = distance;
+    out->variantPropertyValue("distance") = distance;
 
     // the local average intensity
-    out->value("intensity") = intensity;
+    out->variantPropertyValue("intensity") = intensity;
 
     // the scattering angle
-    out->value("angle")
+    out->variantPropertyValue("angle")
         = CalibrationDataEstimator::getMinimumAngleBetweenVectors(n_vec, ray);
 
     return out;
@@ -251,7 +251,7 @@ CalibrationDataEstimator::loadCloudAndCreateSearcher(const std::string fname)
     current_sensor_orientation_ = orientation;
 }
 
-void CalibrationDataEstimator::loadCorePointsCloud()
+void CalibrationDataEstimator::loadSamplesCloud()
 {
     pcl::console::print_info("loading the core points cloud\n");
     pcl::PointCloud
@@ -278,7 +278,7 @@ void CalibrationDataEstimator::loadInputNormalsCloud()
     surface_for_normal_cloud_searcher_ = searcher;
 }
 
-DataDB CalibrationDataEstimator::getCalibrationDB()
+SamplesDB CalibrationDataEstimator::getCalibrationDB()
 {
     return db_;
 }

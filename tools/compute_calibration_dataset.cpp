@@ -123,7 +123,7 @@ int main (int argc, char ** argv)
         calibrator.setMaximumDistanceForGettingNormal(max_distance);
     }
 
-    calibrator.setInputCorePoints(core_point_file);
+    calibrator.setInputSamples(core_point_file);
 
     calibrator.setSearchRadius(search_radius);
 
@@ -137,8 +137,8 @@ int main (int argc, char ** argv)
 
 
 
-    spc::DataDB db = calibrator.getCalibrationDB();
-    db = db.getValidDataOnly(); //filter out nans
+    spc::SamplesDB db = calibrator.getCalibrationDB();
+//    db = db.getValidDataOnly(); //filter out nans
 
     //    db.printOutStuff();
 
@@ -154,7 +154,7 @@ int main (int argc, char ** argv)
         spc::CalibrationDataFilter f;
         pcl::console::print_info("chosing an unique normal for each core point\n");
 
-        f.setInputCalibrationDataDB(db);
+        f.setInputCalibrationSamplesDB(db);
         f.fixUniqueNormals();
         pcl::console::print_info("Done\n");
         pcl::console::print_info("Now we recompute all the scattering angles\n");
@@ -166,7 +166,7 @@ int main (int argc, char ** argv)
 
 //    db.printOutStuff();
 
-    spc::DataDB::Ptr ptr = spcMakeSharedPtrMacro<spc::DataDB> (db);
+    spc::SamplesDB::Ptr ptr = spcMakeSharedPtrMacro<spc::SamplesDB> (db);
 
 
 

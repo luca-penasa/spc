@@ -29,6 +29,9 @@
 // a shared ptr
 #define spcSharedPtrMacro std::shared_ptr
 
+#define spcFwdDeclSharedPtr(name) class name;\
+typedef spcSharedPtrMacro< name > name ## Ptr;
+
 // how to make one
 #define spcMakeSharedPtrMacro std::make_shared
 

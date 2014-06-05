@@ -21,8 +21,7 @@
 #include <spc/methods/std_helpers.hpp>
 //#include <boost/spirit/home/support/detail/hold_any.hpp>
 
-#include <spc/elements/ICalCorePoint.h>
-#include <spc/elements/ICalDataDB.h>
+#include <spc/elements/SamplesDB.h>
 
 namespace spc
 {
@@ -46,7 +45,7 @@ public:
 
     void setInputClouds(std::vector<std::string> cloud_names);
 
-    void setInputCorePoints(std::string core_points_name);
+    void setInputSamples(std::string core_points_name);
 
     int compute()
     {
@@ -55,10 +54,10 @@ public:
         }
 
         // load the core points cloud
-        this->loadCorePointsCloud();
+        this->loadSamplesCloud();
 
         // set up a db
-        db_ = DataDB(); // ensure is clean, we should reset instead
+        db_ = SamplesDB(); // ensure is clean, we should reset instead
 
         current_cloud_id_ = 0;
         spcForEachMacro(std::string fname, input_fnames_)
@@ -75,9 +74,8 @@ public:
                 if (i % 100 == 0) {
                     pcl::console::print_info("core # %i\n", i);
                 }
-                CorePoint::Ptr measurement
-                    = this->computeCorePointParameters(
-                        i, normal_estimation_search_radius_);
+                Sample::Ptr measurement = this->computeSampleParameters(
+                    i, normal_estimation_search_radius_);
                 db_.pushBack(measurement);
             }
             current_cloud_id_ += 1;
@@ -97,7 +95,7 @@ public:
         intensity_estimation_method_ = met;
     }
 
-    DataDB getCalibrationDB();
+    SamplesDB getCalibrationDB();
 
     void setSearchRadius(const float rad);
 
@@ -162,8 +160,8 @@ public:
     }
 
     // on current cloud!
-    CorePoint::Ptr computeCorePointParameters(const size_t core_point_id,
-                                                  const float search_radius);
+    Sample::Ptr computeSampleParameters(const size_t core_point_id,
+                                        const float search_radius);
 
     static float getMinimumAngleBetweenVectors(const Eigen::Vector3f x_,
                                                const Eigen::Vector3f y_);
@@ -174,7 +172,7 @@ public:
 
     void loadCloudAndCreateSearcher(const std::string fname);
 
-    void loadCorePointsCloud();
+    void loadSamplesCloud();
 
     void setInputNormalsCloudName(const std::string fname)
     {
@@ -222,7 +220,7 @@ private:
     pcl::PointCloud<pcl::PointXYZI>::Ptr current_point_cloud_;
 
     //! if you want you can use also precomputed normals. You just need to set
-    //an input cloud here
+    // an input cloud here
     pcl::PointCloud<pcl::PointNormal>::Ptr surface_for_normal_cloud_;
 
     ///////////////////// FLANN INDEXES //////////////////////
@@ -258,7 +256,7 @@ private:
     float maximum_squared_distance_for_normal_getting_;
 
     ////////////// OUTPUT DATABASE /////////////////////////
-    DataDB db_;
+    SamplesDB db_;
 };
 }
 #endif // INTENSITYAUTOCALIBRATOR_H

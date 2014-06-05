@@ -2,7 +2,7 @@
 #define INTENSITYCALIBRATOR_H
 
 #include <spc/elements/ICalModelFactors.h>
-#include <spc/elements/ICalDataDB.h>
+#include <spc/elements/SamplesDB.h>
 #include <boost/current_function.hpp>
 #include <unsupported/Eigen/NonLinearOptimization>
 
@@ -59,7 +59,7 @@ public:
         return model_;
     }
 
-    void setCalibrationDataDB(DataDB::Ptr db)
+    void setCalibrationSamplesDB(SamplesDB::Ptr db)
     {
         assert(db);
         db_ = db;
@@ -68,13 +68,13 @@ public:
         observed_intensities_.resize(db->size());
 
         size_t counter = 0;
-        spcForEachMacro(CorePoint::Ptr core, db->getDataDB())
+        spcForEachMacro(Sample::Ptr core, db->getSamplesDB())
         {
-            observed_intensities_(counter++) = core->value<float>("intensity");
+            observed_intensities_(counter++) = core->variantPropertyValue<float>("intensity");
         }
     }
 
-    DataDB::Ptr getCalibrationDataDB() const
+    SamplesDB::Ptr getCalibrationSamplesDB() const
     {
         return db_;
     }
@@ -122,7 +122,7 @@ public:
 
         int values() const
         {
-            return calibrator_->getCalibrationDataDB()->size();
+            return calibrator_->getCalibrationSamplesDB()->size();
         }
 
         IntensityCalibrator *calibrator_;
@@ -158,7 +158,7 @@ public:
 private:
     IntensityCalibrationModelBase::Ptr model_;
 
-    DataDB::Ptr db_;
+    SamplesDB::Ptr db_;
 
     Eigen::VectorXf observed_intensities_;
 };
