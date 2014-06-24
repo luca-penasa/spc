@@ -2,18 +2,16 @@
 
 namespace spc
 {
+DtiClassType TimeSeriesEquallySpaced::Type ("TimeSeriesEquallySpaced", &TimeSeriesBase::Type);
 
-template <typename ScalarT>
-TimeSeriesEquallySpaced
-    <ScalarT>::TimeSeriesEquallySpaced(const TimeSeriesEquallySpaced &other)
+
+TimeSeriesEquallySpaced::TimeSeriesEquallySpaced(const TimeSeriesEquallySpaced &other)
 {
     x_start = other.x_start;
     x_step = other.x_step;
 }
 
-template <typename ScalarT>
-TimeSeriesEquallySpaced
-    <ScalarT>::TimeSeriesEquallySpaced(vector<ScalarT> y_, ScalarT x_step_,
+TimeSeriesEquallySpaced::TimeSeriesEquallySpaced(std::vector<ScalarT> y_, ScalarT x_step_,
                                        ScalarT x_start_)
 {
     y_ = y_;
@@ -21,9 +19,7 @@ TimeSeriesEquallySpaced
     x_step = x_step_;
 }
 
-template <typename ScalarT>
-TimeSeriesEquallySpaced
-    <ScalarT>::TimeSeriesEquallySpaced(ScalarT x_step_, ScalarT x_start_,
+TimeSeriesEquallySpaced::TimeSeriesEquallySpaced(ScalarT x_step_, ScalarT x_start_,
                                        size_t size)
 {
     x_start = x_start_;
@@ -32,9 +28,7 @@ TimeSeriesEquallySpaced
     this->fill();
 }
 
-template <typename ScalarT>
-TimeSeriesEquallySpaced
-    <ScalarT>::TimeSeriesEquallySpaced(ScalarT x_min_, ScalarT x_max_,
+TimeSeriesEquallySpaced::TimeSeriesEquallySpaced(ScalarT x_min_, ScalarT x_max_,
                                        ScalarT step_)
 {
     x_start = x_min_;
@@ -48,7 +42,16 @@ TimeSeriesEquallySpaced
     this->fill();
 }
 
-/// INSTANTIATIONS
-template class TimeSeriesEquallySpaced<float>;
-template class TimeSeriesEquallySpaced<double>;
+std::vector<TimeSeriesBase::ScalarT> TimeSeriesEquallySpaced::getX() const
+{
+    std::vector<ScalarT> x(this->y_.size());
+    int counter = 0;
+    spcForEachMacro(ScalarT & x_pos, x)
+    {
+        x_pos = counter++ * x_step + x_start;
+    }
+    return x;
+}
+
+
 }

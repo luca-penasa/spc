@@ -15,14 +15,16 @@ using namespace flann;
 namespace spc
 {
 
-template <typename ScalarT> class KernelSmoothing2
+class KernelSmoothing2
 {
 
 public:
-    typedef TimeSeriesSparse<ScalarT> SparseT;
+
+    typedef float ScalarT;
+    typedef TimeSeriesSparse SparseT;
     typedef spcSharedPtrMacro<SparseT> SparsePtrT;
 
-    typedef TimeSeriesEquallySpaced<ScalarT> EquallyT;
+    typedef TimeSeriesEquallySpaced EquallyT;
     typedef spcSharedPtrMacro<EquallyT> EquallyPtrT;
 
     typedef typename flann::L2_Simple<ScalarT> distType;
@@ -61,15 +63,20 @@ public:
 protected:
     void initFlann();
 
+    void extractVectors();
+
     SparsePtrT sparse_;
     EquallyPtrT out_series_;
 
     flann::KDTreeSingleIndexParams pars_;
 
-    ScalarT step_;
-    ScalarT bandwidth_;
+    ScalarT step_ = 1.0;
+    ScalarT bandwidth_ = 1.0;
 
-    spcSharedPtrMacro<FLANNIndex> flann_index_;
+    std::vector<ScalarT> x_;
+    std::vector<ScalarT> y_;
+
+    FLANNIndex flann_index_;
 
     // compute gaussian weights on a vector
     inline void gaussian(const std::vector<ScalarT> &values,

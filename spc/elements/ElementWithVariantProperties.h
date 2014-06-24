@@ -4,7 +4,7 @@
 #include <spc/elements/VariantPropertiesRecord.h>
 namespace spc
 {
-
+//! TODO to be modified so it looks like an interface
 class ElementWithVariantProperties
 {
 public:
@@ -42,6 +42,9 @@ public:
         return this->getVariantPropertiesRecord().hasPropertyWithName(prop_name);
     }
 
+
+    // this should be moved to a pure interface
+    virtual bool hasVariantProperties() = 0;
 
 
 private:

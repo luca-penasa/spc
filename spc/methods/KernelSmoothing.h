@@ -14,14 +14,15 @@
 namespace spc
 {
 
-template <typename ScalarT> class KernelSmoothing
+class KernelSmoothing
 {
+    typedef float ScalarT;
     // Used for initializing FLANN
     typedef typename flann::L2_Simple<ScalarT> distType;
     typedef typename flann::Index<distType> FLANNIndex;
     typedef typename flann::Matrix<ScalarT> FLANNMat;
 
-    typedef spc::TimeSeriesEquallySpaced<ScalarT> OutSeriesT;
+    typedef spc::TimeSeriesEquallySpaced OutSeriesT;
     typedef spcSharedPtrMacro<OutSeriesT> OutSeriesPtrT;
 
     // a shorthand for vector type
@@ -62,7 +63,7 @@ public:
         initKDTree();
     }
 
-    inline void setInputSeries(const TimeSeriesBase<ScalarT> &series)
+    inline void setInputSeries(const TimeSeriesBase &series)
     {
 
         this->setX(series.getX());

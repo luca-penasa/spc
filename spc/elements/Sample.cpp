@@ -1,5 +1,8 @@
 #include "Sample.h"
-// namespace spc
-//{
+ namespace spc
+{
 
-//}//end nspace
+ DtiClassType Sample::Type ("Sample", &MovableElement::Type);
+
+
+}//end nspace

@@ -1,84 +1,85 @@
 #ifndef SPC_CALIBRATION_DATA_FILTER_H
 #define SPC_CALIBRATION_DATA_FILTER_H
 
-#include <spc/methods/IntensityCalibrationDataEstimator.h>
-
+#include <spc/elements/EigenTable.h>
 namespace spc
 {
 
-class CalibrationDataFilter
+class IntensityCalibrationDataFilter
 {
+
 public:
-    SPC_OBJECT(CalibrationDataFilter)
-
-    CalibrationDataFilter()
+    void setData(const EigenTable::Ptr data)
     {
-    }
-    void setInputCalibrationSamplesDB(SamplesDB data)
-    {
-        db_ = data;
+        data_ = data;
     }
 
-    void fixUniqueNormals()
+    std::vector<size_t> getGoodIds(std::vector<size_t> good_ids = std::vector
+                                   <size_t>()) const
     {
+        std::cout << "here" << std::endl;
 
-        std::vector<size_t> unique_cores = db_.getVectorOfUniqueSamples();
-        spcForEachMacro(size_t id, unique_cores)
-        {
-
-            // just some verbosity
-            if (id % 100 == 0) {
-                pcl::console::print_info("core # %i\n", id);
-            }
-
-            std::vector<Sample::Ptr> current_core_points
-                = db_.getDataForSampleID(id);
-
-            size_t best_id
-                = estimateBestSampleForNormals(current_core_points);
-
-            // extract the normal for the best core point
-            Eigen::Vector3f best_normal = current_core_points.at(best_id)->variantPropertyValue
-                                          <Eigen::Vector3f>("normal");
-
-            // now we force ALL the other core points to have the same normal
-            spcForEachMacro(Sample::Ptr core_meas, current_core_points)
-            {
-                core_meas->variantPropertyValue<Eigen::Vector3f>("normal") = best_normal;
-            }
+        if (!data_) {
+            pcl::console::print_error("No dataset as input.\n");
+            return good_ids;
         }
-    }
 
-    //! secondary parameter is the scattering angle for now
-    /** \note this will overwrite any existing parameter with the same name
-     */
-    void recomputeScatteringAngles()
-    {
-        spcForEachMacro(Sample::Ptr core, db_.getSamplesDB())
-        {
-            Eigen::Vector3f normal = core->variantPropertyValue<Eigen::Vector3f>("normal");
-            Eigen::Vector3f ray = core->variantPropertyValue<Eigen::Vector3f>("ray");
-            // overwrite old measure
-            core->variantPropertyValue("angle")
-                = CalibrationDataEstimator::getMinimumAngleBetweenVectors(
-                    normal, ray);
+        size_t n_rows = data_->getNumberOfRows();
+
+        std::cout << "here" << std::endl;
+        Eigen::VectorXf n_neighbors = data_->column("n_neighbors");
+
+        for (size_t i = 0; i < n_rows; ++i) {
+            if (n_neighbors(i) >= min_n_neighbors_)
+                good_ids.push_back(i);
         }
+
+        return good_ids;
     }
 
-    // this is a temptative to get the best normal for a given core point
-    size_t estimateBestSampleForNormals(const std::vector
-                                           <Sample::Ptr> &data)
+    EigenTable::Ptr applyFilter() const
     {
-        std::vector<size_t> n_neighbors = SamplesDB::extractPropertyAsVector
-            <size_t>(data, "n_neighbors");
-        std::vector<size_t>::iterator it
-            = std::max_element(n_neighbors.begin(), n_neighbors.end());
-        size_t position = std::distance(n_neighbors.begin(), it);
-        return position;
+        std::vector<size_t> good_ids = getGoodIds();
+
+        EigenTable::Ptr good(new EigenTable(*data_, true));
+
+        size_t counter = 0;
+        for (size_t id : good_ids)
+            good->row(counter++) = data_->row(id);
+
+        addWeightsToTable(good);
+
+        return good;
     }
 
-private:
-    SamplesDB db_;
+    void setMinNNeighbors(const size_t &n)
+    {
+        min_n_neighbors_ = n;
+    }
+
+    static void addWeightsToTable(const EigenTable::Ptr table)
+    {
+        // provide space
+        table->addNewComponent("intensity_w");
+        table->addNewComponent("eigen_w");
+
+        table->column("intensity_w")
+            = table->column("intensity_std")
+                  .array()
+                  .square()
+                  .inverse()
+                  .matrix(); // do the square before. its a std
+        table->column("eigen_w")
+            = table->column("eigen_ratio").cwiseInverse().matrix(); // just the
+                                                                    // inverse.
+                                                                    // its a
+                                                                    // variance
+    }
+
+protected:
+    EigenTable::Ptr data_;
+
+    size_t min_n_neighbors_ = 3;
 };
 
 } // end nspace

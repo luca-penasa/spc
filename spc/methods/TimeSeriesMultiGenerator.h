@@ -17,7 +17,7 @@ public:
     typedef std::vector<int> Indices;
     typedef std::vector<Indices> IndicesContainer;
 
-    typedef spc::TimeSeriesEquallySpaced<ScalarT> OutSeriesT;
+    typedef spc::TimeSeriesEquallySpaced OutSeriesT;
     typedef spcSharedPtrMacro<OutSeriesT> OutSeriesPtrT;
 
 public:

@@ -5,6 +5,7 @@
 #include <iostream>
 
 #include <spc/elements/MovableElement.h>
+
 #include <fstream>
 namespace spc
 {
@@ -19,6 +20,7 @@ class Attitude : public Plane
 {
 public:
     SPC_OBJECT(Attitude)
+    EXPOSE_TYPE
 
     /// def contructor
     Attitude();
@@ -90,5 +92,6 @@ private:
 std::ostream &operator<<(std::ostream &os, const Attitude &obj);
 
 } // end nspace
+
 
 #endif // ORIENTATION_H

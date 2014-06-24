@@ -13,7 +13,7 @@ class ModelDiscretePoints : public CalibrationModelBase
 {
 public:
     SPC_OBJECT(ModelDiscretePoints)
-
+EXPOSE_TYPE
     ModelDiscretePoints();
 
     virtual float getDistanceCorrection(const float &distance) override
@@ -24,12 +24,12 @@ public:
         return interpolator_->getInterpolatedValue(distance);
     }
 
-    void setDiscretePoints(spc::TimeSeriesBase<float>::Ptr points)
+    void setDiscretePoints(spc::TimeSeriesBase::Ptr points)
     {
         discrete_points_distance_ = points;
     }
 
-    spc::TimeSeriesBase<float>::Ptr getTS()
+    spc::TimeSeriesBase::Ptr getTS()
     {
         return discrete_points_distance_;
     }
@@ -40,7 +40,7 @@ protected:
         if (!discrete_points_distance_) {
             pcl::console::print_error("[Error in %s] first you should set up a "
                                       "set of discrete points to be used",
-                                      this->getClassName().c_str());
+                                      this->getType()->getClassName().c_str());
             return -1;
         }
 
@@ -59,7 +59,7 @@ protected:
     /// the correction function f(d)= ...
     /// these passing points will be interpolated to get a continous function
     ///
-    spc::TimeSeriesBase<float>::Ptr discrete_points_distance_;
+    spc::TimeSeriesBase::Ptr discrete_points_distance_;
 
     /// we need an interpolator to interpolate between points
     /// any derived interpolator from interpolator base is fine

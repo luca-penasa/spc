@@ -35,7 +35,7 @@ enum ARCHIVE_TYPE {
      * Note the filename must be with no extension. Extension is automatically
  * appended depending on the type
      */
-int serializeToFile(const ElementBase::Ptr element, std::string filename,
+int serializeToFile(const ISerializable::Ptr element, std::string filename,
                     const ARCHIVE_TYPE &type = SPC);
 
 /**
@@ -44,18 +44,18 @@ int serializeToFile(const ElementBase::Ptr element, std::string filename,
      * @param filename with extension, we will guess the right archive from that
      * @return
      */
-ElementBase::Ptr deserializeFromFile(const std::string filename);
+ISerializable::Ptr deserializeFromFile(const std::string filename);
 
-int serializeToStream(const ElementBase::Ptr element, std::ostream &stream,
+int serializeToStream(const ISerializable::Ptr element, std::ostream &stream,
                       const ARCHIVE_TYPE &type = SPC);
 
-ElementBase::Ptr deserializeFromStream(std::istream &stream,
+ISerializable::Ptr deserializeFromStream(std::istream &stream,
                                      const ARCHIVE_TYPE &type = SPC);
 
-int serializeToString(const ElementBase::Ptr element, std::string &string,
+int serializeToString(const ISerializable::Ptr element, std::string &string,
                       const ARCHIVE_TYPE &type = SPC);
 
-ElementBase::Ptr deserializeFromString(std::string &string,
+ISerializable::Ptr deserializeFromString(std::string &string,
                                      const ARCHIVE_TYPE &type = SPC);
 
 } // end io namespace

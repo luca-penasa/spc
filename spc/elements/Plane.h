@@ -30,7 +30,7 @@ class Plane : public MovableElement
 {
 public:
     SPC_OBJECT(Plane)
-
+    EXPOSE_TYPE
     /// Def const
     Plane()
     {
@@ -43,8 +43,7 @@ public:
     }
 
     /// a Plane from direction of the normal and passing for a given point
-    Plane(const Vector3f normal, const Vector3f point)
-        : MovableElement(point)
+    Plane(const Vector3f normal, const Vector3f point) : MovableElement(point)
     {
         normal_.setNormal(normal);
     }
@@ -98,8 +97,7 @@ private:
 
     template <class Archive> void serialize(Archive &ar)
     {
-        ar(cereal::base_class<spc::MovableElement>(this),
-           CEREAL_NVP(normal_));
+        ar(cereal::base_class<spc::MovableElement>(this), CEREAL_NVP(normal_));
     }
 };
 

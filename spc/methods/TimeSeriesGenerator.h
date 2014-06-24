@@ -28,7 +28,7 @@ class TimeSeriesGenerator
 {
 public:
     typedef float ScalarT;
-    typedef spc::TimeSeriesEquallySpaced<ScalarT> OutSeriesT;
+    typedef spc::TimeSeriesEquallySpaced OutSeriesT;
     typedef spcSharedPtrMacro<OutSeriesT> OutSeriesPtrT;
 
     ///
@@ -184,8 +184,6 @@ protected:
     ScalarT max_x_;
 
 private:
-    // these vars are for internal use only - used to temporarly store the data
-
     ///
     /// \brief x_data field
     ///
@@ -195,8 +193,6 @@ private:
     /// \brief y_data field
     ///
     std::vector<ScalarT> y_field_;
-
-    KernelSmoothing2<ScalarT> ks_;
 };
 
 } // end nspace

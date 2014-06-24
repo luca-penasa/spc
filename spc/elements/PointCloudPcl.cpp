@@ -4,6 +4,9 @@
 namespace spc
 {
 
+template<typename PointT>
+DtiClassType PointCloudPcl<PointT>::Type = DtiClassType("PointCloudPcl", &PointCloudBase::Type);
+
 template <typename PointT> PointCloudPcl<PointT>::PointCloudPcl(CloudPtrT cloud)
 {
     cloud_ = cloud;
@@ -31,15 +34,12 @@ void PointCloudPcl<PointT>::setPoint(const int id, const float x, const float y,
 
     try
     {
-
         PointT p = cloud_->at(id);
         p.x = x;
         p.y = y;
         p.z = z;
-
-        std::cout << "setting" << std::endl;
         cloud_->at(id) = p;
-        std::cout << "first done" << std::endl;
+
     }
     catch (const std::exception &exc)
     {
@@ -47,9 +47,6 @@ void PointCloudPcl<PointT>::setPoint(const int id, const float x, const float y,
         std::cerr << exc.what() << std::endl;
         return;
     }
-
-    //        cloud_->at(id).y = y;
-    //        cloud_->at(id).z = z;
 }
 
 template <typename PointT>

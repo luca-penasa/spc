@@ -1,5 +1,10 @@
 #include "Cylinder.h"
 
+namespace spc
+{
+DtiClassType Cylinder::Type ("Cylinder", &MovableElement::Type);
+}
+
 spc::Cylinder::Cylinder(const Eigen::Vector3f dir)
 {
     direction_ = Normal3D(dir);

@@ -1,6 +1,7 @@
 #include "spc/elements/ICalModelBase.h"
 namespace spc
 {
+DtiClassType CalibrationModelBase::Type ("CalibrationModelBase", &ElementBase::Type);
 
 CalibrationModelBase::CalibrationModelBase()
 {

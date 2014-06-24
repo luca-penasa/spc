@@ -21,7 +21,12 @@
 #include <spc/methods/std_helpers.hpp>
 //#include <boost/spirit/home/support/detail/hold_any.hpp>
 
-#include <spc/elements/SamplesDB.h>
+//#include <spc/elements/SamplesDB.h>
+//#include <spc/elements/Fields.h>
+
+//#include <spc/elements/Fields.h>
+
+#include <spc/elements/EigenTable.h>
 
 namespace spc
 {
@@ -47,43 +52,10 @@ public:
 
     void setInputSamples(std::string core_points_name);
 
-    int compute()
-    {
-        if (normal_estimation_method_ == PRECOMPUTED_NORMALS) {
-            loadInputNormalsCloud();
-        }
-
-        // load the core points cloud
-        this->loadSamplesCloud();
-
-        // set up a db
-        db_ = SamplesDB(); // ensure is clean, we should reset instead
-
-        current_cloud_id_ = 0;
-        spcForEachMacro(std::string fname, input_fnames_)
-        {
-            current_cloud_name_ = fname;
-            pcl::console::print_info("started working on %s ", fname.c_str());
-
-            // load the cloud and create what we need
-            this->loadCloudAndCreateSearcher(fname);
-
-            // now we cycle on the core points for the current cloud
-            for (size_t i = 0; i < core_points_cloud_->size(); ++i) {
-                // just some verbosity
-                if (i % 100 == 0) {
-                    pcl::console::print_info("core # %i\n", i);
-                }
-                Sample::Ptr measurement = this->computeSampleParameters(
-                    i, normal_estimation_search_radius_);
-                db_.pushBack(measurement);
-            }
-            current_cloud_id_ += 1;
-        }
-    }
+    int compute();
 
     void getNearestNormal(const pcl::PointXYZI &point, float &nx, float &ny,
-                          float &nz, float sq_dist_limit);
+                          float &nz, float sq_dist_limit, float &eigenratio);
 
     void setNormalEstimationMethod(const NORMAL_COMPUTATION_METHOD met)
     {
@@ -95,7 +67,7 @@ public:
         intensity_estimation_method_ = met;
     }
 
-    SamplesDB getCalibrationDB();
+    EigenTable::Ptr getCalibrationDB();
 
     void setSearchRadius(const float rad);
 
@@ -114,65 +86,27 @@ public:
     }
 
     //! compute the gaussian smoothed value for a given point
-    static float computeGaussianSmoothedIntensity(
-        const pcl::PointCloud<pcl::PointXYZI>::Ptr in_cloud,
+    static float computeGaussianSmoothedIntensity(const pcl::PointCloud<pcl::PointXYZI>::Ptr in_cloud,
         const std::vector<int> &indices, const std::vector<float> &sq_distances,
-        const float &kernel_sigma, const bool exclude_first_id = false)
-    {
-        assert(indices.size() == sq_distances.size());
-        assert(kernel_sigma != 0.0f);
-        assert(in_cloud);
+        const float &kernel_sigma, float &intensity_std, const bool exclude_first_id = false);
 
-        if (indices.size() == 1)
-            return in_cloud->at(indices.at(0)).intensity;
-
-        if ((indices.size() == 1) & (exclude_first_id))
-            return spcNANMacro;
-
-        if (indices.size() == 0)
-            return spcNANMacro;
-
-        // compute weights
-        std::vector<float> weights(indices.size());
-        for (size_t i = 0; i < indices.size(); ++i)
-            weights.at(i) = kernel(sq_distances.at(i), kernel_sigma);
-
-        // now compute the weighted average
-        float sum = 0;
-        float w_sum = 0;
-
-        if (!exclude_first_id) {
-            for (size_t i = 0; i < indices.size(); ++i) {
-                sum += weights.at(i) * in_cloud->at(indices.at(i)).intensity;
-                w_sum += weights.at(i);
-            }
-        } else {
-            // now compute the weighted average
-            float sum = 0;
-            float w_sum = 0;
-            for (size_t i = 1; i < indices.size(); ++i) {
-                sum += weights.at(i) * in_cloud->at(indices.at(i)).intensity;
-                w_sum += weights.at(i);
-            }
-        }
-
-        return sum / w_sum;
-    }
+    static float getAverageIntensity(const pcl::PointCloud
+                                     <pcl::PointXYZI> &cloud,
+                                     std::vector<int> ids,
+                                     float &std);
 
     // on current cloud!
-    Sample::Ptr computeSampleParameters(const size_t core_point_id,
+    void computeSampleParameters(const size_t core_point_id,
                                         const float search_radius);
 
     static float getMinimumAngleBetweenVectors(const Eigen::Vector3f x_,
                                                const Eigen::Vector3f y_);
 
-    static float getAverageIntensity(const pcl::PointCloud
-                                     <pcl::PointXYZI> &cloud,
-                                     std::vector<int> ids);
+
 
     void loadCloudAndCreateSearcher(const std::string fname);
 
-    void loadSamplesCloud();
+    void loadKeypointsCloud();
 
     void setInputNormalsCloudName(const std::string fname)
     {
@@ -195,6 +129,14 @@ public:
     void setMaximumDistanceForGettingNormal(const float &val)
     {
         maximum_squared_distance_for_normal_getting_ = val * val;
+    }
+
+    float getEigenRatio(const pcl::PointNormal &point, float &eigen_ratio);
+
+
+    void setAppendEigenRatio(const bool & val)
+    {
+        append_eigen_ratio_ = val;
     }
 
 private:
@@ -254,9 +196,11 @@ private:
 
     ////////////// USED ONLY WITH PRECOMPUTED NORMALS ////////////
     float maximum_squared_distance_for_normal_getting_;
+    bool append_eigen_ratio_ = true;
 
     ////////////// OUTPUT DATABASE /////////////////////////
-    SamplesDB db_;
+    EigenTable::Ptr db_;
+
 };
 }
 #endif // INTENSITYAUTOCALIBRATOR_H

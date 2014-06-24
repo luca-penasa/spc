@@ -1,7 +1,6 @@
 #ifndef SPC_VARIANT_H
 #define SPC_VARIANT_H
 
-#include <spc/elements/ElementBase.h>
 #include <spc/elements/macros.h>
 #include <Eigen/Dense>
 #include <boost/variant.hpp>
@@ -25,13 +24,13 @@ struct to_string_visitor : boost::static_visitor<>
 
 };
 
-class VariantProperty : public ElementBase
+class VariantProperty
 {
 public:
-    SPC_OBJECT(VariantProperty)
+
 
     // ALLOWED TYPES!
-    typedef boost::variant<int, float, std::string, Eigen::Vector3f, std::vector<float>, std::vector<int>> VarianT;
+    typedef boost::variant<int, float, std::string> VarianT;
 
     VariantProperty()
     {

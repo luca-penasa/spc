@@ -45,7 +45,7 @@ public:
         if (!cloud_) {
             pcl::console::print_error(
                 "[Error in %s] you should set an input cluod!",
-                getClassName().c_str());
+                this->getType()->getClassName().c_str());
             return -1;
         }
 
@@ -54,24 +54,23 @@ public:
             pcl::console::print_error("[Error in %s] Cannot find the distance "
                                       "and/or the distance fields you "
                                       "requested!",
-                                      getClassName().c_str());
+                                      this->getType()->getClassName().c_str());
             return -1;
         }
 
         std::vector<float> dist = cloud_->getField(distace_field_);
         std::vector<float> intens = cloud_->getField(intensity_field_);
 
-        TimeSeriesSparse
-            <float>::Ptr serie(new TimeSeriesSparse<float>(dist, intens));
+        TimeSeriesSparse::Ptr serie(new TimeSeriesSparse(dist, intens));
 
-        KernelSmoothing2<float> ks;
+        KernelSmoothing2 ks;
 
         ks.setBandwidth(bandwidth_);
         ks.setStep(s_step_);
         ks.setInputSeries(serie);
         ks.compute();
 
-        TimeSeriesEquallySpaced<float>::Ptr out = ks.getOutputSeries();
+        TimeSeriesEquallySpaced::Ptr out = ks.getOutputSeries();
 
         model_->setDiscretePoints(out);
     }

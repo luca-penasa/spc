@@ -5,6 +5,9 @@
 #include <string>
 namespace spc
 {
+
+DtiClassType Attitude::Type ("Attitude", &Plane::Type);
+
 Attitude::Attitude()
 {
 }

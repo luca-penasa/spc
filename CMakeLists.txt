@@ -84,7 +84,7 @@ else()
   set(SPC_DEF_INSTALL_CMAKE_DIR lib/CMake/SPC)
 endif()
 
-set(SPC_INSTALL_CMAKE_DIR ${SPC_DEF_INSTALL_CMAKE_DIR} CACHE PATH "Installation directory for CMake files")
+set(INSTALL_CMAKE_DIR ${SPC_DEF_INSTALL_CMAKE_DIR} CACHE PATH "Installation directory for CMake files")
 
 # Make relative paths absolute (needed later on)
 foreach(p LIB BIN INCLUDE CMAKE)

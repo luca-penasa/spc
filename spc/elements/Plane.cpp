@@ -4,6 +4,9 @@ using namespace Eigen;
 namespace spc
 {
 
+DtiClassType Plane::Type ("Plane", &MovableElement::Type);
+
+
 Transform<float, 3, Affine, AutoAlign> Plane::get2DArbitraryRefSystem() const
 {
     Transform<float, 3, Affine, AutoAlign> T;

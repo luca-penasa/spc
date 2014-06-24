@@ -10,7 +10,7 @@ class Normal3D : public ElementBase
 {
 
     SPC_OBJECT(Normal3D)
-
+EXPOSE_TYPE
 public:
     Normal3D();
 

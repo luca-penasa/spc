@@ -52,10 +52,13 @@ for m in matrixes:
     print m
     print "\n"
 
-T = np.eye(n_rows)  * 10
-T[3,3] = 1.0           
-for m in matrixes:
-    T = m * T 
+# T = np.eye(n_rows)  * 10
+# T[3,3] = 1.0
+
+T = matrixes[0]
+
+for m in matrixes[1:]:
+    T = m * T
 
 ### scaling
 #scalemat = np.eye(n_rows) * 10

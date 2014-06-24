@@ -2,6 +2,9 @@
 namespace spc
 {
 
+DtiClassType Normal3D::Type ("Normal3D", &ElementBase::Type);
+
+
 Normal3D::Normal3D() : normal_(0, 0, 1)
 {
 }

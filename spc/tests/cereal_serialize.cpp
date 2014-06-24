@@ -5,38 +5,47 @@
 #include <Eigen/Dense>
 #include <fstream>
 #include <cereal/types/polymorphic.hpp>
-#include <spc/io/eigen_serialization.hpp>
+//#include <spc/io/eigen_serialization.hpp>
 
 #include <boost/shared_ptr.hpp>
 
 #include <spc/elements/macros.h>
 
-// namespace cereal
-//{
-// template <class Archive> inline
-// void
-// save (Archive & ar, const Eigen::Vector3f &v)
-//{
 
-//    float x,y,z;
-//    x = v(0);
-//    y = v(1);
-//    z = v(2);
-//    ar( cereal::make_nvp("x",x ),cereal::make_nvp("y",y  ),
-// cereal::make_nvp("z",z  ));
+namespace cereal
+{
+  template <class Archive, class _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols> inline
+void
+    save(Archive & ar, Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> const & m)
+    {
+      int32_t rows = m.rows();
+      int32_t cols = m.cols();
+      ar(rows);
+      ar(cols);
 
-//}
+      for (int i = 0; i < rows; i++)
+          for (int j = 0; j < cols; j++)
+              ar(m(i,j));
+    }
 
-// template <class Archive> inline
-// void
-// load (Archive & ar, Eigen::Vector3f &v)
-//{
-//    ar( cereal::make_nvp("x",v(0)) );
-//    ar( cereal::make_nvp("y",v(1))  );
-//    ar( cereal::make_nvp("z",v(2))  );
-//}
+  template <class Archive, class _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols> inline
+void    load(Archive & ar, Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> & m)
+    {
+      int32_t rows;
+      int32_t cols;
+      ar(rows);
+      ar(cols);
 
-//}
+      m.resize(rows, cols);
+
+      for (int i = 0; i < rows; i++)
+          for (int j = 0; j < cols; j++)
+              ar(m(i,j));
+
+    }
+}
+
+
 
 class ClassBase
 {
@@ -61,7 +70,7 @@ public:
     template <class Archive> void serialize(Archive &ar)
     {
         ar(cereal::make_nvp("x", x));
-        ar(v);
+//        ar(v);
     }
 
     float x;
@@ -101,57 +110,29 @@ public:
     }
 };
 
-CEREAL_REGISTER_TYPE(ClassA)
-CEREAL_REGISTER_TYPE(ClassB)
+//CEREAL_REGISTER_TYPE(ClassA)
+//CEREAL_REGISTER_TYPE(ClassB)
 
 int main()
 {
 
-    {
+      Eigen::MatrixXd test = Eigen::MatrixXd::Random(10, 3);
 
-        ClassBase::Ptr a(new ClassA);
+      Eigen::Vector3f v = Eigen::Vector3f::Random();
 
-        std::ofstream out("test.json");
-        cereal::JSONOutputArchive archive_o(out);
-        archive_o(a);
-    }
 
-    //    std::ifstream in ("test.json");
+ {
+      std::ofstream out("eigen.cereal");
+      cereal::JSONOutputArchive archive_o(out);
+      archive_o(test);
 
-    //    cereal::JSONInputArchive archive_i(in);
-
-    //    ClassB b;
-    //    archive_i( b);
-
-    //    //    std::cout << b.x << "\n" << b.v << std::endl;
-    //    std::cout << b.x << "\n" << b.v << " v2\n" <<b.v2 << std::endl;
 }
-
-// int main()
-//{
-////    std::stringstream ss; // any stream can be used
-
 //    {
 
-//        std::ofstream out ("test.xml");
+////        ClassBase::Ptr a(new ClassA);
 
-//        cereal::XMLOutputArchive oarchive(out); // Create an output archive
-
-//        MyClass m1, m2, m3;
-//        oarchive(m1, m2, m3); // Write the data to the archive
-
-////        out.close();
-
+//        std::ofstream out("test.json");
+//        cereal::BinaryOutputArchive archive_o(test);
+//        archive_o(a);
 //    }
-
-//    {
-
-//        std::ifstream in("test.xml");
-//        cereal::XMLInputArchive iarchive(in); // Create an input archive
-
-//        MyClass a, b, c;
-//        iarchive(a);
-//        iarchive(b);
-//        iarchive(c); // Read the data from the archive
-//    }
-//}
+}

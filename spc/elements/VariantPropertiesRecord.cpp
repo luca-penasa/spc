@@ -11,6 +11,10 @@
 namespace spc
 {
 
+DtiClassType VariantPropertiesRecord::Type ("VariantPropertiesRecord", &ElementBase::Type);
+
+
+
 std::ostream &operator<<(std::ostream &os, const VariantPropertiesRecord &obj)
 {
     std::vector<std::string> keys = obj.getKeysList();

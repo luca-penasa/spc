@@ -10,12 +10,12 @@
 namespace spc
 {
 
-class Sample : public MovableElement, public ElementWithVariantProperties
+class Sample : public MovableElement
 {
 
 public:
     SPC_OBJECT(Sample)
-
+EXPOSE_TYPE
     Sample()
     {
     }
@@ -34,8 +34,7 @@ private:
 
     template <class Archive> void serialize(Archive &ar)
     {
-        ar(cereal::base_class<MovableElement>(this),
-           cereal::base_class<ElementWithVariantProperties> (this));
+        ar(cereal::base_class<MovableElement>(this));
     }
 };
 

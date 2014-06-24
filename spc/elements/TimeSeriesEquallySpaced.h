@@ -2,15 +2,13 @@
 #define SPC_EQUALLY_SPACED_TIME_SERIES_H
 
 #include <spc/elements/TimeSeriesBase.h>
-#include <algorithm>
-#include <limits>
+//#include <algorithm>
+//#include <limits>
 #include <cereal/types/vector.hpp>
 
 namespace spc
 {
 
-using namespace std;
-template <typename ScalarT>
 ///
 /// \brief The EquallySpacedTimeSeries class is made up of a set of ordered y
 /// values equally spaced.
@@ -26,12 +24,14 @@ template <typename ScalarT>
 /// \f]
 /// \ingroup time_series
 ///
-class TimeSeriesEquallySpaced : public spc::TimeSeriesBase<ScalarT>
+class TimeSeriesEquallySpaced : public spc::TimeSeriesBase
 {
 public:
     SPC_OBJECT(TimeSeriesEquallySpaced)
+EXPOSE_TYPE
+    using typename spc::TimeSeriesBase::VectorT;
 
-    using typename spc::TimeSeriesBase<ScalarT>::VectorT;
+    using typename spc::TimeSeriesBase::ScalarT;
 
     ///
     /// \brief EquallySpacedTimeSeries default constructor
@@ -52,7 +52,7 @@ public:
     /// \param x_step_ x sampling step
     /// \param x_start_ x position of the first sample
     ///
-    TimeSeriesEquallySpaced(vector<ScalarT> y_, ScalarT x_step_ = 1.0,
+    TimeSeriesEquallySpaced(std::vector<ScalarT> y_, ScalarT x_step_ = 1.0,
                             ScalarT x_start_ = 0.0);
 
     ///
@@ -73,16 +73,6 @@ public:
     ///
     TimeSeriesEquallySpaced(ScalarT x_min_, ScalarT x_max_, ScalarT step_);
 
-    template <typename NScalarT>
-    TimeSeriesEquallySpaced(const TimeSeriesEquallySpaced<NScalarT> &other)
-    {
-        this->y_.clear();
-        std::vector<NScalarT> other_y = other.getY();
-        std::vector<ScalarT> this_y(other_y.begin(), other_y.end());
-        this->setY(this_y);
-        this->x_start = (ScalarT)other.getXStart();
-        this->x_step = (ScalarT)other.getXStep();
-    }
 
     ///
     /// \brief getXStart
@@ -106,16 +96,7 @@ public:
     /// \brief getX
     /// \return a vector of the x positions
     ///
-    virtual std::vector<ScalarT> getX() const
-    {
-        std::vector<ScalarT> x(this->y_.size());
-        int counter = 0;
-        spcForEachMacro(ScalarT & x_pos, x)
-        {
-            x_pos = counter++ * x_step + x_start;
-        }
-        return x;
-    }
+    virtual std::vector<ScalarT> getX() const;
 
     ///
     /// \brief resize the y vector to the given size
@@ -160,8 +141,8 @@ private:
 
     template <class Archive> void serialize(Archive &ar)
     {
-        ar(cereal::base_class<spc::TimeSeriesBase<ScalarT>>(this),
-           CEREAL_NVP(x_start), CEREAL_NVP(x_step));
+        ar(cereal::base_class<spc::TimeSeriesBase>(this), CEREAL_NVP(x_start),
+           CEREAL_NVP(x_step));
     }
 
 protected:

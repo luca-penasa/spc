@@ -11,7 +11,7 @@ class CalibrationModelBase : public ElementBase
 {
 public:
     SPC_OBJECT(CalibrationModelBase)
-
+    EXPOSE_TYPE
     CalibrationModelBase();
 
     virtual float getDistanceCorrection(const float &distance) = 0;

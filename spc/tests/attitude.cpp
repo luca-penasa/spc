@@ -15,8 +15,31 @@
 #include <spc/elements/StratigraphicModelSingleAttitude.h>
 
 #include <spc/methods/AlignSingleAttitudeStratigraphicModelToSamples.h>
+
+#include <spc/elements/Fields.h>
 int main(int argc, char **argv)
 {
+
+
+
+    return 1;
+
+
+    spc::Attitude::Ptr myatt(new spc::Attitude);
+    std::cout << myatt->getType()->getClassName() << std::endl;
+
+    spc::ElementBase::Ptr myptr = myatt;
+
+    std::cout << myptr->getType()->getClassName() << std::endl;
+
+        std::cout << myptr->getType()->getParent()->getClassName() << std::endl;
+
+        std::cout << myptr->getType()->getParent()->getParent()->getClassName() << std::endl;
+
+
+
+    return 1;
+
 
     spc::StratigraphicModelSingleAttitude::Ptr model(
         new spc::StratigraphicModelSingleAttitude);
@@ -80,7 +103,7 @@ int main(int argc, char **argv)
     std::vector<float> y{ 0, 1, 2, 3 };
 
     spc::ElementBase::Ptr element(new spc::TimeSeriesEquallySpaced
-                                  <float>(0.0f, 100.0f, 10.0f));
+                                  (0.0f, 100.0f, 10.0f));
 
     spc::io::ARCHIVE_TYPE type = spc::io::XML;
 
@@ -89,7 +112,7 @@ int main(int argc, char **argv)
 
     std::cout << a.c_str() << std::endl;
 
-    spc::ElementBase::Ptr b = spc::io::deserializeFromString(a, type);
+    spc::ISerializable::Ptr b = spc::io::deserializeFromString(a, type);
 
     std::cout << "done" << std::endl;
 
@@ -104,21 +127,21 @@ int main(int argc, char **argv)
 
     spc::io::serializeToFile(element, "/home/luca/test_serial", spc::io::SPC);
 
-    spc::ElementBase::Ptr obj_xml
+    spc::ISerializable::Ptr obj_xml
         = spc::io::deserializeFromFile("/home/luca/test_serial.xml");
-    spc::ElementBase::Ptr obj_spc
+    spc::ISerializable::Ptr obj_spc
         = spc::io::deserializeFromFile("/home/luca/test_serial.spc");
-    spc::ElementBase::Ptr obj_json
+    spc::ISerializable::Ptr obj_json
         = spc::io::deserializeFromFile("/home/luca/test_serial.json");
 
-    spc::TimeSeriesEquallySpaced<float>::Ptr ts_xml = spcStaticPointerCast
-        <spc::TimeSeriesEquallySpaced<float>>(obj_xml);
+    spc::TimeSeriesEquallySpaced::Ptr ts_xml = spcStaticPointerCast
+        <spc::TimeSeriesEquallySpaced>(obj_xml);
 
-    spc::TimeSeriesEquallySpaced<float>::Ptr ts_spc = spcStaticPointerCast
-        <spc::TimeSeriesEquallySpaced<float>>(obj_spc);
+    spc::TimeSeriesEquallySpaced::Ptr ts_spc = spcStaticPointerCast
+        <spc::TimeSeriesEquallySpaced>(obj_spc);
 
-    spc::TimeSeriesEquallySpaced<float>::Ptr ts_json = spcStaticPointerCast
-        <spc::TimeSeriesEquallySpaced<float>>(obj_json);
+    spc::TimeSeriesEquallySpaced::Ptr ts_json = spcStaticPointerCast
+        <spc::TimeSeriesEquallySpaced>(obj_json);
 
     std::vector<float> x_json = ts_json->getX();
     std::vector<float> x_spc = ts_spc->getX();

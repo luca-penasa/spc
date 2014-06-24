@@ -7,6 +7,9 @@
 namespace spc
 {
 
+
+DtiClassType MovableElement::Type ("MovableElement", &ElementBase::Type);
+
 MovableElement::MovableElement() : position_(0, 0, 0)
 {
 }

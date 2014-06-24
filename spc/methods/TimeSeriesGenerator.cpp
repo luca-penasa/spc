@@ -39,29 +39,33 @@ int TimeSeriesGenerator::compute()
     //        return -1;
     //    }
 
-    TimeSeriesSparse<ScalarT>::Ptr series(
-        new TimeSeriesSparse<ScalarT>(x_field_, y_field_)); // the input series
+    TimeSeriesSparse::Ptr series(
+        new TimeSeriesSparse(x_field_, y_field_)); // the input series
+
+
+    KernelSmoothing2 ks;
+
 
     // and also init the output series
     if (min_x_ != max_x_) {
         pcl::console::print_warn("instantiating!");
         // fixed min-max length series
         out_series_ = TimeSeriesEquallySpaced
-            <ScalarT>::Ptr(new TimeSeriesEquallySpaced
-                           <ScalarT>(min_x_, max_x_, sampling_step_));
+            ::Ptr(new TimeSeriesEquallySpaced
+                           (min_x_, max_x_, sampling_step_));
 
     } else {
-        out_series_ = TimeSeriesEquallySpaced<ScalarT>::Ptr(
+        out_series_ = TimeSeriesEquallySpaced::Ptr(
             new TimeSeriesEquallySpaced
-            <ScalarT>(get_min(x_field_), get_max(x_field_), sampling_step_));
-        ks_.setStep(sampling_step_);
+            (get_min(x_field_), get_max(x_field_), sampling_step_));
+        ks.setStep(sampling_step_);
     }
 
-    ks_.setOutputSeriesBlank(out_series_);
-    ks_.setInputSeries(series);
-    ks_.setBandwidth(bandwidth_);
+    ks.setOutputSeriesBlank(out_series_);
+    ks.setInputSeries(series);
+    ks.setBandwidth(bandwidth_);
 
-    ks_.compute();
+    ks.compute();
 
     return 1;
 }

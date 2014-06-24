@@ -7,10 +7,10 @@
 namespace spc
 {
 
-class InterpolatorBase : public ElementBase
+class InterpolatorBase
 {
 public:
-    SPC_OBJECT(InterpolatorBase)
+    spcTypedefSharedPtrs(InterpolatorBase)
 
     InterpolatorBase();
 
@@ -28,12 +28,10 @@ public:
         return out;
     }
 
-    virtual void setInputSeries(TimeSeriesBase<float>::ConstPtr input)
+    virtual void setInputSeries(TimeSeriesBase::ConstPtr input)
     {
         if (!input) {
-            pcl::console::print_error(
-                "[ERROR in %s] You are setting a null pointer",
-                getClassName().c_str());
+            pcl::console::print_error("[ERROR] You are setting a null pointer");
             return;
         }
         input_ = input;
@@ -46,8 +44,7 @@ public:
 
         if (!input_) {
             pcl::console::print_error(
-                "[ERROR in %s] You must define a valid input time series",
-                getClassName().c_str());
+                "[ERROR] You must define a valid input time series");
             min = std::numeric_limits<float>::quiet_NaN();
             max = std::numeric_limits<float>::quiet_NaN();
             return;
@@ -65,7 +62,7 @@ public:
     }
 
 protected:
-    TimeSeriesBase<float>::ConstPtr input_;
+    TimeSeriesBase::ConstPtr input_;
 };
 
 } // end nspace

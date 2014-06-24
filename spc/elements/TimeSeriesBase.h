@@ -1,46 +1,28 @@
 #ifndef SPC_BASE_TIME_SERIES_H
 #define SPC_BASE_TIME_SERIES_H
 
-#include <string>
-#include <vector>
-#include <assert.h>
+
 #include <spc/elements/ElementBase.h>
-
-#include <boost/random/random_device.hpp>
-
-#include <boost/random/uniform_real_distribution.hpp>
-
 #include <cereal/types/vector.hpp>
+#include <spc/elements/EigenTable.h>
 
 namespace spc
 {
 
-///
-/// \defgroup time_series Time Series Objects
-///
-using namespace std;
-template <typename ScalarT>
-///
-/// \brief The GenericTimeSeries class is a Generic class for time series-like
-/// (TS) objects.
-/// \ingroup time_series
-///
+
 class TimeSeriesBase : public ElementBase
 {
 public:
     SPC_OBJECT(TimeSeriesBase)
-
+EXPOSE_TYPE
     TimeSeriesBase()
     {
     }
-
+    typedef float ScalarT;
     typedef std::vector<ScalarT> VectorT;
-    typedef ScalarT ScaT;
 
-    void fill(const ScalarT value_ = std::numeric_limits<ScalarT>::quiet_NaN())
-    {
-        std::fill(this->y_.begin(), this->y_.end(), value_);
-    }
+
+    void fill(const ScalarT value_ = std::numeric_limits<ScalarT>::quiet_NaN());
 
     /// by default will generate in -1 to 1 range
     // void fillRandomY(ScalarT min=-1, ScalarT max=1);
@@ -59,7 +41,7 @@ public:
     /// \brief getX positions
     /// \return a vector of x positions
     ///
-    virtual vector<ScalarT> getX() const = 0;
+    virtual std::vector<ScalarT> getX() const = 0;
 
     ///
     /// \brief getY values
@@ -83,7 +65,7 @@ public:
     ///
     /// \brief setY values
     ///
-    void setY(vector<ScalarT> y)
+    void setY(std::vector<ScalarT> y)
     {
         y_ = y;
     }
@@ -122,7 +104,21 @@ private:
     {
         ar(cereal::base_class<spc::ElementBase>(this), CEREAL_NVP(y_));
     }
+
+    // ElementBase interface
+
+    // ISerializable interface
+public:
+    virtual bool isAsciiSerializable() const
+    {
+        return true;
+    }
+
+    // ISerializable interface
+public:
+    virtual EigenTable::Ptr asEigenTable() const;
 };
+
 
 } // end namespace spc
 #endif // GENERICTIMESERIES_H

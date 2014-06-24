@@ -3,6 +3,10 @@
 namespace spc
 {
 
+
+DtiClassType
+VariableScalarFieldBase::Type ("VariableScalarFieldBase", &ElementBase::Type);
+
 VariableScalarFieldBase::VariableScalarFieldBase()
 {
 }

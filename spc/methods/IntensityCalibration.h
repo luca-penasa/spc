@@ -5,6 +5,7 @@
 #include <spc/elements/SamplesDB.h>
 #include <boost/current_function.hpp>
 #include <unsupported/Eigen/NonLinearOptimization>
+#include <spc/elements/PointCloudBase.h>
 
 namespace spc
 {
@@ -48,119 +49,103 @@ public:
     SPC_OBJECT(IntensityCalibrator)
 
     IntensityCalibrator();
+    
 
-    void setModel(const IntensityCalibrationModelBase::Ptr model)
-    {
-        model_ = model;
-    }
 
-    IntensityCalibrationModelBase::Ptr getModel() const
-    {
-        return model_;
-    }
 
-    void setCalibrationSamplesDB(SamplesDB::Ptr db)
-    {
-        assert(db);
-        db_ = db;
+//    Eigen::VectorXf getResidualsSimpleComparison()
+//    {
+//        pcl::console::print_debug("%s called\n", BOOST_CURRENT_FUNCTION);
 
-        // we extract raw intensities
-        observed_intensities_.resize(db->size());
+//        Eigen::VectorXf corr = model_->getPredictedIntensities(db_);
+//        //        Eigen::VectorXf ones = Eigen::VectorXf::Zero(corr.size());
 
-        size_t counter = 0;
-        spcForEachMacro(Sample::Ptr core, db->getSamplesDB())
-        {
-            observed_intensities_(counter++) = core->variantPropertyValue<float>("intensity");
-        }
-    }
+//        return observed_intensities_ - corr;
+//    }
 
-    SamplesDB::Ptr getCalibrationSamplesDB() const
-    {
-        return db_;
-    }
+//    // this functor returns simply the difference between the observed and
+//    // predicted intensities
+//    struct FunctorSimple : FunctorBase<float>
+//    {
+//        FunctorSimple(IntensityCalibrator *calibrator)
+//        {
+//            calibrator_ = calibrator;
+//            pcl::console::print_debug("functor constructed\n");
+//        }
 
-    Eigen::VectorXf getResidualsSimpleComparison()
-    {
-        pcl::console::print_debug("%s called\n", BOOST_CURRENT_FUNCTION);
+//        int operator()(const Eigen::VectorXf &pars,
+//                       Eigen::VectorXf &residuals) const
+//        {
+//            calibrator_->getModel()->setParameters(pars);
+//            residuals = calibrator_->getResidualsSimpleComparison();
 
-        Eigen::VectorXf corr = model_->getPredictedIntensities(db_);
-        //        Eigen::VectorXf ones = Eigen::VectorXf::Zero(corr.size());
+//            std::cout << "called with pars: \n"
+//                      << calibrator_->getModel()->getParameters() << std::endl;
 
-        return observed_intensities_ - corr;
-    }
+//            float sum = residuals.array().square().sum();
 
-    // this functor returns simply the difference between the observed and
-    // predicted intensities
-    struct FunctorSimple : FunctorBase<float>
-    {
-        FunctorSimple(IntensityCalibrator *calibrator)
-        {
-            calibrator_ = calibrator;
-            pcl::console::print_debug("functor constructed\n");
-        }
+//            pcl::console::print_debug("functor operator () called\n");
+//            pcl::console::print_info("current sum of squares: %g\n", sum);
+//        }
 
-        int operator()(const Eigen::VectorXf &pars,
-                       Eigen::VectorXf &residuals) const
-        {
-            calibrator_->getModel()->setParameters(pars);
-            residuals = calibrator_->getResidualsSimpleComparison();
 
-            std::cout << "called with pars: \n"
-                      << calibrator_->getModel()->getParameters() << std::endl;
+//        IntensityCalibrator *calibrator_;
+//    };
 
-            float sum = residuals.array().square().sum();
+//    int optimize()
+//    {
+//        model_->initParameters(); // initialize parameters
 
-            pcl::console::print_debug("functor operator () called\n");
-            pcl::console::print_info("current sum of squares: %g\n", sum);
-        }
+//        Eigen::VectorXf pars = model_->getParameters();
 
-        // n pars
-        int inputs() const
-        {
-            return calibrator_->getModel()->getNumberOfParameters();
-        }
+//        std::cout << "init pars:\n " << pars << "\n" << std::endl;
 
-        int values() const
-        {
-            return calibrator_->getCalibrationSamplesDB()->size();
-        }
+//        FunctorSimple functor(this);
 
-        IntensityCalibrator *calibrator_;
-    };
+//        Eigen::NumericalDiff<FunctorSimple> numDiff(functor, 1e-2f);
 
-    int optimize()
-    {
-        model_->initParameters(); // initialize parameters
-        Eigen::VectorXf pars = model_->getParameters();
+//        Eigen::LevenbergMarquardt
+//            <Eigen::NumericalDiff<FunctorSimple>, float> lm(numDiff);
+//        lm.parameters.maxfev = 1000000000000;
 
-        std::cout << "init pars:\n " << pars << "\n" << std::endl;
+//        //        std::cout <<  << std::endl;
+//        pcl::console::print_debug("starting minimization\n ");
 
-        FunctorSimple functor(this);
+//        Eigen::LevenbergMarquardtSpace::Status status = lm.minimize(pars);
+//        std::cout << "status: " << status << std::endl;
 
-        Eigen::NumericalDiff<FunctorSimple> numDiff(functor, 1e-2f);
+//        std::cout << "x that minimizes the function: " << std::endl << pars
+//                  << std::endl;
 
-        Eigen::LevenbergMarquardt
-            <Eigen::NumericalDiff<FunctorSimple>, float> lm(numDiff);
-        lm.parameters.maxfev = 1000000000000;
+//        return 0;
+//    }
 
-        //        std::cout <<  << std::endl;
-        pcl::console::print_debug("starting minimization\n ");
+//    spcSetMacro(ObservedIntensities, observed_intensities_, Eigen::VectorXf)
+//    spcGetMacro(ObservedIntensities, observed_intensities_, Eigen::VectorXf)
 
-        Eigen::LevenbergMarquardtSpace::Status status = lm.minimize(pars);
-        std::cout << "status: " << status << std::endl;
+//    spcSetMacro(ObservedDistances, distances_, Eigen::VectorXf)
+//    spcGetMacro(ObservedDistances, distances_, Eigen::VectorXf)
 
-        std::cout << "x that minimizes the function: " << std::endl << pars
-                  << std::endl;
+//    spcSetMacro(ObservedAngles, angles_, Eigen::VectorXf)
+//    spcGetMacro(ObservedAngles, angles_, Eigen::VectorXf)
 
-        return 0;
-    }
+//    spcSetMacro(CloudId, cloud_ids_, Eigen::VectorXi)
+//    spcGetMacro(CloudId, cloud_ids_, Eigen::VectorXi)
+
+//    spcSetMacro(MulPerCloud, diff_mult_per_cloud_id_, bool)
+//    spcGetMacro(MulPerCloud, diff_mult_per_cloud_id_, bool)
 
 private:
-    IntensityCalibrationModelBase::Ptr model_;
-
-    SamplesDB::Ptr db_;
 
     Eigen::VectorXf observed_intensities_;
+
+    Eigen::VectorXf distances_;
+
+    Eigen::VectorXf angles_;
+
+    Eigen::VectorXi cloud_ids_;
+
+    bool diff_mult_per_cloud_id_ = false;
 };
 
 } // end nspace

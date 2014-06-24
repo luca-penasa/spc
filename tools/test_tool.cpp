@@ -13,7 +13,7 @@
 
 int main (int argc, char ** argv)
 {
-    spc::TimeSeriesEquallySpaced<float> ts;
+    spc::TimeSeriesEquallySpaced ts;
 	std::cout << "test tool" << std::endl; 
 	
     //Sleep(2000); // this works only on win

@@ -12,11 +12,11 @@
 namespace spc
 {
 
-class VariantPropertiesRecord : public ElementBase
+class VariantPropertiesRecord
 {
 public:
     SPC_OBJECT(VariantPropertiesRecord)
-
+EXPOSE_TYPE
     typedef std::pair<std::string, VariantProperty> pairT;
     typedef std::unordered_map<std::string, VariantProperty> mapT;
 

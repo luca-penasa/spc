@@ -6,6 +6,10 @@
 namespace spc
 {
 
+
+//DtiClassType VariantProperty::Type ("VariantProperty", ElementBase::Type);
+
+
 template <typename T> void
 to_string_visitor::operator()(T const &item)
 {

@@ -8,10 +8,10 @@ namespace spc
 namespace io
 {
 
-int serializeToFile(const ElementBase::Ptr element, std::string filename,
+int serializeToFile(const ISerializable::Ptr element, std::string filename,
                     const ARCHIVE_TYPE &type)
 {
-    if (!element->isSPCSerializable()) {
+    if (!element->isSerializable()) {
         pcl::console::print_error(
             "Trying to serialize an unserializable object. Nothing Done.\n");
         return -1;
@@ -36,7 +36,7 @@ int serializeToFile(const ElementBase::Ptr element, std::string filename,
     return 1;
 }
 
-ElementBase::Ptr deserializeFromFile(const std::string filename)
+ISerializable::Ptr deserializeFromFile(const std::string filename)
 {
 
     spc::ElementBase::Ptr ptr; // a null pointer
@@ -70,7 +70,7 @@ ElementBase::Ptr deserializeFromFile(const std::string filename)
     return deserializeFromStream(is, matched_type);
 }
 
-int serializeToStream(const ElementBase::Ptr element, std::ostream &stream,
+int serializeToStream(const ISerializable::Ptr element, std::ostream &stream,
                       const ARCHIVE_TYPE &type)
 {
 
@@ -90,10 +90,10 @@ int serializeToStream(const ElementBase::Ptr element, std::ostream &stream,
     }
 }
 
-ElementBase::Ptr deserializeFromStream(std::istream &stream,
+ISerializable::Ptr deserializeFromStream(std::istream &stream,
                                      const ARCHIVE_TYPE &type)
 {
-    ElementBase::Ptr ptr;
+    ISerializable::Ptr ptr;
 
     if (type == XML) {
         cereal::XMLInputArchive archive(stream);
@@ -109,7 +109,7 @@ ElementBase::Ptr deserializeFromStream(std::istream &stream,
     return ptr;
 }
 
-int serializeToString(const ElementBase::Ptr element, std::string &string,
+int serializeToString(const ISerializable::Ptr element, std::string &string,
                       const io::ARCHIVE_TYPE &type)
 {
     std::stringstream sstream;
@@ -118,7 +118,7 @@ int serializeToString(const ElementBase::Ptr element, std::string &string,
     return 1;
 }
 
-ElementBase::Ptr deserializeFromString(std::string &string,
+ISerializable::Ptr deserializeFromString(std::string &string,
                                      const io::ARCHIVE_TYPE &type)
 {
     std::stringstream sstream("");

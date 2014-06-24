@@ -16,7 +16,7 @@
 #include <iostream>
 
 #include <cereal/types/vector.hpp>
-
+#include <set>
 namespace spc
 {
 
@@ -24,6 +24,7 @@ class SamplesDB: public ElementBase
 {
 public:
     SPC_OBJECT(SamplesDB)
+    EXPOSE_TYPE
 
     //! empty constructor
     SamplesDB()
@@ -63,6 +64,37 @@ public:
         return this->getVectorOfUniqueClouds().size();
     }
 
+    std::vector<std::string> getUniqueKeys() const
+    {
+        std::set<std::string> tmp_set;
+       for (Sample::Ptr s: db_)
+       {
+           std::vector<std::string> keys = s->getVariantPropertiesRecord().getKeysList();
+
+           for (std::string k: keys)
+           {
+               tmp_set.insert(k);
+           }
+       }
+
+       std::vector<std::string> out;
+       out.assign(tmp_set.begin(), tmp_set.end());
+
+       return out;
+    }
+
+    template <typename T>
+    SamplesDB getNotNanEntries(const std::string fieldname) const
+    {
+        SamplesDB out_db;
+
+        for (Sample::Ptr s: db_)
+            if (std::isfinite(s->variantPropertyValue<T>(fieldname)))
+                out_db.pushBack(s);
+
+        return out_db;
+    }
+
 
     std::vector<Sample::Ptr> getDataForSampleID(size_t core_point_id)
     {
@@ -93,35 +125,35 @@ public:
 
         spcForEachMacro(Sample::Ptr core, db_)
         {
-            size_t current_id = core->variantPropertyValue<size_t>("core_id");
+            int current_id = core->variantPropertyValue<int>("core_id");
             core_ids_indices_list_.at(current_id).push_back(core);
         }
     }
 
-    std::vector<size_t> getVectorOfUniqueSamples()
+    std::vector<int> getVectorOfUniqueSamples()
     {
         // first get the core points ids as a vector list
-        std::vector<size_t> core_points_ids;
+        std::vector<int> core_points_ids;
 
         spcForEachMacro(Sample::Ptr core, db_)
         {
-            size_t current_id = core->variantPropertyValue<size_t>("core_id");
-            if (!spc::element_exists<size_t>(core_points_ids, current_id))
+            int current_id = core->variantPropertyValue<int>("core_id");
+            if (!spc::element_exists<int>(core_points_ids, current_id))
                 core_points_ids.push_back(current_id);
         }
 
         return core_points_ids;
     }
 
-    std::vector<size_t> getVectorOfUniqueClouds() const
+    std::vector<int> getVectorOfUniqueClouds() const
     {
         // first get the core points ids as a vector list
-        std::vector<size_t> cloud_ids;
+        std::vector<int> cloud_ids;
 
         spcForEachMacro(Sample::ConstPtr core, db_)
         {
-            size_t current_id = core->variantPropertyValue<size_t>("cloud_id");
-            if (!spc::element_exists<size_t>(cloud_ids, current_id))
+            int current_id = core->variantPropertyValue<int>("cloud_id");
+            if (!spc::element_exists<int>(cloud_ids, current_id))
                 cloud_ids.push_back(current_id);
         }
 

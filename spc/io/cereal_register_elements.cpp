@@ -10,6 +10,7 @@
 #include <cereal/archives/json.hpp>
 //#include <cereal/archives/portable_binary.hpp>
 
+
 // some types that cereal need to know how to serialize
 #include <spc/io/cereal_types.hpp>
 
@@ -17,6 +18,7 @@
 #include <cereal/types/polymorphic.hpp>
 
 #include <spc/elements/Attitude.h>
+//const char * class_name = spc::Attitude::Type.getClassName().c_str();
 CEREAL_REGISTER_TYPE_WITH_NAME(spc::Attitude, "Attitude")
 
 #include <spc/elements/Cylinder.h>
@@ -44,16 +46,6 @@ CEREAL_REGISTER_TYPE_WITH_NAME(spc::Sample, "Sample")
 #include <spc/elements/ElementBase.h>
 CEREAL_REGISTER_TYPE_WITH_NAME(spc::ElementBase, "ElementBase")
 
-//#include <spc/elements/UniversalUniqueID.h>
-// CEREAL_REGISTER_TYPE_WITH_NAME(spc::UniversalUniqueID, "UniversalUniqueID")
-
-#include <spc/elements/VariantPropertiesRecord.h>
-CEREAL_REGISTER_TYPE_WITH_NAME(spc::VariantPropertiesRecord,
-                               "VariantPropertiesRecord")
-
-#include <spc/elements/VariantProperty.h>
-CEREAL_REGISTER_TYPE_WITH_NAME(spc::VariantProperty, "VariantProperty")
-
 #include <spc/elements/VariableScalarFieldBase.h>
 CEREAL_REGISTER_TYPE_WITH_NAME(spc::VariableScalarFieldBase,
                                "VariableScalarFieldBase")
@@ -67,16 +59,35 @@ CEREAL_REGISTER_TYPE_WITH_NAME(spc::StratigraphicModelSingleAttitude,
                                "StratigraphicModelSingleAttitude")
 
 #include <spc/elements/TimeSeriesBase.h>
-CEREAL_REGISTER_TYPE_WITH_NAME(spc::TimeSeriesBase<float>, "TimeSeriesBase")
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::TimeSeriesBase, "TimeSeriesBase")
 
 #include <spc/elements/TimeSeriesEquallySpaced.h>
-CEREAL_REGISTER_TYPE_WITH_NAME(spc::TimeSeriesEquallySpaced<float>,
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::TimeSeriesEquallySpaced,
                                "TimeSeriesEquallySpaced")
 
 #include <spc/elements/TimeSeriesSparse.h>
-CEREAL_REGISTER_TYPE_WITH_NAME(spc::TimeSeriesSparse<float>, "TimeSeriesSparse")
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::TimeSeriesSparse, "TimeSeriesSparse")
 
 #include <spc/elements/SamplesDB.h>
 CEREAL_REGISTER_TYPE_WITH_NAME(spc::SamplesDB, "SamplesDB")
+
+#include <spc/elements/Fields.h>
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::FieldsManager, "FieldsManager")
+
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::FieldFloat, "FieldFloat")
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::FieldInt, "FieldInt")
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::FieldString, "FieldString")
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::FieldVector3f, "FieldVector3f")
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::FieldVectorXf, "FieldVectorXf")
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::FieldVectorXi, "FieldVectorXi")
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::FieldVectorStdf, "FieldVectorStdf")
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::FieldVectorStdi, "FieldVectorStdi")
+
+#include <spc/elements/EigenTable.h>
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::EigenTable, "EigenTable")
+
+
+
+
 
 

@@ -20,11 +20,11 @@ using namespace Eigen;
 /// stratigraphic position
 /// and a stratigraphic normal in the 3D space
 ///!
-class VariableScalarFieldBase: public ElementBase
+class VariableScalarFieldBase : public ElementBase
 {
 public:
     SPC_OBJECT(VariableScalarFieldBase)
-
+    EXPOSE_TYPE
     //! Def constructor
     VariableScalarFieldBase();
 
@@ -32,7 +32,7 @@ public:
     //////////////////////////////////////////////////
     //!
     //! \brief getStratigraphicPosition get the modeled stratigraphic position
-    //for a poin in 3d
+    // for a poin in 3d
     //! \param point is the 3d point
     //! \return the stratigraphic position of that point
     //!
@@ -49,10 +49,10 @@ public:
     ///////////////////////////////
     //!
     //! \brief getStratigraphicPositions as getStratigraphicPosition but for a
-    //whole cloud!
+    // whole cloud!
     //! \param cloud
     //! \return a vector of stratigraphic positions computed according this
-    //model
+    // model
     //!
     virtual std::vector<float>
     getScalarFieldValues(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud) const;
@@ -85,11 +85,11 @@ public:
 
     //!
     //! \brief getStratigraphicPositions as getStratigraphicPosition but for a
-    //whole cloud!
+    // whole cloud!
     //! \param cloud
     //! \param indices the indices for which to compute the sp
     //! \return a vector of stratigraphic positions computed according this
-    //model
+    // model
     //!
     virtual std::vector<float> getScalarFieldValues(pcl::PointCloud
                                                     <pcl::PointXYZ>::Ptr cloud,

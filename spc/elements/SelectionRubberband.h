@@ -19,7 +19,7 @@ class SelectionRubberband : public ElementBase
 {
 public:
     SPC_OBJECT(SelectionRubberband)
-
+EXPOSE_TYPE
     typedef pcl::PointCloud<pcl::PointXYZ> cloudT;
 
     SelectionRubberband();

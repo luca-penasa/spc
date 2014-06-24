@@ -3,9 +3,11 @@
 
 #include <pcl/console/print.h>
 #include <spc/elements/UniversalUniqueID.h>
-
+#include <spc/elements/SerializableInterface.h>
 namespace spc
 {
+
+DtiClassType ElementBase::Type ("ElementBase"); // it is a root
 
 void ElementBase::modified()
 {
@@ -17,19 +19,11 @@ void ElementBase::update()
     // do stuff in subclasses
     pcl::console::print_debug(
         "Called update in base method, update() not implemented in %s",
-        this->getClassName().c_str());
+        this->getType()->getClassName().c_str());
     modified_ = false;
 }
 
-bool ElementBase::isSPCSerializable() const
-{
-    return true;
-}
 
-bool ElementBase::canBeSavedAsAscii() const
-{
-    return false;
-}
 
 UniversalUniqueID ElementBase::getUniversalUUID() const
 {

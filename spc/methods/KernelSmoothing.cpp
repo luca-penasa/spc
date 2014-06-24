@@ -6,8 +6,7 @@
 namespace spc
 {
 
-template <typename ScalarT>
-KernelSmoothing<ScalarT>::KernelSmoothing()
+KernelSmoothing::KernelSmoothing()
     : step_(1.0), weights_(0), bandwidth_(1.0)
 {
 
@@ -17,7 +16,7 @@ KernelSmoothing<ScalarT>::KernelSmoothing()
     use_weights_ = false;
 }
 
-template <typename ScalarT> int KernelSmoothing<ScalarT>::compute()
+int KernelSmoothing::compute()
 {
 
     if (!out_series_) {
@@ -57,9 +56,8 @@ template <typename ScalarT> int KernelSmoothing<ScalarT>::compute()
     return 1;
 }
 
-template <typename ScalarT>
-void KernelSmoothing
-    <ScalarT>::gaussian(const vType &values, vType &gaussian_values)
+
+void KernelSmoothing::gaussian(const vType &values, vType &gaussian_values)
 {
 
     gaussian_values.resize(values.size());
@@ -68,9 +66,8 @@ void KernelSmoothing
     }
 }
 
-template <typename ScalarT>
 int KernelSmoothing
-    <ScalarT>::radiusSearch(const ScalarT &position, const ScalarT &radius,
+    ::radiusSearch(const ScalarT &position, const ScalarT &radius,
                             idvType &ids, vType &distances)
 {
     bool sorted
@@ -113,9 +110,8 @@ int KernelSmoothing
     return nn;
 }
 
-template <typename ScalarT>
-int KernelSmoothing
-    <ScalarT>::evaluateKS(const ScalarT &position, ScalarT &value, ScalarT &var)
+
+int KernelSmoothing::evaluateKS(const ScalarT &position, ScalarT &value, ScalarT &var)
 {
     // Note that gaussian kernel is not compactly supported,
     // we restrict the neighbors extraction to a compact region on x
@@ -196,9 +192,7 @@ int KernelSmoothing
     return 1;
 }
 
-template <typename ScalarT>
-void KernelSmoothing
-    <ScalarT>::getExternalWeightsForIds(const idvType ids, vType &weights)
+void KernelSmoothing::getExternalWeightsForIds(const idvType ids, vType &weights)
 {
     weights.resize(ids.size());
 
@@ -209,7 +203,7 @@ void KernelSmoothing
     }
 }
 
-template <typename ScalarT> void KernelSmoothing<ScalarT>::initKDTree()
+void KernelSmoothing::initKDTree()
 {
     FLANNMat mat = FLANNMat(&x_[0], n_, 1);
     flann::KDTreeSingleIndexParams pars = flann::KDTreeSingleIndexParams(15);
@@ -217,9 +211,5 @@ template <typename ScalarT> void KernelSmoothing<ScalarT>::initKDTree()
     flann_index_->buildIndex();
 }
 
-////////// INSTANTIATIONS
-
-template class KernelSmoothing<float>;
-template class KernelSmoothing<double>;
 
 } // closing namespaces

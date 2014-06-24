@@ -3,17 +3,16 @@
 namespace spc
 {
 
-template <typename ScalarT>
-KernelSmoothing2<ScalarT>::KernelSmoothing2()
-    : step_(1.0), bandwidth_(1.0)
+KernelSmoothing2::KernelSmoothing2()
+    : flann_index_(flann::KDTreeSingleIndexParams())
+
 {
+
     pars_["leaf_max_size"] = 15;
 }
 
-template <typename ScalarT> int KernelSmoothing2<ScalarT>::compute()
+int KernelSmoothing2::compute()
 {
-
-    std::cout << "started computing 0" << std::endl;
 
     if (!out_series_) {
         out_series_ = EquallyPtrT(
@@ -22,17 +21,11 @@ template <typename ScalarT> int KernelSmoothing2<ScalarT>::compute()
                                  "setting the output time series\n");
     }
 
-    std::cout << "started computing 1" << std::endl;
+    extractVectors();
 
     initFlann();
 
-    if (!flann_index_) {
-        pcl::console::print_error(
-            "[Error] some error in flann computation and initialization.");
-    }
     ScalarT value;
-
-    std::cout << "started computing 2 " << flann_index_ << std::endl;
 
     //#ifdef USE_OPENMP
     //    #pragma omp parallel for private (value)
@@ -50,33 +43,41 @@ template <typename ScalarT> int KernelSmoothing2<ScalarT>::compute()
     return 1;
 }
 
-template <typename ScalarT> void KernelSmoothing2<ScalarT>::initFlann()
+void KernelSmoothing2::initFlann()
 {
 
-    if (!flann_index_) {
-        FLANNMat mat
-            = FLANNMat(&sparse_->getX()[0], sparse_->getNumberOfSamples(), 1);
-        std::cout << "crash here" << std::endl;
+    FLANNMat mat
+        = FLANNMat(&x_[0], x_.size(), 1);
 
-        //        flann::IndexParams pars_test;
-        //        pars["leaf_max_size"] = 15;
+    flann_index_ = FLANNIndex(mat, pars_);
+    flann_index_.buildIndex();
+}
 
-        std::cout << "crash here 2" << std::endl;
+void KernelSmoothing2::extractVectors()
+{
 
-        flann_index_.reset(new FLANNIndex(mat, pars_));
-        flann_index_->buildIndex();
+    x_.clear();
+    y_.clear();
+
+    std::vector<ScalarT> x = sparse_->getX();
+    std::vector<ScalarT> y = sparse_->getY();
+
+    /// remove nan values both if their are in x or y series
+    for (int i = 0; i < x.size(); ++i) {
+        if ((std::isfinite(x.at(i))) && (std::isfinite(y.at(i)))) {
+            x_.push_back(x.at(i));
+            y_.push_back(y.at(i));
+        }
     }
 }
 
-template <typename ScalarT>
-int KernelSmoothing2
-    <ScalarT>::radiusSearch(const ScalarT &position, const ScalarT &radius,
-                            std::vector<int> &ids,
-                            std::vector<ScalarT> &distances)
+int KernelSmoothing2::radiusSearch(const ScalarT &position,
+                                   const ScalarT &radius, std::vector<int> &ids,
+                                   std::vector<ScalarT> &distances)
 {
     bool sorted
         = true; // we are not interested in sorting depending on distances
-    ScalarT epsilon = 0.0; // we want exact results
+    ScalarT epsilon = 0.0;             // we want exact results
     ScalarT radius2 = radius * radius; // FLANN works with squared radius
 
     // put position in a vector so to be passed to flann
@@ -91,8 +92,8 @@ int KernelSmoothing2
     SearchParams search_params = SearchParams(-1, epsilon, sorted);
 
     // now search
-    int nn = flann_index_->radiusSearch(FLANNMat(&pos[0], 1, 1), ids_empty,
-                                        d_empty, radius2, search_params);
+    int nn = flann_index_.radiusSearch(FLANNMat(&pos[0], 1, 1), ids_empty,
+                                       d_empty, radius2, search_params);
 
     // resize the output vectors to the number of found neighbors
     ids.resize(nn);
@@ -103,8 +104,8 @@ int KernelSmoothing2
     flann::Matrix<ScalarT> distances_mat(&distances[0], 1, nn);
 
     // redo search and write output
-    flann_index_->radiusSearch(FLANNMat(&pos[0], 1, 1), ids_mat, distances_mat,
-                               radius2, search_params);
+    flann_index_.radiusSearch(FLANNMat(&pos[0], 1, 1), ids_mat, distances_mat,
+                              radius2, search_params);
 
     int counter = 0;
     spcForEachMacro(const float d, distances)
@@ -115,9 +116,7 @@ int KernelSmoothing2
     return nn;
 }
 
-template <typename ScalarT>
-int KernelSmoothing2
-    <ScalarT>::evaluateKS(const ScalarT &position, ScalarT &value)
+int KernelSmoothing2::evaluateKS(const ScalarT &position, ScalarT &value)
 {
     // Note that gaussian kernel is not compactly supported,
     // we restrict the neighbors extraction to a compact region on x
@@ -129,6 +128,7 @@ int KernelSmoothing2
     std::vector<int> ids;
     std::vector<ScalarT> distances;
     int nn = radiusSearch(position, support_region, ids, distances);
+
 
     if (nn == 0) {
         pcl::console::print_debug("No neighbors found -> set to NaN");
@@ -149,11 +149,10 @@ int KernelSmoothing2
                                    // should be done as above
 
     vproduct.resize(ids.size());
-    std::vector<ScalarT> y_vals = sparse_->getY();
 
     for (int i = 0; i < ids.size(); ++i) {
         int this_id = ids.at(i);
-        vproduct.at(i) = weights.at(i) * y_vals.at(this_id);
+        vproduct.at(i) = weights.at(i) * y_.at(this_id);
     }
 
     // sum this product
@@ -167,8 +166,5 @@ int KernelSmoothing2
 
     return 1;
 }
-
-template class KernelSmoothing2<float>;
-template class KernelSmoothing2<double>;
 
 } // end nspace

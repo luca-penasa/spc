@@ -11,7 +11,7 @@ class MovableElement : public ElementBase
 {
 public:
     SPC_OBJECT(MovableElement)
-
+    EXPOSE_TYPE
     MovableElement();
 
     MovableElement(const float x, const float y, const float z);

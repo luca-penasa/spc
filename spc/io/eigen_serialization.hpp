@@ -1,67 +1,49 @@
 #ifndef EIGEN_SERIALIZATION_HPP
 #define EIGEN_SERIALIZATION_HPP
 
-
-#include <cereal/cereal.hpp>
 #include <Eigen/Dense>
 #include <fstream>
 
+
+#include <cereal/cereal.hpp>
+#include <cereal/archives/binary.hpp>
+
 namespace cereal
 {
-template <class Archive, class _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols>
-typename std::enable_if<traits::is_output_serializable<BinaryData<_Scalar>, Archive>::value, void>::type
-save(Archive & ar, Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> const & m)
-{
-    int rows = m.rows();
-    int cols = m.cols();
-    ar(make_size_tag(static_cast<size_type>(rows * cols)));
-    ar(rows);
-    ar(cols);
-    ar(binary_data(m.data(), rows * cols * sizeof(_Scalar)));
-}
-
-template <class Archive, class _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols>
-typename std::enable_if<traits::is_input_serializable<BinaryData<_Scalar>, Archive>::value, void>::type
-load(Archive & ar, Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> const & m)
-{
-    size_type size;
-    ar(make_size_tag(size));
-
-    int rows;
-    int cols;
-    ar(rows);
-    ar(cols);
-
-    const_cast<Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> &>(m).resize(rows, cols);
-
-    ar(binary_data(const_cast<_Scalar *>(m.data()), static_cast<std::size_t>(size * sizeof(_Scalar))));
-}
-
-
-template <class Archive> inline
+// we should specialize this templates for binary only dump:
+// like they do here: http://stackoverflow.com/questions/22884216/serializing-eigenmatrix-using-cereal-library
+// see first answer.
+  template <class Archive, class _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols> inline
 void
-save (Archive & ar, const Eigen::Vector3f &v)
-{
+    save(Archive & ar, Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> const & m)
+    {
+      int32_t rows = m.rows();
+      int32_t cols = m.cols();
+      ar(rows);
+      ar(cols);
 
-    float x,y,z;
-    x = v(0);
-    y = v(1);
-    z = v(2);
-    ar( cereal::make_nvp("x",x ),cereal::make_nvp("y",y  ), cereal::make_nvp("z",z  ));
+      for (int i = 0; i < rows; i++)
+          for (int j = 0; j < cols; j++)
+              ar(m(i,j));
+    }
 
+  template <class Archive, class _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols> inline
+void    load(Archive & ar, Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> & m)
+    {
+      int32_t rows;
+      int32_t cols;
+      ar(rows);
+      ar(cols);
+
+      m.resize(rows, cols);
+
+      for (int i = 0; i < rows; i++)
+          for (int j = 0; j < cols; j++)
+              ar(m(i,j));
+
+    }
 }
 
-template <class Archive> inline
-void
-load (Archive & ar, Eigen::Vector3f &v)
-{
-    ar( cereal::make_nvp("x",v(0)) );
-    ar( cereal::make_nvp("y",v(1))  );
-    ar( cereal::make_nvp("z",v(2))  );
-}
 
 
-
-
-}
 #endif // EIGEN_SERIALIZATION_HPP

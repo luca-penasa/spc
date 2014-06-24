@@ -2,6 +2,8 @@
 namespace spc
 {
 
+DtiClassType PointCloudBase::Type = DtiClassType("PointCloudBase", &ElementBase::Type);
+
 PointCloudBase::PointCloudBase()
 {
 }

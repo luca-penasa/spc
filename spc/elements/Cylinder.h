@@ -18,6 +18,7 @@ class Cylinder : public MovableElement
 {
 public:
     SPC_OBJECT(Cylinder)
+EXPOSE_TYPE
 
     /// def constrcutor
     Cylinder()

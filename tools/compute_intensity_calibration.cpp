@@ -5,7 +5,7 @@
 #include <pcl/kdtree/kdtree_flann.h>
 #include <pcl/common/centroid.h>
 #include <Eigen/Dense>
-
+#include <iostream>
 #include <spc/methods/strings.h>
 
 #include <pcl/features/normal_3d.h>
@@ -58,6 +58,8 @@ int main (int argc, char ** argv)
 
     setVerbosityLevel(VERBOSITY_LEVEL::L_DEBUG);
 
+    std::cout << "starting routine" << std::endl;
+
 
     if (argc == 1)
     {
@@ -80,15 +82,39 @@ int main (int argc, char ** argv)
 
 
     //ids of the cloud files
-    vector<int> ids = parse_file_extension_argument (argc, argv, string("txt"));
+    vector<int> ids = parse_file_extension_argument (argc, argv, string("xml"));
     std::string dataset_file = argv[ids.at(0)];
 
     print_info("Loading the calibration dataset from %s\n", dataset_file.c_str());
 
 //     (new spc::SamplesDB);
 
-    spc::ElementBase::Ptr el  = spc::io::deserializeFromFile(dataset_file);
+    spc::ISerializable::Ptr el  = spc::io::deserializeFromFile(dataset_file);
     spc::SamplesDB::Ptr db = spcDynamicPointerCast<spc::SamplesDB> (el);
+
+    spc::SamplesDB cleaned =  db->getNotNanEntries<float>("distance").getNotNanEntries<float>("angle").getNotNanEntries<float>("intensity");
+
+    db =  spcMakeSharedPtrMacro<spc::SamplesDB>(cleaned); //prev db will be delated as no more ref exists.
+
+    if (!db)
+        return -1;
+
+    // do some testing
+
+    int id = 450;
+    float val = db->at(id)->variantPropertyValue<float>("distance") ;
+    float val2 = db->at(id)->variantPropertyValue<float>("intensity") ;
+    float val3 = db->at(id)->variantPropertyValue<float>("angle") ;
+    int val4 = db->at(id)->variantPropertyValue<int>("cloud_id") ;
+
+   pcl::console::print_info("value: %f\n", val);
+   pcl::console::print_info("value: %f\n", val2);
+   pcl::console::print_info("value: %f\n", val3);
+   pcl::console::print_info("value: %i\n", val4);
+
+
+
+
 
 //    db->fromFile(dataset_file);
 

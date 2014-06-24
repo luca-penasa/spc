@@ -16,7 +16,7 @@ class StratigraphicModelSingleAttitude : public StratigraphicModelBase
 {
 public:
     SPC_OBJECT(StratigraphicModelSingleAttitude)
-
+EXPOSE_TYPE
     /// def const
     StratigraphicModelSingleAttitude() : additional_shift_(0.0)
     {

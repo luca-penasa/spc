@@ -137,7 +137,7 @@ int main (int argc, char ** argv)
 
 
 
-    spc::SamplesDB db = calibrator.getCalibrationDB();
+    spc::FieldsManager::Ptr db = calibrator.getCalibrationDB();
 //    db = db.getValidDataOnly(); //filter out nans
 
     //    db.printOutStuff();
@@ -148,31 +148,25 @@ int main (int argc, char ** argv)
     {
         pcl::console::print_info("Finished computing core points data\n");
 
-        pcl::console::print_info("Starting to filter core points\n");
+        pcl::console::print_info("Starting to filter core points BUT NOT IMPLEMENTED\n");
 
-        //now filter out normal
-        spc::CalibrationDataFilter f;
-        pcl::console::print_info("chosing an unique normal for each core point\n");
+//        //now filter out normal
+//        spc::CalibrationDataFilter f;
+//        pcl::console::print_info("chosing an unique normal for each core point\n");
 
-        f.setInputCalibrationSamplesDB(db);
-        f.fixUniqueNormals();
-        pcl::console::print_info("Done\n");
-        pcl::console::print_info("Now we recompute all the scattering angles\n");
-        f.recomputeScatteringAngles();
-        pcl::console::print_info("Done\n");
+//        f.setInputCalibrationSamplesDB(db);
+//        f.fixUniqueNormals();
+//        pcl::console::print_info("Done\n");
+//        pcl::console::print_info("Now we recompute all the scattering angles\n");
+//        f.recomputeScatteringAngles();
+//        pcl::console::print_info("Done\n");
 
     }
 
 
-//    db.printOutStuff();
-
-    spc::SamplesDB::Ptr ptr = spcMakeSharedPtrMacro<spc::SamplesDB> (db);
 
 
-
-//    db.writeToAsciiFile("./out.txt");
-
-    spc::io::serializeToFile(ptr, "./out", spc::io::XML);
+    spc::io::serializeToFile(db, "./out", spc::io::SPC);
 
 
     return 1;

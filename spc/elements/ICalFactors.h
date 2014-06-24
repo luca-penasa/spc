@@ -15,7 +15,7 @@ class CorrectionFactorBase
 {
 public:
     SPC_OBJECT(CorrectionFactorBase)
-
+    EXPOSE_TYPE
     //! we pass a CalibrationSamplesDB because some factors may require to know
     //! some stuff before everything
     //! see for example CorrectionFactorCloudDependentMultiplier
@@ -209,7 +209,7 @@ public:
 
     virtual float getFactor(Sample::ConstPtr input_data) const
     {
-        size_t cloud_id = input_data->variantPropertyValue<size_t>("cloud_id");
+        int cloud_id = input_data->variantPropertyValue<int>("cloud_id");
         return parameters_(cloud_id);
     }
 

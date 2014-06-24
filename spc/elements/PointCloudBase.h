@@ -11,12 +11,12 @@
 namespace spc
 {
 
-class PointCloudBase
+class PointCloudBase: public ElementBase
 {
 
 public:
-    spcTypedefSharedPtrs(PointCloudBase)
-
+    SPC_OBJECT(PointCloudBase)
+    EXPOSE_TYPE
     PointCloudBase();
 
     //    virtual int toStreamMeOnly(std::stringstream &stream) {/*nothing for
@@ -34,6 +34,8 @@ public:
     virtual int size() const = 0;
 
     virtual bool hasField(const std::string fieldname) = 0;
+
+    virtual std::vector<std::string> getFieldNames() = 0;
 
     virtual void resize(size_t s) = 0;
 
