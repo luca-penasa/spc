@@ -3,6 +3,8 @@
 #include <cereal/types/polymorphic.hpp>
 #include <pcl/console/print.h>
 
+#include <pcl/console/parse.h>
+
 namespace spc
 {
 namespace io
@@ -95,6 +97,7 @@ ISerializable::Ptr deserializeFromStream(std::istream &stream,
 {
     ISerializable::Ptr ptr;
 
+    try {
     if (type == XML) {
         cereal::XMLInputArchive archive(stream);
         archive(cereal::make_nvp("SPCDataset", ptr));
@@ -105,6 +108,13 @@ ISerializable::Ptr deserializeFromStream(std::istream &stream,
         cereal::BinaryInputArchive archive(stream);
         archive(cereal::make_nvp("SPCDataset", ptr));
     }
+    }
+
+    catch(...)
+    {
+        return ptr;
+    }
+
 
     return ptr;
 }
@@ -125,5 +135,25 @@ ISerializable::Ptr deserializeFromString(std::string &string,
     sstream.write(string.data(), string.size());
     return deserializeFromStream(sstream, type);
 }
+
+std::vector<int> parseLoadableFiles(int argc, char **argv)
+{
+    std::vector<int> spc_ids;
+    spc_ids = pcl::console::parse_file_extension_argument(argc, argv, "spc");
+
+    std::vector<int> xml_ids;
+    xml_ids = pcl::console::parse_file_extension_argument(argc, argv, "xml");
+
+    std::vector<int> json_ids;
+    json_ids = pcl::console::parse_file_extension_argument(argc, argv, "json");
+
+
+
+    spc_ids.insert( spc_ids.end(), xml_ids.begin(), xml_ids.end() );
+    spc_ids.insert( spc_ids.end(), json_ids.begin(), json_ids.end() );
+
+    return spc_ids;
+}
+
 }
 }

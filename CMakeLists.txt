@@ -192,6 +192,7 @@ set (CONF_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}")
 set (CONF_CEREAL_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/submodules/cereal/include")
 set (CONF_LIBRARY_DIRS "${LIBRARY_OUTPUT_PATH}")
 
+
 configure_file(SPCConfig.cmake.in "${PROJECT_BINARY_DIR}/SPCConfig.cmake" @ONLY)
 
 ## the ConfigVersion.cmake
@@ -205,11 +206,11 @@ if(SPC_ENABLE_INSTALL)
     set (CONF_LIBRARY_DIRS "${SPC_INSTALL_LIB_DIR}")
 
     ## reconfigure the SPCConfig.cmake putting it in a subdirectory of the build tree
-    configure_file(SPCConfig.cmake.in "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIR}/SPCConfig.cmake" @ONLY)
+    configure_file(SPCConfig.cmake.in "${PROJECT_BINARY_DIR}/${CMAKE_FILES_DIRECTORY}/SPCConfig.cmake" @ONLY)
 
-
+    
     # Install the FooBarConfig.cmake and FooBarConfigVersion.cmake in the install tree
-    install(FILES "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIR}/SPCConfig.cmake"
+    install(FILES "${PROJECT_BINARY_DIR}/${CMAKE_FILES_DIRECTORY}/SPCConfig.cmake"
                   "${PROJECT_BINARY_DIR}/SPCConfigVersion.cmake"
       DESTINATION "${INSTALL_CMAKE_DIR}" COMPONENT dev)
 

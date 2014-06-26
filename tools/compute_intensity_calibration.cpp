@@ -8,10 +8,14 @@
 #include <iostream>
 #include <spc/methods/strings.h>
 
+
 #include <pcl/features/normal_3d.h>
 
 #include <spc/methods/PointCloudEigenIndicesEstimator.h>
 #include <spc/io/io_helper.h>
+
+
+#include <spc/methods/EigenFunctionsParametrizator.h>
 #include <spc/methods/IntensityCalibrationDataEstimator.h>
 #include <spc/methods/IntensityCalibrationDataFilter.h>
 
@@ -19,6 +23,9 @@
 #include <spc/methods/IntensityCalibration.h>
 #include <spc/elements/ICalModelFactors.h>
 #include <spc/io/element_io.h>
+
+
+#include <spc/elements/ICalPHFunction.h>
 using namespace std;
 using namespace pcl;
 using namespace pcl::console;
@@ -81,8 +88,9 @@ int main (int argc, char ** argv)
 
 
 
+
     //ids of the cloud files
-    vector<int> ids = parse_file_extension_argument (argc, argv, string("xml"));
+    vector<int> ids = parse_file_extension_argument (argc, argv, string("spc"));
     std::string dataset_file = argv[ids.at(0)];
 
     print_info("Loading the calibration dataset from %s\n", dataset_file.c_str());
@@ -90,57 +98,48 @@ int main (int argc, char ** argv)
 //     (new spc::SamplesDB);
 
     spc::ISerializable::Ptr el  = spc::io::deserializeFromFile(dataset_file);
-    spc::SamplesDB::Ptr db = spcDynamicPointerCast<spc::SamplesDB> (el);
-
-    spc::SamplesDB cleaned =  db->getNotNanEntries<float>("distance").getNotNanEntries<float>("angle").getNotNanEntries<float>("intensity");
-
-    db =  spcMakeSharedPtrMacro<spc::SamplesDB>(cleaned); //prev db will be delated as no more ref exists.
-
-    if (!db)
-        return -1;
-
-    // do some testing
-
-    int id = 450;
-    float val = db->at(id)->variantPropertyValue<float>("distance") ;
-    float val2 = db->at(id)->variantPropertyValue<float>("intensity") ;
-    float val3 = db->at(id)->variantPropertyValue<float>("angle") ;
-    int val4 = db->at(id)->variantPropertyValue<int>("cloud_id") ;
-
-   pcl::console::print_info("value: %f\n", val);
-   pcl::console::print_info("value: %f\n", val2);
-   pcl::console::print_info("value: %f\n", val3);
-   pcl::console::print_info("value: %i\n", val4);
+    spc::EigenTable::Ptr db = spcDynamicPointerCast<spc::EigenTable> (el);
 
 
 
+    db = db->getWithStrippedNANs({"distance", "angle"}); //strip if these fields are nans
+
+    Eigen::VectorXf distances = db->column("distance");
+    Eigen::VectorXf angles = db->column("angle");
+    Eigen::VectorXf intensity = db->column("intensity");
+
+    Eigen::MatrixXf vars(distances.size(), 2);
+    vars.col(0) = distances;
+//    vars.col(1) = angles;
+
+    for (int i = 0; i < angles.size(); ++i)
+        vars(i, 1) = cos(DEG2RAD (angles(i)));
 
 
-//    db->fromFile(dataset_file);
+    std::cout << "stripped stuff" << std::endl;
 
-    print_info("Found %i core points\n", db->size());
 
-    spc::IntensityCalibratrionModelFactorsBased::Ptr model(new spc::JutzyModel(db, !mult_use_diff));
+    spc::ICalPHFunction::Ptr function(new  spc::ICalPHFunction);
 
-    spc::IntensityCalibrator calibrator;
-    calibrator.setCalibrationSamplesDB(db);
-    calibrator.setModel(model);
-    calibrator.optimize();
+    spc::EigenFunctionsParametrizator estimator;
+    estimator.setFunction(function);
+    estimator.setY(intensity);
+    estimator.setVariables(vars);
 
-    Eigen::VectorXf out = model->getPredictedIntensities(db);
+    std::cout << "before compute" << std::endl;
 
-    ofstream myfile;
-      myfile.open ("_predicted.txt");
-      myfile << out;
-      myfile.close();
+    estimator.compute();
 
-       out = model->getCorrectedIntensities(db);
+    std::cout << "after compute" << std::endl;
+    std::cout << function->getCoefficients() << std::endl;
 
-        myfile.open ("_corrected.txt");
-        myfile << out;
-        myfile.close();
 
-//    std::cout << out << std::endl;
+
+
+    spc::io::serializeToFile(function,"calibration_model", spc::io::XML);
+
+
+
 
 
 

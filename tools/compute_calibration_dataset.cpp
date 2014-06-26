@@ -137,7 +137,7 @@ int main (int argc, char ** argv)
 
 
 
-    spc::FieldsManager::Ptr db = calibrator.getCalibrationDB();
+    spc::EigenTable::Ptr db = calibrator.getCalibrationDB();
 //    db = db.getValidDataOnly(); //filter out nans
 
     //    db.printOutStuff();

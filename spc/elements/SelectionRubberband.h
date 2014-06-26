@@ -170,8 +170,9 @@ protected:
 
         pcl::console::print_info("there are %i initial poly verts\n",
                                  verts_3d_->size());
-        pcl::PointCloud<pcl::PointXYZ> projected = PointCloudPcl<pcl::PointXYZ>(
-            verts_3d_).applyTransform(proj_plane_.get2DArbitraryRefSystem());
+
+        pcl::PointCloud<pcl::PointXYZ> projected = PointCloudPCL(
+            *verts_3d_).applyTransform(proj_plane_.get2DArbitraryRefSystem());
 
         spcForEachMacro(auto & elem, projected)
         {

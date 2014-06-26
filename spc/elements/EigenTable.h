@@ -42,6 +42,9 @@ public:
         return mat_;
     }
 
+    EigenTable::Ptr getWithStrippedNANs(const std::vector
+                                        <std::string> &columns_to_check) const;
+
     void addNewComponent(const std::string &name, size_t dimensionality = 1);
 
     std::string getNameOfComponentAtDimension(const std::string &basename,
@@ -92,8 +95,13 @@ public:
     Eigen::Block<Eigen::Matrix<float, -1, -1>, -1, -1>
     getVectorField(const std::string &name);
 
-    Eigen::Block<Eigen::Matrix<float, -1, -1>, 1, -1, false> row(const size_t
-                                                                 &id)
+    Eigen::Block<Eigen::Matrix<float, -1, -1>, 1, -1> row(const size_t &id)
+    {
+        return mat_.row(id);
+    }
+
+    Eigen::Block<const Eigen::Matrix<float, -1, -1>, 1, -1> row(const size_t
+                                                                &id) const
     {
         return mat_.row(id);
     }
@@ -103,17 +111,18 @@ public:
         return true;
     }
 
-
     std::vector<std::string> getScalarColumnsNames() const;
 
     std::string getColumnName(const size_t &id) const;
+
 private:
     friend class cereal::access;
 
     template <class Archive> void serialize(Archive &ar)
     {
         ar(cereal::base_class<ElementBase>(this), CEREAL_NVP(mat_),
-           CEREAL_NVP(names_to_col_), CEREAL_NVP(col_to_dim_));
+           CEREAL_NVP(names_to_col_), CEREAL_NVP(col_to_dim_),
+           CEREAL_NVP(cols_to_name_));
     }
 
 protected:

@@ -4,17 +4,22 @@ if(BUILD_MICMAC_RELATED)
     link_directories(${CULTURE_3D_BUILD_DIR}/src)
 endif()
 
-if (UNIX) #this maybe is not needed at all...
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x" )
-endif()
+set(CMAKE_VERBOSE_MAKEFILE ON)
 
-find_package(PCL REQUIRED)
-include_directories(${PCL_INCLUDE_DIRS})
+#if (UNIX) #this maybe is not needed at all...
+#	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x" )
+#endif()
 
-find_package(VTK REQUIRED)
-include_directories(${VTK_INCLUDE_DIRS})
+#find_package(PCL REQUIRED)
+#include_directories(${PCL_INCLUDE_DIRS})
 
-include_directories(/usr/include/eigen3/)
+#find_package(VTK REQUIRED)
+#include_directories(${VTK_INCLUDE_DIRS})
+
+#find_package(SPC REQUIRED)
+#include_directories(${SPC_INCLUDE_DIRS})
+
+#include_directories(/usr/include/eigen3/)
 # include_directories(${LIDARLIB_SOURCE_DIR})
 
 spc_add_executable(${MY_TOOLS_PREFIX}bilateral bilateral.cpp)
@@ -131,3 +136,8 @@ target_link_libraries(${MY_TOOLS_PREFIX}compute_calibration_dataset ${PCL_LIBRAR
 
 spc_add_executable(${MY_TOOLS_PREFIX}compute_intensity_calibration compute_intensity_calibration.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}compute_intensity_calibration ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
+
+
+
+spc_add_executable(${MY_TOOLS_PREFIX}apply_correction apply_correction.cpp)
+target_link_libraries(${MY_TOOLS_PREFIX}apply_correction ${SPC_LIBRARIES} )

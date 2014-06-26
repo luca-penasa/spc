@@ -23,3 +23,6 @@ target_link_libraries(spc_uuid  spc_elements spc_external spc_methods spc_io)
 
 add_executable(spc_sample sample.cpp)
 target_link_libraries(spc_sample  spc_elements spc_external spc_methods)
+
+add_executable(spc_test_flann_bug flann_bug.cpp)
+target_link_libraries(spc_test_flann_bug ${PCL_LIBRARIES})

@@ -87,7 +87,14 @@ CEREAL_REGISTER_TYPE_WITH_NAME(spc::FieldVectorStdi, "FieldVectorStdi")
 CEREAL_REGISTER_TYPE_WITH_NAME(spc::EigenTable, "EigenTable")
 
 
+#include <spc/elements/EigenFunctionBase.h>
+
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::EigenFunctionBase, "EigenFunctionBase")
+
+#include <spc/elements/EigenLinearFunctionBase.h>
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::EigenLinearFunctionBase, "EigenLinearFunctionBase")
 
 
-
+#include <spc/elements/ICalPHFunction.h>
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::ICalPHFunction, "ICalPHFunction")
 

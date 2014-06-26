@@ -50,13 +50,15 @@ int serializeToStream(const ISerializable::Ptr element, std::ostream &stream,
                       const ARCHIVE_TYPE &type = SPC);
 
 ISerializable::Ptr deserializeFromStream(std::istream &stream,
-                                     const ARCHIVE_TYPE &type = SPC);
+                                         const ARCHIVE_TYPE &type = SPC);
 
 int serializeToString(const ISerializable::Ptr element, std::string &string,
                       const ARCHIVE_TYPE &type = SPC);
 
 ISerializable::Ptr deserializeFromString(std::string &string,
-                                     const ARCHIVE_TYPE &type = SPC);
+                                         const ARCHIVE_TYPE &type = SPC);
+
+static std::vector<int> parseLoadableFiles(int argc, char **argv);
 
 } // end io namespace
 
