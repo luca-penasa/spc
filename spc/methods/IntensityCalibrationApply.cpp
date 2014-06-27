@@ -1,103 +1,62 @@
 #include "IntensityCalibrationApply.h"
 namespace spc
 {
-IntensityCalibrationApplier::IntensityCalibrationApplier()
+ScalarFieldsCalcuator::ScalarFieldsCalcuator()
 {
 }
 
-int IntensityCalibrationApplier::compute()
+int ScalarFieldsCalcuator::compute()
 {
 
-    PCL_DEBUG("starting intensity calibration compute()\n");
+    PCL_DEBUG("[ScalarFieldsCalcuator] starting intensity calibration compute()\n");
 
-    if (!cal_function_)
+    if (!function_)
     {
-        PCL_ERROR("Cannot Compute, calibration function void\n");
+        PCL_ERROR("[ScalarFieldsCalcuator]  Cannot Compute, calibration function void\n");
         return -1;
     }
 
-    if (!cloud_->hasField(distance_field_name_))
+    if (!areFieldsPresent())
     {
-        PCL_DEBUG("Computing distances...\n");
-        spc::PointCloudHelpers::computeDistanceFromSensor(cloud_, distance_field_name_);
-    }
-
-    if (!cloud_->hasField(angle_field_name_) && cal_function_->getInputSize() == 2)
-    {
-        PCL_DEBUG("No angles field found\n");
-
-        // try to compute one, but we need normals
-        if (!cloud_->hasField("normal_x"))
-        {
-            if (!cloud_with_normals_) // no cloud w normals provided? error and return
-            {
-                PCL_ERROR("Cannot find normals for computing angles (and angles not provided), please provide a cloud with normals or an additional cloud from which the normals will be read\n");
-                return -1;
-            }
-
-            PCL_DEBUG("Transferring normals\n");
-
-            //else transfer the normals
-            spc::PointCloudHelpers::transferNormals(cloud_with_normals_, cloud_, max_distance_normals_);
-        }
-
-        PCL_DEBUG("Now computing scattering angles\n");
-
-        // now compute the scattering angles
-        spc::PointCloudHelpers::computeScatteringAngle(cloud_, angle_field_name_);
+        PCL_ERROR("[ScalarFieldsCalcuator] Requested Fields Are not Present\n");
+        return -1;
     }
 
 
     PCL_DEBUG("getting the fields...\n");
 
-    std::vector<float> d = cloud_->getField(distance_field_name_);
-    std::vector<float> a = cloud_->getField(angle_field_name_);
-    std::vector<float> i = cloud_->getField(intensity_field_name_);
+    Eigen::MatrixXf X;
+    X.resize(cloud_->size(),  function_->getInputSize());
 
-    if (d.empty() && i.empty()) {
-        PCL_ERROR("distance and/or intensities not found\n");
-        return -1;
+    Eigen::MatrixXf Y;
+    Y.resize(cloud_->size(), function_->getOutputSize());
+
+
+    // create the input matrix
+    int counter = 0;
+    for (std::string fname: fields_to_use_)
+    {
+        std::vector<float> v = cloud_->getField(fname);
+        Eigen::Map<Eigen::VectorXf> v_eig(v.data(), v.size());
+        X.col(counter++) = v_eig;
     }
 
-    if (a.empty() && (cal_function_->getInputSize() == 2)) {
-        PCL_ERROR(
-                    "angle data not found but calibration model require it\n");
-        return -1;
+
+    // co computations
+    Y = function_->operator() (X);
+
+    for (int i = 0; i < function_->getOutputSize(); ++i)
+    {
+          cloud_->addField(out_field_name_ + "@" + boost::lexical_cast<std::string>(i));
     }
 
-    // remap to eigen
-    Eigen::Map<Eigen::VectorXf> d_eig(d.data(), d.size());
-    Eigen::Map<Eigen::VectorXf> a_eig(a.data(), a.size());
-    Eigen::Map<Eigen::VectorXf> i_eig(i.data(), i.size());
 
-    Eigen::MatrixXf points;
-    if (cal_function_->getInputSize() == 2) {
-        points.resize(d.size(), 2);
-        points.col(0) = d_eig;
-        points.col(1) = (M_PI/180 * a_eig.array()).cos();
-    } else {
-        points.resize(d.size(), 1);
-        points.col(0) = d_eig;
+    for (int j = 0; j < function_->getOutputSize(); ++j)
+    {
+        std::string f_name = out_field_name_ + "@" + boost::lexical_cast<std::string>(j);
+
+        for (int i = 0; i < Y.rows(); ++i)
+            cloud_->setFieldValue(i, out_field_name_, Y(i) );
     }
-
-    // clear the vectors we do not need anymore
-    std::vector<float>().swap(d);
-    std::vector<float>().swap(a);
-
-    Eigen::VectorXf result = cal_function_->At(points);
-
-    cloud_->addField("intensity_corrected");
-    Eigen::VectorXf corrected;
-
-//    std::cout << result << std::endl;
-
-    if (method_ == DIVIDE)
-        corrected = i_eig.array() / result.array();
-
-    else if (method_ == SUBTRACT)
-        corrected = i_eig.array() - result.array();
-
-    for (int i = 0; i < i_eig.size(); ++i)
-        cloud_->setFieldValue(i, "intensity_corrected", corrected(i) );
 }
 }

@@ -36,9 +36,7 @@ void printHelp(int argc, char **argv)
                argv[0]);
     print_info("Apply the calibration to the given clouds, read the "
                "calibration model from model.spc\n");
-    //    print_info("Options are:\n");
-    print_info("-n normals.pcd use external normals as normals source.\n");
-    print_info("-m model.* calibration model.\n");
+    print_info("-m model_file calibration model.\n");
 
     print_info("-h this help\n");
 }
@@ -124,13 +122,15 @@ int main(int argc, char **argv)
 
 
 
+
+
         if (using_normals) {
             print_info("Loading normals from %s\n", normal_cloud_fname.c_str());
             loadPCDFile(normal_cloud_fname, *pcl_normal_cloud);
             print_info("...Done\n", normal_cloud_fname.c_str());
         }
 
-        spc::IntensityCalibrationApplier cal;
+        spc::ScalarFieldsCalcuator cal;
 
         if (!cal_funct)
         {
@@ -141,8 +141,8 @@ int main(int argc, char **argv)
         std::cout << cal_funct->getInputSize() << std::endl;
         std::cout << cal_funct->getOutputSize() << std::endl;
 
-        cal.setCalibrationFunction(cal_funct);
-        cal.setCloudToCalibrate(asspccloud);
+        cal.setFunction(cal_funct);
+        cal.setInputCloud(asspccloud);
         cal.setMaxDistanceForNormal(0.3);
 
         if (using_normals)

@@ -26,7 +26,11 @@ public:
         return coefficients_;
     }
 
-    virtual size_t getNumberOfCoefficients() const = 0;
+    virtual size_t getNumberOfCoefficients()
+    {
+        return coefficients_.size();
+    }
+
 
     virtual void setCoefficients(const Eigen::VectorXf &c)
     {
@@ -38,7 +42,7 @@ public:
     virtual Eigen::VectorXf getRowOfObservationsMatrix(const Eigen::VectorXf &v)
         = 0;
 
-    virtual Eigen::VectorXf At(const Eigen::VectorXf &v)
+    virtual Eigen::VectorXf operator()(const Eigen::VectorXf &v)
     {
         assert(v.size() == getInputSize());
 

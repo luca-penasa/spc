@@ -24,9 +24,9 @@ public:
         output_size_ = output_s;
     }
 
-    virtual Eigen::VectorXf At(const Eigen::VectorXf &v) = 0;
+    virtual Eigen::VectorXf operator()(const Eigen::VectorXf &v) = 0;
 
-    virtual Eigen::MatrixXf At(const Eigen::MatrixXf &v)
+    virtual Eigen::MatrixXf operator()(const Eigen::MatrixXf &v)
     {
           Eigen::MatrixXf out;
           out.resize(v.rows(), this->getOutputSize());
@@ -34,7 +34,7 @@ public:
           for (int i = 0; i < v.rows(); ++i)
           {
             Eigen::VectorXf row = v.row(i);
-            out.row(i) = this->At(row);
+            out.row(i) = this->operator()(row);
           }
 
           return out;

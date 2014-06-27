@@ -2,9 +2,13 @@
 #ifndef ICALPHFUNCTION_H
 #define ICALPHFUNCTION_H
 #include <spc/elements/EigenLinearFunctionBase.h>
+#include <spc/elements/CalibrationFunction.h>
 namespace spc
 {
-class ICalPHFunction : public EigenLinearFunctionBase
+
+
+
+class ICalPHFunction : public CalibrationFunction
 {
 public:
     SPC_OBJECT(ICalPHFunction)
@@ -12,9 +16,8 @@ public:
 
     ICalPHFunction();
 
-    // EigenFunctionBase interface
 public:
-    virtual Eigen::VectorXf At(const Eigen::VectorXf &v)
+    virtual Eigen::VectorXf operator()(const Eigen::VectorXf &v)
     {
         assert(v.size() >= 2);
         assert(coefficients_.size() == getNumberOfCoefficients());
@@ -45,6 +48,7 @@ public:
         return vec;
     }
 
+private:
     Eigen::VectorXf getRContrib(const float &r) const
     {
         Eigen::VectorXf v(getNumberOfCoefficients());
