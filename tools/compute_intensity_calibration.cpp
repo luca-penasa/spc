@@ -119,24 +119,24 @@ int main (int argc, char ** argv)
     std::cout << "stripped stuff" << std::endl;
 
 
-    spc::ICalPHFunction::Ptr function(new  spc::ICalPHFunction);
+//    spc::ICalPHFunction::Ptr function(new  spc::ICalPHFunction);
 
-    spc::EigenFunctionsParametrizator estimator;
-    estimator.setFunction(function);
-    estimator.setY(intensity);
-    estimator.setVariables(vars);
+//    spc::EigenFunctionsParametrizator estimator;
+//    estimator.setFunction(function);
+//    estimator.setY(intensity);
+//    estimator.setVariables(vars);
 
-    std::cout << "before compute" << std::endl;
+//    std::cout << "before compute" << std::endl;
 
-    estimator.compute();
+//    estimator.compute();
 
-    std::cout << "after compute" << std::endl;
-    std::cout << function->getCoefficients() << std::endl;
-
-
+//    std::cout << "after compute" << std::endl;
+//    std::cout << function->getCoefficients() << std::endl;
 
 
-    spc::io::serializeToFile(function,"calibration_model", spc::io::XML);
+
+
+//    spc::io::serializeToFile(function,"calibration_model", spc::io::XML);
 
 
 

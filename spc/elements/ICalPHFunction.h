@@ -8,83 +8,84 @@ namespace spc
 
 
 
-class ICalPHFunction : public CalibrationFunction
-{
-public:
-    SPC_OBJECT(ICalPHFunction)
-    EXPOSE_TYPE
 
-    ICalPHFunction();
+//class ICalPHFunction : public CalibrationFunction
+//{
+//public:
+//    SPC_OBJECT(ICalPHFunction)
+//    EXPOSE_TYPE
 
-public:
-    virtual Eigen::VectorXf operator()(const Eigen::VectorXf &v)
-    {
-        assert(v.size() >= 2);
-        assert(coefficients_.size() == getNumberOfCoefficients());
+//    ICalPHFunction();
 
-        float r = v(0);
-        float cosw = v(1);
-        Eigen::VectorXf obs_row = getRowOfObservationsMatrix(v);
+//public:
+//    virtual Eigen::VectorXf operator()(const Eigen::VectorXf &v)
+//    {
+//        assert(v.size() >= 2);
+//        assert(coefficients_.size() == getNumberOfCoefficients());
 
-        float value = obs_row.dot(getCoefficients());
+//        float r = v(0);
+//        float cosw = v(1);
+//        Eigen::VectorXf obs_row = getRowOfObservationsMatrix(v);
 
-        Eigen::VectorXf asv(1);
-        asv << value;
-        return asv;
-    }
+//        float value = obs_row.dot(getCoefficients());
 
-    virtual size_t getNumberOfCoefficients() const
-    {
-        return (overall_degree_ + 1) * (parameters_degree_ + 1);
-    }
+//        Eigen::VectorXf asv(1);
+//        asv << value;
+//        return asv;
+//    }
 
-    virtual Eigen::VectorXf getRowOfObservationsMatrix(const Eigen::VectorXf &v)
-    {
-        Eigen::VectorXf r_c = getRContrib(v(0));
-        Eigen::VectorXf cosw_c = getCosWContrib(v(1));
+//    virtual size_t getNumberOfCoefficients() const
+//    {
+//        return (overall_degree_ + 1) * (parameters_degree_ + 1);
+//    }
 
-        Eigen::VectorXf vec = r_c.array() * cosw_c.array();
+//    virtual Eigen::VectorXf getRowOfObservationsMatrix(const Eigen::VectorXf &v)
+//    {
+//        Eigen::VectorXf r_c = getRContrib(v(0));
+//        Eigen::VectorXf cosw_c = getCosWContrib(v(1));
 
-        return vec;
-    }
+//        Eigen::VectorXf vec = r_c.array() * cosw_c.array();
 
-private:
-    Eigen::VectorXf getRContrib(const float &r) const
-    {
-        Eigen::VectorXf v(getNumberOfCoefficients());
-        for (int i = 0; i < overall_degree_ + 1; ++i) {
-            for (int j = 0; j < parameters_degree_ +1; ++j) {
-                v(i *(parameters_degree_+1) + j) = pow(r, j);
-            }
-        }
+//        return vec;
+//    }
 
-        return v;
-    }
+//private:
+//    Eigen::VectorXf getRContrib(const float &r) const
+//    {
+//        Eigen::VectorXf v(getNumberOfCoefficients());
+//        for (int i = 0; i < overall_degree_ + 1; ++i) {
+//            for (int j = 0; j < parameters_degree_ +1; ++j) {
+//                v(i *(parameters_degree_+1) + j) = pow(r, j);
+//            }
+//        }
 
-    Eigen::VectorXf getCosWContrib(const float &cosw) const
-    {
-        Eigen::VectorXf v(getNumberOfCoefficients());
-        for (int i = 0; i < overall_degree_ +1; ++i) {
-            for (int j = 0; j < parameters_degree_+1; ++j) {
-                v(i *(parameters_degree_+1) + j) = pow(cosw, i);
+//        return v;
+//    }
 
-            }
-        }
-        return v;
-    }
+//    Eigen::VectorXf getCosWContrib(const float &cosw) const
+//    {
+//        Eigen::VectorXf v(getNumberOfCoefficients());
+//        for (int i = 0; i < overall_degree_ +1; ++i) {
+//            for (int j = 0; j < parameters_degree_+1; ++j) {
+//                v(i *(parameters_degree_+1) + j) = pow(cosw, i);
 
-protected:
-    size_t overall_degree_ = 3;
-    size_t parameters_degree_ = 3;
+//            }
+//        }
+//        return v;
+//    }
 
-private:
-    friend class cereal::access;
+//protected:
+//    size_t overall_degree_ = 3;
+//    size_t parameters_degree_ = 3;
 
-    template <class Archive> void serialize(Archive &ar)
-    {
-        ar(cereal::base_class<EigenFunctionBase>(this), CEREAL_NVP(coefficients_));
-    }
+//private:
+//    friend class cereal::access;
 
-};
+//    template <class Archive> void serialize(Archive &ar)
+//    {
+//        ar(cereal::base_class<EigenFunctionBase>(this), CEREAL_NVP(coefficients_));
+//    }
+
+//};
 } // end nspace
 #endif // ICALPHFUNCTION_H

@@ -143,12 +143,12 @@ int main(int argc, char **argv)
 
         cal.setFunction(cal_funct);
         cal.setInputCloud(asspccloud);
-        cal.setMaxDistanceForNormal(0.3);
+//        cal.setMaxDistanceForNormal(0.3);
 
         if (using_normals)
         {
             spc::PointCloudPCL::Ptr n_ptr (new spc::PointCloudPCL(pcl_normal_cloud));
-            cal.setNormalsCloud(n_ptr);
+//            cal.setNormalsCloud(n_ptr);
 
         }
 

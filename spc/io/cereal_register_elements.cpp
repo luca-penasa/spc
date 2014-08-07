@@ -95,6 +95,6 @@ CEREAL_REGISTER_TYPE_WITH_NAME(spc::EigenFunctionBase, "EigenFunctionBase")
 CEREAL_REGISTER_TYPE_WITH_NAME(spc::EigenLinearFunctionBase, "EigenLinearFunctionBase")
 
 
-#include <spc/elements/ICalPHFunction.h>
-CEREAL_REGISTER_TYPE_WITH_NAME(spc::ICalPHFunction, "ICalPHFunction")
+//#include <spc/elements/ICalPHFunction.h>
+//CEREAL_REGISTER_TYPE_WITH_NAME(spc::ICalPHFunction, "ICalPHFunction")
 

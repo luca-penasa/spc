@@ -38,7 +38,7 @@ public:
     }
 
     //! this virtual method is what actually determines the shape of your linear
-    //(polynomial) function
+    //! (polynomial) function
     virtual Eigen::VectorXf getRowOfObservationsMatrix(const Eigen::VectorXf &v)
         = 0;
 

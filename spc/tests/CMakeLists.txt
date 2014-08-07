@@ -26,3 +26,7 @@ target_link_libraries(spc_sample  spc_elements spc_external spc_methods)
 
 add_executable(spc_test_flann_bug flann_bug.cpp)
 target_link_libraries(spc_test_flann_bug ${PCL_LIBRARIES})
+
+add_executable(spc_test_polynomials polynomials.cpp)
+target_link_libraries(spc_test_polynomials ${PCL_LIBRARIES})
+

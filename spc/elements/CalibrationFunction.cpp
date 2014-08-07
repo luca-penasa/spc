@@ -1,8 +1,8 @@
-#include "CalibrationFunction.h"
-namespace spc
-{
+//#include "CalibrationFunction.h"
+//namespace spc
+//{
 
 
-DtiClassType CalibrationFunction::Type ("CalibrationFunction", &ElementBase::Type);
+//DtiClassType ScalarFieldFunction::Type ("ScalarField", &ElementBase::Type);
 
-}
+//}
