@@ -166,7 +166,7 @@ int main (int argc, char ** argv)
 
 
 
-    spc::io::serializeToFile(db, "./out", spc::io::SPC);
+    spc::io::serializeToFile(db, "./out", spc::io::XML);
 
 
     return 1;

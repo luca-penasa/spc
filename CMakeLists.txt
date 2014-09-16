@@ -110,7 +110,7 @@ endif()
 ############################################################################################################
 
 #########################  PCL! - everybody here will need it ###############################
-find_package(PCL 1.6 REQUIRED)
+find_package(PCL 1.7 REQUIRED)
 include_directories(${PCL_INCLUDE_DIRS})
 message("${PCL_INCLUDE_DIRS}")
 link_directories(${PCL_LIBRARY_DIRS})
