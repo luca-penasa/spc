@@ -22,10 +22,3 @@ else()
     ## here we should use a find_package for finding the system' cereal lib
     ## nothing for now. It is a TODO.
 endif()
-
-# finding pcl and related stuff for you
-find_package(PCL 1.7 REQUIRED)
-set (SPC_INCLUDE_DIRS "${SPC_INCLUDE_DIRS}" "${PCL_INCLUDE_DIRS}")
-set (SPC_LIBRARY_DIRS "${SPC_LIBRARY_DIRS}" "${PCL_LIBRARY_DIRS}")
-set (SPC_DEFINITIONS "${SPC_DEFINITIONS}" "${PCL_DEFINITIONS}")
-set (SPC_LIBRARIES "${SPC_LIBRARIES}" "${PCL_LIBRARIES}")

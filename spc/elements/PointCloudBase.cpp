@@ -6,7 +6,9 @@ DtiClassType PointCloudBase::Type = DtiClassType("PointCloudBase", &ElementBase:
 
 PointCloudBase::PointCloudBase()
 {
-    sensor_position_ << spcNANMacro ,spcNANMacro , spcNANMacro;
+    sensor_position_ << spcNANMacro;
+    sensor_position_ << spcNANMacro;
+    sensor_position_ << spcNANMacro;
 }
 
 int PointCloudBase::getNearestPointID(const Eigen::Vector3f query, float &sq_distance)
