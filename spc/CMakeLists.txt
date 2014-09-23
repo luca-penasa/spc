@@ -10,7 +10,9 @@ add_subdirectory(methods)
 
 
 
-
+if (SPC_BUILD_CALIBRATION)
+    add_subdirectory(calibration)
+endif()
 
 
 

@@ -61,6 +61,8 @@ option(SPC_BUILD_WITH_GPROF "Build with -pg flags for profiling." OFF)
 option(SPC_BUILD_TOOLS "Build the tools." OFF)
 #option(SPC_BUILD_TOOLS "Build really experimental staff." OFF)
 option(SPC_BUILD_SANDBOX_TOOLS "Build sandbox tools." ON)
+option(SPC_BUILD_CALIBRATION "Build intensity-calibration support" OFF)
+
 option(SPC_BUILD_MICMAC_RELATED "Build MICMAC-related code." OFF)
 option(SPC_BUILD_PYTHON_WRAPPINGS "Build python interface for the library. Only some classes have been wrapped!" OFF)
 option(SPC_BUILD_DOC "Build SPC doc" OFF)

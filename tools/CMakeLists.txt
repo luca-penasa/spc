@@ -141,3 +141,7 @@ target_link_libraries(${MY_TOOLS_PREFIX}compute_intensity_calibration ${PCL_LIBR
 
 spc_add_executable(${MY_TOOLS_PREFIX}apply_correction apply_correction.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}apply_correction ${SPC_LIBRARIES} )
+
+
+spc_add_executable(${MY_TOOLS_PREFIX}calibration_testing calibration_testing.cpp)
+target_link_libraries(${MY_TOOLS_PREFIX}calibration_testing ${SPC_LIBRARIES} )
