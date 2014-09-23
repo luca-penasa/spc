@@ -1,3 +1,6 @@
 [submodule "submodules/cereal"]
 	path = submodules/cereal
 	url = git@github.com:USCiLab/cereal.git
+[submodule "submodules/ceres-solver"]
+	path = submodules/ceres-solver
+	url = https://ceres-solver.googlesource.com/ceres-solver

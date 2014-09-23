@@ -29,7 +29,7 @@ set(SPC_VERSION ${SPC_MAJOR_VERSION}.${SPC_MINOR_VERSION}.${SPC_PATCH_VERSION})
 if (WIN32)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}" )
 else()
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -std=c++11 -fopenmp" )
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -std=c++14 " )
 endif()
 
 add_subdirectory(submodules)
@@ -55,17 +55,17 @@ set(SPC_LIBRARIES CACHE INTERNAL "SPC libs" FORCE) #this will collect all the mo
 ############################################################################################################
 
 ############################# OPTIONS ######################################################################
-option(SPC_BUILD_SHARED "Build spc library as a shared lib." OFF)
+option(SPC_BUILD_SHARED "Build spc library as a shared lib." ON)
 option(SPC_BUILD_STD_SHARED_PTR "Build spc library as a shared lib." ON)
 option(SPC_BUILD_WITH_GPROF "Build with -pg flags for profiling." OFF)
 option(SPC_BUILD_TOOLS "Build the tools." OFF)
-option(SPC_BUILD_TOOLS "Build really experimental staff." OFF)
-option(SPC_BUILD_SANDBOX_TOOLS "Build sandbox tools." OFF)
+#option(SPC_BUILD_TOOLS "Build really experimental staff." OFF)
+option(SPC_BUILD_SANDBOX_TOOLS "Build sandbox tools." ON)
 option(SPC_BUILD_MICMAC_RELATED "Build MICMAC-related code." OFF)
 option(SPC_BUILD_PYTHON_WRAPPINGS "Build python interface for the library. Only some classes have been wrapped!" OFF)
 option(SPC_BUILD_DOC "Build SPC doc" OFF)
 option(SPC_BUILD_TESTS "Do tests" OFF)
-option(SPC_ENABLE_INSTALL "Enable/Disable the install target" OFF)
+option(SPC_ENABLE_INSTALL "Enable/Disable the install target" ON)
 option(SPC_SWIG_WRAPPINGS "Use swigs to generate wrappings for some methods" OFF)
 
 option(SPC_USE_PARALLEL_OPENMP "Enable paralellization of some algorithms via OpenMP" OFF)
@@ -131,10 +131,10 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/functions.cmake)
 # include the current source dir
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-if(SPC_USE_PARALLEL_OPENMP) # a definition if use parallelization where possible
-    set(SPC_DEFINITIONS ${SPC_DEFINITIONS} "-DUSE_OPENMP")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -lpthread -lgcc_s" )
-endif()
+#if(SPC_USE_PARALLEL_OPENMP) # a definition if use parallelization where possible
+#    set(SPC_DEFINITIONS ${SPC_DEFINITIONS} "-DUSE_OPENMP")
+#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -lpthread -lgcc_s" )
+#endif()
 
 
 if (SPC_BUILD_WITH_GPROF)

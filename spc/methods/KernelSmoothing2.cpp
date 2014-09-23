@@ -4,7 +4,7 @@ namespace spc
 {
 
 KernelSmoothing2::KernelSmoothing2()
-    : flann_index_(flann::KDTreeSingleIndexParams())
+
 
 {
 

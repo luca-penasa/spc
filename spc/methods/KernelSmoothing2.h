@@ -76,7 +76,7 @@ protected:
     std::vector<ScalarT> x_;
     std::vector<ScalarT> y_;
 
-    FLANNIndex flann_index_;
+    FLANNIndex flann_index_ = FLANNIndex(flann::KDTreeSingleIndexParams());
 
     // compute gaussian weights on a vector
     inline void gaussian(const std::vector<ScalarT> &values,
