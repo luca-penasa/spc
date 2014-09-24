@@ -1,5 +1,7 @@
 set(MY_TOOLS_PREFIX "spc_")
 
+INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/../)
+
 if(BUILD_MICMAC_RELATED)
     link_directories(${CULTURE_3D_BUILD_DIR}/src)
 endif()
@@ -139,9 +141,15 @@ target_link_libraries(${MY_TOOLS_PREFIX}compute_intensity_calibration ${PCL_LIBR
 
 
 
+
+
 spc_add_executable(${MY_TOOLS_PREFIX}apply_correction apply_correction.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}apply_correction ${SPC_LIBRARIES} )
 
 
+FIND_PACKAGE(Ceres REQUIRED)
+INCLUDE_DIRECTORIES(${CERES_INCLUDE_DIRS})
+
+
 spc_add_executable(${MY_TOOLS_PREFIX}calibration_testing calibration_testing.cpp)
-target_link_libraries(${MY_TOOLS_PREFIX}calibration_testing ${SPC_LIBRARIES} )
+target_link_libraries(${MY_TOOLS_PREFIX}calibration_testing ${SPC_LIBRARIES}  ${CERES_LIBRARIES})

@@ -20,6 +20,7 @@
 
 // nan numbers
 #define spcNANMacro std::numeric_limits<float>::quiet_NaN()
+#define spcNANMacrod std::numeric_limits<double>::quiet_NaN()
 
 // a utilitu foreach from boost
 #define spcForEachMacro BOOST_FOREACH

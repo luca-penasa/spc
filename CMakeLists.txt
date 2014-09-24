@@ -133,10 +133,10 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/functions.cmake)
 # include the current source dir
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-#if(SPC_USE_PARALLEL_OPENMP) # a definition if use parallelization where possible
-#    set(SPC_DEFINITIONS ${SPC_DEFINITIONS} "-DUSE_OPENMP")
-#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -lpthread -lgcc_s" )
-#endif()
+if(SPC_USE_PARALLEL_OPENMP) # a definition if use parallelization where possible
+    set(SPC_DEFINITIONS ${SPC_DEFINITIONS} "-DUSE_OPENMP")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -lpthread -lgcc_s" )
+endif()
 
 
 if (SPC_BUILD_WITH_GPROF)

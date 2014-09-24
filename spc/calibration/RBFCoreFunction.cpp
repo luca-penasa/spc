@@ -2,7 +2,7 @@
 
 namespace spc
 {
-DtiClassType RBFCoreFunction::Type ("RBFCoreFunction", &CoreFunction::Type);
+//DtiClassType RBFCoreFunction::Type ("RBFCoreFunction", &CoreFunction::Type);
 
 
 RBFCoreFunction::RBFCoreFunction(): CoreFunction()

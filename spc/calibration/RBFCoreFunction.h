@@ -13,7 +13,7 @@ class RBFCoreFunction: public CoreFunction
 public:
 
     SPC_OBJECT(RBFCoreFunction)
-    EXPOSE_TYPE
+//    EXPOSE_TYPE
 
 
     RBFCoreFunction();
