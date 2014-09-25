@@ -82,6 +82,20 @@ double data[] = {
 //template class spc::RBFEvaluator<ceres::Jet<double, 6>>;
 
 
+#include <cxxabi.h>
+#include <stdlib.h>
+#include <string>
+
+template <typename T> std::string nameofType(const T& v)
+{
+    int     status;
+    char   *realname = abi::__cxa_demangle(typeid(v).name(), 0, 0, &status);
+    std::string name(realname? realname : "????");
+    free(realname);
+
+    return name;
+}
+
 
 
 struct RBFResidual {
@@ -93,6 +107,8 @@ struct RBFResidual {
     template <typename T> bool operator()(const T* const coeffs, T* residual) const
     {
 
+        T a;
+        std::cout <<"typeid name: "<< nameofType(a) << std::endl;
         for (int i =0; i <6;++i)
         {
             std::cout << coeffs[i] << std::endl;

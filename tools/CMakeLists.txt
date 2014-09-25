@@ -140,9 +140,6 @@ spc_add_executable(${MY_TOOLS_PREFIX}compute_intensity_calibration compute_inten
 target_link_libraries(${MY_TOOLS_PREFIX}compute_intensity_calibration ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 
-
-
-
 spc_add_executable(${MY_TOOLS_PREFIX}apply_correction apply_correction.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}apply_correction ${SPC_LIBRARIES} )
 
@@ -153,3 +150,10 @@ INCLUDE_DIRECTORIES(${CERES_INCLUDE_DIRS})
 
 spc_add_executable(${MY_TOOLS_PREFIX}calibration_testing calibration_testing.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}calibration_testing ${SPC_LIBRARIES}  ${CERES_LIBRARIES})
+
+spc_add_executable(${MY_TOOLS_PREFIX}calibration_testing2 calibration_testing2.cpp)
+target_link_libraries(${MY_TOOLS_PREFIX}calibration_testing2 ${SPC_LIBRARIES}  ${CERES_LIBRARIES})
+
+
+spc_add_executable(${MY_TOOLS_PREFIX}xml2spc xml2spc.cpp)
+target_link_libraries(${MY_TOOLS_PREFIX}xml2spc ${SPC_LIBRARIES}  ${CERES_LIBRARIES})

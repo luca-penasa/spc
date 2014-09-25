@@ -89,39 +89,8 @@ public:
     // gives back the distance of x from the knots
     VectorT getSquaredDistancesFromNodes (const VectorT & x) const
     {
-
-
         MatrixT diff  = parameters_->getNodes().rowwise() - x.transpose();
-
-
-
-
-        //        VectorT d(diff.rows());
-        //        for (int i = 0; i < diff.rows(); ++i)
-        //        {
-        //            ScalarT sq_sum(0);
-
-        //            for (int j =0; j < diff.cols(); ++j)
-        //            {
-
-        //                sq_sum += diff(i,j) * diff(i,j);
-        //            }
-
-        //            std::cout << "squared sum is " << sq_sum << std::endl;
-        //           d(i) = sqrt(sq_sum);
-
-
-        //        }
-
         return  diff.rowwise().squaredNorm();
-
-        //        std::cout << "distances are" << std::endl;
-        //        for (int i =0; i < d.rows(); ++i)
-        //        {
-        //            std::cout << d(i) << std::endl;
-        //        }
-
-//        return d;
     }
 
     VectorT getWeightsAtPoint(const VectorT &x) const
@@ -133,8 +102,6 @@ public:
             w(i) = parameters_->getKernel()->operator ()(sq_dist(i));
         }
         return w;
-
-        //        return dist;
     }
 
 protected:

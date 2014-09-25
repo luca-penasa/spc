@@ -118,7 +118,7 @@ public:
         smoothed_values_.resize(input_->size());
 
 #ifdef USE_OPENMP
-#pragma omp parallel for shared(smoothed_values_)
+#pragma omp parallel for
 #endif
         for (int i = 0; i < input_->size(); ++i) {
             PointT point = input_->at(i);
