@@ -26,59 +26,82 @@ T compute_rbf(const Matrix<T, -1, 1> &coefficients,
 
     // compute squared distances of point from nodes
     Matrix<T, -1, -1> diff  = nodes.rowwise() - point.transpose();
-//    std::cout << diff(9,0) << std::endl;
-
-
     Matrix<T, -1, 1> sq_dist =  diff.rowwise().squaredNorm();
 
-//    std::cout << sq_dist(9) << std::endl;
-
-
-    // transform these sq_dist in weights
+   // transform these sq_dist in weights
     Matrix<T, -1, 1> weights(sq_dist.rows());
 
     for (int i = 0; i < sq_dist.rows(); ++i)
         weights(i)  = exp(- sq_dist(i) / (sigma * sigma)  );
 
-//    std::cout <<"w: "<<  weights(0) <<std::endl;
-
     // compute the RBF value
     return weights.cwiseProduct(coefficients ).sum();
 }
 
-struct ResidualFunctor {
-    ResidualFunctor(double distance, double intensity, Eigen::MatrixXd * knots): distance_(distance), intensity_(intensity)
-    {
+template <size_t NDISTPARS, size_t NANGLEPARS>
+struct ResidualFunctor
+{
+    ResidualFunctor(double distance,
+                    double angle,
+                    double intensity,
+                    double sigma_dist,
+                    double sigma_angle,
+                    Eigen::MatrixXd * knots_dist,
+                    Eigen::MatrixXd * knots_angle):
+        distance_(distance),
+        angle_(angle),
+        intensity_(intensity),
+        sigma_dist_(sigma_dist),
+        sigma_angle_(sigma_angle)
 
-        knots_ = knots;
+    {
+        knots_dist_ = knots_dist;
+        knots_angle_ = knots_angle;
+//        std::cout  << "sigmas: " << distance << " " << angle << std::endl;
     }
 
-    template <typename T> bool operator()(const T* const coeffs, T* residual) const
+    template <typename T> bool operator()(const T* const coeffs_dist, const T* const coeffs_angle, T* residual) const
     {
 
-        Eigen::Matrix<T, 10, 1> c = Eigen::Map<const Eigen::Matrix<T, 10, 1>>(coeffs);
+        Eigen::Matrix<T, NDISTPARS, 1> c_dist = Eigen::Map<const Eigen::Matrix<T, NDISTPARS, 1>>(coeffs_dist);
 
-        Eigen::Matrix<T, 1, 1> eigx;
-        eigx << T(distance_);
-
-
-        T predicted = compute_rbf<T>(c, (*knots_).template cast<T>(),T(10), eigx );
-
-//        std::cout << "predicted " << predicted << std::endl;
+        Eigen::Matrix<T, NANGLEPARS, 1> c_angle = Eigen::Map<const Eigen::Matrix<T, NANGLEPARS, 1>>(coeffs_angle);
 
 
-        residual[0] = T(intensity_) - predicted;
+        Eigen::Matrix<T, 1, 1> edist;
+        edist << T(distance_);
+
+        Eigen::Matrix<T, 1, 1> eang;
+        eang<< T(angle_);
+
+
+        T d_effect = compute_rbf<T>(c_dist, (*knots_dist_).template cast<T>(), T(sigma_dist_), edist );
+        T a_effect = compute_rbf<T>(c_angle, (*knots_angle_).template cast<T>(), T(sigma_angle_), eang );
+
+//        std::cout << "d_effect: "<< d_effect << std::endl;
+//        std::cout << "a_effect: "<< a_effect << std::endl;
+
+        T prediction = d_effect * a_effect;
+
+
+
+        residual[0] = T(intensity_) - prediction;
         return true;
     }
 
 private:
     const double distance_;
+    const double angle_;
     const double intensity_;
+    const double sigma_dist_;
+    const double sigma_angle_;
 
-    Eigen::MatrixXd * knots_;
 
+    Eigen::MatrixXd * knots_dist_;
+    Eigen::MatrixXd * knots_angle_;
 
 };
+
 
 
 
@@ -91,7 +114,7 @@ int main (int argc, char ** argv)
 
     EigenTable::Ptr table = spcDynamicPointerCast<EigenTable> (o);
 
-    table = table->getWithStrippedNANs({"distance", "intensity", "angle"});
+    table = table->getWithStrippedNANs({"distance", "intensity", "angle", "intensity_std"});
 
     std::cout << "Following columns found:\n" << std::endl;
     for (int i = 0; i < table->getNumberOfColumns(); ++i)
@@ -100,46 +123,68 @@ int main (int argc, char ** argv)
     }
 
     Eigen::VectorXf i = table->mat().col(table->getColumnId("intensity"));
-
-
-
     Eigen::VectorXf d = table->mat().col(table->getColumnId("distance"));
     Eigen::VectorXf a = table->mat().col(table->getColumnId("angle"));
 
-    //   std::cout << a << std::endl;
+    Eigen::VectorXf i_std = table->mat().col(table->getColumnId("intensity_std"));
+
+    /////////////////////////////////////////////////////
 
     google::InitGoogleLogging(argv[0]);
 
     ceres::Problem problem;
 
-    Eigen::MatrixXd * knots =  new Eigen::MatrixXd (10, 1);
-    *knots << 0, 15, 30, 45, 60, 75, 90, 105, 120, 135;
+
+    //////////////////////////////////////////////////
+
+    const int n_dist_pars = 10;
+    const int n_ang_pars = 5;
+
+    Eigen::MatrixXd * knots_distance =  new Eigen::MatrixXd(Eigen::VectorXd::LinSpaced (n_dist_pars, d.minCoeff(), d.maxCoeff()));
+
+    Eigen::MatrixXd * knots_angles =  new Eigen::MatrixXd(Eigen::VectorXd::LinSpaced (n_ang_pars, 0, 90));
+
+//    *knots_angles << 0.,  30, 60, 90;
+
+    std::cout << "node for distance " << std::endl;
+    std::cout << *knots_distance << std::endl;
+
+    std::cout << "node for angle " << std::endl;
+    std::cout << *knots_angles << std::endl;
 
 
-    double coeffs[] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+    double coeffs_dist[n_dist_pars];
+    for (int i = 0; i < n_dist_pars; ++i)
+        coeffs_dist[i] = 1;
+
+    double dist_sigma = knots_distance->operator() (1) - knots_distance->operator ()(0);
+
+    double coeffs_angle[n_ang_pars];
+    for (int i = 0; i < n_ang_pars; ++i)
+        coeffs_angle[i] = 1;
+
+    double angle_sigma = knots_angles->operator() (1) - knots_angles->operator ()(0);
+
+
 
     for (int j = 0 ; j < i.rows(); ++j)
     {
+        ResidualFunctor<n_dist_pars,n_ang_pars> * f = new ResidualFunctor<n_dist_pars,n_ang_pars>( d(j), a(j), i(j) , dist_sigma, angle_sigma, knots_distance, knots_angles);
 
-//        if (std::isfinite(i(j)) & std::isfinite(d(j)))
-//        {
-            problem.AddResidualBlock(new ceres::AutoDiffCostFunction<ResidualFunctor, 1, 10>(
-                                         new ResidualFunctor(d(j), i(j) , knots)),
-                                     NULL,
-                                     coeffs);
-
-//            std::cout << i(j) << std::endl;
-//        }
-
-
+        problem.AddResidualBlock(new ceres::AutoDiffCostFunction< ResidualFunctor<n_dist_pars,n_ang_pars>, 1, n_dist_pars, n_ang_pars> ( f ),
+                                 new ceres::ScaledLoss(NULL, 1/(i_std(j)*i_std(j)), ceres::TAKE_OWNERSHIP),
+//                                 NULL,
+//                                 HuberLoss(0.00001),
+                                 coeffs_dist,
+                                 coeffs_angle);
 
     }
 
 
     ceres::Solver::Options options;
-    options.max_num_iterations = 25;
-    options.function_tolerance = 1e-18;
-    options.gradient_tolerance = 1e-18;
+    options.max_num_iterations = 1000;
+    options.function_tolerance = 1e-6;
+    options.gradient_tolerance = 1e-6;
     options.linear_solver_type = ceres::DENSE_QR;
     options.minimizer_progress_to_stdout = true;
 
@@ -148,37 +193,67 @@ int main (int argc, char ** argv)
     std::cout << summary.FullReport() << "\n";
 
 
-    Eigen::VectorXd eig_coeffs = Eigen::Map<Matrix<double, 10, 1>> (coeffs);
 
-    std::cout << "pars:" << std::endl;
-    for (int i =0; i <10; ++i)
+    std::cout << "pars dist:" << std::endl;
+    for (int i =0; i <n_dist_pars; ++i)
     {
-        std::cout << coeffs[i] << std::endl;
+        std::cout << coeffs_dist[i] << std::endl;
     }
 
+
+
+    std::cout << "pars angle:" << std::endl;
+    for (int i =0; i <n_ang_pars; ++i)
+    {
+        std::cout << coeffs_angle[i] << std::endl;
+    }
+
+
+
+    /////////////////////////////////////////////// recomputing
+
+    Eigen::VectorXd eig_dist_coeffs = Eigen::Map<Matrix<double, n_dist_pars, 1>> (coeffs_dist);
+
+    Eigen::VectorXd eig_angle_coeffs = Eigen::Map<Matrix<double, n_ang_pars, 1>> (coeffs_angle);
+
+
     Eigen::VectorXd predicted(i.rows());
+    Eigen::VectorXd dist_effect(i.rows());
+    Eigen::VectorXd angle_effect(i.rows());
+
 
     for (int j = 0; j < i.rows(); ++j)
     {
-        Eigen::Matrix<double, -1, 1> point(1);
-        point << d(j);
+        Eigen::Matrix<double, -1, 1> distance(1);
+        distance << d(j);
 
-//       std::cout << point << std::endl;
-        double val = compute_rbf<double>(eig_coeffs, *knots, 10.0, point);
-        predicted(j) = val;
-//       std::cout << val << std::endl;
+        Eigen::Matrix<double, -1, 1> angle(1);
+        angle << a(j);
+
+        double valdist = compute_rbf<double>(eig_dist_coeffs, *knots_distance, dist_sigma, distance);
+        double valang = compute_rbf<double>(eig_angle_coeffs, *knots_angles, angle_sigma, angle);
+
+        predicted(j) = valdist * valang;
+        dist_effect(j) = valdist;
+        angle_effect(j) = valang;
     }
 
     EigenTable::Ptr out (new EigenTable);
     out->addNewComponent("distance", 1);
+    out->addNewComponent("angle", 1);
     out->addNewComponent("intensity", 1);
     out->addNewComponent("pred_intensity", 1);
+    out->addNewComponent("angle_effect", 1);
+    out->addNewComponent("dist_effect", 1);
 
     out->resize(i.rows());
 
     out->column("distance") = d;
+    out->column("angle") = a;
     out->column("intensity") = i;
     out->column("pred_intensity") = predicted.cast<float>();
+    out->column("dist_effect") = dist_effect.cast<float>();
+    out->column("angle_effect") = angle_effect.cast<float>();
 
     spc::io::AsciiEigenTableWriter w;
     w.setInput(out);
