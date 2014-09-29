@@ -6,11 +6,10 @@
 namespace spc
 {
 
-template <typename ScalarT = double>
 class RBFKernel: public ElementBase
 {
 public:
-
+    typedef double ScalarT;
 
     SPC_OBJECT(RBFKernel)
 //    EXPOSE_TYPE
@@ -21,7 +20,7 @@ public:
 
 
     //! some kernels may have additional parameters that need
-    //! to b filled for the kernel to be valid
+    //! to be filled for the kernel to be valid
     virtual bool isValid() const = 0;
 
     //! by def we consider the kernel as not-compactly supported
@@ -34,11 +33,11 @@ public:
 };
 
 
-template <typename ScalarT = double>
-class RBFKernelGaussian: public RBFKernel<ScalarT>
+class RBFKernelGaussian: public RBFKernel
 {
 public:
 
+    typedef double ScalarT;
     SPC_OBJECT(RBFKernelGaussian)
 //    EXPOSE_TYPE
 
@@ -49,9 +48,10 @@ public:
 
     RBFKernelGaussian(const ScalarT& sigma) : sq_sigma_(sigma*sigma) {}
 
-    virtual const ScalarT operator()(const ScalarT& sq_dist) const
+    template<typename T>
+    const T operator()(const T& sq_dist) const
     {
-        return exp(- sq_sigma_ * sq_dist );
+        return exp(- T(sq_sigma_) * sq_dist );
     }
 
 

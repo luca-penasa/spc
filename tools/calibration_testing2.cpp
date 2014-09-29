@@ -38,30 +38,61 @@ T compute_rbf(const Matrix<T, -1, 1> &coefficients,
     return weights.cwiseProduct(coefficients ).sum();
 }
 
+
+class DataRecord
+{
+public:
+    DataRecord()
+    {
+
+    }
+
+    DataRecord(const Eigen::VectorXf &datas, const std::vector<std::string> &names): datas_(datas)
+    {
+        size_t i= 0;
+        for (const std::string &s: names)
+            name_to_id_.at(s) = i++;
+    }
+
+    template<typename T>
+    T
+    get(const std::string &name) const
+    {
+        return (T) datas_(name_to_id_.at(name));
+    }
+
+private:
+    Eigen::VectorXf datas_;
+
+    std::map<std::string, size_t> name_to_id_;
+
+
+};
+
 template <size_t NDISTPARS, size_t NANGLEPARS>
 struct ResidualFunctor
 {
-    ResidualFunctor(double distance,
-                    double angle,
-                    double intensity,
-                    double sigma_dist,
-                    double sigma_angle,
+    ResidualFunctor(DataRecord record,
                     Eigen::MatrixXd * knots_dist,
-                    Eigen::MatrixXd * knots_angle):
-        distance_(distance),
-        angle_(angle),
-        intensity_(intensity),
-        sigma_dist_(sigma_dist),
-        sigma_angle_(sigma_angle)
+                    Eigen::MatrixXd * knots_angle,
+                    const double sigma_dist,
+                    const double sigma_angle):
+        record_(record), sigma_dist_(sigma_dist), sigma_angle_(sigma_angle)
 
     {
         knots_dist_ = knots_dist;
         knots_angle_ = knots_angle;
-//        std::cout  << "sigmas: " << distance << " " << angle << std::endl;
     }
 
-    template <typename T> bool operator()(const T* const coeffs_dist, const T* const coeffs_angle, T* residual) const
+    template <typename T> bool operator()(const T* const coeff_dist,const T* const coeff_angle,  T* residual) const
     {
+
+        T distance = record_.get<T>("distance");
+        T intensity = record_.get<T>("intensity");
+        T angle = record_.get<T>("angle");
+
+
+
 
         Eigen::Matrix<T, NDISTPARS, 1> c_dist = Eigen::Map<const Eigen::Matrix<T, NDISTPARS, 1>>(coeffs_dist);
 
@@ -70,10 +101,10 @@ struct ResidualFunctor
 
 
         Eigen::Matrix<T, 1, 1> edist;
-        edist << T(distance_);
+        edist << T(distance);
 
         Eigen::Matrix<T, 1, 1> eang;
-        eang<< T(angle_);
+        eang<< T(angle);
 
 
         T d_effect = compute_rbf<T>(c_dist, (*knots_dist_).template cast<T>(), T(sigma_dist_), edist );
@@ -84,7 +115,7 @@ struct ResidualFunctor
 
         double alpha = 0;
 
-        residual[0] = T(intensity_) - prediction;
+        residual[0] = intensity - prediction;
 
         for (int i = 0 ; i< NDISTPARS; ++i)
         {
@@ -101,12 +132,12 @@ struct ResidualFunctor
     }
 
 private:
-    const double distance_;
-    const double angle_;
-    const double intensity_;
+
+
+    const DataRecord record_;
+
     const double sigma_dist_;
     const double sigma_angle_;
-
 
     Eigen::MatrixXd * knots_dist_;
     Eigen::MatrixXd * knots_angle_;
@@ -114,10 +145,10 @@ private:
 };
 
 //! an unique that should work with eigen types
-template <typename ObjT>
+template<typename ObjT>
 ObjT unique(const ObjT& b)
 {
-    ObjT tmp = b;
+    typename ObjT::PlainObject tmp = b;
 
 
     std::sort(tmp.data(), tmp.data() + tmp.size());

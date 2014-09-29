@@ -6,7 +6,7 @@ spc
 //template <>
 //DtiClassType RBFEvaluator<double>::Type ("RBFEvaluatorD", &ElementBase::Type);
 
-template class RBFEvaluator<double>;
+//template class RBFEvaluator<double>;
 
 
 

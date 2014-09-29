@@ -7,14 +7,18 @@
 namespace spc
 {
 
-template <typename ScalarT = double>
 class RBFParameters: public ElementBase
 {
 public:
 
+    typedef double ScalarT;
+
     //    typedef double ScalarT;
     typedef Eigen::Matrix<ScalarT,-1,1> VectorT;
     typedef Eigen::Matrix<ScalarT,-1,-1> MatrixT;
+
+
+
 
     SPC_OBJECT(RBFParameters)
 //    EXPOSE_TYPE
@@ -66,10 +70,17 @@ public:
         return nodes_;
     }
 
-    void setCoefficients(const VectorT &coeffs)
-    {
+    template<typename T>
+    void setCoefficients(const T &coeffs)
+    {        
         coeffs_ = coeffs;
     }
+
+
+
+
+
+
 
     MatrixT getCoefficients() const
     {

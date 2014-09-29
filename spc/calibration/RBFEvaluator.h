@@ -11,14 +11,13 @@
 namespace  spc {
 
 
-template <typename ScalarT = double>
 class RBFEvaluator: public ElementBase
 {
 public:
 
 
 
-    //    typedef double ScalarT;
+        typedef double ScalarT;
     typedef Eigen::Matrix<ScalarT,-1,1> VectorT;
     typedef Eigen::Matrix<ScalarT,-1,-1> MatrixT;
 

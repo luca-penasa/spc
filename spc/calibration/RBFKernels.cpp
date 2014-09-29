@@ -11,8 +11,8 @@ namespace spc
 //DtiClassType RBFKernelGaussian<double>::Type ("RBFKernelGaussian", &RBFKernel<double>::Type);
 
 
-template class RBFKernel<double>;
-template class RBFKernelGaussian<double>;
+//template class RBFKernel<double>;
+//template class RBFKernelGaussian<double>;
 
 
 
