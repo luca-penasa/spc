@@ -68,6 +68,7 @@ struct ResidualFunctor
         Eigen::Matrix<T, NANGLEPARS, 1> c_angle = Eigen::Map<const Eigen::Matrix<T, NANGLEPARS, 1>>(coeffs_angle);
 
 
+
         Eigen::Matrix<T, 1, 1> edist;
         edist << T(distance_);
 
@@ -83,9 +84,21 @@ struct ResidualFunctor
 
         T prediction = d_effect * a_effect;
 
-
+        double alpha = 0;
 
         residual[0] = T(intensity_) - prediction;
+
+        for (int i = 0 ; i< NDISTPARS; ++i)
+        {
+            residual[i+1] = coeffs_dist[i] * alpha;
+        }
+
+        for (int i = 0;i< NANGLEPARS; ++i)
+
+        {
+            residual[i+1+NDISTPARS] = coeffs_angle[i] * alpha;
+        }
+
         return true;
     }
 
@@ -108,7 +121,7 @@ private:
 
 int main (int argc, char ** argv)
 {
-    std::string datadb = "/home/luca/Desktop/calibration_db.spc";
+    std::string datadb = "/home/luca/Desktop/calibration_db_small.spc";
 
     ISerializable::Ptr o =  spc::io::deserializeFromFile(datadb);
 
@@ -128,6 +141,8 @@ int main (int argc, char ** argv)
 
     Eigen::VectorXf i_std = table->mat().col(table->getColumnId("intensity_std"));
 
+    Eigen::VectorXi cloud_ids = table->mat().col(table->getColumnId("cloud_id")).cast<int>();
+
     /////////////////////////////////////////////////////
 
     google::InitGoogleLogging(argv[0]);
@@ -137,8 +152,8 @@ int main (int argc, char ** argv)
 
     //////////////////////////////////////////////////
 
-    const int n_dist_pars = 10;
-    const int n_ang_pars = 5;
+    const int n_dist_pars = 6;
+    const int n_ang_pars = 4;
 
     Eigen::MatrixXd * knots_distance =  new Eigen::MatrixXd(Eigen::VectorXd::LinSpaced (n_dist_pars, d.minCoeff(), d.maxCoeff()));
 
@@ -171,7 +186,7 @@ int main (int argc, char ** argv)
     {
         ResidualFunctor<n_dist_pars,n_ang_pars> * f = new ResidualFunctor<n_dist_pars,n_ang_pars>( d(j), a(j), i(j) , dist_sigma, angle_sigma, knots_distance, knots_angles);
 
-        problem.AddResidualBlock(new ceres::AutoDiffCostFunction< ResidualFunctor<n_dist_pars,n_ang_pars>, 1, n_dist_pars, n_ang_pars> ( f ),
+        problem.AddResidualBlock(new ceres::AutoDiffCostFunction< ResidualFunctor<n_dist_pars,n_ang_pars>, 1 + n_ang_pars + n_dist_pars, n_dist_pars, n_ang_pars> ( f ),
                                  new ceres::ScaledLoss(NULL, 1/(i_std(j)*i_std(j)), ceres::TAKE_OWNERSHIP),
 //                                 NULL,
 //                                 HuberLoss(0.00001),
