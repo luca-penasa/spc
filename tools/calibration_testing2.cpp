@@ -79,8 +79,6 @@ struct ResidualFunctor
         T d_effect = compute_rbf<T>(c_dist, (*knots_dist_).template cast<T>(), T(sigma_dist_), edist );
         T a_effect = compute_rbf<T>(c_angle, (*knots_angle_).template cast<T>(), T(sigma_angle_), eang );
 
-//        std::cout << "d_effect: "<< d_effect << std::endl;
-//        std::cout << "a_effect: "<< a_effect << std::endl;
 
         T prediction = d_effect * a_effect;
 
@@ -115,8 +113,22 @@ private:
 
 };
 
+//! an unique that should work with eigen types
+template <typename ObjT>
+ObjT unique(const ObjT& b)
+{
+    ObjT tmp = b;
 
 
+    std::sort(tmp.data(), tmp.data() + tmp.size());
+    auto last = std::unique(tmp.data(), tmp.data() + tmp.size());
+
+    size_t n_elements = last - tmp.data();
+
+    tmp.conservativeResize(n_elements);
+
+    return tmp;
+}
 
 
 int main (int argc, char ** argv)
@@ -142,7 +154,12 @@ int main (int argc, char ** argv)
     Eigen::VectorXf i_std = table->mat().col(table->getColumnId("intensity_std"));
 
     Eigen::VectorXi cloud_ids = table->mat().col(table->getColumnId("cloud_id")).cast<int>();
+    Eigen::VectorXi c = unique(cloud_ids);
 
+    std::cout << "unique cloud ids found: \n" << c << std::endl;
+
+
+//    std::cout << cloud_ids << std::endl;
     /////////////////////////////////////////////////////
 
     google::InitGoogleLogging(argv[0]);
