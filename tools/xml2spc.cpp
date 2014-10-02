@@ -1,15 +1,5 @@
-#include <spc/calibration/RBFEvaluator.h>
-
-
-#include "ceres/ceres.h"
-#include "glog/logging.h"
-
 #include <spc/io/element_io.h>
 
-
-
-//std::string db_name ("/home/luca/Desktop/calibration_db.xml");
-//std::string db_name ("/home/luca/Desktop/calibration_db.bin");
 using namespace spc;
 
 int main(int argc, char ** argv)

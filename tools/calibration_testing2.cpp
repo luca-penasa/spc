@@ -1,30 +1,23 @@
-#include <spc/calibration/RBFEvaluator.h>
 
 
-#include "ceres/ceres.h"
-#include "glog/logging.h"
+//#include "ceres/ceres.h"
+//#include "glog/logging.h"
 
-#include <spc/io/element_io.h>
-#include <spc/elements/EigenTable.h>
+//#include <spc/io/element_io.h>
+//#include <spc/elements/EigenTable.h>
 
-#include <spc/io/AsciiEigenTableWriter.h>
+//#include <spc/io/AsciiEigenTableWriter.h>
 
-#include <spc/calibration/CalibrationFactors.h>
+//#include <spc/calibration/CalibrationFactors.h>
 
-using namespace spc;
-using Eigen::Matrix;
-
-//template class spc::RBFEvaluator<ceres::Jet<double, 6>>;
-
-
-
-//size_t BasicFactor::current_number_of_instances_ =0;
 
 
 #include <spc/calibration/CalibrationManager.h>
 
 
 
+using namespace spc;
+using Eigen::Matrix;
 
 
 
@@ -45,10 +38,21 @@ int main (int argc, char ** argv)
     man.setUpFixedPars();
     man.setUpInitParametersBlocks();
     man.setUpProblem();
+
+    std::cout << "n pars blocks " << man.getNumberOfParameterBlocks() << std::endl;
+
+    for (int i =0 ; i < man.getNumberOfParameterBlocks(); ++i)
+    {
+        std::cout << "par block " << i << " has size " << man.getSizeOfParameterBlock(i) << std::endl;
+    }
+
+
     man.solve();
     man.printFullReport();
+    man.printAllParameters();
 
     man.savePrediction("/home/luca/test.txt");
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -66,35 +70,7 @@ int main (int argc, char ** argv)
 //    }
 
 
-    /////////////////////////////////////////////// recomputing
 
-//    Eigen::VectorXd predicted(obs.size());
-
-//    for (int j = 0; j < obs.size(); ++j)
-//    {
-//        predicted(j) = predict_intensities(obs.at(j), *fixed_pars,  &parameters[0]);
-//    }
-
-//    EigenTable::Ptr out (new EigenTable);
-//    out->addNewComponent("distance", 1);
-//    out->addNewComponent("angle", 1);
-//    out->addNewComponent("intensity", 1);
-//    out->addNewComponent("pred_intensity", 1);
-
-
-//    out->resize(i.rows());
-
-//    out->column("distance") = d;
-//    out->column("angle") = a;
-//    out->column("intensity") = i.cast<float>();
-//    out->column("pred_intensity") = predicted.cast<float>();
-
-
-//    spc::io::AsciiEigenTableWriter w;
-//    w.setInput(out);
-//    w.setOutputFilename("/home/luca/test.txt");
-//    w.setWriteHeaders(true);
-//    w.write();
 
     return 1;
 }

@@ -5,31 +5,8 @@
 
 #include <spc/elements/ElementBase.h>
 #include <spc/calibration/Observations.h>
+#include <spc/calibration/SampledData.h>
 namespace spc {
-
-
-class FixedModelPars
-{
-public:
-    double sigma_dist;
-    double sigma_angle;
-    Eigen::MatrixXd * knots_dist;
-    Eigen::MatrixXd * knots_angle;
-
-
-    int n_dist_pars = 6;
-    int n_ang_pars = 4;
-
-    const size_t getNumberOfDistanceKnots() const
-    {
-        return knots_dist->rows();
-    }
-
-    const size_t getNumberOfAngleKnots() const
-    {
-        return knots_angle->rows();
-    }
-};
 
 
 

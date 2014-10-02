@@ -9,25 +9,11 @@
 #include <spc/calibration/Observations.h>
 #include <spc/calibration/ResidualBlocks.h>
 
+#include <spc/calibration/IntensityModelFixedPars.h>
+
 namespace spc {
 using Eigen::Matrix;
 
-//! an unique that should work with eigen types
-template <typename ObjT>
-ObjT unique(const ObjT& b)
-{
-    ObjT tmp = b;
-
-
-    std::sort(tmp.data(), tmp.data() + tmp.size());
-    auto last = std::unique(tmp.data(), tmp.data() + tmp.size());
-
-    size_t n_elements = last - tmp.data();
-
-    tmp.conservativeResize(n_elements);
-
-    return tmp;
-}
 
 
 
@@ -55,7 +41,7 @@ T compute_rbf(const Matrix<T, -1, 1> &coefficients,
 }
 
 template <typename T>
-T predict_intensities(const Observation &ob, const FixedModelPars &fixed_pars,  T const * const * parameters)
+T predict_intensities(const Observation &ob, const IntensityModelFixedPars &fixed_pars,  T const * const * parameters)
 {
     typedef Eigen::Matrix<T,-1,1> MatrixType;
     typedef Eigen::Map<const MatrixType> MapType;
