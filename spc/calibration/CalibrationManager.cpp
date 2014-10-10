@@ -32,14 +32,6 @@ void CalibratorManager::solve()
 void CalibratorManager::printFullReport()
 {
     std::cout << summary_.FullReport() << "\n";
-
-    std::cout << "final pars - dist: " << std::endl;
-    std::cout << dist_pars_ei_ << std::endl;
-
-    std::cout << "final pars - ang: " << std::endl;
-    std::cout << angle_pars_ei_ << std::endl;
-
-
 }
 
 void CalibratorManager::printAllParameters()

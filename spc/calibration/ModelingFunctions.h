@@ -11,7 +11,7 @@
 
 #include <spc/calibration/IntensityModelFixedPars.h>
 
-#include <spc/calibration/ParametersHolder.h>
+#include <spc/calibration/ParametersBlock.h>
 
 namespace spc {
 using Eigen::Matrix;
@@ -25,8 +25,23 @@ T compute_rbf(const Matrix<T, -1, 1> &coefficients,
               const T &sigma,
               const Matrix<T, -1, 1> &point)
 {
+//    std::cout << "computing rbf" << std::endl;
+
+//    std::cout << "nodes" << std::endl;
+//    printMatrix(nodes);
+
+//    std::cout << "sigma " << sigma << std::endl;
+//    std::cout << "point";
+//    printMatrix(point);
 
 
+//    std::cout << "nodes" << std::endl;
+
+//    printMatrix(nodes);
+
+//    std::cout << "coefficients" << std::endl;
+
+//    printMatrix(coefficients);
 
     // compute squared distances of point from nodes
     Matrix<T, -1, -1> diff  = nodes.rowwise() - point.transpose();

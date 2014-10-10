@@ -3,7 +3,8 @@
 
 
 #include <algorithm>
-//#include <Eigen/Eigen>
+#include <Eigen/Eigen>
+#include <iostream>
 
 namespace spc {
 //using Eigen::Matrix;
@@ -23,6 +24,20 @@ ObjT unique(const ObjT& b)
     tmp.conservativeResize(n_elements);
 
     return tmp;
+}
+
+template<typename Derived>
+void
+printMatrix (const Eigen::MatrixBase<Derived> & mat)
+{
+    for (int i = 0; i < mat.rows(); ++i)
+    {
+        for (int j = 0 ; j < mat.cols(); ++j)
+        {
+            std::cout << mat(i,j) << " " << std::endl;
+        }
+        std::cout << std::endl;
+    }
 }
 
 

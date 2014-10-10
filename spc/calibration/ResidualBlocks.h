@@ -14,7 +14,7 @@ public:
     typedef ceres::DynamicAutoDiffCostFunction< FlatParametersConstrain, 4> mycostT;
 
     FlatParametersConstrain(const double alpha,
-                            std::vector<MetaBlock *> to_flatten
+                            std::vector<ParameterBlock *> to_flatten
 
                             ): alpha_(alpha)
     {
@@ -27,7 +27,7 @@ public:
 
 
         size_t n_res = 0;
-        for (MetaBlock * block: blocks_)
+        for (ParameterBlock * block: blocks_)
         {
             cost_->AddParameterBlock(block->getBlockSize());
             n_res += block->getBlockSize();
@@ -44,11 +44,6 @@ public:
     }
 
 
-    virtual void initMyBlocks()
-    {
-        // no blocks to init here!
-    }
-
 
 
     template<typename T>
@@ -58,7 +53,7 @@ public:
         size_t current_residual = 0;
         for (int i = 0 ; i < blocks_.size(); ++i)
         {
-            MetaBlock * block = blocks_.at(i);
+            ParameterBlock * block = blocks_.at(i);
 
             Eigen::Matrix<T, -1, -1> mat = this->remapFromPointerAndBlock<T>(parameters, block);
 
@@ -147,8 +142,7 @@ class IntensityModelingFunctorMultiResiduals: public BasicResidualBlock
 public:
     typedef ceres::DynamicAutoDiffCostFunction< IntensityModelingFunctorMultiResiduals, 4> mycostT;
 
-    IntensityModelingFunctorMultiResiduals(std::vector<spc::Observation> &ob
-                                           )
+    IntensityModelingFunctorMultiResiduals(std::vector<spc::Observation> &ob)
 
 
     {
@@ -159,7 +153,7 @@ public:
           initMyBlocks();
 
           size_t n_res = 0;
-          for (MetaBlock * block: blocks_)
+          for (ParameterBlock * block: blocks_)
               if (block->isEnabled())
                 cost_->AddParameterBlock(block->getBlockSize());
 
@@ -191,34 +185,40 @@ private:
 public:
 
 
-    virtual void initMyBlocks()
+    void initMyBlocks()
     {
 
-        MetaBlock * knots_angle  = new MetaBlock(3, "knots_angle");
+        ParameterBlock * knots_angle  = new ParameterBlock(5, "knots_angle");
         knots_angle->getData()(0) = 0;
-        knots_angle->getData()(1) = 45;
-        knots_angle->getData()(2) = 90;
+        knots_angle->getData()(1) = 25;
+        knots_angle->getData()(2) = 50;
+        knots_angle->getData()(3) = 75;
+        knots_angle->getData()(4) = 90;
         knots_angle->disable();
 
 
 
 
 
-        MetaBlock * knots_distance  = new MetaBlock(3, "knots_distance");
+        ParameterBlock * knots_distance  = new ParameterBlock(5, "knots_distance");
         knots_distance->getData()(0) = 0;
-        knots_distance->getData()(1) = 70;
-        knots_distance->getData()(2) = 140;
+        knots_distance->getData()(1) = 35;
+        knots_distance->getData()(2) = 70;
+        knots_distance->getData()(3) = 105;
+        knots_distance->getData()(4) = 140;
         knots_distance->disable();
 
 
-        MetaBlock * sigma_angle = new MetaBlock(1, "sigma_angle");
+        ParameterBlock * sigma_angle = new ParameterBlock(1, "sigma_angle");
         sigma_angle->disable();
+        sigma_angle->getData()(0) = 25;
 
-        MetaBlock * sigma_distance = new MetaBlock(1, "sigma_distance");
+        ParameterBlock * sigma_distance = new ParameterBlock(1, "sigma_distance");
         sigma_distance->disable();
+        sigma_distance->getData()(0) = 70;
 
-        MetaBlock * coeff_angle = new MetaBlock(3, "coeff_angle");
-        MetaBlock * coeff_distance = new MetaBlock(3, "coeff_distance");
+        ParameterBlock * coeff_angle = new ParameterBlock(5, "coeff_angle");
+        ParameterBlock * coeff_distance = new ParameterBlock(5, "coeff_distance");
 
         blocks_.push_back(knots_angle);
         blocks_.push_back(knots_distance);

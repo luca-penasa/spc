@@ -15,7 +15,7 @@
 #include <spc/calibration/ModelingFunctions.h>
 
 
-#include <spc/calibration/ParametersHolder.h>
+#include <spc/calibration/ParametersBlock.h>
 namespace spc
 {
 
@@ -35,7 +35,7 @@ public:
         std::vector<double *> parameters = block.getMyActiveParameters();
 
 
-        for (MetaBlock * b: block.getMyBlocks())
+        for (ParameterBlock * b: block.getMyBlocks())
         {
             std::string name = b->getBlockName();
             std::cout << "my block: " << name << std::endl;
@@ -125,10 +125,6 @@ public:
 
 
 
-//    ParametersDescriptor parameters_;
-
-    Eigen::VectorXd dist_pars_ei_;
-    Eigen::VectorXd angle_pars_ei_ ;
 
 };
 
