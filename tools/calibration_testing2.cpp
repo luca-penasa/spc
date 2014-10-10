@@ -20,12 +20,6 @@ using namespace spc;
 using Eigen::Matrix;
 
 
-
-
-
-
-
-
 int main (int argc, char ** argv)
 {
     std::string datadb = "/home/luca/Desktop/calibration_db.spc";
@@ -34,9 +28,6 @@ int main (int argc, char ** argv)
 
     man.setSolverOptions();
 
-
-    man.setUpFixedPars();
-    man.setUpInitParametersBlocks();
     man.setUpProblem();
 
     std::cout << "n pars blocks " << man.getNumberOfParameterBlocks() << std::endl;
@@ -52,24 +43,6 @@ int main (int argc, char ** argv)
     man.printAllParameters();
 
     man.savePrediction("/home/luca/test.txt");
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////
-
-//    std::cout << "dist pars:" << std::endl;
-//    for (int i =0; i <n_dist_pars ; ++i)
-//    {
-//        std::cout << dist_pars[i] << std::endl;
-//    }
-
-//    std::cout << "angle pars:" << std::endl;
-//    for (int i =0; i <n_ang_pars; ++i)
-//    {
-//        std::cout << angle_pars[i] << std::endl;
-//    }
-
-
 
 
     return 1;

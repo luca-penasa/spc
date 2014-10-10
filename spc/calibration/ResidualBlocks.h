@@ -1,34 +1,11 @@
 #ifndef RESIDUALBLOCKS_H
 #define RESIDUALBLOCKS_H
 
-#include <spc/calibration/CalibrationFactors.h>
-#include <spc/calibration/Observations.h>
+//#include <spc/calibration/BasicResidualBlock.h>
+//#include <spc/calibration/Observations.h>
 #include <spc/calibration/ModelingFunctions.h>
-#include <ceres/ceres.h>
-
-#include <spc/calibration/IntensityModelFixedPars.h>
-
 namespace spc
 {
-
-class BasicResidualBlock
-{
-public:
-    virtual std::vector<size_t> getSizesOfParametersBlocks() const = 0;
-
-    virtual size_t getNumberOfResiduals() const = 0;
-
-    virtual ceres::CostFunction * getMyCost()  = 0;
-
-    virtual void addParameters (std::vector<std::vector<double>> & overall_pars) = 0;
-
-
-
-
-
-
-
-};
 
 class FlatParametersConstrain: public BasicResidualBlock
 {
@@ -36,71 +13,69 @@ public:
 
     typedef ceres::DynamicAutoDiffCostFunction< FlatParametersConstrain, 4> mycostT;
 
-    FlatParametersConstrain(const double alpha, spc::IntensityModelFixedPars const * fixed_pars ): alpha_(alpha)
+    FlatParametersConstrain(const double alpha,
+                            std::vector<MetaBlock *> to_flatten
+
+                            ): alpha_(alpha)
     {
-        fixed_pars_ = fixed_pars;
+
+//        initMyBlocks();
+
+        blocks_= to_flatten;
+        // now create the cost object
+        cost_  =new mycostT ( this );
+
+
+        size_t n_res = 0;
+        for (MetaBlock * block: blocks_)
+        {
+            cost_->AddParameterBlock(block->getBlockSize());
+            n_res += block->getBlockSize();
+        }
+
+        cost_->SetNumResiduals(n_res);
+
+        updateNameToBlock();
     }
 
     ceres::CostFunction * getMyCost()
     {
-        mycostT * cost  =new mycostT ( this );
-
-        for (size_t s: getSizesOfParametersBlocks())
-        {
-            cost->AddParameterBlock(s);
-        }
-
-        cost->SetNumResiduals(getNumberOfResiduals());
-
-        return cost;
+        return cost_;
     }
 
-    virtual void addParameters(std::vector<std::vector<double>> & overall_pars)
+
+    virtual void initMyBlocks()
     {
-        // we do no need to add parameters really.
+        // no blocks to init here!
     }
 
-    void addWeightBlock( size_t block_id)
-    {
 
-        weigthed_blocks_.push_back(block_id);
-    }
-
-    std::vector<size_t> weigthed_blocks_;
 
     template<typename T>
     bool operator()(T const* const* parameters, T* residual)
     {
-        size_t d_s = fixed_pars_->getNumberOfDistanceKnots();
-        size_t a_s = fixed_pars_->getNumberOfAngleKnots();
 
-        for (int i = 0; i < d_s; ++i)
+        size_t current_residual = 0;
+        for (int i = 0 ; i < blocks_.size(); ++i)
         {
-            residual[i] = alpha_ * parameters[0][i];
-        }
+            MetaBlock * block = blocks_.at(i);
 
-        for (int i = 0; i < a_s; ++i)
-        {
-            residual[i + d_s] = alpha_ * parameters[1][i];
-        }
+            Eigen::Matrix<T, -1, -1> mat = this->remapFromPointerAndBlock<T>(parameters, block);
 
+            for (int j = 0; j < mat.size(); ++j)
+            {
+                T value = mat.array()(j);
+                residual[current_residual++] = value * T(alpha_);
+            }
+        }
         return true;
     }
 
-    size_t getNumberOfResiduals() const
-    {
-        return fixed_pars_->getNumberOfAngleKnots() + fixed_pars_->getNumberOfDistanceKnots();
-    }
 
-
-    // BasicResidualBlock interface
-    std::vector<size_t> getSizesOfParametersBlocks() const
-    {
-        return {fixed_pars_->getNumberOfDistanceKnots(), fixed_pars_->getNumberOfAngleKnots()};
-    }
 
     double alpha_;
-    const spc::IntensityModelFixedPars * fixed_pars_;
+
+    mycostT * cost_;
 
 
 };
@@ -172,13 +147,26 @@ class IntensityModelingFunctorMultiResiduals: public BasicResidualBlock
 public:
     typedef ceres::DynamicAutoDiffCostFunction< IntensityModelingFunctorMultiResiduals, 4> mycostT;
 
-    IntensityModelingFunctorMultiResiduals(std::vector<spc::Observation> &ob,
-                                           spc::IntensityModelFixedPars * fixed_pars)
+    IntensityModelingFunctorMultiResiduals(std::vector<spc::Observation> &ob
+                                           )
 
 
     {
         observations_ = &ob;
-        fixed_pars_ = fixed_pars;
+
+          cost_  =new mycostT ( this );
+
+          initMyBlocks();
+
+          size_t n_res = 0;
+          for (MetaBlock * block: blocks_)
+              if (block->isEnabled())
+                cost_->AddParameterBlock(block->getBlockSize());
+
+          cost_->SetNumResiduals(observations_->size());
+
+          updateNameToBlock();
+
     }
 
     template<typename T>
@@ -188,7 +176,7 @@ public:
         size_t i = 0;
         for (const Observation & ob : *observations_)
         {
-            T prediction = predict_intensities(ob, *fixed_pars_, parameters);
+            T prediction = predict_intensities(ob, *this, parameters);
             residual[i++] = T(ob.intensity) - prediction;
         }
 
@@ -198,33 +186,66 @@ public:
 private:
     std::vector<spc::Observation> * observations_;
 
-    spc::IntensityModelFixedPars * fixed_pars_;
-
 
     // BasicResidualBlock interface
 public:
-    std::vector<size_t> getSizesOfParametersBlocks() const
+
+
+    virtual void initMyBlocks()
     {
-        return {fixed_pars_->n_dist_pars, fixed_pars_->n_ang_pars};
+
+        MetaBlock * knots_angle  = new MetaBlock(3, "knots_angle");
+        knots_angle->getData()(0) = 0;
+        knots_angle->getData()(1) = 45;
+        knots_angle->getData()(2) = 90;
+        knots_angle->disable();
+
+
+
+
+
+        MetaBlock * knots_distance  = new MetaBlock(3, "knots_distance");
+        knots_distance->getData()(0) = 0;
+        knots_distance->getData()(1) = 70;
+        knots_distance->getData()(2) = 140;
+        knots_distance->disable();
+
+
+        MetaBlock * sigma_angle = new MetaBlock(1, "sigma_angle");
+        sigma_angle->disable();
+
+        MetaBlock * sigma_distance = new MetaBlock(1, "sigma_distance");
+        sigma_distance->disable();
+
+        MetaBlock * coeff_angle = new MetaBlock(3, "coeff_angle");
+        MetaBlock * coeff_distance = new MetaBlock(3, "coeff_distance");
+
+        blocks_.push_back(knots_angle);
+        blocks_.push_back(knots_distance);
+        blocks_.push_back(sigma_angle);
+        blocks_.push_back(sigma_distance);
+        blocks_.push_back(coeff_angle);
+        blocks_.push_back(coeff_distance);
+
+
+//        parameter_descriptor_->pushBack(blocks_);
+
+
+
+
+
     }
-    size_t getNumberOfResiduals() const
-    {
-        return observations_->size();
-    }
+
+
+
     ceres::CostFunction *getMyCost()
     {
-
-        mycostT * cost  =new mycostT ( this );
-
-        for (size_t s: getSizesOfParametersBlocks())
-        {
-            cost->AddParameterBlock(s);
-        }
-
-        cost->SetNumResiduals(getNumberOfResiduals());
-
-        return cost;
+        return cost_;
     }
+
+
+    mycostT * cost_;
+
 
 
 };

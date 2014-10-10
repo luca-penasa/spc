@@ -7,9 +7,11 @@
 #include <Eigen/Eigen>
 
 #include <spc/calibration/Observations.h>
-#include <spc/calibration/ResidualBlocks.h>
+#include <spc/calibration/BasicResidualBlock.h>
 
 #include <spc/calibration/IntensityModelFixedPars.h>
+
+#include <spc/calibration/ParametersHolder.h>
 
 namespace spc {
 using Eigen::Matrix;
@@ -41,16 +43,31 @@ T compute_rbf(const Matrix<T, -1, 1> &coefficients,
 }
 
 template <typename T>
-T predict_intensities(const Observation &ob, const IntensityModelFixedPars &fixed_pars,  T const * const * parameters)
+T predict_intensities(const Observation &ob, const BasicResidualBlock & res_block,  T const * const * parameters)
 {
-    typedef Eigen::Matrix<T,-1,1> MatrixType;
-    typedef Eigen::Map<const MatrixType> MapType;
 
-    const T * coeffs_dist = parameters[0];
-    const T * coeffs_angle = parameters[1];
+    Eigen::Matrix<T, -1, -1> c_dist =  res_block.remapFromPointerAndName(parameters, "coeff_distance");
 
-    MapType c_dist  (coeffs_dist, fixed_pars.getNumberOfDistanceKnots());
-    MapType c_angle  (coeffs_angle, fixed_pars.getNumberOfAngleKnots());
+//    std::cout << "C_DIST\n" << std::endl;
+
+//    for (int i = 0; i <c_dist.size(); ++i)
+//    {
+//        std::cout << " " << c_dist.array()(i) << std::endl;
+//    }
+
+
+
+    Eigen::Matrix<T, -1, -1> c_angle = res_block.remapFromPointerAndName(parameters, "coeff_angle");
+
+//    std::cout << "C_ANGLE\n" << c_angle << std::endl;
+
+//    std::cout << "C_ANGLE\n" << std::endl;
+
+//    for (int i = 0; i <c_angle.size(); ++i)
+//    {
+//        std::cout << " " << c_angle.array()(i) << std::endl;
+//    }
+
 
 
     Eigen::Matrix<T, 1, 1> edist;
@@ -59,9 +76,18 @@ T predict_intensities(const Observation &ob, const IntensityModelFixedPars &fixe
     Eigen::Matrix<T, 1, 1> eang;
     eang<< T(ob.angle);
 
+    Eigen::Matrix<T, -1, -1> knots_dist =   res_block.remapFromPointerAndName(parameters, "knots_distance");
+    Eigen::Matrix<T, -1, -1> knots_angle =  res_block.remapFromPointerAndName(parameters, "knots_angle");
 
-    T d_effect = compute_rbf<T>(c_dist, (fixed_pars.knots_dist)->template cast<T>(), T(fixed_pars.sigma_dist), edist );
-    T a_effect = compute_rbf<T>(c_angle, (fixed_pars.knots_angle)->template cast<T>(), T(fixed_pars.sigma_angle), eang );
+//    std::cout << "remapping sigma distance " << std::endl;
+    T sigma_distance =   res_block.remapFromPointerAndName(parameters, "sigma_distance")(0);
+//    std::cout << "remapping sigma angle " << std::endl;
+    T sigma_angle =   res_block.remapFromPointerAndName(parameters, "sigma_angle")(0);
+
+//    std::cout << "done" << std::endl;
+
+    T d_effect = compute_rbf<T>(c_dist, knots_dist, sigma_distance, edist );
+    T a_effect = compute_rbf<T>(c_angle, knots_angle, sigma_angle, eang );
 
 
     T prediction = d_effect * a_effect;

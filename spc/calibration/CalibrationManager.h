@@ -26,45 +26,35 @@ public:
 
     void setSolverOptions();
 
-    void setUpFixedPars()
-    {
-        fixed_pars_.initFromData(samples_);
-    }
-
-    void setUpInitParametersBlocks()
-    {
-
-        std::cout << "setting up blocks" << std::endl;
-
-        dist_pars_ei_ = Eigen::VectorXd::Ones(fixed_pars_.n_dist_pars);
-        angle_pars_ei_ = Eigen::VectorXd::Ones(fixed_pars_.n_ang_pars);
-
-        std::cout << "init pars - dist: " << std::endl;
-        std::cout << dist_pars_ei_ << std::endl;
-
-        std::cout << "init pars - ang: " << std::endl;
-        std::cout << angle_pars_ei_ << std::endl;
-
-        parameters_.push_back(dist_pars_ei_.data());
-        parameters_.push_back(angle_pars_ei_.data());
-
-
-    }
-
     void addResidualBlock(BasicResidualBlock &block)
     {
 
         ceres::CostFunction * cost = block.getMyCost();
-        problem_.AddResidualBlock(cost, NULL, this->getParameters());
+
+
+        std::vector<double *> parameters = block.getMyActiveParameters();
+
+
+        for (MetaBlock * b: block.getMyBlocks())
+        {
+            std::string name = b->getBlockName();
+            std::cout << "my block: " << name << std::endl;
+        }
+        std::cout << "adding " << parameters.size() << "blocks to problem" << std::endl;
+        problem_.AddResidualBlock(cost, NULL, parameters);
+
+
     }
 
     void setUpProblem()
     {
 
         IntensityModelingFunctorMultiResiduals * f  =
-                new IntensityModelingFunctorMultiResiduals(samples_.obs_, &fixed_pars_);
+                new IntensityModelingFunctorMultiResiduals(samples_.obs_);
 
         this->addResidualBlock(*f);
+
+        predictor_block_ = f;
 //        for (int j = 0 ; j < obs_.size(); ++j)
 //        {
 //            Observation* ob = &obs_.at(j);
@@ -73,13 +63,22 @@ public:
 //            this->addResidualBlock(*f);
 //        }
 
-        //////// SMOOTHNESS CONSTRAIN ///////////
-        FlatParametersConstrain * smoothness = new FlatParametersConstrain(0.03 * samples_.obs_.size(), &fixed_pars_);
-        this->addResidualBlock(*smoothness);
+//        //////// SMOOTHNESS CONSTRAIN ///////////
+//        FlatParametersConstrain * smoothness = new FlatParametersConstrain(0.03 * samples_.obs_.size(),
+//        {parameters_.getBlockFromName("coeff_angle"), parameters_.getBlockFromName("coeff_distance")},
+//                                                                           &parameters_);
+//        this->addResidualBlock(*smoothness);
 
-
+//        parameters_.printBlocksResumee();
 
     }
+
+    BasicResidualBlock * getPredictorBlock() const
+    {
+        return predictor_block_;
+    }
+
+
 
     size_t getNumberOfParameterBlocks()
     {
@@ -111,16 +110,9 @@ public:
 
     void savePrediction(const std::string outfname) const;
 
-    std::vector<double *> getParameters()
-    {
-        std::vector<double *> out;
-        for (std::vector<double> v: parameters_)
-        {
-            out.push_back(&v[0]);
-        }
-        return out;
-    }
 
+
+    BasicResidualBlock * predictor_block_;
     ceres::Solver::Options options_;
 
 
@@ -131,10 +123,9 @@ public:
 
     SampledData samples_;
 
-    IntensityModelFixedPars fixed_pars_ ;
 
 
-    ParametersHolder parameters_;
+//    ParametersDescriptor parameters_;
 
     Eigen::VectorXd dist_pars_ei_;
     Eigen::VectorXd angle_pars_ei_ ;

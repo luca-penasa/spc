@@ -3,6 +3,7 @@ project(spc)
 
 set(SPC_DEFINITIONS "") #my definitions
 
+find_package(Qt5Widgets)
 
 # all libraries into a single dir for the build tree
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)

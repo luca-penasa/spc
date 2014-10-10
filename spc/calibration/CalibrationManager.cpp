@@ -3,7 +3,7 @@
 namespace spc
 {
 
-CalibratorManager::CalibratorManager(char **argv): fixed_pars_(5,5)
+CalibratorManager::CalibratorManager(char **argv)
 {
     google::InitGoogleLogging(argv[0]);
 }
@@ -67,7 +67,7 @@ void CalibratorManager::savePrediction(const std::string outfname) const
 
     for (int j = 0; j < samples_.obs_.size(); ++j)
     {
-        predicted(j) = predict_intensities(samples_.obs_.at(j), fixed_pars_,  &parameters_[0]);
+        predicted(j) = predict_intensities(samples_.obs_.at(j), *this->getPredictorBlock(), &this->getPredictorBlock()->getMyActiveParameters()[0]);
     }
 
     EigenTable::Ptr out (new EigenTable);
