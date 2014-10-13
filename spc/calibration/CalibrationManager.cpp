@@ -15,6 +15,8 @@ void CalibratorManager::setSolverOptions()
     options_.gradient_tolerance = 1e-6;
     options_.linear_solver_type = ceres::DENSE_QR;
     options_.minimizer_progress_to_stdout = true;
+    options_.num_threads = 4;
+    options_.num_linear_solver_threads = 4;
 }
 
 void CalibratorManager::readFile(const std::string &fname)
@@ -34,22 +36,25 @@ void CalibratorManager::printFullReport()
     std::cout << summary_.FullReport() << "\n";
 }
 
-void CalibratorManager::printAllParameters()
+void CalibratorManager::printAllParameters( )
 {
-    size_t n_blocks =  this->getNumberOfParameterBlocks();
 
-    for (int i = 0 ; i < n_blocks; ++i)
+    BasicResidualBlock * resBlock = getPredictorBlock();
+
+
+
+    for (ParameterBlock * b: resBlock->getMyBlocks())
     {
-        size_t sizeofblock = this->getSizeOfParameterBlock(i);
 
-        std::cout << "parameters for block " << i << std::endl;
-        double * block = this->getParametersBlock(i);
+            std::cout << "o--> Parameter " << b->getBlockName() ;
+            if(b->isEnabled())
+                std::cout << " (OPT)" << std::endl;
+            else
+                std::cout << " (FIX)" << std::endl;
+            std::cout << b->getData();
 
-        for (int j =0; j < sizeofblock; ++j)
-        {
+            std::cout << std::endl;
 
-            std::cout << block[j] << std::endl;
-        }
     }
 }
 
@@ -67,6 +72,8 @@ void CalibratorManager::savePrediction(const std::string outfname) const
     out->addNewComponent("angle", 1);
     out->addNewComponent("intensity", 1);
     out->addNewComponent("pred_intensity", 1);
+
+
 
 
     out->resize(samples_.obs_.size());

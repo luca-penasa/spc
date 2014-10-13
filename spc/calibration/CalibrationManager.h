@@ -52,24 +52,19 @@ public:
         IntensityModelingFunctorMultiResiduals * f  =
                 new IntensityModelingFunctorMultiResiduals(samples_.obs_);
 
+
+
         this->addResidualBlock(*f);
 
         predictor_block_ = f;
-//        for (int j = 0 ; j < obs_.size(); ++j)
-//        {
-//            Observation* ob = &obs_.at(j);
-//            IntensityModelingFunctor * f = new IntensityModelingFunctor( ob, &fixed_pars_);
 
-//            this->addResidualBlock(*f);
-//        }
 
-//        //////// SMOOTHNESS CONSTRAIN ///////////
-//        FlatParametersConstrain * smoothness = new FlatParametersConstrain(0.03 * samples_.obs_.size(),
-//        {parameters_.getBlockFromName("coeff_angle"), parameters_.getBlockFromName("coeff_distance")},
-//                                                                           &parameters_);
+//        //////// SMOOTHNESS CONSTRAIN /////////// ->  keep near zero the RBF parameters!
+//        FlatParametersConstrain * smoothness = new FlatParametersConstrain(1 * samples_.obs_.size(),
+//        f->getParametersBlocksByName({"coeff_angle", "coeff_distance"}));
+
 //        this->addResidualBlock(*smoothness);
 
-//        parameters_.printBlocksResumee();
 
     }
 

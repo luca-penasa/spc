@@ -79,63 +79,6 @@ public:
 
 
 
-//class IntensityModelingFunctor: public BasicResidualBlock
-//{
-//public:
-//    typedef ceres::DynamicAutoDiffCostFunction< IntensityModelingFunctor, 4> mycostT;
-
-//    IntensityModelingFunctor(spc::Observation * ob,
-//                             spc::IntensityModelFixedPars * fixed_pars                             )
-
-
-//    {
-//        observation_ = ob;
-//        fixed_pars_ = fixed_pars;
-//    }
-
-//    template<typename T>
-//    bool operator()(T const* const* parameters, T* residual) const
-//    {
-
-//        T prediction = predict_intensities(*observation_, *fixed_pars_, parameters);
-//        residual[0] = T(observation_->intensity) - prediction;
-
-
-//        return true;
-//    }
-
-//private:
-//    spc::Observation * observation_;
-
-//    spc::IntensityModelFixedPars * fixed_pars_;
-
-
-//    // BasicResidualBlock interface
-//public:
-//    std::vector<size_t> getSizesOfParametersBlocks() const
-//    {
-//        return {fixed_pars_->n_dist_pars, fixed_pars_->n_ang_pars};
-//    }
-//    size_t getNumberOfResiduals() const
-//    {
-//        return 1;
-//    }
-//    ceres::CostFunction *getMyCost()
-//    {
-
-//        mycostT * cost  =new mycostT ( this );
-
-//        for (size_t s: getSizesOfParametersBlocks())
-//        {
-//            cost->AddParameterBlock(s);
-//        }
-
-//        cost->SetNumResiduals(getNumberOfResiduals());
-
-//        return cost;
-//    }
-//};
-
 
 class IntensityModelingFunctorMultiResiduals: public BasicResidualBlock
 {
@@ -188,6 +131,41 @@ public:
     void initMyBlocks()
     {
 
+
+        ///// standard laws-parameters
+
+        ParameterBlock *angle_cos_proportion  = new ParameterBlock(1, "angle_cos_proportion");
+        angle_cos_proportion->disable();
+
+        ParameterBlock *angle_slope  = new ParameterBlock(1, "angle_slope");
+        angle_slope->getData()(0) = 0;
+        angle_slope->disable();
+
+        ParameterBlock *distance_exponential  = new ParameterBlock(1, "distance_exponential");
+        distance_exponential->getData()(0) = 0;
+//        distance_exponential->disable();
+
+
+        ParameterBlock *overall_multiplier  = new ParameterBlock(1, "overall_multiplier");
+
+        ParameterBlock *overall_shift  = new ParameterBlock(1, "overall_shift");
+        overall_shift->getData()(0) = 1;
+
+
+        blocks_.push_back(overall_shift);
+
+        blocks_.push_back(angle_cos_proportion);
+        blocks_.push_back(angle_slope);
+        blocks_.push_back(distance_exponential);
+
+        blocks_.push_back(overall_multiplier);
+
+
+
+
+
+
+
         ParameterBlock * knots_angle  = new ParameterBlock(5, "knots_angle");
         knots_angle->getData()(0) = 0;
         knots_angle->getData()(1) = 25;
@@ -215,7 +193,7 @@ public:
 
         ParameterBlock * sigma_distance = new ParameterBlock(1, "sigma_distance");
         sigma_distance->disable();
-        sigma_distance->getData()(0) = 70;
+        sigma_distance->getData()(0) = 35;
 
         ParameterBlock * coeff_angle = new ParameterBlock(5, "coeff_angle");
         ParameterBlock * coeff_distance = new ParameterBlock(5, "coeff_distance");

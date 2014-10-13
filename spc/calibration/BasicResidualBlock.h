@@ -63,7 +63,7 @@ public:
         if (b->isEnabled())
         {
             size_t id_in_pars = id_in_active_pars_.at(b);
-            Eigen::Matrix<T, -1,-1> mat = Eigen::Map<const Eigen::Matrix<T, -1, -1>> (data[id_in_pars], b->getNRows(), b->getNColumns());
+            Eigen::Map<const Eigen::Matrix<T, -1,-1>> mat = Eigen::Map<const Eigen::Matrix<T, -1, -1>> (data[id_in_pars], b->getNRows(), b->getNColumns());
 
 //            std::cout << "remapped parameters for block " << b->getBlockName() <<std::endl;
 //            printMatrix(mat);
@@ -75,6 +75,17 @@ public:
 
     }
 
+
+    std::vector<ParameterBlock *> getParametersBlocksByName(const std::vector<std::string> & block_names)
+    {
+        std::vector<ParameterBlock *> blocks;
+        for (std::string b_name: block_names)
+        {
+            blocks.push_back(name_to_block_.at(b_name));
+        }
+
+        return blocks;
+    }
 
 
 protected:

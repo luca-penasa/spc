@@ -23,6 +23,9 @@ public:
 
         table_ = table_->getWithStrippedNANs({"distance", "intensity", "angle", "intensity_std"});
 
+        // add a constant to intensities
+//        table_->mat().col(table_->getColumnId("intensity")) =  table_->mat().col(table_->getColumnId("intensity")).array() + 10000;
+
         std::cout << "Following columns found:\n" << std::endl;
         for (int i = 0; i < table_->getNumberOfColumns(); ++i)
         {
