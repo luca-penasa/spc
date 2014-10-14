@@ -43,7 +43,17 @@ public:
         std::cout << "adding " << parameters.size() << "blocks to problem" << std::endl;
         problem_.AddResidualBlock(cost, NULL, parameters);
 
+    }
 
+    void setUpperAndLowerBounds()
+    {
+        ParameterBlock*  cos_prop_block =  predictor_block_->getParametersBlocksByName({"angle_cos_proportion"}).at(0);
+        problem_.SetParameterLowerBound(cos_prop_block->getDataPtr(), 0, 0);
+        problem_.SetParameterUpperBound(cos_prop_block->getDataPtr(), 0, 1);
+
+        ParameterBlock*  distance_exponential_block =  predictor_block_->getParametersBlocksByName({"distance_exponential"}).at(0);
+        problem_.SetParameterLowerBound(distance_exponential_block->getDataPtr(), 0, 0);
+        problem_.SetParameterUpperBound(distance_exponential_block->getDataPtr(), 0, 4);
     }
 
     void setUpProblem()
@@ -65,6 +75,8 @@ public:
 
 //        this->addResidualBlock(*smoothness);
 
+
+        setUpperAndLowerBounds();
 
     }
 

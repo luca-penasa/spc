@@ -9,6 +9,7 @@ std::vector<spc::Observation> table2observations(const spc::EigenTable &table)
 
     for (int i = 0; i < table.getNumberOfRows(); ++i)
     {
+
         Observation ob;
 
         ob.intensity = table.row(i)(table.getColumnId("intensity"));
@@ -20,6 +21,7 @@ std::vector<spc::Observation> table2observations(const spc::EigenTable &table)
         ob.core_id = table.row(i)(table.getColumnId("core_id"));
 
         out.at(i) = ob;
+
     }
 
     return out;

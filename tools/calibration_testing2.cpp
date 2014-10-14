@@ -22,10 +22,9 @@ using Eigen::Matrix;
 
 int main (int argc, char ** argv)
 {
-    std::string datadb = "/home/luca/Desktop/calibration_db.spc";
+    std::string datadb = "/home/luca/Desktop/calibration_db_small.spc";
     CalibratorManager man(argv);
     man.readFile(datadb);
-
     man.setSolverOptions();
 
     man.setUpProblem();

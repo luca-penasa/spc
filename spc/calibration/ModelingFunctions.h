@@ -18,6 +18,20 @@ using Eigen::Matrix;
 
 
 template <typename T>
+T per_cloud_multiplier(const Observation &ob, const BasicResidualBlock & res_block,  T const * const * parameters)
+{
+    Eigen::Matrix<T, -1, -1> cloud_multipliers =  res_block.remapFromPointerAndName(parameters, "cloud_multipliers");
+
+    if (ob.cloud_id == 0)
+        return T(1);
+    else
+        return cloud_multipliers(ob.cloud_id - 1);
+
+
+
+}
+
+template <typename T>
 T angle_law(const Observation &ob, const BasicResidualBlock & res_block,  T const * const * parameters)
 {
     T p =  res_block.remapFromPointerAndName(parameters, "angle_cos_proportion")(0);
@@ -37,7 +51,7 @@ T distance_law(const Observation &ob, const BasicResidualBlock & res_block,  T c
 
     T distance = T(ob.distance);
 
-    return T(1) / distance;
+    return pow(distance, -exponential);
 }
 
 template <typename T>
@@ -77,32 +91,33 @@ template <typename T>
 T predict_intensities(const Observation &ob, const BasicResidualBlock & res_block,  T const * const * parameters)
 {
 
-    Eigen::Matrix<T, -1, -1> c_dist =  res_block.remapFromPointerAndName(parameters, "coeff_distance");
+//    Eigen::Matrix<T, -1, -1> c_dist =  res_block.remapFromPointerAndName(parameters, "coeff_distance");
 
-    Eigen::Matrix<T, -1, -1> c_angle = res_block.remapFromPointerAndName(parameters, "coeff_angle");
+//    Eigen::Matrix<T, -1, -1> c_angle = res_block.remapFromPointerAndName(parameters, "coeff_angle");
 
-    Eigen::Matrix<T, 1, 1> edist;
-    edist << T(ob.distance);
+//    Eigen::Matrix<T, 1, 1> edist;
+//    edist << T(ob.distance);
 
-    Eigen::Matrix<T, 1, 1> eang;
-    eang<< T(ob.angle);
+//    Eigen::Matrix<T, 1, 1> eang;
+//    eang<< T(ob.angle);
 
-    Eigen::Matrix<T, -1, -1> knots_dist =   res_block.remapFromPointerAndName(parameters, "knots_distance");
-    Eigen::Matrix<T, -1, -1> knots_angle =  res_block.remapFromPointerAndName(parameters, "knots_angle");
+//    Eigen::Matrix<T, -1, -1> knots_dist =   res_block.remapFromPointerAndName(parameters, "knots_distance");
+//    Eigen::Matrix<T, -1, -1> knots_angle =  res_block.remapFromPointerAndName(parameters, "knots_angle");
 
-    T sigma_distance =   res_block.remapFromPointerAndName(parameters, "sigma_distance")(0);
-    T sigma_angle =   res_block.remapFromPointerAndName(parameters, "sigma_angle")(0);
+//    T sigma_distance =   res_block.remapFromPointerAndName(parameters, "sigma_distance")(0);
+//    T sigma_angle =   res_block.remapFromPointerAndName(parameters, "sigma_angle")(0);
 
-    T d_effect = compute_rbf<T>(c_dist, knots_dist, sigma_distance, edist );
-    T a_effect = compute_rbf<T>(c_angle, knots_angle, sigma_angle, eang );
+//    T d_effect = compute_rbf<T>(c_dist, knots_dist, sigma_distance, edist );
+//    T a_effect = compute_rbf<T>(c_angle, knots_angle, sigma_angle, eang );
 
-    T standard_laws_effect = angle_law(ob, res_block, parameters) *
+    T standard_laws_effect =
             distance_law(ob, res_block, parameters) *
-            overall_multiplier(ob, res_block, parameters)
-            ;
+            angle_law(ob, res_block, parameters) *
+            overall_multiplier(ob, res_block, parameters) *
+            per_cloud_multiplier(ob, res_block, parameters);
 
 
-    T prediction = d_effect * a_effect + standard_laws_effect + overall_shift(ob, res_block, parameters);
+    T prediction =  standard_laws_effect + overall_shift(ob, res_block, parameters);
 
     return prediction;
 }

@@ -19,7 +19,7 @@ public:
                             ): alpha_(alpha)
     {
 
-//        initMyBlocks();
+        //initMyBlocks();
 
         blocks_= to_flatten;
         // now create the cost object
@@ -91,18 +91,20 @@ public:
     {
         observations_ = &ob;
 
-          cost_  =new mycostT ( this );
+        cost_  =new mycostT ( this );
 
-          initMyBlocks();
+        initMyBlocks();
 
-          size_t n_res = 0;
-          for (ParameterBlock * block: blocks_)
-              if (block->isEnabled())
+        size_t n_res = 0;
+        for (ParameterBlock * block: blocks_)
+            if (block->isEnabled())
                 cost_->AddParameterBlock(block->getBlockSize());
 
-          cost_->SetNumResiduals(observations_->size());
+        cost_->SetNumResiduals(observations_->size());
 
-          updateNameToBlock();
+
+
+        updateNameToBlock();
 
     }
 
@@ -113,8 +115,15 @@ public:
         size_t i = 0;
         for (const Observation & ob : *observations_)
         {
+            if (ob.distance >=40)
+            {
             T prediction = predict_intensities(ob, *this, parameters);
             residual[i++] = T(ob.intensity) - prediction;
+            }
+            else
+            {
+                residual[i++] = T(0);
+            }
         }
 
         return true;
@@ -135,14 +144,15 @@ public:
         ///// standard laws-parameters
 
         ParameterBlock *angle_cos_proportion  = new ParameterBlock(1, "angle_cos_proportion");
-        angle_cos_proportion->disable();
+//        angle_cos_proportion->disable();
 
         ParameterBlock *angle_slope  = new ParameterBlock(1, "angle_slope");
         angle_slope->getData()(0) = 0;
-        angle_slope->disable();
+//        angle_slope->disable();
 
         ParameterBlock *distance_exponential  = new ParameterBlock(1, "distance_exponential");
-        distance_exponential->getData()(0) = 0;
+        distance_exponential->getData()(0) = 2;
+
 //        distance_exponential->disable();
 
 
@@ -198,15 +208,15 @@ public:
         ParameterBlock * coeff_angle = new ParameterBlock(5, "coeff_angle");
         ParameterBlock * coeff_distance = new ParameterBlock(5, "coeff_distance");
 
-        blocks_.push_back(knots_angle);
-        blocks_.push_back(knots_distance);
-        blocks_.push_back(sigma_angle);
-        blocks_.push_back(sigma_distance);
-        blocks_.push_back(coeff_angle);
-        blocks_.push_back(coeff_distance);
+        //        blocks_.push_back(knots_angle);
+        //        blocks_.push_back(knots_distance);
+        //        blocks_.push_back(sigma_angle);
+        //        blocks_.push_back(sigma_distance);
+        //        blocks_.push_back(coeff_angle);
+        //        blocks_.push_back(coeff_distance);
 
 
-//        parameter_descriptor_->pushBack(blocks_);
+        //        parameter_descriptor_->pushBack(blocks_);
 
 
 
