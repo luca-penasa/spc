@@ -161,6 +161,8 @@ public:
         ParameterBlock *overall_shift  = new ParameterBlock(1, "overall_shift");
         overall_shift->getData()(0) = 1;
 
+        
+//        ParameterBlock * per_cloud_multiplier = new ParameterBlock()
 
         blocks_.push_back(overall_shift);
 

@@ -111,6 +111,8 @@ public:
 
     virtual std::vector<float> getField(const std::string fieldname);
 
+    virtual bool getField(const std::string fieldname, Eigen::VectorXf &vector);
+
     pcl::PointCloud<pcl::PointXYZ>
     applyTransform(const Eigen::Transform
                    <float, 3, Eigen::Affine, Eigen::AutoAlign> &T);

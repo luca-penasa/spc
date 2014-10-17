@@ -66,6 +66,13 @@ std::vector<float> PointCloudBase::getField(const std::string fieldname)
     return out;
 }
 
+bool PointCloudBase::getField(const std::string fieldname, Eigen::VectorXf &vector)
+{
+    std::vector<float> stdvect = this->getField(fieldname);
+    vector = Eigen::Map<Eigen::VectorXf>(stdvect.data(), stdvect.size());
+    return true;
+}
+
 Eigen::Vector3f PointCloudBase::getPoint(const int id) const
 {
     float x, y, z;

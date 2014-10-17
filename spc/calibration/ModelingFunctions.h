@@ -113,8 +113,8 @@ T predict_intensities(const Observation &ob, const BasicResidualBlock & res_bloc
     T standard_laws_effect =
             distance_law(ob, res_block, parameters) *
             angle_law(ob, res_block, parameters) *
-            overall_multiplier(ob, res_block, parameters) *
-            per_cloud_multiplier(ob, res_block, parameters);
+            overall_multiplier(ob, res_block, parameters)
+            ;
 
 
     T prediction =  standard_laws_effect + overall_shift(ob, res_block, parameters);

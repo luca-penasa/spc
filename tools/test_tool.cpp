@@ -1,24 +1,17 @@
+
 #include <iostream>
-#include <spc/methods/common.h>
-#include <spc/elements/TimeSeriesEquallySpaced.h>
-
-#include <pcl/point_types.h>
-#include <pcl/io/pcd_io.h>
-#include <pcl/console/print.h>
-#include <pcl/console/parse.h>
-#include <pcl/console/time.h>
+#include <Eigen/Dense>
+#include <Eigen/Sparse>
+#include <unsupported/Eigen/AutoDiff>
 
 
-
-
-int main (int argc, char ** argv)
+int main()
 {
-    spc::TimeSeriesEquallySpaced ts;
-	std::cout << "test tool" << std::endl; 
-	
-    //Sleep(2000); // this works only on win
+    Eigen::Matrix<float, -1,-1> m = Eigen::MatrixXf::Random(5,5);
 
+    std::cout <<"MAT \n" << m <<std::endl;
 
-	pcl::console::print_error("error\n ciao" );
-	return 1;
+    Eigen::VectorXf v = m;
+
+    std::cout <<"VEC \n" << v <<std::endl;
 }
