@@ -6,7 +6,6 @@
 #include <iostream>
 #include <utility>
 
-#include <spc/methods/InterpolatorRBF.h>
 
 #include <Eigen/Core>
 
@@ -16,7 +15,6 @@
 
 #include <spc/elements/macros.h>
 
-void dotest();
 
 #ifdef PCL_VER_LESS_1_7
 #include <sensor_msgs/PointCloud2.h>
@@ -107,36 +105,7 @@ std::vector<nType> erease_ids(const std::vector<nType> &Vector,
 }
 
 template <typename nType>
-void fill_nan_rbf(std::vector<nType> &x, std::vector<nType> &y)
-{
-    // get nans ids
-    std::vector<int> nans_id = get_nans_id(y);
-
-    std::vector<nType> x_stripped;
-    std::vector<nType> y_stripped;
-
-    for (auto &elem : nans_id) {
-        // remove this ids from the original dataset
-        x_stripped = erease_ids(x, nans_id);
-        y_stripped = erease_ids(y, nans_id);
-    }
-    // now create a rbf interpolator
-    spc::InterpolatorRBF<nType, 1> rbf;
-    rbf.setPoints(x_stripped);
-    rbf.setInputValues(y_stripped);
-    rbf.updateAll();
-
-    for (auto &elem : nans_id) {
-        int this_id = elem;
-        nType this_x_position = x[this_id];
-        Eigen::Matrix<nType, Eigen::Dynamic, 1> x_point;
-        x_point.resize(1);
-        x_point[0] = this_x_position;
-        y[this_id] = rbf.evaluateRbf(x_point);
-    }
-
-    // now for each nan evaluate the rbf
-}
+void fill_nan_rbf(std::vector<nType> &x, std::vector<nType> &y);
 
 template <typename Stype>
 std::vector<int> getSortingIds(const std::vector<Stype> &v)

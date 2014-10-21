@@ -24,5 +24,21 @@ template <typename ScalarT>
 void lstsq(const Eigen::Matrix<ScalarT, Eigen::Dynamic, Eigen::Dynamic> &A,
            const Eigen::Matrix<ScalarT, Eigen::Dynamic, 1> &b,
            Eigen::Matrix<ScalarT, Eigen::Dynamic, 1> &x);
+
+//! vars is a vector of type [x,y,...]^T with all the variables
+//! it returns a vector of type (e.g. for a second order with two variables x,y):
+//! [x^2 * y^2,
+//!  x^2 * y^1,
+//!  x^2 * y^0,
+//!  x^1 * y^2,
+//!  x^1 * y^1,
+//!  x^1 * y^0,
+//!  x^0 * y^2,
+//!  x^0 * y^1,
+//!  x^0 * y^0]
+
+
+template <typename T>
+Eigen::Matrix<T, -1, 1> getPolynomialVariables(const Eigen::Matrix<T, -1, 1> &vars, const size_t &degree);
 }
 #endif // POLYNOMIALS_H
