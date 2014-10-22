@@ -8,10 +8,17 @@
 
 #include <spc/methods/InterpolatorRBF.hpp>
 
+#include <spc/methods/Kernels.hpp>
+
 
 int main()
 {
-    spc::InterpolatorRBF<float, 3> interp;
+
+//    spc::BasicKernel<float>::Ptr a (new spc::GaussianKernel<float>(1));
+
+//    std::cout << a->operator ()(2) << std::endl;
+
+    spc::InterpolatorRBF<float> interp;
 
 
     Eigen::Matrix<float, -1, -1> points;
@@ -23,10 +30,6 @@ int main()
               1, 1, 6;
 
 
-    Eigen::Matrix<float, -1, 3> p2 = points;
-
-
-
     Eigen::Matrix<float, -1, -1> nodes;
     nodes.resize(3, 3);
 
@@ -35,25 +38,20 @@ int main()
             4,5,6;
 
 
-
-    Eigen::Matrix<float, -1, 3> n2 = nodes;
-
-
     Eigen::VectorXf values(4);
     values << 1, 4, 11, 22;
 
     std::cout << "points\n" << points <<std::endl;
 
-    interp.setPoints(p2);
-//    interp.setNodes(n2);
+    interp.setPoints(points);
+//    interp.setNodes(nodes);
     interp.setPolyOrder(0);
-    interp.setSigma(10);
+    interp.setSigma(1);
     interp.setInputValues(values);
-    interp.setLambda(0);
-    interp.initProblem();
+//    interp.setLambda(10);
     interp.solveProblem();
 
 
-    float val = interp.evaluate(p2.row(2));
+    float val = interp.evaluate(points.row(2));
     std::cout <<"\n values \n" << val << std::endl;
 }

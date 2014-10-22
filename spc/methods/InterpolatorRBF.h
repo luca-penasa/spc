@@ -7,6 +7,7 @@
 #include <vector>
 
 #include <spc/methods/polynomials.hpp>
+#include <spc/methods/Kernels.hpp>
 
 namespace spc
 {
@@ -17,18 +18,19 @@ namespace spc
 
 //! D is the number of dimensions
 //! on which interpolation is performed
-template <typename T, size_t DIM = 1>
+template <typename T>
 class InterpolatorRBF
 {
-
-    typedef Eigen::Matrix<T, -1, DIM> PointsT;
+    typedef Eigen::Matrix<T, -1, -1> PointsT;
     typedef Eigen::Matrix<T, -1, 1> VectorT;
-    typedef Eigen::Matrix<T, DIM, 1> PointT;
+    typedef Eigen::Matrix<T, -1, 1> PointT;
     typedef Eigen::Matrix<T, -1, -1> MatrixT;
+
 
 public:
     //! default constructor
-    InterpolatorRBF(): classical_rbf_(true), nodes_(NULL), points_(NULL)
+    InterpolatorRBF(): classical_rbf_(true), nodes_(NULL), points_(NULL),
+        kernel_(new GaussianKernel<T>(1.0))
     {
 
     }
@@ -38,10 +40,12 @@ public:
 
     }
 
+
+
     void setPoints(PointsT &points)
     {
         points_ = &points;
-
+        dim_ = points.cols();
     }
 
     //! if nodes are not provided all the input points will be used
@@ -55,6 +59,7 @@ public:
     void setInputValues(VectorT &values)
     {
         values_ = &values;
+
     }
 
 
@@ -76,7 +81,7 @@ public:
     {
         VectorT w = getSqDistanceFromNodes(point);
         for (int i = 0; i < w.rows(); ++i)
-            w(i) = gaussian(w(i)); //!\todo or whatever kernel you want
+            w(i) = (*kernel_)(w(i));
 
         return w;
     }
@@ -88,7 +93,7 @@ public:
 
     VectorT getALine(const PointT &point) const
     {
-        VectorT o(getNumberOfNodes() + n_polys_);
+        VectorT o(getNumberOfNodes() + getNumberOfpolynomialTerms());
         o << getRbfPart(point), getPolyPart(point);
         return o;
 
@@ -98,19 +103,27 @@ public:
     void setPolyOrder(const size_t & order)
     {
         poly_order_ = order;
-        n_polys_ = pow(poly_order_+1, DIM); // precomputed number of poly-terms
+    }
+
+    void setKernel(KERNELS kernel, const T sigma = T(1))
+    {
+        if (kernel == KERNEL_GAUSSIAN)
+        {
+            kernel_ = BasicKernel<T>::Ptr(new GaussianKernel<T>(sigma));
+        }
     }
 
     T evaluate(const PointT &p) const
     {
-
         VectorT v = getALine(p);
-
-        std::cout << "\n A line \n" << v << std::endl;
-        std::cout << "\n coeffs \n" << coeffs_ << std::endl;
         return v.dot(coeffs_);
     }
-
+    //! lambda is the regularization term
+    //! its meaning may differ depending if RBF is classsic or not
+    //! classic RBF uses a node for each input point. This result in a peculiar matrix
+    //! and the regularization is added as described in many papers.
+    //! when the nodes are user-chosen the system is overdetermined and a tikhonov regularization is used
+    //! and the square root of lambda is used
     void setLambda(const T& lambda)
     {
         lambda_ = lambda;
@@ -123,12 +136,12 @@ public:
 
     void setSigma(const T& sigma)
     {
-        sigma_ = sigma;
+        kernel_->setSigma(sigma);
     }
 
     T getSigma () const
     {
-        return sigma_;
+        return kernel_->getSigma();
     }
 
     //! the number of input points
@@ -153,30 +166,11 @@ private:
         return n_polys_;
     }
 
-    //! \todo move these kernels in an appropriate place.
-    //! and make so that the user can select the kernel he wants
-    inline T thinPlate(T &squared_r) const
-    {
-        if (squared_r == 0)
-            return 0.0;
-        else
-            return squared_r * log(sqrt(squared_r));
-    }
-
-    inline T gaussian(const T& squared_r) const
-    {
-        return exp(-(squared_r / sigma_));
-    }
-
-
-
-
-
 public:
 
     //! this method takes care of initializing A_ matrix and b_ vector for
     //! solving the problem
-    void initProblem()
+    int initProblem()
     {
         if (!nodes_)
         {
@@ -186,6 +180,21 @@ public:
         }
         else
             std::cout << "using user-selected nodes" << std::endl;
+
+        if (!points_)
+        {
+            std::cout << "points not provided. use setPoints to set the input points" << std::endl;
+            return -1;
+        }
+
+        if (!values_ || values_->rows() != points_->rows())
+        {
+            std::cout << " values are not set or have a different size than points " << std::endl;
+            return -1;
+        }
+
+        n_polys_ = pow(poly_order_+1, dim_); // precomputed number of poly-terms
+
 
         // number of columns is the same with both methods
         // notice that in the classical rbf nodes_ corresponds to points_
@@ -238,10 +247,6 @@ public:
             MatrixT tmp = A_.topRightCorner(getNumberOfPoints(), getNumberOfpolynomialTerms());
             A_.bottomLeftCorner(getNumberOfpolynomialTerms(), getNumberOfPoints()) = tmp.transpose();
         }
-//        else
-//        {
-//            // nothing to do
-//        }
 
 
         // now add regularization
@@ -264,6 +269,13 @@ public:
     //! once coefficients are computed the interpolator is compeltely defined.
     int solveProblem()
     {
+        int status = initProblem();
+        if (!status)
+        {
+            std::cout <<"some error in initialiazing the problem" << std::endl;
+            return status;
+        }
+
         // do the linear system solving
         if (A_.rows() == A_.cols()) {
             // solve via pivoting
@@ -274,75 +286,6 @@ public:
         } else
             return -1; // unsuccessfull;
     }
-
-
-//    void solve()
-//    {
-//        if (nodes_.size() == 0) // we will set up a radial basis function
-//                                // centered on each data point.
-
-//        {
-
-//            //! \todo add check on the number of input points vs total number of parameters
-//            MatrixT A;
-//            A.resize(points_.rows() + n_polys_, points_.rows() + n_polys_);
-//            A.fill(0); // a clean matrix to start with
-
-//            // populate with the observations
-//            for (int i = 0 ; i < points_.rows(); ++i)
-//            {
-//                A.row(i) = getALine(points_.row(i));
-//            }
-
-//            // regularization is needed
-//            if (lambda_ != 0.0)
-//            {
-//                MatrixT tikhonov = MatrixT::Identity(points_.rows(), points_.rows()).array() * lambda_;
-//                if (false)
-//                {
-//                    A.block(0,0, points_.rows(), points_.rows()) += tikhonov;
-//                }
-//                else
-//                {
-//                    // add the tikhonov matrix at the end
-//                    A.conservativeResize(A.rows() + tikhonov.rows(), A.cols() );
-//                    A.block(points_.rows() + n_polys_, 0, tikhonov.rows(), tikhonov.cols()) = tikhonov;
-//                }
-//            }
-
-//            // get the part of the observations matrix of the polynomials
-//            // and stack it under the observation matrix A
-//            MatrixT tmp = A.block(0, points_.rows(), points_.rows(), n_polys_);
-//            A.block(points_.rows(), 0, n_polys_, points_.rows()) = tmp.transpose();
-
-//            // we also need to pad with zeros the values_ vector
-//            VectorT zeros = VectorT::Zero(A.rows() - values_.rows());
-//            VectorT b = values_; // copy the values
-//            b.conservativeResize(A.rows());
-//            b.tail(A.rows() - values_.rows()) = zeros;
-
-
-//            // do the linear system solving
-//            if (A.rows() == A.cols()) {
-//                // solve via pivoting
-//                coeffs_ = A.colPivHouseholderQr().solve(b);
-//            } else if (A.rows() > A.cols()) {
-//                // solving via SVD
-//                coeffs_ = A.jacobiSvd(Eigen::ComputeThinU | Eigen::ComputeThinV).solve(b);
-
-//            }
-
-
-//            std::cout <<"A: \n"<< A << std::endl;
-//            std::cout << "b: \n " << b << std::endl;
-
-//            std::cout << "\n solution: \n" << coeffs_ <<std::endl;
-//        }
-//        else // we will use a radial basis centered on each node.
-//        {
-
-//        }
-//    }
 
 
     //! the points used to estimate the RBF
@@ -378,9 +321,12 @@ public:
     //! it is automatically switched to false when setNodes() is called
     bool classical_rbf_ ;
 
-    //! some radial basis kernel may require a sigma parameter.
-    //! set it depending on the basis you are using.
-    T sigma_ = 1.0;
+
+    typename BasicKernel<T>::Ptr kernel_;
+
+
+    //! the dimensions of points space
+    size_t dim_;
 };
 //#include <spc/methods/rbf_interpolator.hpp>
 } // end namespace

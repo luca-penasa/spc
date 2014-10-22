@@ -37,7 +37,7 @@ void fill_nan_rbf(std::vector<nType> &x, std::vector<nType> &y)
         y_stripped = erease_ids(y, nans_id);
     }
     // now create a rbf interpolator
-    spc::InterpolatorRBF<nType, 1> rbf;
+    spc::InterpolatorRBF<nType> rbf;
     rbf.setPoints(x_stripped);
     rbf.setInputValues(y_stripped);
     rbf.updateAll();
