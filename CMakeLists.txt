@@ -9,6 +9,11 @@ find_package(Qt5Widgets)
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 
+LIST(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+
+
+
 option(SPC_BUILD_WITH_CLANG "Build spc library using clang isntead of gcc." OFF)
 if(SPC_BUILD_WITH_CLANG)
     message("Using Clang as compiler! This may not work properly")
@@ -104,12 +109,30 @@ message("CMAKE ${SPC_INSTALL_CMAKE_DIR}")
 
 
 
+if(SPC_USE_PARALLEL_OPENMP) # a definition if use parallelization where possible
+
+    FIND_PACKAGE( OpenMP REQUIRED)
+    if(OPENMP_FOUND)
+        message("OPENMP FOUND")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+        set(SPC_DEFINITIONS ${SPC_DEFINITIONS} "-DUSE_OPENMP")
+#        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -lpthread -lgcc_s" )
+    endif()
+
+endif()
+
 
 
 if (SPC_BUILD_STD_SHARED_PTR)
     add_definitions(-DUSE_STD_SHARED_PTR)
     set(SPC_DEFINITIONS "${SPC_DEFINITIONS} -DUSE_STD_SHARED_PTR" )
 endif()
+
+#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -lpthread -lgcc_s" )
+
+
 ############################################################################################################
 
 #########################  PCL! - everybody here will need it ###############################
@@ -134,12 +157,16 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/functions.cmake)
 # include the current source dir
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-if(SPC_USE_PARALLEL_OPENMP) # a definition if use parallelization where possible
-    set(SPC_DEFINITIONS ${SPC_DEFINITIONS} "-DUSE_OPENMP")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -lpthread -lgcc_s" )
-endif()
 
 
+
+
+
+
+
+
+
+message ("${SPC_DEFINITIONS}")
 if (SPC_BUILD_WITH_GPROF)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg" )
 endif()

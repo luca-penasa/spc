@@ -4,7 +4,7 @@
 #include <pcl/io/pcd_io.h>
 #include <pcl/kdtree/kdtree_flann.h>
 #include <pcl/common/centroid.h>
-#include <Eigen/Dense>
+#include <spc/methods/spc_eigen.h>
 
 #include <spc/methods/strings.h>
 

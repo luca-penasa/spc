@@ -2,6 +2,7 @@
 #define SPC_STRINGS_H
 
 #include <string>
+#include <vector>
 
 namespace spc
 {
@@ -24,6 +25,9 @@ std::string getBaseFileName(const std::string &file_name);
  * \return the filename as filename_text
  */
 std::string addSubscript(const std::string &file_name, const std::string &text);
+
+
+std::vector<std::string> splitStringAtSeparator(const std::string &line, const std::string &separator = " ");
 
 } // end namespace
 #endif

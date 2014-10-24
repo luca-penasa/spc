@@ -1,8 +1,8 @@
 #ifndef KERNELS_HPP
 #define KERNELS_HPP
 
-#include <spc/elements/macros_ptr.h>
-#include <Eigen/Core>
+#include <spc/elements/ElementBase.h>
+#include <spc/methods/spc_eigen.h>
 namespace spc {
 
 enum KERNELS {KERNEL_GAUSSIAN};
@@ -13,11 +13,10 @@ enum KERNELS {KERNEL_GAUSSIAN};
  * class.
  **/
 template <typename T>
-class BasicKernel
+class BasicKernel: public ElementBase
 {
 public:
-
-    spcTypedefSharedPtrs(BasicKernel<T>)
+    SPC_OBJECT(BasicKernel<T>)
 
     BasicKernel(): sigma_(0), sigma_squared_(0)
     {
@@ -47,6 +46,14 @@ public:
 protected:
     T sigma_squared_ ;
     T sigma_;
+
+private:
+    friend class cereal::access;
+
+    template <class Archive> void serialize(Archive &ar)
+    {
+        ar(cereal::base_class<ElementBase>(this), CEREAL_NVP(sigma_squared_), CEREAL_NVP(sigma_));
+    }
 };
 
 
@@ -60,10 +67,20 @@ public:
 
     GaussianKernel (const T& sigma): BasicKernel<T>(sigma) {}
 
+    GaussianKernel (): BasicKernel<T>() {}
+
     // BasicKernel interface
     virtual T operator ()(const T &squared_x) const
     {
         return exp(-(squared_x / sigma_squared_));
+    }
+
+private:
+    friend class cereal::access;
+
+    template <class Archive> void serialize(Archive &ar)
+    {
+        ar(cereal::base_class<BasicKernel<T> >(this));
     }
 };
 

@@ -2,7 +2,7 @@
 #ifndef FUNCTIONBASE_H
 #define FUNCTIONBASE_H
 
-#include <Eigen/Dense>
+#include <spc/methods/spc_eigen.h>
 #include <pcl/console/print.h>
 #include <spc/elements/ElementBase.h>
 namespace spc

@@ -3,7 +3,7 @@
 
 #include <spc/elements/ICalModelFactors.h>
 #include <spc/elements/SamplesDB.h>
-#include <Eigen/Dense>
+#include <spc/methods/spc_eigen.h>
 #include <spc/elements/ICalFactors.h>
 
 #include <pcl/console/print.h>

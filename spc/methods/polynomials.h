@@ -1,7 +1,7 @@
 #ifndef SPC_POLYNOMIALS_H
 #define SPC_POLYNOMIALS_H
 
-#include <Eigen/Dense>
+#include <spc/methods/spc_eigen.h>
 #include <vector>
 
 namespace spc

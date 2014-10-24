@@ -4,8 +4,8 @@
 #include <spc/elements/ElementBase.h>
 #include <spc/elements/MovableElement.h>
 #include <spc/elements/Normal3D.h>
-#include <Eigen/Dense>
-#include <Eigen/Core>
+#include <spc/methods/spc_eigen.h>
+#include <spc/methods/spc_eigen.h>
 
 #include <Eigen/Geometry>
 

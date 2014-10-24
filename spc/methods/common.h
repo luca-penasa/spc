@@ -7,7 +7,7 @@
 #include <utility>
 
 
-#include <Eigen/Core>
+#include <spc/methods/spc_eigen.h>
 
 #include <boost/foreach.hpp>
 

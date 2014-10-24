@@ -2,7 +2,7 @@
 #define INTENSITYMODELBASE_H
 
 
-#include <Eigen/Dense>
+#include <spc/methods/spc_eigen.h>
 #include <map>
 #include <spc/elements/macros_ptr.h>
 #include <iostream>

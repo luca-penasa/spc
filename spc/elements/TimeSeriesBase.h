@@ -14,7 +14,7 @@ class TimeSeriesBase : public ElementBase
 {
 public:
     SPC_OBJECT(TimeSeriesBase)
-EXPOSE_TYPE
+    EXPOSE_TYPE
     TimeSeriesBase()
     {
     }

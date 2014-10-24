@@ -1,7 +1,7 @@
 #ifndef EIGEN_SERIALIZATION_HPP
 #define EIGEN_SERIALIZATION_HPP
 
-#include <Eigen/Dense>
+#include <spc/methods/spc_eigen.h>
 #include <fstream>
 
 

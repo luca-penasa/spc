@@ -2,7 +2,7 @@
 #define SPC_COMMON_HPP
 
 #include <spc/methods/common.h>
-#include <spc/methods/InterpolatorRBF.h>
+#include <spc/methods/RBFModelEstimator.h>
 
 namespace spc {
 
@@ -37,7 +37,7 @@ void fill_nan_rbf(std::vector<nType> &x, std::vector<nType> &y)
         y_stripped = erease_ids(y, nans_id);
     }
     // now create a rbf interpolator
-    spc::InterpolatorRBF<nType> rbf;
+    spc::RBFModelEstimator<nType> rbf;
     rbf.setPoints(x_stripped);
     rbf.setInputValues(y_stripped);
     rbf.updateAll();

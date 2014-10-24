@@ -1,5 +1,5 @@
-#include <spc/methods/InterpolatorRBF.h>
-#include <spc/methods/InterpolatorRBF.hpp>
+#include <spc/methods/RBFModelEstimator.h>
+#include <spc/methods/RBFModelEstimator.hpp>
 
 namespace spc
 {

@@ -139,9 +139,14 @@ size_t EigenTable::getColumnDimensionality(const std::string &name) const
 void EigenTable::resize(const size_t &rows)
 {
     size_t old_rows = getNumberOfRows();
-    mat_.conservativeResize(rows, getNumberOfColumns());
-    mat_.block(old_rows, 0, rows - old_rows, getNumberOfColumns())
-        = Eigen::MatrixXf::Zero(rows - old_rows, getNumberOfColumns());
+
+    DLOG(INFO) << "resized from " << old_rows << " to " << rows;
+    mat_.conservativeResize(rows, Eigen::NoChange);
+
+    if (rows > old_rows) // init to zero the matrix
+    {
+        mat_.block(old_rows, 0, rows - old_rows, getNumberOfColumns()).fill(0);
+    }
 }
 
 Eigen::Block<Eigen::Matrix<float, -1, -1>, -1, 1, true>
@@ -150,7 +155,7 @@ EigenTable::column(const std::string &col_name)
     size_t id = getColumnId(col_name);
     if (id == -1)
         pcl::console::print_error(
-            "Cannot find such a column (%s). Is it the names set and right?\n",
+            "Cannot find such a column (%s). Is it the name set and right?\n",
             col_name.c_str());
     else
         return column(id);

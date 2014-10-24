@@ -8,6 +8,30 @@ endif()
 
 set(CMAKE_VERBOSE_MAKEFILE OFF)
 
+find_package(Gflags REQUIRED)
+
+if(GFLAGS_FOUND)
+    message("GFLAGS FOUND")
+    INCLUDE_DIRECTORIES(${GFLAGS_INCLUDE_DIRS})
+endif()
+
+find_package(Glog REQUIRED)
+
+if(GLOG_FOUND)
+    message("GLOG FOUND")
+    INCLUDE_DIRECTORIES(${GLOG_INCLUDE_DIRS})
+endif()
+
+#    FIND_PACKAGE( OpenMP REQUIRED)
+#    if(OPENMP_FOUND)
+#        message("OPENMP FOUND")
+#        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+#        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+#        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+#        set(SPC_DEFINITIONS ${SPC_DEFINITIONS} "-DUSE_OPENMP")
+##        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -lpthread -lgcc_s" )
+#    endif()
+
 #if (UNIX) #this maybe is not needed at all...
 #	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x" )
 #endif()
@@ -31,7 +55,7 @@ target_link_libraries(${MY_TOOLS_PREFIX}bilateral ${PCL_LIBRARIES})
 #target_link_libraries(align_icp ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 spc_add_executable(${MY_TOOLS_PREFIX}test_tool test_tool.cpp)
-target_link_libraries(${MY_TOOLS_PREFIX}test_tool ${SPC_LIBRARIES})
+target_link_libraries(${MY_TOOLS_PREFIX}test_tool ${SPC_LIBRARIES} ${GLOG_LIBRARIES})
 
 #spc_add_executable(align_icp2 align_ICP_old.cpp)
 #target_link_libraries(align_icp2 ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
@@ -152,7 +176,11 @@ spc_add_executable(${MY_TOOLS_PREFIX}calibration_testing calibration_testing.cpp
 target_link_libraries(${MY_TOOLS_PREFIX}calibration_testing ${SPC_LIBRARIES}  ${CERES_LIBRARIES})
 
 spc_add_executable(${MY_TOOLS_PREFIX}calibration_testing2 calibration_testing2.cpp)
-target_link_libraries(${MY_TOOLS_PREFIX}calibration_testing2 ${SPC_LIBRARIES}  ${CERES_LIBRARIES})
+target_link_libraries(${MY_TOOLS_PREFIX}calibration_testing2 ${SPC_LIBRARIES}  ${CERES_LIBRARIES} ${GFLAGS_LIBRARIES})
+
+
+spc_add_executable(${MY_TOOLS_PREFIX}calibrate_rbf calibrate_rbf)
+target_link_libraries(${MY_TOOLS_PREFIX}calibrate_rbf ${SPC_LIBRARIES}  ${CERES_LIBRARIES} ${GFLAGS_LIBRARIES})
 
 
 spc_add_executable(${MY_TOOLS_PREFIX}xml2spc xml2spc.cpp)

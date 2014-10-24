@@ -1,4 +1,5 @@
 #include "strings.h"
+#include <boost/tokenizer.hpp>
 namespace spc
 {
 std::string stripExtension(const std::string &file_name)
@@ -29,6 +30,21 @@ std::string addSubscript(const std::string &file_name, const std::string &text)
     std::string without_extension = stripExtension(file_name);
     std::string new_file_name = without_extension + text;
     return new_file_name;
+}
+
+std::vector<std::string> splitStringAtSeparator(const std::string &line, const std::string &separator)
+{
+
+    std::vector<std::string> out;
+
+    boost::char_separator<char> sep(separator.c_str());
+    boost::tokenizer<boost::char_separator<char>> tokens(line, sep);
+
+    // Assign tokens to a string vector
+
+    out.assign(tokens.begin(), tokens.end());
+
+    return out;
 }
 
 } // end nspace

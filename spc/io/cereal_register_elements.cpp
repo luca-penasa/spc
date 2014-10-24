@@ -94,6 +94,12 @@ CEREAL_REGISTER_TYPE_WITH_NAME(spc::EigenFunctionBase, "EigenFunctionBase")
 #include <spc/elements/EigenLinearFunctionBase.h>
 CEREAL_REGISTER_TYPE_WITH_NAME(spc::EigenLinearFunctionBase, "EigenLinearFunctionBase")
 
+#include <spc/elements/Kernels.hpp>
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::BasicKernel<float>, "BasicKernelFloat")
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::GaussianKernel<float>, "GaussianKernelFloat")
+
+#include <spc/elements/RBFModel.h>
+CEREAL_REGISTER_TYPE_WITH_NAME(spc::RBFModel<float>, "RBFModelFloat")
 
 //#include <spc/elements/ICalPHFunction.h>
 //CEREAL_REGISTER_TYPE_WITH_NAME(spc::ICalPHFunction, "ICalPHFunction")

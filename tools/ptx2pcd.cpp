@@ -34,7 +34,7 @@
  // Eigen
  // ---------------------------------------------------------------------------
  
- #include <Eigen/Dense>
+ #include <spc/methods/spc_eigen.h>
  
  using namespace Eigen;
  
