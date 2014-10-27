@@ -180,7 +180,7 @@ target_link_libraries(${MY_TOOLS_PREFIX}calibration_testing2 ${SPC_LIBRARIES}  $
 
 
 spc_add_executable(${MY_TOOLS_PREFIX}calibrate_rbf calibrate_rbf)
-target_link_libraries(${MY_TOOLS_PREFIX}calibrate_rbf ${SPC_LIBRARIES}  ${CERES_LIBRARIES} ${GFLAGS_LIBRARIES})
+target_link_libraries(${MY_TOOLS_PREFIX}calibrate_rbf ${SPC_LIBRARIES} spc_methods ${CERES_LIBRARIES} ${GFLAGS_LIBRARIES})
 
 
 spc_add_executable(${MY_TOOLS_PREFIX}xml2spc xml2spc.cpp)

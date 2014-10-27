@@ -3,7 +3,7 @@ project(spc)
 
 set(SPC_DEFINITIONS "") #my definitions
 
-find_package(Qt5Widgets)
+#find_package(Qt5Widgets)
 
 # all libraries into a single dir for the build tree
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
@@ -35,7 +35,7 @@ set(SPC_VERSION ${SPC_MAJOR_VERSION}.${SPC_MINOR_VERSION}.${SPC_PATCH_VERSION})
 if (WIN32)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}" )
 else()
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -std=c++14 " )
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -std=c++11 " )
 endif()
 
 add_subdirectory(submodules)

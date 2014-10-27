@@ -12,7 +12,7 @@ using namespace spc;
 using Eigen::Matrix;
 
 
-DEFINE_string(out, "model.xml", "Out Filename.");
+DEFINE_string(out, "rbf_model", "Out Filename.");
 
 
 DEFINE_string(predictor_fields, "distance,intensity", "The field name of the distance field");
@@ -35,7 +35,13 @@ int main (int argc, char ** argv)
 
     FLAGS_logtostderr = 1;
 
+//    Eigen::VectorXf a(2);
+//    a << 2, 3;
 
+//    DLOG(INFO) <<"TEST: " <<  spc::getPolynomialVariables(a,2).transpose();
+
+
+//    return 1;
     google::ParseCommandLineFlags(&argc, &argv, true);
 
 
@@ -102,8 +108,13 @@ int main (int argc, char ** argv)
 
     spc::RBFModelEstimator<float> estimator;
     estimator.setPoints(points);
-    estimator.autosetScales(0);
+    estimator.autosetScales(0);    
     estimator.autosetNodes(n_splits);
+
+    if (FLAGS_sigma == 0 )
+        estimator.autosetSigma();
+    else
+        estimator.model_->setSigma(FLAGS_sigma);
 
     estimator.setLambda(FLAGS_lambda);
 
@@ -111,41 +122,16 @@ int main (int argc, char ** argv)
 
 
     estimator.getModel()->setPolyOrder(FLAGS_poly_order);
-    estimator.getModel()->setSigma(FLAGS_sigma);
+//    estimator.getModel()->setSigma(FLAGS_sigma);
 
     CHECK(estimator.solveProblem()!= -1) << "cannot solve -- see log info please";
 
-    //        LinearCalibrator calibrator(datadb);
-
-
-    //        std::string outfname = "/home/luca/test_linear.txt";
-
-    //        SampledData * data_ptr = &calibrator.getData();
-
-    //        Eigen::VectorXf pred = calibrator.getPredictionForInput();
-
-    //        EigenTable::Ptr out (new EigenTable);
-    //        out->addNewComponent("distance", 1);
-    //        out->addNewComponent("angle", 1);
-    //        out->addNewComponent("intensity", 1);
-    //        out->addNewComponent("pred_intensity", 1);
 
 
 
+    LOG(INFO) << "Saving the model to " << FLAGS_out;
+    spc::io::serializeToFile(estimator.getModel(), FLAGS_out, spc::io::XML);
 
-    //        out->resize(data_ptr->i_.size());
-
-    //        out->column("distance") = data_ptr->d_;
-    //        out->column("angle") = data_ptr->a_;
-    //        out->column("intensity") = data_ptr->i_.cast<float>();
-    //        out->column("pred_intensity") = pred.cast<float>();
-
-
-    //        spc::io::AsciiEigenTableWriter w;
-    //        w.setInput(out);
-    //        w.setOutputFilename(outfname);
-    //        w.setWriteHeaders(true);
-    //        w.write();
 
     return 1;
 }

@@ -134,7 +134,6 @@ public:
     VectorT getPredictorVector(const PointT &point) const
     {
 
-        DLOG(INFO) << "compuiong pred vector";
 
         PointT p;
         if (hasScales())
@@ -142,13 +141,14 @@ public:
         else
             p = point;
 
-        DLOG(INFO) << "scales done";
 
-
+        VectorT rbf =getRbfPredictorPart(p);
+        VectorT pol =getPolyPredictorPart(p);
         VectorT out(getNumberOfNodes() + getNumberOfpolynomialTerms());
-        out << getRbfPredictorPart(p), getPolyPredictorPart(p);
 
-        DLOG(INFO) << "done";
+
+        out << rbf, pol;
+
         return out;
 
     }

@@ -33,6 +33,38 @@ void meanAndStd(
 
 }
 
+EIGEN_STRONG_INLINE
+Transpose<Derived>
+T()
+{
+    return this->transpose();
+}
+EIGEN_STRONG_INLINE
+size_t nonZeroCount()
+{
+    return ((*this).array() != 0).count();
+}
+
+EIGEN_STRONG_INLINE
+Eigen::Matrix<Scalar, -1, 1>
+nonZeroCoeffs()
+{
+    size_t nz = this->nonZeroCount();
+    Eigen::Matrix<Scalar, -1, 1> outv(nz);
+    size_t counter = 0;
+    for (int i = 0; i < size(); ++i)
+    {
+        Scalar v= this->array()(i);
+        if (v != 0.0 )
+            outv(counter ++) = v;
+    }
+
+    return outv;
+
+
+}
+
+
 
 inline Scalar at(uint i, uint j) const
 {

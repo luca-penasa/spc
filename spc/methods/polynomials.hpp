@@ -90,6 +90,7 @@ Eigen::Matrix<T, -1, 1> getPolynomialVariables(const Eigen::Matrix<T, -1, 1> &va
                                                const size_t & degree)
 {
 
+
     typedef Eigen::Matrix<T, -1, 1> Vector;
     typedef Eigen::Matrix<T, -1, -1, Eigen::RowMajor> Matrix;
 
@@ -111,10 +112,13 @@ Eigen::Matrix<T, -1, 1> getPolynomialVariables(const Eigen::Matrix<T, -1, 1> &va
     {
         // we expand to the given degree the variable
         Vector expanded = expand_to_degree(vars(i), degree);
+
         Matrix mul = current * expanded.transpose();
 
+
         current.resize(mul.size());
-        current.array() = mul.transpose();
+
+        current = Eigen::Map<Vector> (mul.data(), mul.size());
 
     }
 

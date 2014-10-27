@@ -2,6 +2,7 @@
 #define SPC_POLYNOMIALS_H
 
 #include <spc/methods/spc_eigen.h>
+#include <glog/logging.h>
 #include <vector>
 
 namespace spc

@@ -87,6 +87,7 @@ public:
 
         DLOG(INFO) << "nodes automatically set";
 
+
 //        autosetScales();
 
     }
@@ -122,6 +123,38 @@ public:
 
         DLOG(INFO) << "scales defined";
     }
+
+    /**
+     * @brief autosetSigma sets the sigma value of the kernel (the kernel size)
+     * to the average distance between a node and the nearest one.
+     */
+    void autosetSigma()
+    {
+        CHECK(model_->getNodes().size() != 0) << "nodes must be set before calling this function";
+        VectorT nn_distances(model_->getNodes().rows()); // nearest neighbor distance for each node
+
+        for (int i = 0 ; i < model_->getNodes().rows(); ++i)
+        {
+            PointT n = model_->getNodes().row(i);
+            VectorT distances = model_->getSqDistanceFromNodes(n);
+
+
+            distances = distances.nonZeroCoeffs();
+            T min_dist = distances.minCoeff();
+            nn_distances(i) = sqrt(min_dist);
+        }
+
+        T avg =  nn_distances.mean();
+        LOG(INFO) << "Sigma autoset to " << avg;
+
+        this->model_->setSigma(avg);
+
+
+
+
+        DLOG(INFO) << "nearest neighbor distances " << nn_distances.T();
+    }
+
 
 
 
@@ -278,10 +311,9 @@ public:
 #endif
         for (int i = 0; i < getNumberOfPoints(); ++i) // a row for each point
         {
-            DLOG(INFO) << "formulating pred vector";
-            A_.row(i) = model_->getPredictorVector(points_.row(i));
+            VectorT pre  = model_->getPredictorVector(points_.row(i));
+            A_.row(i) = pre;
 
-            DLOG(INFO) << "got pred vec";
 
             if (hasWeights())
             {
@@ -368,13 +400,19 @@ public:
             // solve via pivoting
             coeffs = A_.colPivHouseholderQr().solve(b_);
             model_->setCoefficients(coeffs);
+            DLOG(INFO) << "system correctly solved via Housolder QR";
+
 
         } else if (A_.rows() > A_.cols()) {
             // solving via SVD
             coeffs = A_.jacobiSvd(Eigen::ComputeThinU | Eigen::ComputeThinV).solve(b_);
             model_->setCoefficients(coeffs);
+            DLOG(INFO) << "system correctly solved via JacobiSVD";
         } else
+        {
+            DLOG(INFO) << "Cannot solve the system cause is missing constraints in the A matrix (rows)";
             return -1; // unsuccessfull;
+        }
     }
 
 
