@@ -7,7 +7,7 @@
 namespace spc
 {
 
-class PointCloudPCL : public PointCloudBase
+class PointCloudPCL : public PointCloudBaseWithSensor
 {
 public:
     SPC_OBJECT(PointCloudPCL)
@@ -47,7 +47,7 @@ protected:
     Eigen::Array3i xyz_offsets_;
 
 public:
-    virtual std::vector<std::string> getFieldNames()
+    virtual std::vector<std::string> getFieldNames() const
     {
         std::string names = pcl::getFieldsList(*cloud_);
         std::vector<std::string> fields;
@@ -74,8 +74,18 @@ public:
 
 
 
+    // PointCloudBase interface
+public:
+//    virtual void getFieldValue(const int id, const std::string fieldname, float &val) const;
+//    virtual int size() const;
+//    virtual void resize(size_t s);
 
-    // ElementBase interface
+    virtual pcl::PCLPointCloud2Ptr asPCLData() const
+    {
+        return cloud_;
+    }
+
+
 };
 
 } // end nspace

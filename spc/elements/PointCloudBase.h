@@ -10,6 +10,8 @@
 #include <pcl/search/impl/flann_search.hpp>
 #include <boost/make_shared.hpp>
 
+#include <spc/elements/OrientedSensor.h>
+
 
 namespace spc
 {
@@ -25,15 +27,11 @@ public:
     virtual int getNearestPointID(const Eigen::Vector3f query,
                                   float &sq_distance);
 
-    virtual Eigen::Vector3f getSensorPosition()
-    {
-        return sensor_position_;
-    }
 
-    virtual void setSensorPosition(const Eigen::Vector3f p)
-    {
-        sensor_position_ = p;
-    }
+    //! sensor info access
+    virtual OrientedSensor getSensor() const  = 0;
+
+    virtual void setSensor(const OrientedSensor &sensor) const = 0;
 
     virtual void getPoint(const int id, float &x, float &y, float &z) const
     {
@@ -94,11 +92,14 @@ public:
 
     virtual void addField(const std::string &name) = 0;
 
+    virtual void addFields(const std::vector<std::string> field_names,
+                           const Eigen::MatrixXf &data);
+
     virtual int size() const = 0;
 
     virtual bool hasField(const std::string fieldname) const = 0;
 
-    virtual std::vector<std::string> getFieldNames() = 0;
+    virtual std::vector<std::string> getFieldNames() const = 0;
 
     virtual void resize(size_t s) = 0;
 
@@ -117,13 +118,49 @@ public:
     applyTransform(const Eigen::Transform
                    <float, 3, Eigen::Affine, Eigen::AutoAlign> &T);
 
+
+    virtual pcl::PCLPointCloud2Ptr asPCLData() const;
+
+    //! reurns true if ALL the fields exists
+    bool hasFields(const std::vector<std::string> &field_names) const;
+
 protected:
     pcl::search::FlannSearch<pcl::PointXYZ>::Ptr searcher_;
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr xyz_representation_;
 
-    Eigen::Vector3f sensor_position_;
+
+
+
+};// end class
+
+
+class PointCloudBaseWithSensor: public PointCloudBase
+{
+
+public:
+    SPC_OBJECT(PointCloudBaseWithSensor)
+    EXPOSE_TYPE
+    PointCloudBaseWithSensor(): sensor_(new OrientedSensor)
+    {
+    }
+
+    // PointCloudBase interface
+public:
+    virtual OrientedSensor getSensor() const
+    {
+        return *sensor_;
+    }
+
+    virtual void setSensor(const OrientedSensor &sensor) const
+    {
+        *sensor_ = sensor;
+    }
+
+protected:
+    OrientedSensor::Ptr sensor_;
 };
+
 
 } // end nspace
 

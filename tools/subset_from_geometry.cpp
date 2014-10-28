@@ -125,7 +125,7 @@ int main(int argc, char ** argv)
     extractor.filter(new_cloud);
 
     string outfilename = argv[pcd_files_indices[2]];
-    spc::savePCDBinaryCompressed(outfilename, new_cloud);
+    spc::io::savePCDBinaryCompressed(outfilename, new_cloud);
 
 
 

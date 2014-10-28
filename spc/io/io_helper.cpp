@@ -3,10 +3,17 @@
 
 #include <spc/methods/common.h>
 
+#include <spc/io/element_io.h>
+#include <spc/elements/PointCloudSpc.h>
+#include <spc/elements/PointCloudPcl.h>
+
 using namespace pcl::console;
 using namespace pcl;
 
 namespace spc
+{
+
+namespace io
 {
 int loadCSVFile(const std::string &in_filename, pcl::PCLPointCloud2 &output,
                 const int x_id, const int y_id, const int z_id, const int i_id,
@@ -197,13 +204,124 @@ int savePCDBinaryCompressed(const std::string &filename,
 }
 
 template int saveAsCSV(const std::string &filename,
-                       const std::string &separator,
-                       const std::vector<std::vector<float>> &columns,
-                       const int precision);
+const std::string &separator,
+const std::vector<std::vector<float>> &columns,
+const int precision);
 
 template int saveAsCSV(const std::string &filename,
-                       const std::string &separator,
-                       const std::vector<std::vector<double>> &columns,
-                       const int precision);
+const std::string &separator,
+const std::vector<std::vector<double>> &columns,
+const int precision);
 
+PointCloudBase::Ptr loadPointCloud(const std::string &filename)
+{
+
+    if (!boost::filesystem::exists(filename)) {
+        DLOG(WARNING) << "Filename does not exists. Cannot load this cloud";
+        return NULL;
+    }
+
+    boost::filesystem::path path = (filename);
+
+    std::string extension = path.extension().c_str(); // we will use extension for detectin the type of cloud
+
+
+    if (   !((extension == ".xml")
+             || (extension == ".json")
+             || (extension == ".spc")
+             || (extension == ".pcd")))
+    {
+        DLOG(WARNING) << "Extension not recognized. cannot load. Null pointer returned.";
+        return NULL;
+    }
+
+
+    if (   ((extension == ".xml")
+            || (extension == ".json")
+            || (extension == ".spc") ))
+    {
+        // this is a SPC-like format
+        // we try to deserialize it
+
+        ISerializable::Ptr obj = io::deserializeFromFile(filename);
+        if (!obj)
+        {
+            DLOG(WARNING)<< "File does not contain a valid spc element! Null ptr.";
+            return NULL;
+        }
+
+        // try to see if it is a PointCloudSPC
+        PointCloudSpc::Ptr cloud_spc = spcDynamicPointerCast<PointCloudSpc>(obj);
+
+        if (!cloud_spc)
+        {
+            DLOG(WARNING) << "File does not contain a PointCloudSPC!";
+        }
+        else // if is good
+        {
+            DLOG(WARNING) << "File contains a PointCloudSPC!";
+            return cloud_spc;
+        }
+
+        // maybe it contains an EigenTable from which a PointCloudSpc can be created
+        EigenTable::Ptr table = spcDynamicPointerCast<EigenTable> (obj);
+
+        if (!table)
+        {
+            DLOG(WARNING) << "File does not contain an EigenTable!";
+        }
+        else // if is good
+        {
+            DLOG(WARNING) << "File contains an EigenTable!";
+
+            return PointCloudSpc::Ptr (new PointCloudSpc (table));
+        }
+        // if we are here without returning anything
+        return NULL;
+    }
+
+    else //// PCD FILES
+    {
+        // if we are here it must be a PCD file!
+        pcl::PCLPointCloud2::Ptr cloud_pcl (new pcl::PCLPointCloud2);
+
+        Eigen::Vector4f origin;
+        Eigen::Quaternionf orientation;
+        int status = pcl::io::loadPCDFile(filename, *cloud_pcl, origin, orientation);
+        OrientedSensor sensor (origin, orientation);
+
+        DLOG(INFO) << "pcl cloud sucessfully loaded";
+
+
+        if (status < 0)
+        {
+            DLOG(WARNING)<< "Cannot deserialize the PCD file. Probably it is invalid.";
+            return NULL;
+        }
+
+        else
+        {
+
+            PointCloudBase::Ptr out (new spc::PointCloudPCL(cloud_pcl));
+            out->setSensor(sensor);
+            return out;
+        }
+    }
+
+    return NULL; // this is just to be sure we return a null in case we are here (we should not) for some strange reason
+}
+
+int savePointCloudAsPCDBinaryCompressed(PointCloudBase &cloud, const std::string &filename)
+{
+    pcl::PCLPointCloud2::Ptr ptr = cloud.asPCLData();
+
+    OrientedSensor sensor = cloud.getSensor();
+
+    pcl::PCDWriter w;
+    return w.writeBinaryCompressed(filename, *ptr, sensor.getPosition(), sensor.getOrientation());
+
+
+}
+
+}//end io nspace
 } // end nspace

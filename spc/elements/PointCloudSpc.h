@@ -9,10 +9,16 @@
 namespace spc
 {
 
-class  PointCloudSpc : public PointCloudBase
+class  PointCloudSpc : public PointCloudBaseWithSensor
 {
 public:
     PointCloudSpc();
+
+    //! from an eigen table constructor
+    PointCloudSpc(EigenTable::Ptr table): fields_manager_(table)
+    {
+
+    }
 
     SPC_OBJECT(PointCloudSpc)
 
@@ -62,7 +68,7 @@ private:
 
     // PointCloudBase interface
 public:
-    virtual std::vector<std::string> getFieldNames()
+    virtual std::vector<std::string> getFieldNames() const
     {
         return fields_manager_->getScalarColumnsNames();
     }

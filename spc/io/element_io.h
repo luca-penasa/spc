@@ -40,7 +40,7 @@ int serializeToFile(const ISerializable::Ptr element, std::string filename,
 
 /**
      * @brief deserializeFromFile get a filename and gives back an
- * scpSerializableObject::Ptr
+     * scpSerializableObject::Ptr
      * @param filename with extension, we will guess the right archive from that
      * @return
      */

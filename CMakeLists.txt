@@ -64,7 +64,7 @@ set(SPC_LIBRARIES CACHE INTERNAL "SPC libs" FORCE) #this will collect all the mo
 option(SPC_BUILD_SHARED "Build spc library as a shared lib." ON)
 option(SPC_BUILD_STD_SHARED_PTR "Build spc library as a shared lib." ON)
 option(SPC_BUILD_WITH_GPROF "Build with -pg flags for profiling." OFF)
-option(SPC_BUILD_TOOLS "Build the tools." OFF)
+option(SPC_BUILD_TOOLS "Build the tools." ON)
 #option(SPC_BUILD_TOOLS "Build really experimental staff." OFF)
 option(SPC_BUILD_SANDBOX_TOOLS "Build sandbox tools." ON)
 option(SPC_BUILD_CALIBRATION "Build intensity-calibration support" OFF)
@@ -76,7 +76,7 @@ option(SPC_BUILD_TESTS "Do tests" OFF)
 option(SPC_ENABLE_INSTALL "Enable/Disable the install target" ON)
 option(SPC_SWIG_WRAPPINGS "Use swigs to generate wrappings for some methods" OFF)
 
-option(SPC_USE_PARALLEL_OPENMP "Enable paralellization of some algorithms via OpenMP" OFF)
+option(SPC_USE_PARALLEL_OPENMP "Enable paralellization of some algorithms via OpenMP" ON)
 option(SPC_BUILD_TESTING_TOOLS "Build the tools contained into the tests folder" OFF)
 #############################################################################################################
 

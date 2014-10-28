@@ -10,13 +10,16 @@
 
 #include <spc/methods/common.h>
 
+#include <spc/elements/PointCloudBase.h>
+
 #include <string>
 #include <iostream>
 #include <fstream>
 
 namespace spc
 {
-
+namespace io
+{
 int loadCSVFile(const std::string &in_filename, pcl::PCLPointCloud2 &output,
                 const int x_id, const int y_id, const int z_id, const int i_id,
                 const int k, const std::string s);
@@ -32,6 +35,15 @@ int saveAsCSV(const std::string &filename, const std::string &separator,
 
 int savePCDBinaryCompressed(const std::string &filename,
                             const pcl::PCLPointCloud2 &cloud);
+
+
+PointCloudBase::Ptr loadPointCloud(const std::string &filename);
+
+
+int savePointCloudAsPCDBinaryCompressed(PointCloudBase &cloud,  const std::string &filename);
+
+}// end io nspace
+
 } // end namespace
 
 #endif // SPC_IO_HELPER

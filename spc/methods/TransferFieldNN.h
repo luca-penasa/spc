@@ -10,15 +10,21 @@ class PointCloudHelpers
 {
 public:
 
-    static void transferNormals(PointCloudBase::Ptr from,
+    static int transferNormals(PointCloudBase::Ptr from,
                                 PointCloudBase::Ptr to,
                                 const float &max_distance = 0.1);
 
-    static void computeScatteringAngle(PointCloudBase::Ptr cloud, const std::string fieldname = "angle");
+    static int computeScatteringAngle(PointCloudBase::Ptr cloud,
+                                      const std::string angle_fieldname = "angle");
 
-    static void computeDistanceFromSensor(PointCloudBase::Ptr cloud, std::string fieldname = "distance");
+    static int computeDistanceFromSensor(PointCloudBase::Ptr cloud,
+                                         std::string fieldname = "distance");
 
 
+    static int transferFieldsNN(PointCloudBase::Ptr from,
+                                PointCloudBase::Ptr to,
+                                const float &max_distance,
+                                std::vector<std::string> fields);
 
 };
 }

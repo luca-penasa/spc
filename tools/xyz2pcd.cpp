@@ -172,7 +172,7 @@ int main(int argc, char *argv[] )
 		pcl::PCLPointCloud2::Ptr cloud (new pcl::PCLPointCloud2);
 		
 		//get the cloud
-        int status = spc::loadCSVFile(filename, *cloud, x_column, y_column, z_column, int_column, skip_n_rows, separator);
+        int status = spc::io::loadCSVFile(filename, *cloud, x_column, y_column, z_column, int_column, skip_n_rows, separator);
 
 		if (status == -1)
 		{

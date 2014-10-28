@@ -9,10 +9,6 @@ namespace spc
 
 DtiClassType ElementBase::Type ("ElementBase"); // it is a root
 
-void ElementBase::modified()
-{
-    modified_ = true;
-}
 
 void ElementBase::update()
 {

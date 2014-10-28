@@ -164,8 +164,7 @@ spc_add_executable(${MY_TOOLS_PREFIX}compute_intensity_calibration compute_inten
 target_link_libraries(${MY_TOOLS_PREFIX}compute_intensity_calibration ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 
-spc_add_executable(${MY_TOOLS_PREFIX}apply_correction apply_correction.cpp)
-target_link_libraries(${MY_TOOLS_PREFIX}apply_correction ${SPC_LIBRARIES} )
+
 
 
 FIND_PACKAGE(Ceres REQUIRED)
@@ -184,4 +183,24 @@ target_link_libraries(${MY_TOOLS_PREFIX}calibrate_rbf ${SPC_LIBRARIES} spc_metho
 
 
 spc_add_executable(${MY_TOOLS_PREFIX}xml2spc xml2spc.cpp)
-target_link_libraries(${MY_TOOLS_PREFIX}xml2spc ${SPC_LIBRARIES}  ${CERES_LIBRARIES})
+target_link_libraries(${MY_TOOLS_PREFIX}xml2spc ${SPC_LIBRARIES})
+
+
+#spc_add_executable(${MY_TOOLS_PREFIX} apply_rbf_model apply_rbf_model.cpp)
+#target_link_libraries(apply_rbf_model ${SPC_LIBRARIES} ${GLOG_LIBRARIES} ${GFLAGS_LIBRARIES})
+
+
+
+spc_add_executable(${MY_TOOLS_PREFIX}apply_rbf_model apply_rbf_model.cpp)
+target_link_libraries(${MY_TOOLS_PREFIX}apply_rbf_model ${SPC_LIBRARIES} ${GLOG_LIBRARIES} ${GFLAGS_LIBRARIES})
+
+
+
+spc_add_executable(${MY_TOOLS_PREFIX}transfer_fields transfer_fields.cpp)
+target_link_libraries(${MY_TOOLS_PREFIX}transfer_fields ${SPC_LIBRARIES} ${GLOG_LIBRARIES} ${GFLAGS_LIBRARIES})
+
+
+
+
+spc_add_executable(${MY_TOOLS_PREFIX}compute_angles_distances compute_angles_distances.cpp)
+target_link_libraries(${MY_TOOLS_PREFIX}compute_angles_distances ${SPC_LIBRARIES} ${GLOG_LIBRARIES} ${GFLAGS_LIBRARIES})

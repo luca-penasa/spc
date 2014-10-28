@@ -1,17 +1,18 @@
 #include "TransferFieldNN.h"
 namespace spc {
 
-void PointCloudHelpers::transferNormals(PointCloudBase::Ptr from, PointCloudBase::Ptr to, const float &max_distance)
+int PointCloudHelpers::transferNormals(PointCloudBase::Ptr from, PointCloudBase::Ptr to, const float &max_distance)
 {
     to->addField("normal_x");
     to->addField("normal_y");
     to->addField("normal_z");
 
     float d;
-    for (int i = 0; i < to->size(); ++i) {
-
-        if (i %100 == 0)
-            std::cout << i << std::endl;
+#ifdef USE_OPENMP
+#pragma omp parallel for private(d)
+#endif
+    for (int i = 0; i < to->size(); ++i)
+    {
         int nn_id = from->getNearestPointID(to->getPoint(i), d);
         if (sqrt(d) > max_distance)
             to->setNormal(i, spcNANMacro, spcNANMacro, spcNANMacro);
@@ -21,32 +22,100 @@ void PointCloudHelpers::transferNormals(PointCloudBase::Ptr from, PointCloudBase
         }
     }
 
+    return 1;
+
 
 
 }
 
-void PointCloudHelpers::computeScatteringAngle(PointCloudBase::Ptr cloud, const std::string fieldname)
+int PointCloudHelpers::transferFieldsNN(PointCloudBase::Ptr from, PointCloudBase::Ptr to,
+                                        const float &max_distance,
+                                        std::vector<std::string> fields)
+{
+    if (!from->hasFields(fields))
+    {
+        LOG(WARNING) << "one or more fields missing in input cloud. Cannot copy the fields";
+        return -1;
+    }
+
+
+    CHECK_GT(max_distance, 0);
+
+
+    for (std::string name: fields)
+    {
+        to->addField(name);
+    }
+
+
+    from->updateFlannSearcher();
+
+    float value;
+    float d;
+
+
+#ifdef USE_OPENMP
+#pragma omp parallel for private(value, d)
+#endif
+    for (int i = 0; i < to->size(); ++i)
+    {
+
+        // nearest point in from
+        int nn_id = from->getNearestPointID(to->getPoint(i), d);
+
+        if (sqrt(d) > max_distance)
+        {
+            for (std::string sname: fields)
+            {
+                to->setFieldValue(i, sname, spcNANMacro);
+            }
+        }
+
+        else
+        {
+            for (std::string sname: fields)
+            {
+                from->getFieldValue(nn_id,sname, value);
+                to->setFieldValue(i, sname, value);
+            }
+        }
+    }
+
+    return 1;
+}
+
+
+int PointCloudHelpers::computeScatteringAngle(PointCloudBase::Ptr cloud, const std::string angle_fieldname)
 {
     if( !cloud->hasField("normal_x") )
     {
-        PCL_ERROR("no normals in the cloud.\n");
-        return;
+        LOG(WARNING) << "Normals must be present in input cloud. Cannot compue angles";
+        return -1;
     }
 
-    Eigen::Vector3f position = cloud->getSensorPosition();
-    if (pcl_isnan(position(0)))
+    Eigen::Vector4f position = cloud->getSensor().getPosition();
+
+    if (position == Eigen::Vector4f::Zero())
     {
-        PCL_ERROR("no valid sensor position in the cloud.\n");
-        return;
+        LOG(WARNING) << "looks like the sensor position is [0,0,0], going ahead considering this as sensor position";
     }
 
-    cloud->addField(fieldname);
+    if (pcl_isnan(position(0)) || pcl_isnan(position(1)) ||pcl_isnan(position(2)))
+    {
+        LOG(WARNING) << "sensor position contains NANS. Not valid.";
+        return -1;
+    }
 
+    cloud->addField(angle_fieldname);
+
+#ifdef USE_OPENMP
+#pragma omp parallel for
+#endif
     for (int i  = 0; i < cloud->size(); ++i)
     {
         Eigen::Vector3f p = cloud->getPoint(i);
         Eigen::Vector3f n = cloud->getNormal(i);
-        Eigen::Vector3f ray = p - position;
+        Eigen::Vector3f ray = p - position.head(3);
 
         ray.normalize();
         n.normalize();
@@ -56,23 +125,38 @@ void PointCloudHelpers::computeScatteringAngle(PointCloudBase::Ptr cloud, const 
 
         theta *= 180.0 / M_PI;
 
-        cloud->setFieldValue(i, "angle",theta);
+        cloud->setFieldValue(i, angle_fieldname,theta);
     }
+
+    return 1;
 
 
 
 }
 
-void PointCloudHelpers::computeDistanceFromSensor(PointCloudBase::Ptr cloud, std::string fieldname)
+int PointCloudHelpers::computeDistanceFromSensor(PointCloudBase::Ptr cloud, std::string fieldname)
 {
-    Eigen::Vector3f position = cloud->getSensorPosition();
-    if (pcl_isnan(position(0)))
+    Eigen::Vector3f position = cloud->getSensor().getPosition().head(3);
+
+
+    if (position == Eigen::Vector3f::Zero())
     {
-        PCL_ERROR("no valid sensor position in the cloud.\n");
-        return;
+        LOG(WARNING) << "looks like the sensor position is [0,0,0], going ahead considering this as sensor position";
     }
 
+    if (pcl_isnan(position(0)) || pcl_isnan(position(1)) ||pcl_isnan(position(2)))
+    {
+        LOG(WARNING) << "sensor position contains NANS. Not valid.";
+        return -1;
+    }
+
+
     cloud->addField(fieldname);
+
+
+#ifdef USE_OPENMP
+#pragma omp parallel for
+#endif
 
     for (int i  = 0; i < cloud->size(); ++i)
     {
@@ -80,9 +164,10 @@ void PointCloudHelpers::computeDistanceFromSensor(PointCloudBase::Ptr cloud, std
 
         Eigen::Vector3f d = p -position;
 
-        cloud->setFieldValue(i, "distance", d.norm());
+        cloud->setFieldValue(i, fieldname, d.norm());
     }
 
+    return 1;
 
 }
 

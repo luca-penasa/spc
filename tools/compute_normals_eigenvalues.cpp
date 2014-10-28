@@ -119,7 +119,7 @@ int main (int argc, char ** argv)
         if (find_switch(argc, argv, "-a"))
             savePCDFile(out_cloud_name, out_indices_sensor);
         else
-            spc::savePCDBinaryCompressed(out_cloud_name, out_indices_sensor);
+            spc::io::savePCDBinaryCompressed(out_cloud_name, out_indices_sensor);
     }
     else
     {
@@ -132,7 +132,7 @@ int main (int argc, char ** argv)
         if (find_switch(argc, argv, "-a"))
             savePCDFile(out_cloud_name, out_indices_sensor);
         else
-            spc::savePCDBinaryCompressed(out_cloud_name, out_all_sensor);
+            spc::io::savePCDBinaryCompressed(out_cloud_name, out_all_sensor);
 
     }
 

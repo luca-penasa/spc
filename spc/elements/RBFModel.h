@@ -196,6 +196,8 @@ public:
 
     void splittedEvaluator(const PointsT & points, MatrixT & values)
     {
+
+        DLOG(INFO) << "calling splitted evaluator";
         values.resize(points.rows(), 2);
 #ifdef USE_OPENMP
         #pragma omp parallel for
@@ -215,6 +217,9 @@ public:
             values(i, 0) = getPolyCoefficients().dot(getPolyPredictorPart(p));
             values(i, 1) = getRbfCoefficients().dot(getRbfPredictorPart(p));
         }
+
+        DLOG(INFO) << "Done!";
+
     }
 
     void setCoefficients(const VectorT & coeffs)
@@ -244,6 +249,11 @@ public:
             return true;
         else
             return false;
+    }
+
+    size_t getNumberOfPredictors() const
+    {
+        return dim_;
     }
 
 protected:

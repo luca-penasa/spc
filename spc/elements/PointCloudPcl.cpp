@@ -5,15 +5,17 @@ namespace spc
 {
 
 
-DtiClassType PointCloudPCL::Type = DtiClassType("PointCloudPCL", &PointCloudBase::Type);
+DtiClassType PointCloudPCL::Type = DtiClassType("PointCloudPCL", &PointCloudBaseWithSensor::Type);
 
 PointCloudPCL::PointCloudPCL(pcl::PCLPointCloud2Ptr cloud)
 {
     cloud_ = cloud;
 
-    xyz_offsets_ << cloud_->fields[pcl::getFieldIndex (*cloud_, "x")].offset;
-    xyz_offsets_ <<  cloud_->fields[pcl::getFieldIndex (*cloud_, "y")].offset;
-    xyz_offsets_ <<  cloud_->fields[pcl::getFieldIndex (*cloud_, "z")].offset;
+    xyz_offsets_ << cloud_->fields[pcl::getFieldIndex (*cloud_, "x")].offset,
+      cloud_->fields[pcl::getFieldIndex (*cloud_, "y")].offset,
+      cloud_->fields[pcl::getFieldIndex (*cloud_, "z")].offset;
+
+    DLOG(INFO) << "PointCloudPCL sucessfully created";
 }
 
 

@@ -16,12 +16,10 @@ class ElementBase : public ISerializable, public ElementWithVariantProperties
 public:
     SPC_OBJECT(ElementBase)
     EXPOSE_TYPE
-    ElementBase() : modified_(false)
+    ElementBase()
     {
     }
 
-    // this may be useful in a future
-    virtual void modified();
 
     virtual void update();
 

@@ -15,7 +15,7 @@ using Eigen::Matrix;
 DEFINE_string(out, "rbf_model", "Out Filename.");
 
 
-DEFINE_string(predictor_fields, "distance,intensity", "The field name of the distance field");
+DEFINE_string(predictor_fields, "distance,angle", "The field name of the distance field");
 DEFINE_string(observation_field, "intensity", "The field name of the observation to model");
 
 //DEFINE_string(weights_field, "intensity_std", "Used weights for solving the problem");

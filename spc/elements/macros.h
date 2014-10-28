@@ -29,10 +29,7 @@
 #define spcSetMacro(name, membername, type)                                    \
     virtual void set##name(const type &_arg)                                   \
     {                                                                          \
-        if (this->membername != _arg) {                                        \
             this->membername = _arg;                                           \
-            this->modified();                                                  \
-        }                                                                      \
     }
 
 // from vtkGetMacro :-)
@@ -45,10 +42,7 @@
 #define spcSetObjectMacro(name, membername, type)                              \
     virtual void set##name(type::Ptr _arg)                                     \
     {                                                                          \
-        if (this->membername != _arg) {                                        \
             this->membername = _arg;                                           \
-            this->modified();                                                  \
-        }                                                                      \
     }                                                                          \
     virtual bool has##name() const                                             \
     {                                                                          \
