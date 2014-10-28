@@ -122,7 +122,6 @@ int main (int argc, char ** argv)
 
 
     estimator.getModel()->setPolyOrder(FLAGS_poly_order);
-//    estimator.getModel()->setSigma(FLAGS_sigma);
 
     CHECK(estimator.solveProblem()!= -1) << "cannot solve -- see log info please";
 

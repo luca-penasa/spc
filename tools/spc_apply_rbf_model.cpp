@@ -12,7 +12,7 @@ using namespace spc;
 DEFINE_string(predictors, "distance,angle", "The field name of the distance field");
 DEFINE_string(observation, "intensity", "The field name of the observation to which apply correction");
 DEFINE_string(model, "model.xml", "The RBF model for prediction");
-DEFINE_string(clouds, " ","the clouds to which apply correction"  );
+DEFINE_string(clouds, "","the clouds to which apply correction, separated by space"  );
 
 DEFINE_bool(split_rbf, true, "if true it will output the rbf part splitted from the polynomial part of the model");
 DEFINE_bool(do_correction, true, "save also the corrected observation (the corrected intensity)");

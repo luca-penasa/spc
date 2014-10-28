@@ -48,13 +48,13 @@ endif()
 #include_directories(/usr/include/eigen3/)
 # include_directories(${LIDARLIB_SOURCE_DIR})
 
-spc_add_executable(${MY_TOOLS_PREFIX}bilateral bilateral.cpp)
+spc_add_executable(${MY_TOOLS_PREFIX}bilateral spc_bilateral.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}bilateral ${PCL_LIBRARIES})
 
 #spc_add_executable(align_icp align_ICP.cpp)
 #target_link_libraries(align_icp ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
-spc_add_executable(${MY_TOOLS_PREFIX}test_tool test_tool.cpp)
+spc_add_executable(${MY_TOOLS_PREFIX}test_tool spc_test_tool.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}test_tool ${SPC_LIBRARIES} ${GLOG_LIBRARIES})
 
 #spc_add_executable(align_icp2 align_ICP_old.cpp)
@@ -68,19 +68,19 @@ target_link_libraries(${MY_TOOLS_PREFIX}test_tool ${SPC_LIBRARIES} ${GLOG_LIBRAR
 # spc_add_executable(convert_cloud convert_cloud.cpp)
 # target_link_libraries(convert_cloud ${PCL_LIBRARIES} ${VTK_LIBRARIES})
 
-spc_add_executable(${MY_TOOLS_PREFIX}xyz2pcd xyz2pcd.cpp)
+spc_add_executable(${MY_TOOLS_PREFIX}xyz2pcd spc_xyz2pcd.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}xyz2pcd ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 #spc_add_executable(compute_features compute_features.cpp)
 #target_link_libraries(compute_features ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
-spc_add_executable(${MY_TOOLS_PREFIX}compute_stats compute_stats.cpp)
+spc_add_executable(${MY_TOOLS_PREFIX}compute_stats spc_compute_stats.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}compute_stats ${PCL_LIBRARIES} )
 
-spc_add_executable(${MY_TOOLS_PREFIX}compute_intensity_spin compute_intensity_spin.cpp)
+spc_add_executable(${MY_TOOLS_PREFIX}compute_intensity_spin spc_compute_intensity_spin.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}compute_intensity_spin ${PCL_LIBRARIES} )
 
-spc_add_executable(${MY_TOOLS_PREFIX}compute_sensor_distances compute_distances.cpp)
+spc_add_executable(${MY_TOOLS_PREFIX}compute_sensor_distances spc_compute_distances.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}compute_sensor_distances ${PCL_LIBRARIES} ${VTK_LIBRARIES} ${SPC_LIBRARIES})
 
 # spc_add_executable(try_kd_tree try_kd_tree.cpp)
@@ -94,7 +94,7 @@ target_link_libraries(${MY_TOOLS_PREFIX}compute_sensor_distances ${PCL_LIBRARIES
 #spc_add_executable(${MY_TOOLS_PREFIX}distance_detrend distance_detrend.cpp)
 #target_link_libraries(${MY_TOOLS_PREFIX}distance_detrend ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
-spc_add_executable(${MY_TOOLS_PREFIX}ptx2pcd ptx2pcd.cpp)
+spc_add_executable(${MY_TOOLS_PREFIX}ptx2pcd spc_ptx2pcd.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}ptx2pcd ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 #spc_add_executable(resample_polynomial resample_polynomial.cpp)
@@ -108,13 +108,13 @@ target_link_libraries(${MY_TOOLS_PREFIX}ptx2pcd ${PCL_LIBRARIES} ${SPC_LIBRARIES
 #target_link_libraries(${MY_TOOLS_PREFIX}euclidean_cluster ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 
-spc_add_executable(${MY_TOOLS_PREFIX}compute_presence_curve compute_presence_curve.cpp)
+spc_add_executable(${MY_TOOLS_PREFIX}compute_presence_curve spc_compute_presence_curve.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}compute_presence_curve ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
-spc_add_executable(${MY_TOOLS_PREFIX}extract_pois extract_pois.cpp)
+spc_add_executable(${MY_TOOLS_PREFIX}extract_pois spc_extract_pois.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}extract_pois ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
-spc_add_executable(${MY_TOOLS_PREFIX}compute_normals_eigenvalues compute_normals_eigenvalues.cpp)
+spc_add_executable(${MY_TOOLS_PREFIX}compute_normals_eigenvalues spc_compute_normals_eigenvalues.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}compute_normals_eigenvalues ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 #spc_add_executable(${MY_TOOLS_PREFIX}estimate_correction_curve estimate_correction_curve.cpp)
@@ -125,42 +125,42 @@ target_link_libraries(${MY_TOOLS_PREFIX}compute_normals_eigenvalues ${PCL_LIBRAR
 
 
 
-spc_add_executable(${MY_TOOLS_PREFIX}merge_clouds_with_config merge_clouds_with_config.cpp)
+spc_add_executable(${MY_TOOLS_PREFIX}merge_clouds_with_config spc_merge_clouds_with_config.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}merge_clouds_with_config ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 
 
-spc_add_executable(${MY_TOOLS_PREFIX}produce_fields_list produce_fields_list.cpp)
+spc_add_executable(${MY_TOOLS_PREFIX}produce_fields_list spc_produce_fields_list.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}produce_fields_list ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
-spc_add_executable(${MY_TOOLS_PREFIX}produce_training_data produce_training_data.cpp)
+spc_add_executable(${MY_TOOLS_PREFIX}produce_training_data spc_produce_training_data.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}produce_training_data ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
-spc_add_executable(${MY_TOOLS_PREFIX}convert_pcd_to_svm_format convert_pcd_to_svm_format.cpp)
+spc_add_executable(${MY_TOOLS_PREFIX}convert_pcd_to_svm_format spc_convert_pcd_to_svm_format.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}convert_pcd_to_svm_format ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 
-spc_add_executable(${MY_TOOLS_PREFIX}merge_classification_results merge_classification_results.cpp)
+spc_add_executable(${MY_TOOLS_PREFIX}merge_classification_results spc_merge_classification_results.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}merge_classification_results ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
-spc_add_executable(${MY_TOOLS_PREFIX}subset_from_geometry subset_from_geometry.cpp)
+spc_add_executable(${MY_TOOLS_PREFIX}subset_from_geometry spc_subset_from_geometry.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}subset_from_geometry ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 
-spc_add_executable(${MY_TOOLS_PREFIX}get_mean_std_sampling_step get_mean_std_sampling_step.cpp)
+spc_add_executable(${MY_TOOLS_PREFIX}get_mean_std_sampling_step spc_get_mean_std_sampling_step.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}get_mean_std_sampling_step ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 
-spc_add_executable(${MY_TOOLS_PREFIX}append_orientations_to_pcd append_orientations_to_pcd)
+spc_add_executable(${MY_TOOLS_PREFIX}append_orientations_to_pcd spc_append_orientations_to_pcd)
 target_link_libraries(${MY_TOOLS_PREFIX}append_orientations_to_pcd ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 
-spc_add_executable(${MY_TOOLS_PREFIX}compute_calibration_dataset compute_calibration_dataset)
+spc_add_executable(${MY_TOOLS_PREFIX}compute_calibration_dataset spc_compute_calibration_dataset)
 target_link_libraries(${MY_TOOLS_PREFIX}compute_calibration_dataset ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 
 
-spc_add_executable(${MY_TOOLS_PREFIX}compute_intensity_calibration compute_intensity_calibration.cpp)
+spc_add_executable(${MY_TOOLS_PREFIX}compute_intensity_calibration spc_compute_intensity_calibration.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}compute_intensity_calibration ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 
@@ -171,18 +171,18 @@ FIND_PACKAGE(Ceres REQUIRED)
 INCLUDE_DIRECTORIES(${CERES_INCLUDE_DIRS})
 
 
-spc_add_executable(${MY_TOOLS_PREFIX}calibration_testing calibration_testing.cpp)
+spc_add_executable(${MY_TOOLS_PREFIX}calibration_testing spc_calibration_testing.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}calibration_testing ${SPC_LIBRARIES}  ${CERES_LIBRARIES})
 
-spc_add_executable(${MY_TOOLS_PREFIX}calibration_testing2 calibration_testing2.cpp)
+spc_add_executable(${MY_TOOLS_PREFIX}calibration_testing2 spc_calibration_testing2.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}calibration_testing2 ${SPC_LIBRARIES}  ${CERES_LIBRARIES} ${GFLAGS_LIBRARIES})
 
 
-spc_add_executable(${MY_TOOLS_PREFIX}calibrate_rbf calibrate_rbf)
+spc_add_executable(${MY_TOOLS_PREFIX}calibrate_rbf spc_calibrate_rbf)
 target_link_libraries(${MY_TOOLS_PREFIX}calibrate_rbf ${SPC_LIBRARIES} spc_methods ${CERES_LIBRARIES} ${GFLAGS_LIBRARIES})
 
 
-spc_add_executable(${MY_TOOLS_PREFIX}xml2spc xml2spc.cpp)
+spc_add_executable(${MY_TOOLS_PREFIX}xml2spc spc_xml2spc.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}xml2spc ${SPC_LIBRARIES})
 
 
@@ -191,16 +191,16 @@ target_link_libraries(${MY_TOOLS_PREFIX}xml2spc ${SPC_LIBRARIES})
 
 
 
-spc_add_executable(${MY_TOOLS_PREFIX}apply_rbf_model apply_rbf_model.cpp)
+spc_add_executable(${MY_TOOLS_PREFIX}apply_rbf_model spc_apply_rbf_model.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}apply_rbf_model ${SPC_LIBRARIES} ${GLOG_LIBRARIES} ${GFLAGS_LIBRARIES})
 
 
 
-spc_add_executable(${MY_TOOLS_PREFIX}transfer_fields transfer_fields.cpp)
+spc_add_executable(${MY_TOOLS_PREFIX}transfer_fields spc_transfer_fields.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}transfer_fields ${SPC_LIBRARIES} ${GLOG_LIBRARIES} ${GFLAGS_LIBRARIES})
 
 
 
 
-spc_add_executable(${MY_TOOLS_PREFIX}compute_angles_distances compute_angles_distances.cpp)
+spc_add_executable(${MY_TOOLS_PREFIX}compute_angles_distances spc_compute_angles_distances.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}compute_angles_distances ${SPC_LIBRARIES} ${GLOG_LIBRARIES} ${GFLAGS_LIBRARIES})
