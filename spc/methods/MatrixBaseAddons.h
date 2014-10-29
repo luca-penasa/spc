@@ -6,7 +6,7 @@ double mean() const
     return derived().sum()/static_cast<double>(size());
 }
 
- bool empty() const { return this->getColCount()==0 || this->getRowCount()==0; }
+ bool empty() const { return this->size() == 0; }
 
 /** Computes a row with the mean values of each column in the matrix and the associated vector with the standard deviation of each column.
  * \sa mean,meanAndStdAll \exception std::exception If the matrix/vector is empty.
@@ -64,28 +64,28 @@ nonZeroCoeffs()
 
 }
 
-
+//! compatibility with other vector implementations - std::vector, QVector etc
 
 inline Scalar at(uint i, uint j) const
 {
     return this->operator()(i,j);
 }
 
-//inline Scalar& at(uint i, uint j)
-//{
-//    return this->operator()(i,j);
-//}
+inline Scalar& at(uint i, uint j)
+{
+    return this->operator()(i,j);
+}
 
-//inline Scalar at(uint i) const
-//{
-//    return this->operator[](i);
-//}
+inline Scalar at(uint i) const
+{
+    return this->operator[](i);
+}
 
-//inline Scalar& at(uint i)
-//{
-//    return this->operator[](i);
+inline Scalar& at(uint i)
+{
+    return this->operator[](i);
 
-//}
+}
 //inline RealScalar squaredLength() const { return squaredNorm(); }
 //inline RealScalar length() const { return norm(); }
 //inline RealScalar invLength(void) const { return fast_inv_sqrt(squaredNorm()); }

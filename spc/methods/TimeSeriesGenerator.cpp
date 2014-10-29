@@ -1,6 +1,6 @@
 #include <spc/methods/TimeSeriesGenerator.h>
 #include <spc/io/pointcloud2_reader.h>
-#include <spc/methods/KernelSmoothing.h>
+//#include <spc/methods/KernelSmoothing.h>
 #include <spc/elements/TimeSeriesSparse.h>
 #include <pcl/console/print.h>
 #include <spc/methods/KernelSmoothing2.h>
@@ -57,7 +57,7 @@ int TimeSeriesGenerator::compute()
     } else {
         out_series_ = TimeSeriesEquallySpaced::Ptr(
             new TimeSeriesEquallySpaced
-            (get_min(x_field_), get_max(x_field_), sampling_step_));
+            (x_field_.minCoeff(), x_field_.maxCoeff(), sampling_step_));
         ks.setStep(sampling_step_);
     }
 

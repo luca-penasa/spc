@@ -19,7 +19,7 @@ public:
     {
     }
     typedef float ScalarT;
-    typedef std::vector<ScalarT> VectorT;
+    typedef Eigen::Matrix<ScalarT, -1, 1> VectorT;
 
 
     void fill(const ScalarT value_ = std::numeric_limits<ScalarT>::quiet_NaN());
@@ -41,7 +41,7 @@ public:
     /// \brief getX positions
     /// \return a vector of x positions
     ///
-    virtual std::vector<ScalarT> getX() const = 0;
+    virtual VectorT getX() const = 0;
 
     ///
     /// \brief getY values
@@ -57,15 +57,43 @@ public:
         return y_;
     }
 
+    template<class VEC>
+    void getY(VEC & out) const
+    {
+        out.resize(this->getNumberOfSamples());
+#ifdef USE_OPENMP
+#pragma omp parallel for
+#endif
+        for (int i = 0 ; i < this->getNumberOfSamples(); ++i)
+        {
+            out[i] = (typename VEC::value_type) y_(i);
+        }
+    }
+
+    template<class VEC>
+    void getX(VEC & out) const
+    {
+        VectorT x = this->getX();
+
+        out.resize(this->getNumberOfSamples());
+#ifdef USE_OPENMP
+#pragma omp parallel for
+#endif
+        for (int i = 0 ; i < this->getNumberOfSamples(); ++i)
+        {
+            out[i] = (typename VEC::value_type) x(i);
+        }
+    }
+
     ScalarT &getY(size_t id)
     {
-        return y_.at(id);
+        return y_(id);
     }
 
     ///
     /// \brief setY values
     ///
-    void setY(std::vector<ScalarT> y)
+    void setY(VectorT y)
     {
         y_ = y;
     }
@@ -95,7 +123,7 @@ protected:
     ///
     /// \brief y is the vector of values of the TS
     ///
-    std::vector<ScalarT> y_;
+    VectorT y_;
 
 private:
     friend class cereal::access;

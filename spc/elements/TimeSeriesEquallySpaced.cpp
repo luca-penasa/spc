@@ -42,13 +42,16 @@ TimeSeriesEquallySpaced::TimeSeriesEquallySpaced(ScalarT x_min_, ScalarT x_max_,
     this->fill();
 }
 
-std::vector<TimeSeriesBase::ScalarT> TimeSeriesEquallySpaced::getX() const
+TimeSeriesBase::VectorT TimeSeriesEquallySpaced::getX() const
 {
-    std::vector<ScalarT> x(this->y_.size());
-    int counter = 0;
-    spcForEachMacro(ScalarT & x_pos, x)
+    VectorT x(this->y_.size());
+
+#ifdef USE_OPENMP
+#pragma omp parallel for
+#endif
+    for (int i = 0 ; i < x.size(); ++i)
     {
-        x_pos = counter++ * x_step + x_start;
+        x(i) = i * x_step + x_start;
     }
     return x;
 }

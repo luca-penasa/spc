@@ -31,6 +31,8 @@ public:
     typedef spc::TimeSeriesEquallySpaced OutSeriesT;
     typedef spcSharedPtrMacro<OutSeriesT> OutSeriesPtrT;
 
+    typedef Eigen::Matrix<ScalarT, -1, 1> VectorT;
+
     ///
     /// \brief TimeSeriesGenerator def constructor
     ///
@@ -149,15 +151,17 @@ protected:
     {
         fillIndicesIfNeeded();
 
-        std::vector<float> x_d;
+        VectorT x_d;
 
         if (!x_field_name_.empty())
-            x_d = in_cloud_->getField(x_field_name_, indices_);
+            in_cloud_->getField(x_field_name_, indices_, x_d);
 
         else // we should have a stratigrahic model
             x_d = model_->getScalarFieldValues(in_cloud_, indices_);
 
-        std::vector<float> y_d = in_cloud_->getField(y_field_name_, indices_);
+        VectorT y_d;
+        in_cloud_->getField(y_field_name_, indices_, y_d);
+
 
         x_field_ = x_d;
         y_field_ = y_d;
@@ -187,12 +191,12 @@ private:
     ///
     /// \brief x_data field
     ///
-    std::vector<ScalarT> x_field_;
+    VectorT x_field_;
 
     ///
     /// \brief y_data field
     ///
-    std::vector<ScalarT> y_field_;
+    VectorT y_field_;
 };
 
 } // end nspace

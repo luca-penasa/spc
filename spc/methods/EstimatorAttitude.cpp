@@ -56,7 +56,7 @@ void AttitudeEstimator::updateSPs()
     s_positions_.clear();
     spcForEachMacro(CloudPtrT cloud, clouds_)
     {
-        std::vector<float> vec = model_.getScalarFieldValues(cloud);
+        VectorT vec = model_.getScalarFieldValues(cloud);
         s_positions_.push_back(vec);
     }
 }
@@ -65,13 +65,17 @@ void AttitudeEstimator::computeAveragedSPs()
 {
     updateSPs(); // be sure are updated
 
-    est_s_positions_.clear(); // clear it
+    est_s_positions_.resize(s_positions_.size());
 
-    spcForEachMacro(std::vector<float> sps, s_positions_)
+
+    for (int i  = 0; i < s_positions_.size(); ++i)
+//    spcForEachMacro(std::vector<float> sps, s_positions_)
     {
-        float avg_sp = std::accumulate(sps.begin(), sps.end(), 0.0);
+        VectorT sps = s_positions_.at(i);
+
+        float avg_sp = sps.array().sum();
         avg_sp /= sps.size();
-        est_s_positions_.push_back(avg_sp);
+        est_s_positions_.at(i) = avg_sp;
     }
 }
 
@@ -81,13 +85,19 @@ void AttitudeEstimator::updateDeviations()
     sq_deviations_.clear();
 
     for (int i = 0; i < clouds_.size(); ++i) {
-        std::vector<float> devs;
+        VectorT devs(s_positions_.at(i).size());
+
         CloudPtrT cloud = clouds_.at(i);
+
         float est_sp = est_s_positions_.at(i); // its sp
-        spcForEachMacro(float this_sp, s_positions_.at(i))
+
+
+        for (int j = 0 ; j < s_positions_.at(i).size(); ++j)
+//        spcForEachMacro(float this_sp, s_positions_.at(i))
         {
+            float this_sp = s_positions_.at(i).at(j);
             float diff = est_sp - this_sp;
-            devs.push_back(diff * diff);
+            devs.at(j) = diff * diff;
         }
 
         sq_deviations_.push_back(devs);
@@ -110,16 +120,16 @@ float AttitudeEstimator::getAveragedSquareDeviations()
     updateDeviations(); // be sure are updated
     float acc = 0;
     int counter = 0;
-    spcForEachMacro(std::vector<float> devs, sq_deviations_)
+    spcForEachMacro(VectorT devs, sq_deviations_)
     {
-        acc += std::accumulate(devs.begin(), devs.end(), 0.0f);
+        acc += devs.array().sum();
         counter += devs.size();
     }
     acc /= counter; // the avg
     return acc;
 }
 
-std::vector<float> AttitudeEstimator::getStratigraphicPositionsOfClouds()
+AttitudeEstimator::VectorT AttitudeEstimator::getStratigraphicPositionsOfClouds()
 {
     return est_s_positions_;
 }

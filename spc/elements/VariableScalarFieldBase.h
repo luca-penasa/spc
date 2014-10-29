@@ -28,6 +28,8 @@ public:
     //! Def constructor
     VariableScalarFieldBase();
 
+    typedef Eigen::VectorXf VectorT;
+
     ////////////////////////// MANDATORY METHODS
     //////////////////////////////////////////////////
     //!
@@ -54,7 +56,7 @@ public:
     //! \return a vector of stratigraphic positions computed according this
     // model
     //!
-    virtual std::vector<float>
+    virtual VectorT
     getScalarFieldValues(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud) const;
 
     //!
@@ -62,7 +64,7 @@ public:
     //! \param cloud
     //! \return
     //!
-    virtual std::vector<float> getScalarFieldValues(PointCloudBase
+    virtual VectorT getScalarFieldValues(PointCloudBase
                                                     *cloud) const;
 
     //!
@@ -71,16 +73,16 @@ public:
     //! \param indices
     //! \return the stratigraphic positions
     //!
-    virtual std::vector<float> getScalarFieldValues(PointCloudBase *cloud,
+    virtual VectorT getScalarFieldValues(PointCloudBase *cloud,
                                                     const std::vector
                                                     <int> &indices) const;
 
     /// also from shared pointer
-    virtual std::vector<float> getScalarFieldValues(PointCloudBase::Ptr cloud,
+    virtual VectorT getScalarFieldValues(PointCloudBase::Ptr cloud,
                                                     const std::vector
                                                     <int> &indices) const;
 
-    virtual std::vector<float>
+    virtual VectorT
     getScalarFieldValues(PointCloudBase::Ptr cloud) const;
 
     //!
@@ -91,7 +93,7 @@ public:
     //! \return a vector of stratigraphic positions computed according this
     // model
     //!
-    virtual std::vector<float> getScalarFieldValues(pcl::PointCloud
+    virtual VectorT getScalarFieldValues(pcl::PointCloud
                                                     <pcl::PointXYZ>::Ptr cloud,
                                                     const std::vector
                                                     <int> &indices) const;

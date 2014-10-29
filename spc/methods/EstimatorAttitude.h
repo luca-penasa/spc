@@ -54,6 +54,8 @@ public:
     typedef pcl::PointCloud<PointT> CloudT;
     typedef CloudT::Ptr CloudPtrT;
 
+    typedef Eigen::VectorXf VectorT;
+
     typedef spcSharedPtrMacro<AttitudeEstimator> Ptr;
     typedef spcSharedPtrMacro<const AttitudeEstimator> ConstPtr;
 
@@ -103,7 +105,7 @@ public:
     float getAveragedSquareDeviations();
 
     /// for each input cloud get its own SP as estimated with this method
-    std::vector<float> getStratigraphicPositionsOfClouds();
+    VectorT getStratigraphicPositionsOfClouds();
 
     /// call the actual estimation run
     int estimate();
@@ -126,7 +128,7 @@ private:
             fvec(1) = 0.0f;
             fvec(2) = 0.0f;
 
-            std::cout << "CALLED functor: " << err << std::endl;
+            DLOG(INFO)<< "CALLED functor: " << err;
 
             return 0;
         }
@@ -169,13 +171,13 @@ private:
     StratigraphicModelSingleAttitude model_;
 
     /// stratigraphic position for each point into the clouds
-    std::vector<std::vector<float>> s_positions_;
+    std::vector<VectorT> s_positions_;
 
     /// the sp for each cloud, estimted from the model
-    std::vector<float> est_s_positions_;
+    VectorT est_s_positions_;
 
     /// model to observation distance for each point into  the clouds
-    std::vector<std::vector<float>> sq_deviations_;
+    std::vector<VectorT> sq_deviations_;
 
     /// a vector with the centroids of each cloud
     std::vector<Vector3f> centroids_;

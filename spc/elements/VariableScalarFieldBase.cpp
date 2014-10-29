@@ -11,38 +11,39 @@ VariableScalarFieldBase::VariableScalarFieldBase()
 {
 }
 
-std::vector<float> VariableScalarFieldBase::getScalarFieldValues(
+VariableScalarFieldBase::VectorT VariableScalarFieldBase::getScalarFieldValues(
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
     const std::vector<int> &indices) const
 {
-    std::vector<float> out;
-    spcForEachMacro(int id, indices)
+    VectorT out(indices.size());
+
+    for (int i = 0 ; i < indices.size(); ++i)
     {
-        pcl::PointXYZ p = cloud->at(id);
-        out.push_back(this->getScalarFieldValue(Vector3f(p.x, p.y, p.z)));
+        pcl::PointXYZ p = cloud->at(indices.at(i));
+        out.at(i) =this->getScalarFieldValue(Vector3f(p.x, p.y, p.z));
     }
 
     return out;
 }
 
-std::vector<float> VariableScalarFieldBase::getScalarFieldValues(
+VariableScalarFieldBase::VectorT VariableScalarFieldBase::getScalarFieldValues(
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud) const
 {
-    std::vector<float> out;
-    spcForEachMacro(pcl::PointXYZ p, *cloud)
+    VectorT out(cloud->size());
+
+    for (int i = 0 ; i < cloud->size(); ++i)
     {
-        pcl::PointXYZ point;
-        out.push_back(this->getScalarFieldValue(Vector3f(p.x, p.y, p.z)));
+        pcl::PointXYZ p = cloud->at(i);
+        out.at(i) = this->getScalarFieldValue(Vector3f(p.x, p.y, p.z));
     }
 
     return out;
 }
 
-std::vector<float>
-VariableScalarFieldBase::getScalarFieldValues(spc::PointCloudBase
+VariableScalarFieldBase::VectorT VariableScalarFieldBase::getScalarFieldValues(spc::PointCloudBase
                                                   *cloud) const
 {
-    std::vector<float> out;
+    VectorT out;
     int n = cloud->size();
 
     out.resize(n);
@@ -56,10 +57,10 @@ VariableScalarFieldBase::getScalarFieldValues(spc::PointCloudBase
     return out;
 }
 
-std::vector<float> VariableScalarFieldBase::getScalarFieldValues(
+VariableScalarFieldBase::VectorT VariableScalarFieldBase::getScalarFieldValues(
     PointCloudBase *cloud, const std::vector<int> &indices) const
 {
-    std::vector<float> out;
+    VectorT out;
     out.resize(indices.size());
 
     float x, y, z;
@@ -73,10 +74,10 @@ std::vector<float> VariableScalarFieldBase::getScalarFieldValues(
     return out;
 }
 
-std::vector<float> VariableScalarFieldBase::getScalarFieldValues(
+VariableScalarFieldBase::VectorT VariableScalarFieldBase::getScalarFieldValues(
     PointCloudBase::Ptr cloud, const std::vector<int> &indices) const
 {
-    std::vector<float> out;
+    VectorT out;
     out.resize(indices.size());
 
     float x, y, z;
@@ -90,10 +91,10 @@ std::vector<float> VariableScalarFieldBase::getScalarFieldValues(
     return out;
 }
 
-std::vector<float> VariableScalarFieldBase::getScalarFieldValues(
+VariableScalarFieldBase::VectorT VariableScalarFieldBase::getScalarFieldValues(
     PointCloudBase::Ptr cloud) const
 {
-    std::vector<float> out;
+    VectorT out;
     out.resize(cloud->size());
 
     float x, y, z;

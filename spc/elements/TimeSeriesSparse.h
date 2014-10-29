@@ -36,10 +36,23 @@ public:
     ///
     /// \brief SparseTimeSeries constructor
     /// x_ and y_ must have the same size
+    ///  all vector types implementing a size() and data() operator works ok. They must be contigous in memory also
     /// \param x_ vector of x positions
     /// \param y_ vector of y values
     ///
-    TimeSeriesSparse(const std::vector<ScalarT> &x, const std::vector<ScalarT> &y);
+    template <class VEC>
+    TimeSeriesSparse(const VEC &x, const VEC &y)
+    {
+        CHECK(x.size() == y.size()) << "X and Y must have the sime size";
+
+        x_ = Eigen::Matrix <ScalarT, -1, 1>::Map(x.data(), x.size());
+        y_ = Eigen::Matrix <ScalarT, -1, 1>::Map(y.data(), y.size());
+
+    }
+
+
+
+
 
     ///
     /// \brief getX get x positions
@@ -58,12 +71,25 @@ public:
 
     ScalarT &getX(size_t id)
     {
-        return x_.at(id);
+        return x_(id);
     }
 
     ScalarT getX(size_t id) const
     {
-        return x_.at(id);
+        return x_(id);
+    }
+
+    template<class VEC>
+    void getX(VEC & out) const
+    {
+        out.resize(this->getNumberOfSamples());
+#ifdef USE_OPENMP
+#pragma omp parallel for
+#endif
+        for (int i = 0 ; i < this->getNumberOfSamples(); ++i)
+        {
+            out.at(i) = (typename VEC::value_type) x_(i);
+        }
     }
 
     ///
@@ -92,7 +118,7 @@ protected:
     /// \brief x is the vector containing the x positions of the time series
     /// added to the base class attributes
     ///
-    std::vector<ScalarT> x_;
+    VectorT x_;
 
 private:
     friend class cereal::access;

@@ -39,7 +39,8 @@ int KernelSmoothing2::compute()
 
     int count = 0;
 
-    std::vector<ScalarT> x_val = out_series_->getX();
+    std::vector<ScalarT> x_val;
+    out_series_->getX(x_val);
     spcForEachMacro(ScalarT x, x_val)
     {
         evaluateKS(x, value);
@@ -78,8 +79,9 @@ void KernelSmoothing2::extractVectors()
     x_.clear();
     y_.clear();
 
-    std::vector<ScalarT> x = sparse_->getX();
-    std::vector<ScalarT> y = sparse_->getY();
+    std::vector<ScalarT> x, y;
+    sparse_->getX(x);
+    sparse_->getY(y);
 
     /// remove nan values both if their are in x or y series
     for (int i = 0; i < x.size(); ++i) {

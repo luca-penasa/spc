@@ -96,7 +96,23 @@ EXPOSE_TYPE
     /// \brief getX
     /// \return a vector of the x positions
     ///
-    virtual std::vector<ScalarT> getX() const;
+    virtual VectorT getX() const;
+
+
+    template<class VEC>
+    void getX(VEC & out) const
+    {
+        out.resize(this->getNumberOfSamples());
+
+#ifdef USE_OPENMP
+#pragma omp parallel for
+#endif
+        for (int i = 0 ; i < this->getNumberOfSamples(); ++i)
+        {
+            out.at(i) = (typename VEC::value_type) i * x_step + x_start;
+        }
+    }
+
 
     ///
     /// \brief resize the y vector to the given size

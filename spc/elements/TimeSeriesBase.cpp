@@ -10,25 +10,22 @@ DtiClassType TimeSeriesBase::Type ("TimeSeriesBase", &ElementBase::Type);
 
 void TimeSeriesBase::fill(const TimeSeriesBase::ScalarT value_)
 {
-    std::fill(this->y_.begin(), this->y_.end(), value_);
+    y_.fill(value_);
 }
 
 EigenTable::Ptr TimeSeriesBase::asEigenTable() const
 {
     EigenTable::Ptr t(new EigenTable);
 
-    std::vector<ScalarT> x = this->getX();
-    std::vector<ScalarT> y = this->getY();
+    VectorT x = this->getX();
+    VectorT y = this->getY();
 
     t->resize(x.size());
     t->addNewComponent("x");
     t->addNewComponent("y");
 
-    for (int i = 0; i < x.size(); ++i)
-    {
-        t->atScalar("x", i) = x.at(i);
-        t->atScalar("y", i) = y.at(i);
-    }
+    t->column("x") = x;
+    t->column("y") = y;
 
     return t;
 }

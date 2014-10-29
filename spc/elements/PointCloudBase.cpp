@@ -229,4 +229,6 @@ std::vector<float> spc::PointCloudBase::getField(const std::string fieldname,
     return out;
 }
 
+
+
 } // end nspace

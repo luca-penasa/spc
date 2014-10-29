@@ -28,7 +28,7 @@ public:
         spline_ = magnet::math::Spline();
 
         for (int i = 0; i < input_->getX().size(); ++i)
-            spline_.addPoint(input_->getX().at(i), input_->getY().at(i));
+            spline_.addPoint(input_->getX()(i), input_->getY()(i));
 
         return 1;
     }
