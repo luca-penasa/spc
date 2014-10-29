@@ -1,18 +1,21 @@
 #include "KernelSmoothing2.h"
 #include <numeric>
+
+
 namespace spc
 {
+
+
 
 KernelSmoothing2::KernelSmoothing2()
 
 
 {
-
-    pars_["leaf_max_size"] = 15;
 }
 
 int KernelSmoothing2::compute()
 {
+    DLOG(INFO) << "starting computation of kernel smoothing";
 
     if (!out_series_) {
         out_series_ = EquallyPtrT(
@@ -25,11 +28,14 @@ int KernelSmoothing2::compute()
 
     initFlann();
 
+    DLOG(INFO) << "flann should be init";
+    DCHECK (nanoflann_index_ != NULL);
+
     ScalarT value;
 
-    //#ifdef USE_OPENMP
-    //    #pragma omp parallel for private (value)
-    //#endif
+//    #ifdef USE_OPENMP
+//        #pragma omp parallel for private (value)
+//    #endif
 
     int count = 0;
 
@@ -40,21 +46,34 @@ int KernelSmoothing2::compute()
         out_series_->getY(count++) = value;
     }
 
+    LOG(INFO) << "computation done";
+
     return 1;
 }
 
 void KernelSmoothing2::initFlann()
 {
+    DLOG(INFO) << "Going to init a nanoflann index";
+//get our data as an eigen matrix
+    Eigen::Map<Eigen::MatrixXf> data = Eigen::Map<Eigen::MatrixXf> (x_.data(), x_.size(), 1);
 
-    FLANNMat mat
-        = FLANNMat(&x_[0], x_.size(), 1);
+    Eigen::MatrixXf real_mat = data;
 
-    flann_index_ = FLANNIndex(mat, pars_);
-    flann_index_.buildIndex();
+
+
+    DLOG(INFO) << "DATA MATRIX \n" << data;
+    nanoflann_index_ = spcSharedPtrMacro<NanoFlannIndexT> (new NanoFlannIndexT(1, real_mat, 10));
+
+    DLOG(INFO) << "going to call build index";
+    nanoflann_index_->index->buildIndex();
+
+    DLOG(INFO) << "Going to init a nanoflann index. Done.";
 }
 
 void KernelSmoothing2::extractVectors()
 {
+
+    DLOG(INFO)<< "extracting vectors";
 
     x_.clear();
     y_.clear();
@@ -69,51 +88,29 @@ void KernelSmoothing2::extractVectors()
             y_.push_back(y.at(i));
         }
     }
+
+    DLOG(INFO) <<"extracting vectors. Done";
 }
 
 int KernelSmoothing2::radiusSearch(const ScalarT &position,
-                                   const ScalarT &radius, std::vector<int> &ids,
-                                   std::vector<ScalarT> &distances)
+                                   const ScalarT &radius,
+                                   std::vector<std::pair<size_t,ScalarT> > &matches)
 {
-    bool sorted
-        = true; // we are not interested in sorting depending on distances
-    ScalarT epsilon = 0.0;             // we want exact results
-    ScalarT radius2 = radius * radius; // FLANN works with squared radius
 
-    // put position in a vector so to be passed to flann
-    std::vector<ScalarT> pos(1); // just a search for time is supported
-    pos[0] = position;
+//    LOG(INFO) << "call radiussearch";
 
-    // for storing results
-    flann::Matrix<int> ids_empty;
-    flann::Matrix<ScalarT> d_empty;
+    std::vector<std::pair<size_t,ScalarT> > ret_matches;
+    nanoflann::SearchParams params;
 
-    // initialize search parameters
-    SearchParams search_params = SearchParams(-1, epsilon, sorted);
+    const size_t nMatches = nanoflann_index_->index->radiusSearch(&position, radius*radius, matches, params);
 
-    // now search
-    int nn = flann_index_.radiusSearch(FLANNMat(&pos[0], 1, 1), ids_empty,
-                                       d_empty, radius2, search_params);
 
-    // resize the output vectors to the number of found neighbors
-    ids.resize(nn);
-    distances.resize(nn);
 
-    // now get the output vectors as flann::Matrix
-    flann::Matrix<int> ids_mat(&ids[0], 1, nn);
-    flann::Matrix<ScalarT> distances_mat(&distances[0], 1, nn);
 
-    // redo search and write output
-    flann_index_.radiusSearch(FLANNMat(&pos[0], 1, 1), ids_mat, distances_mat,
-                              radius2, search_params);
+//    LOG_EVERY_N(INFO, 1) << nMatches;
 
-    int counter = 0;
-    spcForEachMacro(const float d, distances)
-    {
-        distances.at(counter++) = sqrt(d);
-    }
 
-    return nn;
+    return nMatches;
 }
 
 int KernelSmoothing2::evaluateKS(const ScalarT &position, ScalarT &value)
@@ -125,9 +122,9 @@ int KernelSmoothing2::evaluateKS(const ScalarT &position, ScalarT &value)
     ScalarT support_region = bandwidth_ * 4;
 
     // now get all points inside this support region
-    std::vector<int> ids;
-    std::vector<ScalarT> distances;
-    int nn = radiusSearch(position, support_region, ids, distances);
+//    std::vector<int> ids;
+    std::vector<std::pair<size_t, ScalarT>> matches;
+    int nn = radiusSearch(position, support_region, matches);
 
 
     if (nn == 0) {
@@ -136,33 +133,34 @@ int KernelSmoothing2::evaluateKS(const ScalarT &position, ScalarT &value)
         return 1;
     }
 
-    int counter = 0;
-    spcForEachMacro(const float d, distances)
+
+    typedef std::pair<size_t, ScalarT> MatchT;
+
+    // scale the distance
+    spcForEachMacro(MatchT & match, matches)
     {
-        distances.at(counter++) = d / bandwidth_;
+        // the suqared distance / the bandwidth
+        match.second = gaussian(match.second * match.second / bandwidth_);
     }
-    // now compute the weights
-    std::vector<ScalarT> weights;
-    gaussian(distances, weights);
+
+
 
     std::vector<ScalarT> vproduct; // element by element product TODO this
                                    // should be done as above
 
-    vproduct.resize(ids.size());
 
-    for (int i = 0; i < ids.size(); ++i) {
-        int this_id = ids.at(i);
-        vproduct.at(i) = weights.at(i) * y_.at(this_id);
+    float wsum = 0;
+    for (const auto match: matches)
+    {
+        vproduct.push_back(match.second * y_.at(match.first));
+        wsum += match.second;
     }
 
     // sum this product
     ScalarT vprod_sum = std::accumulate(vproduct.begin(), vproduct.end(), 0.0);
 
-    // and sum weights
-    ScalarT weights_sum = std::accumulate(weights.begin(), weights.end(), 0.0);
-
     // and get the actual average
-    value = vprod_sum / weights_sum;
+    value = vprod_sum / wsum;
 
     return 1;
 }

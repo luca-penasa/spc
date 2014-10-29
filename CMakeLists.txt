@@ -35,14 +35,19 @@ set(SPC_VERSION ${SPC_MAJOR_VERSION}.${SPC_MINOR_VERSION}.${SPC_PATCH_VERSION})
 if (WIN32)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}" )
 else()
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -std=c++11 " )
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -std=c++0x " )
+#        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC" )
 endif()
 
 add_subdirectory(submodules)
 
 
+include_directories("${CMAKE_CURRENT_SOURCE_DIR}/submodules/nanoflann/include/")
+
 ############ CEREAL ####################################
 set(CEREAL_INCLUDE_DIRS "submodules/cereal/include")
+
+
 
 #right time to try to fine a system-wide install of cereal if any
 
@@ -248,3 +253,4 @@ if(SPC_ENABLE_INSTALL)
     install(EXPORT SPCTargets DESTINATION
                    "${INSTALL_CMAKE_DIR}" COMPONENT dev)
 endif()
+
