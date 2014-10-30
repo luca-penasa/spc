@@ -1,11 +1,6 @@
 #ifndef SPC_CALIBRATION_DATA_ESTIMATOR_H
 #define SPC_CALIBRATION_DATA_ESTIMATOR_H
 
-//#include <vector>
-//#include <string>
-
-//#include <spc/elements/clouds/generic_cloud.h>
-
 #include <pcl/search/flann_search.h>
 #include <pcl/search/impl/flann_search.hpp>
 #include <pcl/common/centroid.h>
@@ -14,17 +9,9 @@
 
 #include <pcl/io/pcd_io.h>
 #include <spc/methods/PointCloudEigenIndicesEstimator.h>
-#include <spc/methods/geometry.h>
-#include <spc/elements/Plane.h>
-
 #include <boost/any.hpp>
-#include <spc/methods/std_helpers.hpp>
-//#include <boost/spirit/home/support/detail/hold_any.hpp>
+#include <spc/core/std_helpers.hpp>
 
-//#include <spc/elements/SamplesDB.h>
-//#include <spc/elements/Fields.h>
-
-//#include <spc/elements/Fields.h>
 
 #include <spc/elements/EigenTable.h>
 

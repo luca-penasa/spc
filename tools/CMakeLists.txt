@@ -8,19 +8,7 @@ endif()
 
 set(CMAKE_VERBOSE_MAKEFILE OFF)
 
-find_package(Gflags REQUIRED)
 
-if(GFLAGS_FOUND)
-    message("GFLAGS FOUND")
-    INCLUDE_DIRECTORIES(${GFLAGS_INCLUDE_DIRS})
-endif()
-
-find_package(Glog REQUIRED)
-
-if(GLOG_FOUND)
-    message("GLOG FOUND")
-    INCLUDE_DIRECTORIES(${GLOG_INCLUDE_DIRS})
-endif()
 
 #    FIND_PACKAGE( OpenMP REQUIRED)
 #    if(OPENMP_FOUND)
@@ -54,8 +42,10 @@ target_link_libraries(${MY_TOOLS_PREFIX}bilateral ${PCL_LIBRARIES})
 #spc_add_executable(align_icp align_ICP.cpp)
 #target_link_libraries(align_icp ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
+
+
 spc_add_executable(${MY_TOOLS_PREFIX}test_tool spc_test_tool.cpp)
-target_link_libraries(${MY_TOOLS_PREFIX}test_tool ${SPC_LIBRARIES} ${GLOG_LIBRARIES})
+target_link_libraries(${MY_TOOLS_PREFIX}test_tool ${PCL_LIBRARIES} spc_methods)
 
 #spc_add_executable(align_icp2 align_ICP_old.cpp)
 #target_link_libraries(align_icp2 ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
@@ -80,8 +70,8 @@ target_link_libraries(${MY_TOOLS_PREFIX}compute_stats ${PCL_LIBRARIES} )
 spc_add_executable(${MY_TOOLS_PREFIX}compute_intensity_spin spc_compute_intensity_spin.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}compute_intensity_spin ${PCL_LIBRARIES} )
 
-spc_add_executable(${MY_TOOLS_PREFIX}compute_sensor_distances spc_compute_distances.cpp)
-target_link_libraries(${MY_TOOLS_PREFIX}compute_sensor_distances ${PCL_LIBRARIES} ${VTK_LIBRARIES} ${SPC_LIBRARIES})
+#spc_add_executable(${MY_TOOLS_PREFIX}compute_sensor_distances spc_compute_distances.cpp)
+#target_link_libraries(${MY_TOOLS_PREFIX}compute_sensor_distances ${PCL_LIBRARIES} ${VTK_LIBRARIES} ${SPC_LIBRARIES})
 
 # spc_add_executable(try_kd_tree try_kd_tree.cpp)
 # target_link_libraries(try_kd_tree ${PCL_LIBRARIES} ${SPC_LIBRARIES})
@@ -171,15 +161,15 @@ FIND_PACKAGE(Ceres REQUIRED)
 INCLUDE_DIRECTORIES(${CERES_INCLUDE_DIRS})
 
 
-spc_add_executable(${MY_TOOLS_PREFIX}calibration_testing spc_calibration_testing.cpp)
-target_link_libraries(${MY_TOOLS_PREFIX}calibration_testing ${SPC_LIBRARIES}  ${CERES_LIBRARIES})
+#spc_add_executable(${MY_TOOLS_PREFIX}calibration_testing spc_calibration_testing.cpp)
+#target_link_libraries(${MY_TOOLS_PREFIX}calibration_testing ${SPC_LIBRARIES}  ${CERES_LIBRARIES})
 
-spc_add_executable(${MY_TOOLS_PREFIX}calibration_testing2 spc_calibration_testing2.cpp)
-target_link_libraries(${MY_TOOLS_PREFIX}calibration_testing2 ${SPC_LIBRARIES}  ${CERES_LIBRARIES} ${GFLAGS_LIBRARIES})
+#spc_add_executable(${MY_TOOLS_PREFIX}calibration_testing2 spc_calibration_testing2.cpp)
+#target_link_libraries(${MY_TOOLS_PREFIX}calibration_testing2 ${SPC_LIBRARIES}  ${CERES_LIBRARIES} ${GFLAGS_LIBRARIES})
 
 
 spc_add_executable(${MY_TOOLS_PREFIX}calibrate_rbf spc_calibrate_rbf)
-target_link_libraries(${MY_TOOLS_PREFIX}calibrate_rbf ${SPC_LIBRARIES} spc_methods ${CERES_LIBRARIES} ${GFLAGS_LIBRARIES})
+target_link_libraries(${MY_TOOLS_PREFIX}calibrate_rbf ${SPC_LIBRARIES} spc_methods ${GFLAGS_LIBRARIES})
 
 
 spc_add_executable(${MY_TOOLS_PREFIX}xml2spc spc_xml2spc.cpp)

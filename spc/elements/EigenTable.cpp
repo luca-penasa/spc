@@ -1,5 +1,7 @@
 #include "EigenTable.h"
 
+#include <spc/core/logging.h>
+
 namespace spc
 {
 

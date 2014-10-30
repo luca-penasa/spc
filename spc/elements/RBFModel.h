@@ -1,9 +1,9 @@
 #ifndef RBFMODEL_H
 #define RBFMODEL_H
 
-#include <spc/methods/spc_eigen.h>
+#include <spc/core/spc_eigen.h>
 #include <spc/elements/Kernels.hpp>
-#include <spc/methods/polynomials.hpp>
+#include <spc/core/polynomials.hpp>
 namespace spc
 {
 

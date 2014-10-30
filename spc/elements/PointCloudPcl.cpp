@@ -1,5 +1,8 @@
 #include "PointCloudPcl.h"
 #include <boost/make_shared.hpp>
+#include <boost/algorithm/string/classification.hpp>
+#include <boost/algorithm/string/split.hpp>
+
 
 namespace spc
 {
@@ -69,6 +72,30 @@ void PointCloudPCL::resize(size_t s)
     // we are assuming the cloud is not dense
     cloud_->data.resize(s * cloud_->point_step);
     cloud_->width += cloud_->point_step * s;
+}
+
+std::vector<std::string> PointCloudPCL::getFieldNames() const
+{
+    std::string names = pcl::getFieldsList(*cloud_);
+    std::vector<std::string> fields;
+    boost::split(fields, names, boost::is_any_of(" "), boost::token_compress_on);
+
+    return  fields;
+}
+
+void PointCloudPCL::addField(const std::string &name)
+{
+    pcl::PointCloud<PointScalar> newcloud;
+    newcloud.resize(cloud_->width * cloud_->height);
+
+    pcl::PCLPointCloud2 c, out;
+    pcl::toPCLPointCloud2(newcloud, c);
+
+    c.fields[0].name = name;
+
+    pcl::concatenateFields(*cloud_, c, out);
+
+    *cloud_ = out;
 }
 
 

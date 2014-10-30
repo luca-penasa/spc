@@ -1,7 +1,7 @@
 #ifndef ELEMENT_IO_H
 #define ELEMENT_IO_H
 
-#include <spc/methods/spc_eigen.h>
+#include <spc/core/spc_eigen.h>
 #include <fstream>
 
 #include <cereal/archives/xml.hpp>

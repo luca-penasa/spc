@@ -66,7 +66,7 @@ public:
 #endif
         for (int i = 0 ; i < this->getNumberOfSamples(); ++i)
         {
-            out[i] = (typename VEC::value_type) y_(i);
+            out[i] = y_(i);
         }
     }
 

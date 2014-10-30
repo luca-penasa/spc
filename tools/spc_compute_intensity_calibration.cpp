@@ -4,9 +4,9 @@
 #include <pcl/io/pcd_io.h>
 #include <pcl/kdtree/kdtree_flann.h>
 #include <pcl/common/centroid.h>
-#include <spc/methods/spc_eigen.h>
+#include <spc/core/spc_eigen.h>
 #include <iostream>
-#include <spc/methods/strings.h>
+#include <spc/core/strings.h>
 
 
 #include <pcl/features/normal_3d.h>
@@ -20,12 +20,12 @@
 #include <spc/methods/IntensityCalibrationDataFilter.h>
 
 #include <boost/spirit/home/support/detail/hold_any.hpp>
-#include <spc/methods/IntensityCalibration.h>
-#include <spc/elements/ICalModelFactors.h>
+#include <spc/experimental/IntensityCalibration.h>
+#include <spc/experimental/ICalModelFactors.h>
 #include <spc/io/element_io.h>
 
 
-#include <spc/elements/ICalPHFunction.h>
+#include <spc/experimental//ICalPHFunction.h>
 using namespace std;
 using namespace pcl;
 using namespace pcl::console;

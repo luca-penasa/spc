@@ -1,7 +1,7 @@
 #ifndef UNORDERED_DATA_TABLE_H
 #define UNORDERED_DATA_TABLE_H
 
-#include <spc/methods/spc_eigen.h>
+#include <spc/core/spc_eigen.h>
 
 #include <unordered_map>
 #include <boost/variant.hpp>

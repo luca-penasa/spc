@@ -1,8 +1,8 @@
 #ifndef SPC_VARIANT_H
 #define SPC_VARIANT_H
 
-#include <spc/elements/macros.h>
-#include <spc/methods/spc_eigen.h>
+#include <spc/core/macros.h>
+#include <spc/core/spc_eigen.h>
 #include <boost/variant.hpp>
 #include <cereal/types/boost_variant.hpp>
 #include <cereal/types/unordered_map.hpp>

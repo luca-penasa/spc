@@ -5,7 +5,7 @@ namespace spc
 
 int SerializedTimeSeriesGenerator::compute()
 {
-    spcForEachMacro(std::vector<int> id_list, all_indices_)
+    for(std::vector<int> id_list: all_indices_)
     {
         TimeSeriesGenerator generator;
         generator.setBandwidth(bandwidth_);

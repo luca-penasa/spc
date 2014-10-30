@@ -88,7 +88,7 @@ public:
 #endif
         for (int i = 0 ; i < this->getNumberOfSamples(); ++i)
         {
-            out.at(i) = (typename VEC::value_type) x_(i);
+            out.at(i) = x_(i);
         }
     }
 

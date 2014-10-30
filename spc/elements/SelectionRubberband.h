@@ -105,7 +105,7 @@ EXPOSE_TYPE
         pcl::PointCloud<pcl::PointXYZ> cloud;
         cloud.resize(indices.size());
 
-        spcForEachMacro(auto id, indices)
+        for(auto id: indices)
         {
             Vector3f point = in_cloud->getPoint(id);
             pcl::PointXYZ p;
@@ -174,7 +174,7 @@ protected:
         pcl::PointCloud<pcl::PointXYZ> projected = PointCloudPCL(
             *verts_3d_).applyTransform(proj_plane_.get2DArbitraryRefSystem());
 
-        spcForEachMacro(auto & elem, projected)
+        for(auto & elem: projected)
         {
             pcl::PointXY p2d;
             pcl::PointXYZ p3d;

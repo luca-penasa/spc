@@ -3,7 +3,7 @@
 #define UNIVERSALUNIQUEID_H
 
 #include <boost/uuid/uuid.hpp>
-#include <spc/elements/macros.h>
+#include <spc/core/macros.h>
 #include <cereal/cereal.hpp>
 namespace spc
 {

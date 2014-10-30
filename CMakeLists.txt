@@ -12,8 +12,6 @@ SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 LIST(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 
-
-
 option(SPC_BUILD_WITH_CLANG "Build spc library using clang isntead of gcc." OFF)
 if(SPC_BUILD_WITH_CLANG)
     message("Using Clang as compiler! This may not work properly")
@@ -67,19 +65,15 @@ set(SPC_LIBRARIES CACHE INTERNAL "SPC libs" FORCE) #this will collect all the mo
 
 ############################# OPTIONS ######################################################################
 option(SPC_BUILD_SHARED "Build spc library as a shared lib." ON)
-option(SPC_BUILD_STD_SHARED_PTR "Build spc library as a shared lib." ON)
+option(SPC_BUILD_STD_SHARED_PTR "use std::shared_ptr instead of boost one." ON)
 option(SPC_BUILD_WITH_GPROF "Build with -pg flags for profiling." OFF)
-option(SPC_BUILD_TOOLS "Build the tools." ON)
-#option(SPC_BUILD_TOOLS "Build really experimental staff." OFF)
-option(SPC_BUILD_SANDBOX_TOOLS "Build sandbox tools." ON)
-option(SPC_BUILD_CALIBRATION "Build intensity-calibration support" OFF)
 
-option(SPC_BUILD_MICMAC_RELATED "Build MICMAC-related code." OFF)
-option(SPC_BUILD_PYTHON_WRAPPINGS "Build python interface for the library. Only some classes have been wrapped!" OFF)
-option(SPC_BUILD_DOC "Build SPC doc" OFF)
+option(SPC_BUILD_TOOLS "Build the tools." ON)
+option(SPC_BUILD_SANDBOX_TOOLS "Build sandbox tools." OFF)
+
 option(SPC_BUILD_TESTS "Do tests" OFF)
-option(SPC_ENABLE_INSTALL "Enable/Disable the install target" ON)
-option(SPC_SWIG_WRAPPINGS "Use swigs to generate wrappings for some methods" OFF)
+option(SPC_ENABLE_INSTALL "Enable/Disable the install target" OFF)
+
 
 option(SPC_USE_PARALLEL_OPENMP "Enable paralellization of some algorithms via OpenMP" ON)
 option(SPC_BUILD_TESTING_TOOLS "Build the tools contained into the tests folder" OFF)
@@ -115,7 +109,6 @@ message("CMAKE ${SPC_INSTALL_CMAKE_DIR}")
 
 
 if(SPC_USE_PARALLEL_OPENMP) # a definition if use parallelization where possible
-
     FIND_PACKAGE( OpenMP REQUIRED)
     if(OPENMP_FOUND)
         message("OPENMP FOUND")
@@ -130,7 +123,7 @@ endif()
 
 
 
-if (SPC_BUILD_STD_SHARED_PTR)
+if(SPC_BUILD_STD_SHARED_PTR)
     add_definitions(-DUSE_STD_SHARED_PTR)
     set(SPC_DEFINITIONS "${SPC_DEFINITIONS} -DUSE_STD_SHARED_PTR" )
 endif()
@@ -162,6 +155,20 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/functions.cmake)
 # include the current source dir
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
+
+find_package(Gflags REQUIRED)
+
+if(GFLAGS_FOUND)
+    message("GFLAGS FOUND")
+    INCLUDE_DIRECTORIES(${GFLAGS_INCLUDE_DIRS})
+endif()
+
+find_package(Glog REQUIRED)
+
+if(GLOG_FOUND)
+    message("GLOG FOUND")
+    INCLUDE_DIRECTORIES(${GLOG_INCLUDE_DIRS})
+endif()
 
 
 
@@ -208,6 +215,7 @@ endif()
 if(SPC_BUILD_TESTING_TOOLS)
     add_subdirectory(tests)
 endif()
+
 
 
 

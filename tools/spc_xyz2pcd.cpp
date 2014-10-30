@@ -3,7 +3,7 @@
 #include <pcl/io/pcd_io.h>
 #include <pcl/point_types.h>
 #include <fstream>
-#include <spc/methods/strings.h>
+#include <spc/core/strings.h>
 #include <pcl/console/parse.h>
 
 
@@ -14,7 +14,7 @@
 #include <vector>
 
 
-#include <spc/methods/std_helpers.hpp>
+#include <spc/core/std_helpers.hpp>
 
 #include <spc/io/io_helper.h>
 

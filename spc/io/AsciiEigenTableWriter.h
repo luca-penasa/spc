@@ -1,7 +1,7 @@
 #ifndef ASCIIWRITERBASE_H
 #define ASCIIWRITERBASE_H
 
-#include <spc/elements/macros_ptr.h>
+#include <spc/core/macros_ptr.h>
 #include <boost/interprocess/sync/file_lock.hpp>
 //#include <sstream>
 #include <fstream>

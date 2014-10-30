@@ -3,8 +3,8 @@
 #include <pcl/console/print.h>
 #include <pcl/console/time.h>
 
-#include <spc/methods/common.h>
-#include <spc/methods/strings.h>
+#include <spc/core/common.h>
+#include <spc/core/strings.h>
 #include <spc/io/io_helper.h>
 
 #include <boost/filesystem.hpp>

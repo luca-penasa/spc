@@ -1,7 +1,7 @@
 #ifndef ALIGNSINGLEATTITUDESTRATIGRAPHICMODELTOSAMPLES_H
 #define ALIGNSINGLEATTITUDESTRATIGRAPHICMODELTOSAMPLES_H
 
-#include <spc/elements/macros.h>
+#include <spc/core/macros.h>
 #include <vector>
 namespace spc
 {

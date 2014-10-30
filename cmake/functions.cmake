@@ -29,9 +29,9 @@ macro(spc_add_library)
     file(GLOB_RECURSE HEADERS *.h)
     file(GLOB_RECURSE IMPLS *.hpp)
 
-    set(sources ${SOURCES} )
+    set(sources ${SOURCES} ${HEADERS} ${IMPLS})
 #${HEADERS} ${IMPLS})
-    set(libs ${SPC_LIBRARIES} ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES} ${PCL_FILTERS_LIBRARIES} ${PCL_FEATURES_LIBRARIES} ${additional_libs})
+    set(libs ${SPC_LIBRARIES} ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES} ${PCL_FILTERS_LIBRARIES} ${GLOG_LIBRARIES} ${PCL_FEATURES_LIBRARIES} ${additional_libs})
     spc_compile_and_link(spc_${libname} "${sources}" "${libs}")
     set_target_properties(spc_${libname} PROPERTIES PUBLIC_HEADER "${HEADERS};${IMPLS}")
 
@@ -57,9 +57,9 @@ endmacro()
 macro(spc_add_executable name codefiles)
     add_executable(${name} ${codefiles})
 
-    if(SPC_ENABLE_INSTALL)
+
         install(TARGETS ${name} EXPORT ${name} RUNTIME DESTINATION "${SPC_INSTALL_BIN_DIR}" COMPONENT bin)
-    endif()
+
 endmacro()
 
 ##install hedears

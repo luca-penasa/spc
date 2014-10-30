@@ -2,7 +2,7 @@
 #ifndef DYNAMIC_SCALAR_FIELD_GENERATOR_H
 #define DYNAMIC_SCALAR_FIELD_GENERATOR_H
 
-#include <spc/methods/spc_eigen.h>
+#include <spc/core/spc_eigen.h>
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 

@@ -2,7 +2,7 @@
 #define SERIALIZABLEINTERFACE_H
 
 //#include <cereal/cereal.hpp>
-#include <spc/elements/macros_ptr.h>
+#include <spc/core/macros_ptr.h>
 
 namespace spc
 {

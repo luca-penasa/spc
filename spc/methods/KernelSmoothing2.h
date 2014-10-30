@@ -24,6 +24,8 @@ public:
     typedef TimeSeriesEquallySpaced EquallyT;
     typedef spcSharedPtrMacro<EquallyT> EquallyPtrT;
 
+    typedef Eigen::Matrix<ScalarT, -1, 1> VectorT;
+
 typedef nanoflann::KDTreeEigenMatrixAdaptor<Eigen::MatrixXf> NanoFlannIndexT;
 
     KernelSmoothing2();
@@ -68,8 +70,8 @@ protected:
     ScalarT step_ = 1.0;
     ScalarT bandwidth_ = 1.0;
 
-    std::vector<ScalarT> x_;
-    std::vector<ScalarT> y_;
+    VectorT x_;
+    VectorT y_;
 
     spcSharedPtrMacro<NanoFlannIndexT> nanoflann_index_ ;
 
@@ -77,7 +79,7 @@ protected:
     inline void gaussian(const std::vector<ScalarT> &values,
                          std::vector<ScalarT> &gaussian_values)
     {
-        spcForEachMacro(float val, values)
+        for(float val: values)
         {
             gaussian_values.push_back(gaussian(val));
         }

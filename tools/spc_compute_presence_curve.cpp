@@ -1,8 +1,8 @@
-#include <spc/methods/std_helpers.hpp>
+#include <spc/core/std_helpers.hpp>
 
 #include <pcl/io/pcd_io.h>
 #include <spc/methods/InterpolatorNearestNeighbor.h>
-#include <spc/methods/common.h>
+#include <spc/core/common.h>
 
 #include <pcl/console/parse.h>
 

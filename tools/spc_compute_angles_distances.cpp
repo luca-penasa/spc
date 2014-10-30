@@ -1,6 +1,6 @@
 
 #include <spc/methods/TransferFieldNN.h>
-#include <spc/methods/strings.h>
+#include <spc/core/strings.h>
 
 #include <pcl/io/file_io.h>
 #include <gflags/gflags.h>
@@ -8,7 +8,7 @@
 #include <spc/elements/PointCloudPcl.h>
 
 #include <spc/io/io_helper.h>
-#include <spc/methods/filesystem.h>
+#include <spc/core/filesystem.h>
 
 
 DEFINE_string(clouds, "", "a space separated list of clouds for which to compute scattering angles and sensor distance");

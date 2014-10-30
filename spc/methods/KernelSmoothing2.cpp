@@ -1,5 +1,6 @@
 #include "KernelSmoothing2.h"
 #include <numeric>
+//#include <spc/core/logging.h>
 
 
 namespace spc
@@ -41,7 +42,7 @@ int KernelSmoothing2::compute()
 
     std::vector<ScalarT> x_val;
     out_series_->getX(x_val);
-    spcForEachMacro(ScalarT x, x_val)
+    for(ScalarT x: x_val)
     {
         evaluateKS(x, value);
         out_series_->getY(count++) = value;
@@ -74,25 +75,20 @@ void KernelSmoothing2::initFlann()
 void KernelSmoothing2::extractVectors()
 {
 
-    DLOG(INFO)<< "extracting vectors";
+    sparse_->getX(x_);
+    sparse_->getY(y_);
 
-    x_.clear();
-    y_.clear();
+    auto x_fini  = x_.finiteness();
+    auto y_fini  = y_.finiteness();
 
-    std::vector<ScalarT> x, y;
-    sparse_->getX(x);
-    sparse_->getY(y);
-
-    /// remove nan values both if their are in x or y series
-    for (int i = 0; i < x.size(); ++i) {
-        if ((std::isfinite(x.at(i))) && (std::isfinite(y.at(i)))) {
-            x_.push_back(x.at(i));
-            y_.push_back(y.at(i));
-        }
-    }
+    auto selection = x_fini.array() * y_fini.array();
+    x_ = x_.select(selection);
+    y_ = y_.select(selection);
 
     DLOG(INFO) <<"extracting vectors. Done";
 }
+
+//std::numeric_limits<float>::quiet_NaN()
 
 int KernelSmoothing2::radiusSearch(const ScalarT &position,
                                    const ScalarT &radius,
@@ -130,7 +126,7 @@ int KernelSmoothing2::evaluateKS(const ScalarT &position, ScalarT &value)
 
 
     if (nn == 0) {
-        pcl::console::print_debug("No neighbors found -> set to NaN");
+        DLOG(INFO) << "No neighbors found -> set to NaN";
         value = std::numeric_limits<ScalarT>::quiet_NaN();
         return 1;
     }
@@ -139,7 +135,7 @@ int KernelSmoothing2::evaluateKS(const ScalarT &position, ScalarT &value)
     typedef std::pair<size_t, ScalarT> MatchT;
 
     // scale the distance
-    spcForEachMacro(MatchT & match, matches)
+    for(MatchT & match: matches)
     {
         // the suqared distance / the bandwidth
         match.second = gaussian(match.second * match.second / bandwidth_);

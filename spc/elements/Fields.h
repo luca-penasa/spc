@@ -6,7 +6,7 @@
 #include <string>
 #include <map>
 #include <boost/variant.hpp>
-#include <spc/methods/spc_eigen.h>
+#include <spc/core/spc_eigen.h>
 #include <pcl/console/print.h>
 #include <spc/elements/ElementBase.h>
 #include <cereal/types/map.hpp>

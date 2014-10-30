@@ -22,7 +22,7 @@ std::ostream &operator<<(std::ostream &os, const VariantPropertiesRecord &obj)
     size_t counter = 0;
     size_t n = keys.size() - 1;
 
-    spcForEachMacro(std::string k, keys)
+    for(std::string k: keys)
     {
         VariantProperty p = obj.property(k);
         os << k << ": " << p << ";";
@@ -43,7 +43,7 @@ size_t VariantPropertiesRecord::size() const
 std::vector<std::string> VariantPropertiesRecord::getKeysList() const
 {
     std::vector<std::string> l;
-    spcForEachMacro(pairT el, properties_)
+    for(pairT el: properties_)
     l.push_back(el.first);
 
     return l;
@@ -56,7 +56,7 @@ void VariantPropertiesRecord::clear()
 
 bool VariantPropertiesRecord::hasPropertyWithName(const std::string &name) const
 {
-    spcForEachMacro(pairT el, properties_)
+    for(pairT el: properties_)
     {
         if (el.first == name)
             return true;

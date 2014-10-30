@@ -2,11 +2,13 @@
 #ifndef SPC_OBJECT_H
 #define SPC_OBJECT_H
 
-#include <spc/elements/macros.h>
+#include <spc/core/macros.h>
 #include <cereal/cereal.hpp>
 #include <spc/elements/UniversalUniqueID.h>
 #include <spc/elements/SerializableInterface.h>
 #include <spc/elements/ElementWithVariantProperties.h>
+
+#include <spc/core/logging.h>
 
 namespace spc
 {

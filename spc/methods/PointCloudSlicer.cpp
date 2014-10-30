@@ -5,7 +5,7 @@
 #include <pcl/search/impl/flann_search.hpp>
 //#include <pcl/search/impl/search.hpp>
 #include <algorithm>
-#include <spc/methods/common.h>
+#include <spc/core/common.h>
 
 #ifdef PCL_VER_LESS_1_7
 #include <pcl/search/impl/flann_search.hpp>
@@ -15,7 +15,7 @@
 
 #include <pcl/filters/extract_indices.h>
 
-#include <spc/methods/std_helpers.h>
+#include <spc/core/std_helpers.h>
 
 #include <algorithm>
 
@@ -86,10 +86,10 @@ int CloudSerializedSlicerOnField::compute()
 
     ////////////// CHECK ALSO THIS
     // now subdivide this range in equally spaced positions.
-    std::vector<float> intervals = subdivideRange
-        <float>(min.scalar, max.scalar, slice_step_);
+    std::vector<float> intervals;/* = subdivideRange
+        <float>(min.scalar, max.scalar, slice_step_);*/
 
-    spcForEachMacro(float pos, intervals)
+    for(float pos: intervals)
     {
         std::vector<int> indices;
         std::vector<float> dist;

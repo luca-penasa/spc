@@ -2,7 +2,7 @@
 #ifndef ELEMENTSFACTORY_H
 #define ELEMENTSFACTORY_H
 
-#include <spc/elements/macros.h>
+#include <spc/core/macros.h>
 namespace spc
 {
 class ElementBase;

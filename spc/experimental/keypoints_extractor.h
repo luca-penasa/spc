@@ -4,13 +4,10 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 
-#include <spc/common/point_types.h>
+#include <spc/elements/point_types.h>
 
 #include <pcl/search/flann_search.h>
 #include <pcl/search/impl/flann_search.hpp>
-
-//#include <pcl/keypoints/uniform_sampling.h>
-//#include <pcl/keypoints/impl/uniform_sampling.hpp>
 
 #include <pcl/filters/extract_indices.h>
 #include <pcl/features/normal_3d.h>
@@ -20,7 +17,7 @@
 
 #include <pcl/filters/voxel_grid.h>
 
-#include <spc/methods/compute_eigen_indices.h>
+#include <spc/methods/PointCloudEigenIndicesEstimator.h>
 #include <fstream>
 
 #include <pcl/common/centroid.h>
@@ -218,7 +215,7 @@ public:
     }
 
     std::vector<int> getNeighborsInRadius(float scale, float radius,
-                                          typename PointInT point)
+                                          PointInT point)
     {
         CloudPtrT cloud = getDownsampledVersion(scale);
         FlannSearchPtrT flann = getFlannSearcher(cloud);
@@ -316,7 +313,7 @@ public:
         float std = 0.0;
 
         float tmp;
-        BOOST_FOREACH(int i, indices)
+        for(int i: indices)
         {
             tmp = in_cloud->at(i).intensity - avg;
             std += tmp * tmp;

@@ -8,7 +8,7 @@
 #include <pcl/point_cloud.h>
 #include <pcl/io/pcd_io.h>
 
-#include <spc/methods/common.h>
+#include <spc/core/common.h>
 
 #include <spc/elements/PointCloudBase.h>
 

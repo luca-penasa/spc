@@ -64,7 +64,7 @@ int CalibrationDataEstimator::compute()
     this->loadKeypointsCloud();
 
     current_cloud_id_ = 0;
-    spcForEachMacro(std::string fname, input_fnames_)
+    for(std::string fname: input_fnames_)
     {
 
         current_point_cloud_.reset();
@@ -180,7 +180,7 @@ float CalibrationDataEstimator::computeGaussianSmoothedIntensity(
     acc;
 
     typedef boost::tuple<float &, float &> ref_tuple;
-    spcForEachMacro(ref_tuple tup, boost::combine(intensities, weights))
+    for(ref_tuple tup: boost::combine(intensities, weights))
     {
         float a = tup.get<0>();
         float b = tup.get<1>();
@@ -293,8 +293,8 @@ CalibrationDataEstimator::computeSampleParameters(const size_t core_point_id,
 
 }
 
-float CalibrationDataEstimator::getMinimumAngleBetweenVectors(const Vector3f x_,
-                                                              const Vector3f y_)
+float CalibrationDataEstimator::getMinimumAngleBetweenVectors(const Eigen::Vector3f x_,
+                                                              const Eigen::Vector3f y_)
 {
     // ensure they are normalized
     Eigen::Vector3f x = x_ / x_.norm();

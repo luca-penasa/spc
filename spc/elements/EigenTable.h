@@ -1,7 +1,7 @@
 #ifndef EIGENTABLE_H
 #define EIGENTABLE_H
 
-#include <spc/methods/spc_eigen.h>
+#include <spc/core/spc_eigen.h>
 #include <map>
 
 #include <pcl/console/print.h>

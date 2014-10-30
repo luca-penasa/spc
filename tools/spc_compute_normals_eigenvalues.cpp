@@ -4,9 +4,9 @@
 #include <pcl/io/pcd_io.h>
 #include <pcl/kdtree/kdtree_flann.h>
 #include <pcl/common/centroid.h>
-#include <spc/methods/spc_eigen.h>
+#include <spc/core/spc_eigen.h>
 
-#include <spc/methods/strings.h>
+#include <spc/core/strings.h>
 
 #include <pcl/features/normal_3d.h>
 

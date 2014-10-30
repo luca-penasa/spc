@@ -21,7 +21,7 @@ public:
         std::vector<float> out(new_x.size());
 
         int c = 0;
-        spcForEachMacro(const float x, new_x)
+        for(const float x: new_x)
         {
             out.at(c++) = getInterpolatedValue(x);
         }

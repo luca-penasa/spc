@@ -65,7 +65,7 @@ VariableScalarFieldBase::VectorT VariableScalarFieldBase::getScalarFieldValues(
 
     float x, y, z;
     int counter = 0;
-    spcForEachMacro(int i, indices)
+    for(int i: indices)
     {
         cloud->getPoint(i, x, y, z);
         out.at(counter++) = this->getScalarFieldValue(Vector3f(x, y, z));
@@ -82,7 +82,7 @@ VariableScalarFieldBase::VectorT VariableScalarFieldBase::getScalarFieldValues(
 
     float x, y, z;
     int counter = 0;
-    spcForEachMacro(int i, indices)
+    for(int i: indices)
     {
         cloud->getPoint(i, x, y, z);
         out.at(counter++) = this->getScalarFieldValue(Vector3f(x, y, z));

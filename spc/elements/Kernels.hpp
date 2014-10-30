@@ -2,7 +2,7 @@
 #define KERNELS_HPP
 
 #include <spc/elements/ElementBase.h>
-#include <spc/methods/spc_eigen.h>
+#include <spc/core/spc_eigen.h>
 namespace spc {
 
 enum KERNELS {KERNEL_GAUSSIAN};

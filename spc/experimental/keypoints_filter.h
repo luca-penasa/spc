@@ -1,7 +1,7 @@
 #ifndef KEYPOINTS_FILTER_H
 #define KEYPOINTS_FILTER_H
 
-#include <spc/methods/keypoints_extractor.h>
+#include <spc/experimental/keypoints_extractor.h>
 namespace spc
 {
 

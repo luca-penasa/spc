@@ -2,8 +2,8 @@
 #define SPC_RBF_INTERPOLATOR_H
 
 #include <spc/elements/RBFModel.h>
-#include <spc/methods/spc_eigen.h>
-#include <spc/methods/eigen_extensions.h>
+#include <spc/core/spc_eigen.h>
+#include <spc/core/eigen_extensions.h>
 
 
 namespace spc

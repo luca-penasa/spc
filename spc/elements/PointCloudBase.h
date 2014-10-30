@@ -6,7 +6,7 @@
 #include <pcl/point_types.h>
 #include <pcl/io/io.h>
 
-#include <spc/methods/common.h>
+#include <spc/core/common.h>
 #include <pcl/search/impl/flann_search.hpp>
 #include <boost/make_shared.hpp>
 
@@ -112,25 +112,7 @@ public:
                                         std::vector<int> indices);
 
 
-    virtual void getField(const std::string fieldname, const std::vector<int> indices, Eigen::VectorXf & out)
-    {
-        if (!hasField(fieldname)) {
-            pcl::console::print_warn("[Error in generic_cloud] asked for field %s",
-                                     fieldname.c_str());
-            return ;
-        }
-
-        out.resize(indices.size());
-
-
-        float val;
-        for (int i = 0 ; i < indices.size(); ++i)
-        {
-            getFieldValue(indices.at(i), fieldname, val);
-            out(i) = val;
-        }
-
-    }
+    virtual void getField(const std::string fieldname, const std::vector<int> indices, Eigen::VectorXf & out);
 
 
     virtual std::vector<float> getField(const std::string fieldname);

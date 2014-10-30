@@ -3,8 +3,8 @@
 #include <pcl/console/print.h>
 #include <pcl/console/time.h>
 
-#include <spc/methods/common.h>
-#include <spc/methods/strings.h>
+#include <spc/core/common.h>
+#include <spc/core/strings.h>
 #include <spc/io/io_helper.h>
 
 //#include <spc/methods/linear_interpolator.h>
@@ -13,7 +13,7 @@
 
 #include <pcl/kdtree/kdtree_flann.h>
 
-#include <spc/methods/pcl_helper.h>
+#include <spc/core/pcl_helper.h>
 
 using namespace pcl;
 using namespace pcl::console;

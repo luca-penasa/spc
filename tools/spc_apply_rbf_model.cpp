@@ -1,12 +1,12 @@
 
 #include <gflags/gflags.h>
-#include <glog/logging.h>
-#include <spc/methods/strings.h>
+#include <spc/core/logging.h>
+#include <spc/core/strings.h>
 #include <spc/io/element_io.h>
 #include <spc/io/io_helper.h>
 
 #include <spc/elements/RBFModel.h>
-#include <spc/methods/filesystem.h>
+#include <spc/core/filesystem.h>
 
 using namespace spc;
 DEFINE_string(predictors, "distance,angle", "The field name of the distance field");

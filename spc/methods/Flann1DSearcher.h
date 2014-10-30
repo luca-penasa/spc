@@ -2,7 +2,7 @@
 #define SPC_FLANN1DSEARCHER_H
 
 #include <flann/flann.hpp>
-#include <spc/elements/macros.h>
+#include <spc/core/macros.h>
 namespace spc
 {
 

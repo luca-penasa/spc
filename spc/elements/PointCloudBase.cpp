@@ -1,4 +1,5 @@
 #include <spc/elements/PointCloudBase.h>
+
 namespace spc
 {
 
@@ -220,13 +221,33 @@ std::vector<float> spc::PointCloudBase::getField(const std::string fieldname,
     }
 
     float val;
-    spcForEachMacro(int i, indices)
+    for(int i: indices)
     {
         getFieldValue(i, fieldname, val);
         out.push_back(val);
     }
 
     return out;
+}
+
+void PointCloudBase::getField(const std::string fieldname, const std::vector<int> indices, Eigen::VectorXf &out)
+{
+    if (!hasField(fieldname)) {
+        pcl::console::print_warn("[Error in generic_cloud] asked for field %s",
+                                 fieldname.c_str());
+        return ;
+    }
+
+    out.resize(indices.size());
+
+
+    float val;
+    for (int i = 0 ; i < indices.size(); ++i)
+    {
+        getFieldValue(indices.at(i), fieldname, val);
+        out(i) = val;
+    }
+
 }
 
 

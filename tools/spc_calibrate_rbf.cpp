@@ -1,4 +1,4 @@
-#include <spc/methods/strings.h>
+#include <spc/core/strings.h>
 
 #include <spc/methods/RBFModelEstimator.hpp>
 
@@ -6,7 +6,7 @@
 #include <spc/elements/EigenTable.h>
 
 #include <gflags/gflags.h>
-#include <glog/logging.h>
+#include <spc/core/logging.h>
 
 using namespace spc;
 using Eigen::Matrix;

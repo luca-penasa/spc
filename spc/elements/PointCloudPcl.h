@@ -1,8 +1,10 @@
-#ifndef VOMBAT_SPCPCLCLOUD_H
-#define VOMBAT_SPCPCLCLOUD_H
+#pragma once
+#ifndef SPC_POINTCLOUDPCL_H
+#define SPC_POINTCLOUDPCL_H
 
 #include <spc/elements/PointCloudBase.h>
 #include <spc/elements/point_types.h>
+
 
 namespace spc
 {
@@ -38,47 +40,13 @@ public:
 
     virtual void resize(size_t s) override;
 
-private:
-
-
-protected:
-    pcl::PCLPointCloud2Ptr cloud_;
-
-    Eigen::Array3i xyz_offsets_;
 
 public:
-    virtual std::vector<std::string> getFieldNames() const
-    {
-        std::string names = pcl::getFieldsList(*cloud_);
-        std::vector<std::string> fields;
-        boost::split(fields, names, boost::is_any_of(" "), boost::token_compress_on);
-
-        return  fields;
-    }
-
-public:
-    virtual void addField(const std::string &name)
-    {
-        pcl::PointCloud<PointScalar> newcloud;
-        newcloud.resize(cloud_->width * cloud_->height);
-
-        pcl::PCLPointCloud2 c, out;
-        pcl::toPCLPointCloud2(newcloud, c);
-
-        c.fields[0].name = name;
-
-        pcl::concatenateFields(*cloud_, c, out);
-
-        *cloud_ = out;
-    }
+    virtual std::vector<std::string> getFieldNames() const;
 
 
+    virtual void addField(const std::string &name);
 
-    // PointCloudBase interface
-public:
-//    virtual void getFieldValue(const int id, const std::string fieldname, float &val) const;
-//    virtual int size() const;
-//    virtual void resize(size_t s);
 
     virtual pcl::PCLPointCloud2Ptr asPCLData() const
     {
@@ -86,7 +54,15 @@ public:
     }
 
 
+protected:
+    pcl::PCLPointCloud2Ptr cloud_;
+
+    Eigen::Array3i xyz_offsets_;
+
+
 };
 
 } // end nspace
-#endif // SPCPCLCLOUD_H
+
+
+#endif

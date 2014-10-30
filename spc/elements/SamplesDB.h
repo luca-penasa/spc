@@ -4,7 +4,7 @@
 
 #include <spc/elements/Sample.h>
 
-#include <spc/methods/std_helpers.hpp>
+#include <spc/core/std_helpers.hpp>
 
 #include <fstream>
 
@@ -108,7 +108,7 @@ public:
     std::vector<Sample::Ptr> getDataWithValue(const std::string key, T value) const
     {
         std::vector<Sample::Ptr> out;
-        spcForEachMacro(Sample::Ptr ptr, this->getSamplesDB())
+        for(Sample::Ptr ptr: this->getSamplesDB())
         {
             T val = ptr->variantPropertyValue<T>(key);
             if (val == value)
@@ -123,7 +123,7 @@ public:
     {
         core_ids_indices_list_.resize(getVectorOfUniqueSamples().size());
 
-        spcForEachMacro(Sample::Ptr core, db_)
+        for(Sample::Ptr core: db_)
         {
             int current_id = core->variantPropertyValue<int>("core_id");
             core_ids_indices_list_.at(current_id).push_back(core);
@@ -135,7 +135,7 @@ public:
         // first get the core points ids as a vector list
         std::vector<int> core_points_ids;
 
-        spcForEachMacro(Sample::Ptr core, db_)
+        for(Sample::Ptr core: db_)
         {
             int current_id = core->variantPropertyValue<int>("core_id");
             if (!spc::element_exists<int>(core_points_ids, current_id))
@@ -150,7 +150,7 @@ public:
         // first get the core points ids as a vector list
         std::vector<int> cloud_ids;
 
-        spcForEachMacro(Sample::ConstPtr core, db_)
+        for(Sample::ConstPtr core: db_)
         {
             int current_id = core->variantPropertyValue<int>("cloud_id");
             if (!spc::element_exists<int>(cloud_ids, current_id))
@@ -170,7 +170,7 @@ public:
     static std::vector<T> extractPropertyAsVector(std::vector<Sample::Ptr>samples, const std::string prop_name)
     {
         std::vector<T> out;
-        spcForEachMacro(Sample::Ptr entry, samples)
+        for(Sample::Ptr entry: samples)
             out.push_back(entry->variantPropertyValue<T>(prop_name));
 
         return out;

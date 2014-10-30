@@ -17,7 +17,7 @@ void AlignSingleAttitudeStratigraphicModelToSamples::updateResiduals()
     model_sp_.clear();
     residuals_.clear();
 
-    spcForEachMacro(Sample::Ptr sample, db_->getSamplesDB())
+    for(Sample::Ptr sample: db_->getSamplesDB())
     {
         if (sample->hasProperty(strat_pos_field_)) {
             real_sp_.push_back(sample->variantPropertyValue<float>(strat_pos_field_));

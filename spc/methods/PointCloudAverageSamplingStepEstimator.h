@@ -25,7 +25,6 @@ namespace spc
 using namespace pcl; // so when it will be merged in PCL no problem
 using namespace boost::accumulators;
 ///
-/// \brief Convolve an existent scalar field with a gaussian kernel
 template <typename PointT>
 class EstimateAverageSamplingStep : public Filter<PointT>
 {
