@@ -17,3 +17,5 @@ Vector3f StratigraphicModelSingleAttitude::getScalarFieldGradient(const Vector3f
 } // end nspace
 
 
+#include <spc/core/spc_cereal.hpp>
+SPC_CEREAL_REGISTER_TYPE(spc::StratigraphicModelSingleAttitude)

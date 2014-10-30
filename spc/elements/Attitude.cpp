@@ -100,4 +100,10 @@ std::string Attitude::getDipAndDipAngleAsString() const
     return s.str();
 }
 
+
+
 } // end nspace
+
+
+#include <spc/core/spc_cereal.hpp>
+SPC_CEREAL_REGISTER_TYPE(spc::Attitude);

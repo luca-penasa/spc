@@ -54,3 +54,7 @@ spc::Cylinder::getIndicesInside(PointCloudBase::ConstPtr cloud)
 
     return ids;
 }
+
+
+#include <spc/core/spc_cereal.hpp>
+SPC_CEREAL_REGISTER_TYPE(spc::Cylinder);

@@ -10,6 +10,7 @@ ISerializable::ISerializable()
 EigenTablePtr ISerializable::asEigenTable() const
 {
     pcl::console::print_warn("Transformation to eigen table object not implemented for this object\n");
+    return NULL;
 }
 
 }//end nspace

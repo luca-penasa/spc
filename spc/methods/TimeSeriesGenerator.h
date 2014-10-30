@@ -4,7 +4,7 @@
 #include <spc/core/common.h>
 
 #include <spc/elements/TimeSeriesEquallySpaced.h>
-#include <spc/io/pointcloud2_reader.h>
+//#include <spc/io/pointcloud2_reader.h>
 #include <spc/elements/PointCloudBase.h>
 
 #include <spc/elements/VariableScalarFieldBase.h>

@@ -51,3 +51,20 @@ std::map
     };
 
 } // end nspace
+
+
+#include <spc/core/spc_cereal.hpp>
+SPC_CEREAL_REGISTER_TYPE(spc::FieldBase)
+
+SPC_CEREAL_REGISTER_TYPE(spc::FieldFloat)
+SPC_CEREAL_REGISTER_TYPE(spc::FieldInt)
+SPC_CEREAL_REGISTER_TYPE(spc::FieldString)
+SPC_CEREAL_REGISTER_TYPE(spc::FieldVector3f)
+SPC_CEREAL_REGISTER_TYPE(spc::FieldVectorXf)
+SPC_CEREAL_REGISTER_TYPE(spc::FieldVectorXi)
+SPC_CEREAL_REGISTER_TYPE(spc::FieldVectorStdf)
+SPC_CEREAL_REGISTER_TYPE(spc::FieldVectorStdi)
+SPC_CEREAL_REGISTER_TYPE(spc::FieldsManager)
+
+
+

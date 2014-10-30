@@ -64,3 +64,8 @@ void MovableElement::positionFromCentroid(pcl::PointCloud
 }
 
 } // end nspace
+
+
+
+#include <spc/core/spc_cereal.hpp>
+SPC_CEREAL_REGISTER_TYPE(spc::MovableElement);

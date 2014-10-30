@@ -3,7 +3,7 @@
 
 #include <spc/methods/PointCloudSlicer.h>
 #include <spc/elements/TimeSeriesEquallySpaced.h>
-#include <spc/io/pointcloud2_reader.h>
+//#include <spc/io/pointcloud2_reader.h>
 #include <spc/methods/TimeSeriesGenerator.h>
 
 namespace spc

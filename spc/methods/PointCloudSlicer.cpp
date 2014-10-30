@@ -46,13 +46,13 @@ namespace spc
 int CloudSerializedSlicerOnField::compute()
 {
 
-    if (!in_reader_) {
-        pcl::console::print_error("Specify a valid reader!");
-        return -1;
-    }
+//    if (!in_reader_) {
+//        pcl::console::print_error("Specify a valid reader!");
+//        return -1;
+//    }
 
-    std::vector<float> *sf = in_reader_->getScalarFieldAsStdVector
-                             <float>(field_name_);
+    std::vector<float> *sf;/* = in_reader_->getScalarFieldAsStdVector
+                             <float>(field_name_);*/
 
     if (!sf) {
         pcl::console::print_error("Specify a valid scalar field name!");

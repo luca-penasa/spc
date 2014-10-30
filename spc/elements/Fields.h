@@ -307,6 +307,7 @@ public:
     {
         if (hasField(field_name))
             return fields_.at(field_name);
+        return NULL;
     }
 
     FieldBase::Ptr newField(const std::string name,

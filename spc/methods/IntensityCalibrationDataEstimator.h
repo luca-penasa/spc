@@ -118,7 +118,7 @@ public:
         maximum_squared_distance_for_normal_getting_ = val * val;
     }
 
-    float getEigenRatio(const pcl::PointNormal &point, float &eigen_ratio);
+    void getEigenRatio(const pcl::PointNormal &point, float &eigen_ratio);
 
 
     void setAppendEigenRatio(const bool & val)

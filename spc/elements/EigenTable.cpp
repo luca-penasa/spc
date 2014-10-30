@@ -130,6 +130,8 @@ size_t EigenTable::getColumnId(const std::string &name) const
         else
             return -1;
     }
+
+    return -1;
 }
 
 size_t EigenTable::getColumnDimensionality(const std::string &name) const
@@ -161,6 +163,7 @@ EigenTable::column(const std::string &col_name)
             col_name.c_str());
     else
         return column(id);
+
 }
 
 Eigen::Block<Eigen::Matrix<float, -1, -1>, -1, -1>
@@ -191,3 +194,7 @@ std::vector<std::string> EigenTable::getScalarColumnsNames() const
     return names;
 }
 }
+
+
+#include <spc/core/spc_cereal.hpp>
+SPC_CEREAL_REGISTER_TYPE(spc::EigenTable)

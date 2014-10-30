@@ -33,7 +33,7 @@ public:
 
     //! return a factor for the correction based on input data
     /** in most of the cases input data will be a vector with distance and angle
-    /** but it may contain other information used for predicting the factor
+     * but it may contain other information used for predicting the factor
      */
     virtual float getFactor(Sample::ConstPtr input_data) const = 0;
 

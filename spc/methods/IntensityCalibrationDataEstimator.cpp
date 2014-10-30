@@ -91,7 +91,7 @@ int CalibrationDataEstimator::compute()
     }
 }
 
-float CalibrationDataEstimator::getEigenRatio(const pcl::PointNormal &point, float &eigen_ratio)
+void CalibrationDataEstimator::getEigenRatio(const pcl::PointNormal &point, float &eigen_ratio)
 {
     eigen_ratio = point.curvature;
 }

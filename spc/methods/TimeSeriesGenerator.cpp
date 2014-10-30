@@ -1,5 +1,5 @@
 #include <spc/methods/TimeSeriesGenerator.h>
-#include <spc/io/pointcloud2_reader.h>
+//#include <spc/io/pointcloud2_reader.h>
 //#include <spc/methods/KernelSmoothing.h>
 #include <spc/elements/TimeSeriesSparse.h>
 #include <pcl/console/print.h>

@@ -3,7 +3,7 @@
 #define SPC_OBJECT_H
 
 #include <spc/core/macros.h>
-#include <cereal/cereal.hpp>
+//#include <cereal/cereal.hpp>
 #include <spc/elements/UniversalUniqueID.h>
 #include <spc/elements/SerializableInterface.h>
 #include <spc/elements/ElementWithVariantProperties.h>

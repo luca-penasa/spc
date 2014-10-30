@@ -3,7 +3,16 @@
 #include <cereal/types/polymorphic.hpp>
 #include <pcl/console/print.h>
 
+#include <cereal/archives/xml.hpp>
+#include <cereal/archives/binary.hpp>
+#include <cereal/archives/json.hpp>
+
+#include <spc/io/eigen_serialization.hpp>
+#include <spc/io/cereal_types.hpp>
+
 #include <pcl/console/parse.h>
+#include <spc/elements/ElementBase.h>
+#include <fstream>
 
 namespace spc
 {

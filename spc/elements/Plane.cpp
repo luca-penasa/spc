@@ -61,3 +61,6 @@ Transform<float, 3, Affine, AutoAlign> Plane::get2DArbitraryRefSystem() const
 }
 
 } // end nspace
+
+#include <spc/core/spc_cereal.hpp>
+SPC_CEREAL_REGISTER_TYPE(spc::Plane);

@@ -38,3 +38,8 @@ void UniversalUniqueID::renewUUID()
 }
 
 } // end nsapce
+
+
+//#include <spc/core/spc_cereal.hpp>
+
+//SPC_CEREAL_REGISTER_TYPE(spc::UniversalUniqueID)

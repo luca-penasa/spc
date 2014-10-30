@@ -54,4 +54,19 @@
 
 #define SPC_OBJECT(classname) spcTypedefSharedPtrs(classname)
 
+
+
+
+#define SPC_CEREAL_REGISTER_TYPE_WITH_NAME(type, name)\
+    CEREAL_REGISTER_TYPE_WITH_NAME(type, name);
+
+
+
+
+#define SPC_CEREAL_REGISTER_TYPE(type)\
+    CEREAL_REGISTER_TYPE(type);
+
+
+
+
 #endif // SPC_MACROS_H

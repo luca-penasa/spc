@@ -4,7 +4,7 @@
 #include <pcl/point_cloud.h>
 #include <pcl/common/eigen.h>
 #include <pcl/point_types.h>
-#include <spc/io/pointcloud2_reader.h>
+//#include <spc/io/pointcloud2_reader.h>
 
 namespace spc
 {
@@ -16,10 +16,10 @@ public:
     {
     }
 
-    void setInputReader(spc::PointCloud2Reader *reader)
-    {
-        in_reader_ = reader;
-    }
+//    void setInputReader(spc::PointCloud2Reader *reader)
+//    {
+//        in_reader_ = reader;
+//    }
 
     void setSliceWidth(float slice_width)
     {
@@ -41,7 +41,7 @@ public:
     int compute();
 
 private:
-    spc::PointCloud2Reader *in_reader_;
+//    spc::PointCloud2Reader *in_reader_;
     float slice_width_;
     float slice_step_;
     int field_id_;

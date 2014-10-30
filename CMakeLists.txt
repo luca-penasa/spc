@@ -14,9 +14,11 @@ LIST(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 option(SPC_BUILD_WITH_CLANG "Build spc library using clang isntead of gcc." OFF)
 if(SPC_BUILD_WITH_CLANG)
+
+find_package(Clang)
     message("Using Clang as compiler! This may not work properly")
-    set(CMAKE_C_COMPILER "clang")
-    set(CMAKE_CXX_COMPILER "clang++")
+    set(CMAKE_C_COMPILER "clang-3.4")
+    set(CMAKE_CXX_COMPILER "clang++-3.4")
 endif()
 
 #set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -33,7 +35,7 @@ set(SPC_VERSION ${SPC_MAJOR_VERSION}.${SPC_MINOR_VERSION}.${SPC_PATCH_VERSION})
 if (WIN32)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}" )
 else()
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -std=c++0x " )
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -std=c++11 " )
 #        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC" )
 endif()
 

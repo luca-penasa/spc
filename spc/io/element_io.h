@@ -2,16 +2,11 @@
 #define ELEMENT_IO_H
 
 #include <spc/core/spc_eigen.h>
-#include <fstream>
+#include <spc/elements/SerializableInterface.h>
 
-#include <cereal/archives/xml.hpp>
-#include <cereal/archives/binary.hpp>
-#include <cereal/archives/json.hpp>
 
-#include <spc/io/eigen_serialization.hpp>
-#include <spc/io/cereal_types.hpp>
 
-#include <spc/elements/MovableElement.h>
+//#include <spc/elements/MovableElement.h>
 #include <boost/filesystem.hpp>
 
 namespace spc

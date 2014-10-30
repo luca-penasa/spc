@@ -1,16 +1,36 @@
 //#include <spc/methods/KernelSmoothing2.h>
 
-#include <spc/elements/TimeSeriesSparse.h>
-#include <spc/elements/TimeSeriesEquallySpaced.h>
-#include <spc/io/element_io.h>
+//#include <spc/elements/TimeSeriesSparse.h>
+//#include <spc/elements/TimeSeriesEquallySpaced.h>
+//#include <spc/io/element_io.h>
+
+
+#include <spc/core/logging.h>
+#include <spc/core/spc_eigen.h>
+
 using namespace Eigen;
-using namespace spc;
+//using namespace spc;
 
 
 
-int main()
+int main(int argc, char ** argv)
 {
-    std::cout << "INIZIO" << std::endl;
+
+    google::InitGoogleLogging(argv[0]);
+//    std::cout << "INIZIO" << std::endl;
+
+    FLAGS_colorlogtostderr=1;
+    FLAGS_logtostderr=1;
+
+    LOG(INFO) << "testcolor";
+
+    LOG(WARNING) << "warn";
+
+    LOG(ERROR) << "error";
+
+
+
+
 
 ////    spc::BasicKernel<float>::Ptr a (new spc::GaussianKernel<float>(1));
 
@@ -48,6 +68,6 @@ int main()
 
 //    std::cout << m << std::endl;
 
-    std::cout << "Fine" << std::endl;
+//    std::cout << "Fine" << std::endl;
     return 0;
 }

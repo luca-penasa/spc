@@ -87,7 +87,7 @@ nonZeroCoeffs()
  Eigen::Matrix<bool, RowsAtCompileTime, ColsAtCompileTime>
  finiteness() const
 {
-   return unaryExpr([](const float &x){return std::isfinite(x);}).cast<bool>();
+   return unaryExpr([](const float &x){return std::isfinite(x);}).template cast<bool>();
 }
 
 
@@ -115,7 +115,7 @@ nonZeroCoeffs()
  {
      DCHECK(selection_matrix.rows() == rows() && selection_matrix.cols() == cols());
 
-     size_t n = selection_matrix.cast<int>().array().sum();
+     size_t n = selection_matrix.template cast<int>().array().sum();
      Eigen::Matrix<Scalar, -1, 1> out(n);
 
      size_t counter = 0;
