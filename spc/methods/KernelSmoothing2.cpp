@@ -57,14 +57,18 @@ void KernelSmoothing2::initFlann()
 {
     DLOG(INFO) << "Going to init a nanoflann index";
 //get our data as an eigen matrix
-    Eigen::Map<Eigen::MatrixXf> data = Eigen::Map<Eigen::MatrixXf> (x_.data(), x_.size(), 1);
+//    Eigen::Map<Eigen::MatrixXf> data = Eigen::Map<Eigen::MatrixXf> (x_.data(), x_.size(), 1);
 
-    Eigen::MatrixXf real_mat = data;
+//    Eigen::MatrixXf real_mat = data;
 
 
 
-    DLOG(INFO) << "DATA MATRIX \n" << data;
-    nanoflann_index_ = spcSharedPtrMacro<NanoFlannIndexT> (new NanoFlannIndexT(1, real_mat, 10));
+//    DLOG(INFO) << "DATA MATRIX \n" << data;
+    nanoflann_index_ = spcSharedPtrMacro<NanoFlannIndexT> (new NanoFlannIndexT(1, x_, 100));
+
+    DCHECK(nanoflann_index_ != NULL);
+
+    DLOG(INFO) << "size of matrix "<< x_.size();
 
     DLOG(INFO) << "going to call build index";
     nanoflann_index_->index->buildIndex();

@@ -22,6 +22,8 @@ load (Archive & ar, boost::uuids::uuid &v)
         ar( v.data[i] );
 }
 
+
+
 }//end nspace
 
 #endif // CEREAL_TYPES_HPP

@@ -26,7 +26,7 @@ public:
 
     typedef Eigen::Matrix<ScalarT, -1, 1> VectorT;
 
-typedef nanoflann::KDTreeEigenMatrixAdaptor<Eigen::MatrixXf> NanoFlannIndexT;
+typedef nanoflann::KDTreeEigenMatrixAdaptor<Eigen::VectorXf> NanoFlannIndexT;
 
     KernelSmoothing2();
 
@@ -57,7 +57,7 @@ typedef nanoflann::KDTreeEigenMatrixAdaptor<Eigen::MatrixXf> NanoFlannIndexT;
 
     int compute();
 
-protected:
+//protected:
     void initFlann();
 
     void extractVectors();
