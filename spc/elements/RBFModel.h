@@ -24,7 +24,7 @@ public:
 
 
 
-    RBFModel(): kernel_(new GaussianKernel<T>(1.0))
+    RBFModel(): kernel_(new GaussianRBF<T>(1.0))
     {
 
     }
@@ -87,11 +87,11 @@ public:
     }
 
 
-    void setKernel(KERNELS kernel, const T sigma = T(1))
+    void setKernel(RBF_FUNCTION kernel, const T sigma = T(1))
     {
-        if (kernel == KERNEL_GAUSSIAN)
+        if (kernel == RBF_GAUSSIAN)
         {
-            kernel_ = BasicKernel<T>::Ptr(new GaussianKernel<T>(sigma));
+            kernel_ = BasicRadialBasisFunction<T>::Ptr(new GaussianRBF<T>(sigma));
         }
     }
 
@@ -266,7 +266,7 @@ protected:
     VectorT coeffs_;
 
     //! the kernel
-    typename BasicKernel<T>::Ptr kernel_;
+    typename BasicRadialBasisFunction<T>::Ptr kernel_;
 
     //! user options
     //! set the polynomial order using setPolyOrder()

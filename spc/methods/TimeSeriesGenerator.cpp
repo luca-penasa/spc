@@ -43,29 +43,29 @@ int TimeSeriesGenerator::compute()
         new TimeSeriesSparse(x_field_, y_field_)); // the input series
 
 
-    KernelSmoothing2 ks;
+//    KernelSmoothing<ScalarT> ks;
 
 
-    // and also init the output series
-    if (min_x_ != max_x_) {
-        pcl::console::print_warn("instantiating!");
-        // fixed min-max length series
-        out_series_ = TimeSeriesEquallySpaced
-            ::Ptr(new TimeSeriesEquallySpaced
-                           (min_x_, max_x_, sampling_step_));
+//    // and also init the output series
+//    if (min_x_ != max_x_) {
+//        pcl::console::print_warn("instantiating!");
+//        // fixed min-max length series
+//        out_series_ = TimeSeriesEquallySpaced
+//            ::Ptr(new TimeSeriesEquallySpaced
+//                           (min_x_, max_x_, sampling_step_));
 
-    } else {
-        out_series_ = TimeSeriesEquallySpaced::Ptr(
-            new TimeSeriesEquallySpaced
-            (x_field_.minCoeff(), x_field_.maxCoeff(), sampling_step_));
-        ks.setStep(sampling_step_);
-    }
+//    } else {
+//        out_series_ = TimeSeriesEquallySpaced::Ptr(
+//            new TimeSeriesEquallySpaced
+//            (x_field_.minCoeff(), x_field_.maxCoeff(), sampling_step_));
+//        ks.setStep(sampling_step_);
+//    }
 
-    ks.setOutputSeriesBlank(out_series_);
-    ks.setInputSeries(series);
-    ks.setBandwidth(bandwidth_);
+//    ks.setOutputSeriesBlank(out_series_);
+//    ks.setInputSeries(series);
+//    ks.setBandwidth(bandwidth_);
 
-    ks.compute();
+//    ks.compute();
 
     return 1;
 }

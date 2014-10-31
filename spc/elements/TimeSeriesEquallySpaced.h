@@ -55,14 +55,14 @@ EXPOSE_TYPE
     TimeSeriesEquallySpaced(std::vector<ScalarT> y_, ScalarT x_step_ = 1.0,
                             ScalarT x_start_ = 0.0);
 
-    ///
-    /// \brief EquallySpacedTimeSeries constructors, initializing as vector of
-    /// nans
-    /// \param x_step_ sampling step
-    /// \param x_start_ x position of the first sample of y
-    /// \param size number of samples reuired.
-    ///
-    TimeSeriesEquallySpaced(ScalarT x_step_, ScalarT x_start_, size_t size);
+//    ///
+//    /// \brief EquallySpacedTimeSeries constructors, initializing as vector of
+//    /// nans
+//    /// \param x_step_ sampling step
+//    /// \param x_start_ x position of the first sample of y
+//    /// \param size number of samples reuired.
+//    ///
+//    TimeSeriesEquallySpaced(ScalarT x_step_, ScalarT x_start_, size_t size);
 
     ///
     /// \brief EquallySpacedTimeSeries constructor, intialize a series filled

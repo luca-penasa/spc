@@ -1,8 +1,8 @@
-//#include <spc/methods/KernelSmoothing2.h>
+#include <spc/methods/KernelSmoothing2.h>
 
-//#include <spc/elements/TimeSeriesSparse.h>
-//#include <spc/elements/TimeSeriesEquallySpaced.h>
-//#include <spc/io/element_io.h>
+#include <spc/elements/TimeSeriesSparse.h>
+#include <spc/elements/TimeSeriesEquallySpaced.h>
+#include <spc/io/element_io.h>
 
 
 #include <spc/core/logging.h>
@@ -22,52 +22,31 @@ int main(int argc, char ** argv)
     FLAGS_colorlogtostderr=1;
     FLAGS_logtostderr=1;
 
-    LOG(INFO) << "testcolor";
+    spc::KernelSmoothing<float> sm;
 
-    LOG(WARNING) << "warn";
+    Eigen::VectorXf x = Eigen::VectorXf::LinSpaced(20,-10,10);
+    Eigen::VectorXf y = Eigen::VectorXf::Random(20).array() + 2*x.array();
 
-    LOG(ERROR) << "error";
-
-
-
-
-
-////    spc::BasicKernel<float>::Ptr a (new spc::GaussianKernel<float>(1));
-
-////    std::cout << a->operator ()(2) << std::endl;
-
-//    KernelSmoothing2 smoother;
-
-//    Eigen::VectorXf x = Eigen::VectorXf::LinSpaced(2000,-10,10);
-//    Eigen::VectorXf y = Eigen::VectorXf::Random(2000);
-
-//    TimeSeriesSparse::Ptr in (new TimeSeriesSparse (x,y));
-
-//    TimeSeriesEquallySpaced::Ptr eqser(new TimeSeriesEquallySpaced(-10, 10, 1.0f));
+    sm.setInputPoints(x);
+    sm.setValues(y);
+    sm.setKernelSigma(4);
+//    sm.initFlann();
 
 
-//    std::cout << eqser->getX() << std::endl;
+    LOG(INFO) << sm.getKernel()->getSupportRegion();
 
 
-//    smoother.setBandwidth(4);
-//    smoother.setInputSeries(in);
-//    smoother.setOutputSeriesBlank(eqser);
-//    smoother.compute();
+    Eigen::VectorXf newy(2000);
 
-//    DLOG(INFO) << "done----" ;
+        sm(x, newy);
 
-
-//    std::cout << eqser->getY() <<std::endl;
+    for (int i = 0; i < x.rows(); ++i)
+    {
+        std::cout << x(i) << " " << y(i) << " " << newy(i) << std::endl;
+    }
 
 
 
-//    MatrixXi m(1, 5);
-//    m << 1, 2, 3, 4, 5;
-//    m = (m.array() > 3).select(3, m);
-
-
-//    std::cout << m << std::endl;
-
-//    std::cout << "Fine" << std::endl;
+//
     return 0;
 }

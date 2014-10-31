@@ -35,7 +35,7 @@ set(SPC_VERSION ${SPC_MAJOR_VERSION}.${SPC_MINOR_VERSION}.${SPC_PATCH_VERSION})
 if (WIN32)
 	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}" )
 else()
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -std=c++11 " )
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -std=c++0x " )
 #        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC" )
 endif()
 

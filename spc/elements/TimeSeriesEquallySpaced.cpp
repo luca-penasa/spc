@@ -19,14 +19,14 @@ TimeSeriesEquallySpaced::TimeSeriesEquallySpaced(std::vector<ScalarT> y_, Scalar
     x_step = x_step_;
 }
 
-TimeSeriesEquallySpaced::TimeSeriesEquallySpaced(ScalarT x_step_, ScalarT x_start_,
-                                       size_t size)
-{
-    x_start = x_start_;
-    x_step = x_step_;
-    resize(size);
-    this->fill();
-}
+//TimeSeriesEquallySpaced::TimeSeriesEquallySpaced(ScalarT x_step_, ScalarT x_start_,
+//                                       size_t size)
+//{
+//    x_start = x_start_;
+//    x_step = x_step_;
+//    resize(size);
+//    this->fill();
+//}
 
 TimeSeriesEquallySpaced::TimeSeriesEquallySpaced(ScalarT x_min_, ScalarT x_max_,
                                        ScalarT step_)

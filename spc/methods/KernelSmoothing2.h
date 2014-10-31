@@ -10,94 +10,194 @@
 #include <pcl/console/print.h>
 #include <boost/foreach.hpp>
 
+#include <spc/elements/Kernels.hpp>
+
 namespace spc
 {
-class KernelSmoothing2
+
+/**
+ * KernelSmoothing performs kernel smoothing over a N-dimensional space.
+ *  notice we dont copy the input data. so you nay cause problems if
+ * you delete the data and try to call operator ()
+ */
+template <typename ScalarT>
+class KernelSmoothing
 {
-
 public:
-
-    typedef float ScalarT;
-    typedef TimeSeriesSparse SparseT;
-    typedef spcSharedPtrMacro<SparseT> SparsePtrT;
-
-    typedef TimeSeriesEquallySpaced EquallyT;
-    typedef spcSharedPtrMacro<EquallyT> EquallyPtrT;
+    typedef std::pair<size_t, ScalarT> MatchT;
+    typedef std::vector<MatchT> MatchSetT;
 
     typedef Eigen::Matrix<ScalarT, -1, 1> VectorT;
 
-typedef nanoflann::KDTreeEigenMatrixAdaptor<Eigen::MatrixXf> NanoFlannIndexT;
+    typedef Eigen::Matrix<ScalarT, -1, -1> MatrixT;
 
-    KernelSmoothing2();
+    typedef nanoflann::KDTreeEigenMatrixAdaptor<Eigen::MatrixXf> NanoFlannIndexT;
 
-    void setInputSeries(SparsePtrT in)
+    KernelSmoothing(): kernel_(new GaussianRBF<ScalarT>),
+        points_(NULL),
+        values_(NULL)
     {
-        sparse_ = in;
     }
 
-    void setOutputSeriesBlank(EquallyPtrT out)
+    void setInputPoints(const MatrixT & points)
     {
-        out_series_ = out;
+        points_ = &points;
     }
 
-    void setStep(ScalarT step)
+    void setValues(const VectorT & values)
     {
-        step_ = step;
+        values_ = &values;
     }
 
-    void setBandwidth(ScalarT bandwidth)
+    //! you can chose between spc kernels
+    void setKernel(const RBF_FUNCTION ker)
     {
-        bandwidth_ = bandwidth;
+        kernel_ = kernel_from_enum<ScalarT>(ker);
     }
 
-    EquallyPtrT getOutputSeries() const
+    //! is the bandwith of the estimator
+    void setKernelSigma(const ScalarT sigma)
     {
-        return out_series_;
+        kernel_->setSigma(sigma);
     }
 
-    int compute();
+    typename BasicRadialBasisFunction<ScalarT>::Ptr getKernel() const
+    {
+        return kernel_;
+    }
+
+    /**
+     * @brief operator () is a batch operator, parallelized over openmp
+     * @param [in] eval_points
+     * @param [out] outvector
+     */
+    void operator ()(const MatrixT &eval_points, VectorT &outvector)
+    {
+        outvector.resize(eval_points.rows());
+
+        if (!initFlann())
+        {
+            LOG(WARNING) << "Problem initializing flann. returning a vector of nans";
+            outvector.fill(std::numeric_limits<ScalarT>::quiet_NaN());
+        }
+
+#ifdef USE_OPENMP
+#pragma omp parallel for
+#endif
+        for (int i = 0; i < eval_points.rows(); ++i)
+            outvector(i) = single_eval(eval_points.row(i));
+    }
+
+//    /**
+//     * @brief operator () is a single-call oprator. If you need to do multiple calls
+//     * please use the batch operator.
+//     * @param eval_point
+//     * @return
+//     */
+//    ScalarT
+//    operator ()(const VectorT &eval_point)
+//    {
+//        if (!initFlann())
+//        {
+//            LOG(WARNING) << "Problem initializing flann. check log";
+//            return std::numeric_limits<ScalarT>::quiet_NaN();
+//        }
+
+//        return single_eval(eval_point);
+//    }
+
+
+
 
 protected:
-    void initFlann();
+    int initFlann()
+    {
+        if (nanoflann_index_)
+        {
+            LOG(WARNING) << "Flann was yet initialized. We are going to do a new init";
+        }
 
-    void extractVectors();
+        if (!points_)
+        {
+            LOG(ERROR) << "Please provide points";
+            return -1;
+        }
 
-    SparsePtrT sparse_;
-    EquallyPtrT out_series_;
+        if (!values_)
+        {
+            LOG(ERROR) << "Please provide values";
+            return -1;
+        }
+
+
+        if (points_->rows() != values_->rows())
+        {
+            LOG(ERROR) << "points and values must have the same number of rows";
+            return -1;
+        }
+
+        nanoflann_index_ = spcSharedPtrMacro<NanoFlannIndexT> (new NanoFlannIndexT(points_->cols(), *points_, 10));
+        nanoflann_index_->index->buildIndex();
+
+
+        if(nanoflann_index_)
+            return 1;
+        else
+            return -1; // just to be sure
+
+    }
+
+
+    int radiusSearch(const VectorT &position, const ScalarT &sq_radius,
+                     MatchSetT &matches) const
+    {
+        nanoflann::SearchParams params;
+        size_t nMatches = nanoflann_index_->index->radiusSearch(position.data(), sq_radius, matches, params);
+
+        DLOG(INFO) << "Found " << nMatches << "neighbors";
+        return nMatches;
+    }
+
+    ScalarT
+    single_eval (const VectorT &eval_point) const
+    {
+
+        MatchSetT matches;
+        this->radiusSearch(eval_point, kernel_->getSupportRegionSquared(),  matches);
+
+        if (matches.size() == 0)
+            return std::numeric_limits<ScalarT>::quiet_NaN();
+
+        ScalarT sum = 0;
+        ScalarT val = 0;
+        for (MatchT &m: matches)
+        {
+            m.second = kernel_->operator() (m.second);
+            sum += m.second;
+            val += values_->operator ()(m.first) * m.second;
+        }
+
+        return val / sum;
+    }
 
 
 
-    ScalarT step_ = 1.0;
-    ScalarT bandwidth_ = 1.0;
 
-    VectorT x_;
-    VectorT y_;
-
+    // flann index
     spcSharedPtrMacro<NanoFlannIndexT> nanoflann_index_ ;
 
-    // compute gaussian weights on a vector
-    inline void gaussian(const std::vector<ScalarT> &values,
-                         std::vector<ScalarT> &gaussian_values)
-    {
-        for(float val: values)
-        {
-            gaussian_values.push_back(gaussian(val));
-        }
-    }
+    ScalarT kernel_raidius_; /**< AKA the bandwidth of the estimator */
 
-    // compute gaussian weights on a single numeric value
-    inline ScalarT gaussian(const ScalarT &value)
-    {
-        return 1.0 / sqrt(2.0 * M_PI) * exp(-0.5 * value);
-    }
+    const MatrixT * points_;
+    const VectorT * values_;
 
-//    void initKDTree();
-
-    int radiusSearch(const ScalarT &position, const ScalarT &radius,
-                     std::vector<std::pair<size_t, ScalarT> > &matches);
-
-    int evaluateKS(const ScalarT &position, ScalarT &value);
+    typename BasicRadialBasisFunction<ScalarT>::Ptr kernel_;
 };
+
+
+
+
+
 
 } // end nspace
 

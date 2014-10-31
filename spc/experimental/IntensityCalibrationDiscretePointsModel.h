@@ -63,16 +63,16 @@ public:
 
         TimeSeriesSparse::Ptr serie(new TimeSeriesSparse(dist, intens));
 
-        KernelSmoothing2 ks;
+//        KernelSmoothing2 ks;
 
-        ks.setBandwidth(bandwidth_);
-        ks.setStep(s_step_);
-        ks.setInputSeries(serie);
-        ks.compute();
+//        ks.setBandwidth(bandwidth_);
+//        ks.setStep(s_step_);
+//        ks.setInputSeries(serie);
+//        ks.compute();
 
-        TimeSeriesEquallySpaced::Ptr out = ks.getOutputSeries();
+//        TimeSeriesEquallySpaced::Ptr out = ks.getOutputSeries();
 
-        model_->setDiscretePoints(out);
+//        model_->setDiscretePoints(out);
     }
 
     ModelDiscretePoints::Ptr getModel() const

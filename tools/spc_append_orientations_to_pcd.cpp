@@ -141,7 +141,7 @@ int main (int argc, char ** argv)
 
 
 
-    BOOST_FOREACH (int i, ids)
+    for (int i: ids)
     {
         string cloudfname = argv[i];
 

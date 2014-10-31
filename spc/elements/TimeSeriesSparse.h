@@ -1,8 +1,10 @@
 #ifndef SPC_SPARSE_TIME_SERIES_H
 #define SPC_SPARSE_TIME_SERIES_H
 
-#include "TimeSeriesBase.h"
+#include <spc/elements/TimeSeriesBase.h>
+#include <spc/elements/TimeSeriesEquallySpaced.h>
 
+//#include <spc/methods/KernelSmoothing2.h>
 
 #include <cereal/types/vector.hpp>
 namespace spc
@@ -47,12 +49,7 @@ public:
 
         x_ = Eigen::Matrix <ScalarT, -1, 1>::Map(x.data(), x.size());
         y_ = Eigen::Matrix <ScalarT, -1, 1>::Map(y.data(), y.size());
-
     }
-
-
-
-
 
     ///
     /// \brief getX get x positions
@@ -111,7 +108,7 @@ public:
     /// \return the maximum value o the x vector
     /// reimplemented from base class nan if void
     ///
-    virtual ScalarT getMaxX() const;
+    virtual ScalarT getMaxX() const; 
 
 protected:
     ///
