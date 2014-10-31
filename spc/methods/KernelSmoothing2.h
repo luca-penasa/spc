@@ -29,7 +29,9 @@ public:
 
     typedef Eigen::Matrix<ScalarT, -1, 1> VectorT;
 
+
     typedef Eigen::Matrix<ScalarT, -1, -1> MatrixT;
+
 
     typedef nanoflann::KDTreeEigenMatrixAdaptor<Eigen::MatrixXf> NanoFlannIndexT;
 
@@ -66,6 +68,7 @@ public:
         return kernel_;
     }
 
+
     /**
      * @brief operator () is a batch operator, parallelized over openmp
      * @param [in] eval_points
@@ -74,7 +77,6 @@ public:
     void operator ()(const MatrixT &eval_points, VectorT &outvector)
     {
         outvector.resize(eval_points.rows());
-
         if (!initFlann())
         {
             LOG(WARNING) << "Problem initializing flann. returning a vector of nans";

@@ -45,7 +45,7 @@ target_link_libraries(${MY_TOOLS_PREFIX}bilateral ${PCL_LIBRARIES})
 
 
 spc_add_executable(${MY_TOOLS_PREFIX}test_tool spc_test_tool.cpp)
-target_link_libraries(${MY_TOOLS_PREFIX}test_tool ${PCL_LIBRARIES} spc_elements)
+target_link_libraries(${MY_TOOLS_PREFIX}test_tool ${PCL_LIBRARIES} ${SPC_LIBRARIES})
 
 #spc_add_executable(align_icp2 align_ICP_old.cpp)
 #target_link_libraries(align_icp2 ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
