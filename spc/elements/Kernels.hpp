@@ -5,7 +5,6 @@
 #include <spc/core/spc_eigen.h>
 namespace spc {
 
-enum RBF_FUNCTION {RBF_GAUSSIAN};
 
 /** most rbf functinos use a kernel radius parameter controlling the size
  * this parameter is often used squared so we keep it (also) squared.
@@ -18,16 +17,45 @@ enum RBF_FUNCTION {RBF_GAUSSIAN};
  **/
 
 template <typename T>
-class BasicRadialBasisFunction: public ElementBase
+class RBFBase: public ElementBase
 {
 public:
-    SPC_OBJECT(BasicRadialBasisFunction<T>)
+    SPC_OBJECT(RBFBase<T>)
+
+    RBFBase(): scale_(1)
+    {
+        updateSecondary();
+    }
 
     /** the scale is acually the scale of the basis fuction
      * bigger scale -> bigger basis function
      **/
-    BasicRadialBasisFunction(const T & scale = 1): scale_(scale)
+    RBFBase(const T & scale): scale_(scale)
     {
+        updateSecondary();
+    }
+
+    T getScale() const
+    {
+        return scale_;
+    }
+
+    /** by default support is infinite
+     * restrict it for derived classes which need it
+     **/
+    T getSupport() const
+    {
+        return std::numeric_limits<T>::infinity();
+    }
+
+    bool isCompact() const
+    {
+        return std::isfinite(this->getSupport());
+    }
+
+    void setScale(const T & scale)
+    {
+        scale_ = scale;
         updateSecondary();
     }
 
@@ -36,39 +64,28 @@ public:
      **/
     virtual T eval(const T& squared_x) const = 0;
 
-
-    /** is important to know what the support for this RBF is
-     * by default is infinity. So please implement it in derived classes
-     * the returned valued should be the squared distance at which the RBF becomes
-     * zero. For example for a gaussian rbf its infinity.
-     *
-     */
-    virtual T support() const
-    {
-        return std::numeric_limits<T>::infinity();
-    }
-
     void updateSecondary()
     {
         scale_inv_ = 1 / scale_;
         scale_squared_ = scale_ * scale_;
-        scale_squared_inv = 1 / scale_squared_;
+        scale_squared_inv_ = 1 / scale_squared_;
+        scale_squared_inv_neg_ = - scale_squared_inv_;
     }
 
 protected:
-
     T scale_ = 1;
 
-
     /** we call it scale
-    http://en.wikipedia.org/wiki/Radial_basis_function
-    (and http://en.wikipedia.org/wiki/Kernel_smoother)
-
-    these are ancillary variables used for efficiency
+     * this parameter is often know in other ways...
+     * e.g. wikipedia use an epsilon in this page
+     * http://en.wikipedia.org/wiki/Radial_basis_function
+     * in our case: epsilon = 1/scale
+     * these are ancillary variables, precomputed used for efficiency
     **/
     T scale_inv_ ;
     T scale_squared_;
-    T scale_squared_inv;
+    T scale_squared_inv_;
+    T scale_squared_inv_neg_;
 
 private:
     friend class cereal::access;
@@ -79,59 +96,79 @@ private:
            CEREAL_NVP(scale_),
            CEREAL_NVP(scale_inv_),
            CEREAL_NVP(scale_squared_),
-           CEREAL_NVP(scale_squared_inv));
+           CEREAL_NVP(scale_squared_inv_),
+           CEREAL_NVP(scale_squared_inv_neg_));
     }
 };
 
 
 
 template <typename T>
-class GaussianRBF: public BasicRadialBasisFunction<T>
+class GaussianRBF: public RBFBase<T>
 {
 public:
 
-    using BasicRadialBasisFunction<T>::scale_squared_inv;
+    using RBFBase<T>::scale_squared_inv_neg_;
 
-    GaussianRBF (const T& sigma): BasicRadialBasisFunction<T>(sigma) {}
+    /** in the case of Gaussian the scale correspond to the sigma
+     **/
+    GaussianRBF (const T& sigma): RBFBase<T>(sigma) {}
 
-    GaussianRBF (): BasicRadialBasisFunction<T>() {}
+    /** def const
+     **/
+    GaussianRBF(): RBFBase<T>() {}
 
     // BasicKernel interface
     virtual inline T eval(const T &squared_x) const
     {
-        return exp(-(squared_x * scale_squared_inv));
+        return exp(squared_x * scale_squared_inv_neg_);
     }
 
-    virtual void setSigma(const T &sigma)
-    {
-        BasicRadialBasisFunction<T>::setSigma(sigma);
-        support_region_ = sigma * 4;
-        support_region_squared_ = support_region_ * support_region_;
-    }
 
 private:
     friend class cereal::access;
 
     template <class Archive> void serialize(Archive &ar)
     {
-        ar(cereal::base_class<BasicRadialBasisFunction<T> >(this));
+        ar(cereal::base_class<RBFBase<T> >(this));
     }
 
 };
 
 
-template<typename ScalarT>
-typename BasicRadialBasisFunction<ScalarT>::Ptr kernel_from_enum(const RBF_FUNCTION &kernel)
+
+template <typename T>
+class MultiquadricRBF: public RBFBase<T>
 {
-    if (kernel == RBF_GAUSSIAN)
-        return BasicRadialBasisFunction<ScalarT>::Ptr(new GaussianRBF<ScalarT>);
-    else
+public:
+
+    using RBFBase<T>::scale_squared_inv_;
+
+    /** in the case of Gaussian the scale correspond to the sigma
+     **/
+     MultiquadricRBF (const T& sigma): RBFBase<T>(sigma) {}
+
+//    // BasicKernel interface
+//    virtual inline T eval(const T &squared_x) const
+//    {
+//        return sqrt(1+ squared_x * scale_squared_inv_);
+//    }
+
+
+private:
+    friend class cereal::access;
+
+    template <class Archive> void serialize(Archive &ar)
     {
-        LOG(WARNING) << "Requested kernel not found";
-        return NULL;
+        ar(cereal::base_class<RBFBase<T> >(this));
     }
 
-}
+};
+
+
+
+
+
 
 
 

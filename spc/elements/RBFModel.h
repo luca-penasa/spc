@@ -2,7 +2,7 @@
 #define RBFMODEL_H
 
 #include <spc/core/spc_eigen.h>
-#include <spc/elements/Kernels.hpp>
+#include <spc/elements/RBFKernelFactory.h>
 #include <spc/core/polynomials.hpp>
 namespace spc
 {
@@ -78,7 +78,7 @@ public:
     {
         DLOG(INFO) << "set sigma order to " << sigma;
 
-        kernel_->setSigma(sigma);
+        kernel_->setScale(sigma);
     }
 
     T getSigma () const
@@ -87,12 +87,9 @@ public:
     }
 
 
-    void setKernel(RBF_FUNCTION kernel, const T sigma = T(1))
+    void setKernel(typename RBFKernelFactory<T>::RBF_FUNCTION kernel, const T scale = T(1))
     {
-        if (kernel == RBF_GAUSSIAN)
-        {
-            kernel_ = BasicRadialBasisFunction<T>::Ptr(new GaussianRBF<T>(sigma));
-        }
+            kernel_ =RBFKernelFactory<T>::create(kernel, scale);
     }
 
     void setPolyOrder(const size_t & order)
@@ -120,7 +117,7 @@ public:
     {
         VectorT w = getSqDistanceFromNodes(point);
         for (int i = 0; i < w.rows(); ++i)
-            w(i) = (*kernel_)(w(i));
+            w(i) = kernel_->eval(w(i));
 
         return w;
     }
@@ -266,7 +263,7 @@ protected:
     VectorT coeffs_;
 
     //! the kernel
-    typename BasicRadialBasisFunction<T>::Ptr kernel_;
+    typename RBFBase<T>::Ptr kernel_;
 
     //! user options
     //! set the polynomial order using setPolyOrder()

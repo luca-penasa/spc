@@ -10,7 +10,7 @@
 #include <pcl/console/print.h>
 #include <boost/foreach.hpp>
 
-#include <spc/elements/Kernels.hpp>
+#include <spc/elements/RBFKernelFactory.h>
 
 namespace spc
 {
@@ -42,7 +42,7 @@ public:
     }
 
     void setInputPoints(const MatrixT & points)
-    {
+    {        
         points_ = &points;
     }
 
@@ -51,19 +51,19 @@ public:
         values_ = &values;
     }
 
-    //! you can chose between spc kernels
-    void setKernel(const RBF_FUNCTION ker)
+    //! you can chose between spc rbf-kernels
+    void setKernel(const typename RBFKernelFactory<ScalarT>::RBF_FUNCTION ker)
     {
-        kernel_ = kernel_from_enum<ScalarT>(ker);
+        kernel_ = RBFKernelFactory<ScalarT>::create(ker);
     }
 
     //! is the bandwith of the estimator
     void setKernelSigma(const ScalarT sigma)
     {
-        kernel_->setSigma(sigma);
+        kernel_->setScale(sigma);
     }
 
-    typename BasicRadialBasisFunction<ScalarT>::Ptr getKernel() const
+    typename RBFBase<ScalarT>::Ptr getKernel() const
     {
         return kernel_;
     }
@@ -77,15 +77,15 @@ public:
     void operator ()(const MatrixT &eval_points, VectorT &outvector)
     {
         outvector.resize(eval_points.rows());
-        if (!initFlann())
+        if (!init())
         {
             LOG(WARNING) << "Problem initializing flann. returning a vector of nans";
             outvector.fill(std::numeric_limits<ScalarT>::quiet_NaN());
         }
 
-#ifdef USE_OPENMP
-#pragma omp parallel for
-#endif
+//#ifdef USE_OPENMP
+//#pragma omp parallel for
+//#endif
         for (int i = 0; i < eval_points.rows(); ++i)
             outvector(i) = single_eval(eval_points.row(i));
     }
@@ -112,7 +112,7 @@ public:
 
 
 protected:
-    int initFlann()
+    int init()
     {
         if (nanoflann_index_)
         {
@@ -138,6 +138,22 @@ protected:
             return -1;
         }
 
+        if (!kernel_)
+        {
+            LOG(ERROR) << "kernel not set";
+            return -1;
+        }
+
+
+        // extract the support region
+
+        if (kernel_->isCompact())
+            search_support_ = kernel_->getSupport();
+        else
+            search_support_ = kernel_->getScale() * noncompact_support_multiplier_;
+
+        search_support_squared_ = search_support_ * search_support_;
+
         nanoflann_index_ = spcSharedPtrMacro<NanoFlannIndexT> (new NanoFlannIndexT(points_->cols(), *points_, 10));
         nanoflann_index_->index->buildIndex();
 
@@ -153,6 +169,10 @@ protected:
     int radiusSearch(const VectorT &position, const ScalarT &sq_radius,
                      MatchSetT &matches) const
     {
+
+        DLOG(INFO) << "searching at" << position.transpose();
+        DLOG(INFO) << "with search radiu "<< sqrt(sq_radius);
+
         nanoflann::SearchParams params;
         size_t nMatches = nanoflann_index_->index->radiusSearch(position.data(), sq_radius, matches, params);
 
@@ -164,8 +184,10 @@ protected:
     single_eval (const VectorT &eval_point) const
     {
 
-        MatchSetT matches;
-        this->radiusSearch(eval_point, kernel_->getSupportRegionSquared(),  matches);
+        MatchSetT matches;                
+        this->radiusSearch(eval_point, search_support_squared_,  matches);
+
+        LOG(INFO) << "using support region: "<< search_support_squared_;
 
         if (matches.size() == 0)
             return std::numeric_limits<ScalarT>::quiet_NaN();
@@ -174,7 +196,7 @@ protected:
         ScalarT val = 0;
         for (MatchT &m: matches)
         {
-            m.second = kernel_->operator() (m.second);
+            m.second = kernel_->eval(m.second);
             sum += m.second;
             val += values_->operator ()(m.first) * m.second;
         }
@@ -188,12 +210,18 @@ protected:
     // flann index
     spcSharedPtrMacro<NanoFlannIndexT> nanoflann_index_ ;
 
-    ScalarT kernel_raidius_; /**< AKA the bandwidth of the estimator */
+//    ScalarT kernel_raidius_; /**< AKA the bandwidth of the estimator */
 
     const MatrixT * points_;
     const VectorT * values_;
 
-    typename BasicRadialBasisFunction<ScalarT>::Ptr kernel_;
+    typename RBFBase<ScalarT>::Ptr kernel_;
+
+
+    ScalarT search_support_;
+    ScalarT search_support_squared_;
+
+    ScalarT noncompact_support_multiplier_ = 4;
 };
 
 
