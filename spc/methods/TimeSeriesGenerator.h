@@ -147,24 +147,17 @@ public:
 protected:
     void fillIndicesIfNeeded();
 
-    void doExtractFields()
+    void extractFields()
     {
         fillIndicesIfNeeded();
 
-        VectorT x_d;
-
         if (!x_field_name_.empty())
-            in_cloud_->getField(x_field_name_, indices_, x_d);
+            in_cloud_->getField(x_field_name_, indices_, x_field_);
 
         else // we should have a stratigrahic model
-            x_d = model_->getScalarFieldValues(in_cloud_, indices_);
+            x_field_ = model_->getScalarFieldValues(in_cloud_, indices_);
 
-        VectorT y_d;
-        in_cloud_->getField(y_field_name_, indices_, y_d);
-
-
-        x_field_ = x_d;
-        y_field_ = y_d;
+        in_cloud_->getField(y_field_name_, indices_, y_field_);
     }
 
     VariableScalarFieldBase::Ptr model_;

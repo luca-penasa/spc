@@ -3,7 +3,7 @@
 
 #include <spc/elements/TimeSeriesSparse.h>
 #include <spc/elements/TimeSeriesEquallySpaced.h>
-
+#include <spc/core/nanoflann_adapters.hpp>
 
 #include <submodules/nanoflann/include/nanoflann.hpp>
 
@@ -28,27 +28,16 @@ public:
     typedef std::vector<MatchT> MatchSetT;
 
     typedef Eigen::Matrix<ScalarT, -1, 1> VectorT;
-
-
     typedef Eigen::Matrix<ScalarT, -1, -1> MatrixT;
 
 
-    typedef nanoflann::KDTreeEigenMatrixAdaptor<Eigen::MatrixXf> NanoFlannIndexT;
+    typedef NanoFlannEigenMatrixAdaptor<Eigen::MatrixXf> NanoFlannIndexT;
 
-    KernelSmoothing(): kernel_(new GaussianRBF<ScalarT>),
-        points_(NULL),
-        values_(NULL)
+    KernelSmoothing(const Eigen::Ref<const MatrixT> & points,
+                    const Eigen::Ref<const VectorT> & values): kernel_(new EpanechnikovRBF<ScalarT>),
+        points_(points), values_(values)
     {
-    }
-
-    void setInputPoints(const MatrixT & points)
-    {        
-        points_ = &points;
-    }
-
-    void setValues(const VectorT & values)
-    {
-        values_ = &values;
+        init();
     }
 
     //! you can chose between spc rbf-kernels
@@ -74,65 +63,36 @@ public:
      * @param [in] eval_points
      * @param [out] outvector
      */
-    void operator ()(const MatrixT &eval_points, VectorT &outvector)
+    int operator ()(const Eigen::Ref<const MatrixT> &eval_points, VectorT & outvector)
     {
-        outvector.resize(eval_points.rows());
-        if (!init())
+        if (eval_points.cols() != points_.cols())
         {
-            LOG(WARNING) << "Problem initializing flann. returning a vector of nans";
-            outvector.fill(std::numeric_limits<ScalarT>::quiet_NaN());
+            LOG(ERROR) << "eval_points must have the same dimensionality of the points_";
+            return -1;
         }
 
-//#ifdef USE_OPENMP
-//#pragma omp parallel for
-//#endif
+        outvector.resize(eval_points.rows());
+
+#ifdef USE_OPENMP
+#pragma omp parallel for
+#endif
         for (int i = 0; i < eval_points.rows(); ++i)
             outvector(i) = single_eval(eval_points.row(i));
+
+        return 1;
     }
-
-//    /**
-//     * @brief operator () is a single-call oprator. If you need to do multiple calls
-//     * please use the batch operator.
-//     * @param eval_point
-//     * @return
-//     */
-//    ScalarT
-//    operator ()(const VectorT &eval_point)
-//    {
-//        if (!initFlann())
-//        {
-//            LOG(WARNING) << "Problem initializing flann. check log";
-//            return std::numeric_limits<ScalarT>::quiet_NaN();
-//        }
-
-//        return single_eval(eval_point);
-//    }
-
 
 
 
 protected:
     int init()
     {
-        if (nanoflann_index_)
+        if (index_)
         {
             LOG(WARNING) << "Flann was yet initialized. We are going to do a new init";
         }
 
-        if (!points_)
-        {
-            LOG(ERROR) << "Please provide points";
-            return -1;
-        }
-
-        if (!values_)
-        {
-            LOG(ERROR) << "Please provide values";
-            return -1;
-        }
-
-
-        if (points_->rows() != values_->rows())
+        if (points_.rows() != values_.rows())
         {
             LOG(ERROR) << "points and values must have the same number of rows";
             return -1;
@@ -154,40 +114,27 @@ protected:
 
         search_support_squared_ = search_support_ * search_support_;
 
-        nanoflann_index_ = spcSharedPtrMacro<NanoFlannIndexT> (new NanoFlannIndexT(points_->cols(), *points_, 10));
-        nanoflann_index_->index->buildIndex();
+        index_ = NanoFlannIndexT::Ptr (new NanoFlannIndexT(points_, 10));
 
-
-        if(nanoflann_index_)
+        if(index_)
             return 1;
         else
             return -1; // just to be sure
-
     }
 
 
-    int radiusSearch(const VectorT &position, const ScalarT &sq_radius,
-                     MatchSetT &matches) const
-    {
-
-        DLOG(INFO) << "searching at" << position.transpose();
-        DLOG(INFO) << "with search radiu "<< sqrt(sq_radius);
-
-        nanoflann::SearchParams params;
-        size_t nMatches = nanoflann_index_->index->radiusSearch(position.data(), sq_radius, matches, params);
-
-        DLOG(INFO) << "Found " << nMatches << "neighbors";
-        return nMatches;
-    }
 
     ScalarT
     single_eval (const VectorT &eval_point) const
     {
 
+        nanoflann::SearchParams pars;
+        pars.sorted = false; // we get a nice speed-up not sorting them
+//        LOG(INFO) << "eval point " << eval_point.transpose();
         MatchSetT matches;                
-        this->radiusSearch(eval_point, search_support_squared_,  matches);
+        index_->radiusSearch(eval_point, search_support_squared_,  matches, pars);
 
-        LOG(INFO) << "using support region: "<< search_support_squared_;
+//        LOG(INFO) << "N matches "<< matches.size();
 
         if (matches.size() == 0)
             return std::numeric_limits<ScalarT>::quiet_NaN();
@@ -198,7 +145,7 @@ protected:
         {
             m.second = kernel_->eval(m.second);
             sum += m.second;
-            val += values_->operator ()(m.first) * m.second;
+            val += values_(m.first) * m.second;
         }
 
         return val / sum;
@@ -208,12 +155,11 @@ protected:
 
 
     // flann index
-    spcSharedPtrMacro<NanoFlannIndexT> nanoflann_index_ ;
-
+    typename NanoFlannIndexT::Ptr index_;
 //    ScalarT kernel_raidius_; /**< AKA the bandwidth of the estimator */
 
-    const MatrixT * points_;
-    const VectorT * values_;
+    const Eigen::Ref<const MatrixT>  points_;
+    const Eigen::Ref<const VectorT> values_;
 
     typename RBFBase<ScalarT>::Ptr kernel_;
 

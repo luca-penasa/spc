@@ -9,20 +9,27 @@ template<typename ScalarT>
 class RBFKernelFactory
 {
 public:
-    enum RBF_FUNCTION {RBF_GAUSSIAN, RBF_MULTIQUADRIC};
+    enum RBF_FUNCTION {RBF_GAUSSIAN, RBF_GAUSSIAN_APPROX, RBF_MULTIQUADRIC, RBF_EPANECHNIKOV};
 
     static
     typename RBFBase<ScalarT>::Ptr create(const RBF_FUNCTION &kernel,
                                           const ScalarT & scale = 1)
     {
         if (kernel == RBF_GAUSSIAN)
-            return RBFBase<ScalarT>::Ptr(new GaussianRBF<ScalarT>(scale));
+            return typename RBFBase<ScalarT>::Ptr(new GaussianRBF<ScalarT>(scale));
+
+        else if (kernel == RBF_GAUSSIAN_APPROX)
+            return typename RBFBase<ScalarT>::Ptr(new GaussianApproxRBF<ScalarT>(scale));
 
         else if (kernel == RBF_MULTIQUADRIC)
-            return RBFBase<ScalarT>::Ptr(new MultiquadricRBF<ScalarT>(scale));
+            return typename RBFBase<ScalarT>::Ptr(new MultiquadricRBF<ScalarT>(scale));
+
+        else if (kernel == RBF_EPANECHNIKOV)
+            return typename RBFBase<ScalarT>::Ptr(new EpanechnikovRBF<ScalarT>(scale));
+
         else
         {
-            LOG(WARNING) << "Requested kernel not found";
+            LOG(ERROR) << "Requested kernel not found";
             return NULL;
         }
     }

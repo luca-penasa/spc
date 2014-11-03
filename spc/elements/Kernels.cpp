@@ -6,4 +6,9 @@ SPC_CEREAL_REGISTER_TYPE_WITH_NAME(spc::RBFBase<float>, "spc::RBFBaseF")
 
 SPC_CEREAL_REGISTER_TYPE_WITH_NAME(spc::GaussianRBF<float>, "spc::GaussianRBF")
 
+SPC_CEREAL_REGISTER_TYPE_WITH_NAME(spc::GaussianApproxRBF<float>, "spc::GaussianApproxRBF")
+
 SPC_CEREAL_REGISTER_TYPE_WITH_NAME(spc::MultiquadricRBF<float>, "spc::MultiquadricRBF")
+
+SPC_CEREAL_REGISTER_TYPE_WITH_NAME(spc::EpanechnikovRBF<float>, "spc::EpanechnikovRBFF")
+

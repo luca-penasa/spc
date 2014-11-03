@@ -1,5 +1,5 @@
 #include <spc/io/element_io.h>
-
+#include <iostream>
 using namespace spc;
 
 int main(int argc, char ** argv)

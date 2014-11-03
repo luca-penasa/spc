@@ -3,6 +3,7 @@
 
 #include <spc/elements/ElementBase.h>
 #include <spc/core/spc_eigen.h>
+#include <spc/core/fastapprox.h>
 namespace spc {
 
 
@@ -43,7 +44,7 @@ public:
     /** by default support is infinite
      * restrict it for derived classes which need it
      **/
-    T getSupport() const
+    virtual T getSupport() const
     {
         return std::numeric_limits<T>::infinity();
     }
@@ -110,6 +111,7 @@ public:
 
     using RBFBase<T>::scale_squared_inv_neg_;
 
+
     /** in the case of Gaussian the scale correspond to the sigma
      **/
     GaussianRBF (const T& sigma): RBFBase<T>(sigma) {}
@@ -125,6 +127,8 @@ public:
     }
 
 
+
+
 private:
     friend class cereal::access;
 
@@ -132,6 +136,86 @@ private:
     {
         ar(cereal::base_class<RBFBase<T> >(this));
     }
+
+};
+
+template <typename T>
+class GaussianApproxRBF: public RBFBase<T>
+{
+public:
+
+    using RBFBase<T>::scale_squared_inv_neg_;
+
+    /** in the case of Gaussian the scale correspond to the sigma
+     **/
+    GaussianApproxRBF (const T& sigma): RBFBase<T>(sigma) {}
+
+    /** def const
+     **/
+    GaussianApproxRBF(): RBFBase<T>() {}
+
+    // BasicKernel interface
+    virtual inline T eval(const T &squared_x) const
+    {
+        return fastexp(squared_x * scale_squared_inv_neg_);
+    }
+
+
+private:
+    friend class cereal::access;
+
+    template <class Archive> void serialize(Archive &ar)
+    {
+        ar(cereal::base_class<RBFBase<T> >(this));
+    }
+
+};
+
+
+/** this kernel is defined as (from wikipedia)
+ * K(u) = \frac{3}{4}(1-u^2) \,\mathbf{1}_{\{|u|\leq1\}}
+ **/
+template <typename T>
+class EpanechnikovRBF: public RBFBase<T>
+{
+public:
+
+    using RBFBase<T>::scale_squared_inv_;
+    using RBFBase<T>::scale_;
+
+
+    /** in the case of Gaussian the scale correspond to the sigma
+     **/
+    EpanechnikovRBF (const T& sigma): RBFBase<T>(sigma) {}
+
+    /** def const
+     **/
+    EpanechnikovRBF(): RBFBase<T>() {}
+
+    // BasicKernel interface
+    virtual inline T eval(const T &squared_x) const
+    {
+        if ((squared_x * scale_squared_inv_) >= 1)
+            return 0;
+        else
+            return ratio_ - ratio_ * squared_x * scale_squared_inv_;
+    }
+
+    virtual T getSupport() const
+    {
+        return scale_; // that is the support for this kernel (1 * scale_)
+    }
+
+
+private:
+    friend class cereal::access;
+
+    template <class Archive> void serialize(Archive &ar)
+    {
+        ar(cereal::base_class<RBFBase<T> >(this));
+    }
+
+    T ratio_ = 0.75; /**< the ratio 3/4 used int this kernel */
 
 };
 
@@ -148,11 +232,13 @@ public:
      **/
      MultiquadricRBF (const T& sigma): RBFBase<T>(sigma) {}
 
-//    // BasicKernel interface
-//    virtual inline T eval(const T &squared_x) const
-//    {
-//        return sqrt(1+ squared_x * scale_squared_inv_);
-//    }
+     MultiquadricRBF(): RBFBase<T>() {}
+
+    // BasicKernel interface
+    virtual inline T eval(const T &squared_x) const
+    {
+        return sqrt(1+ squared_x * scale_squared_inv_);
+    }
 
 
 private:
