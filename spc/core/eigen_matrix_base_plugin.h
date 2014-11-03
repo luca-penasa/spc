@@ -130,6 +130,44 @@ nonZeroCoeffs()
 
 
 
+ Eigen::Matrix<Scalar, ColsAtCompileTime, ColsAtCompileTime>
+ getSampleCovMatAndAvg(Eigen::Matrix<Scalar, ColsAtCompileTime, 1> &avg) const
+ {
+     typedef Scalar ScalarT;
+ //    typedef Eigen::Matrix<typename MatrixT::Scalar, MatrixT::ColsAtCompileTime, 1> VectorT;
+     typedef Eigen::Matrix<ScalarT, ColsAtCompileTime, ColsAtCompileTime> CovMatT;
+
+     avg = derived().colwise().mean();
+     auto centered = derived().rowwise() - avg.transpose();
+     CovMatT cov = (centered.adjoint() * centered) / ScalarT(derived().rows() - 1);
+     return cov;
+ }
+
+
+
+// Eigen::Hyperplane<Scalar, ColsAtCompileTime>
+// fitHyperplane()
+// {
+//     typedef Scalar ScalarT;
+//     typedef Eigen::Hyperplane<ScalarT, ColsAtCompileTime> planeT;
+//     typedef Eigen::Matrix<ScalarT, ColsAtCompileTime, ColsAtCompileTime> CovMatT;
+//     typedef typename Eigen::Matrix<ScalarT, ColsAtCompileTime, 1> VectorT;
+
+//     VectorT avg;
+//     CovMatT covmat = derived().getSampleCovMatAndAvg(avg);
+
+//     planeT plane;
+
+//     SelfAdjointEigenSolver<CovMatT> eig(covmat);
+//     plane.normal() = eig.eigenvectors().col(0);
+//     plane.offset() = - plane.normal().dot(avg);
+
+//     return plane;
+// }
+
+
+
+
 //! compatibility with other vector implementations - std::vector, QVector etc
 
 inline Scalar at(uint i, uint j) const

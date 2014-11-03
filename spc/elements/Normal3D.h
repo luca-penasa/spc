@@ -54,7 +54,7 @@ public:
 
     void setUnitAxis(const int ax_id = 2);
 
-    void normalFromBestFit(pcl::PointCloud<pcl::PointXYZ> &cloud);
+    void normalFromBestFit(const pcl::PointCloud<pcl::PointXYZ> &cloud);
 
 protected:
     Eigen::Vector3f normal_;

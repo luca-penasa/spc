@@ -11,6 +11,8 @@
 
 #include <spc/methods/KernelSmoothing2.h>
 
+#include <spc/methods/DynamicScalarFieldEvaluator.h>
+
 namespace spc
 {
 
@@ -155,7 +157,9 @@ protected:
             in_cloud_->getField(x_field_name_, indices_, x_field_);
 
         else // we should have a stratigrahic model
-            x_field_ = model_->getScalarFieldValues(in_cloud_, indices_);
+        {
+            x_field_ = evaluate_dynamic_scalar_field_generator<float,int>(in_cloud_,  model_, indices_);
+        }
 
         in_cloud_->getField(y_field_name_, indices_, y_field_);
     }

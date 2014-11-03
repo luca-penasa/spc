@@ -240,6 +240,28 @@ Eigen::Matrix<T, -1, -1> meshgrid(const std::vector<Eigen::Matrix<T, -1, 1>> &xy
 }
 
 
+template<typename MatrixT>
+Eigen::Hyperplane<typename MatrixT::Scalar, MatrixT::ColsAtCompileTime>
+fitHyperplane(const MatrixT &mat)
+{
+    typedef typename MatrixT::Scalar ScalarT;
+    typedef Eigen::Hyperplane<typename MatrixT::Scalar, MatrixT::ColsAtCompileTime> planeT;
+    typedef Eigen::Matrix<ScalarT, MatrixT::ColsAtCompileTime, MatrixT::ColsAtCompileTime> CovMatT;
+    typedef typename Eigen::Matrix<ScalarT, MatrixT::ColsAtCompileTime, 1> VectorT;
+
+    VectorT avg;
+    CovMatT covmat = mat.getSampleCovMatAndAvg(avg);
+
+    planeT plane;
+
+    Eigen::SelfAdjointEigenSolver<CovMatT> eig(covmat);
+    plane.normal() = eig.eigenvectors().col(0);
+    plane.offset() = - plane.normal().dot(avg);
+
+    return plane;
+}
+
+
 
 
 

@@ -34,7 +34,7 @@ public:
     //////////////////////////////////////////////////
     //!
     //! \brief getStratigraphicPosition get the modeled stratigraphic position
-    // for a poin in 3d
+    //! for a point in 3d
     //! \param point is the 3d point
     //! \return the stratigraphic position of that point
     //!
@@ -47,56 +47,26 @@ public:
     //!
     virtual Vector3f getScalarFieldGradient(const Vector3f &point) const = 0;
 
-    ///////////////////////// METHODS DEPENDING ON THE MANDATORY ONES
-    ///////////////////////////////
-    //!
-    //! \brief getStratigraphicPositions as getStratigraphicPosition but for a
-    // whole cloud!
-    //! \param cloud
-    //! \return a vector of stratigraphic positions computed according this
-    // model
-    //!
-    virtual VectorT
-    getScalarFieldValues(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud) const;
 
-    //!
-    //! \brief getStratigraphicPositions is for the wrapper type of SPC
-    //! \param cloud
-    //! \return
-    //!
-    virtual VectorT getScalarFieldValues(PointCloudBase
-                                                    *cloud) const;
+//    //!
+//    //! \brief getStratigraphicPositions as getStratigraphicPosition but for a
+//    //! whole cloud!
+//    //! \param cloud
+//    //! \param indices the indices for which to compute the sp
+//    //! \return a vector of stratigraphic positions computed according this
+//    // model
+//    //!
+//    virtual VectorT getScalarFieldValues(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud,
+//                                         const std::vector<int> &indices = std::vector<int>()) const;
 
-    //!
-    //! \brief getStratigraphicPositions with indices
-    //! \param cloud
-    //! \param indices
-    //! \return the stratigraphic positions
-    //!
-    virtual VectorT getScalarFieldValues(PointCloudBase *cloud,
-                                                    const std::vector
-                                                    <int> &indices) const;
-
-    /// also from shared pointer
-    virtual VectorT getScalarFieldValues(PointCloudBase::Ptr cloud,
-                                                    const std::vector
-                                                    <int> &indices) const;
-
-    virtual VectorT
-    getScalarFieldValues(PointCloudBase::Ptr cloud) const;
-
-    //!
-    //! \brief getStratigraphicPositions as getStratigraphicPosition but for a
-    // whole cloud!
-    //! \param cloud
-    //! \param indices the indices for which to compute the sp
-    //! \return a vector of stratigraphic positions computed according this
-    // model
-    //!
-    virtual VectorT getScalarFieldValues(pcl::PointCloud
-                                                    <pcl::PointXYZ>::Ptr cloud,
-                                                    const std::vector
-                                                    <int> &indices) const;
+//    //!
+//    //! \brief getStratigraphicPositions with indices
+//    //! \param cloud
+//    //! \param indices
+//    //! \return the stratigraphic positions
+//    //!
+//    virtual VectorT getScalarFieldValues(PointCloudBase &cloud,
+//                                         const std::vector<int> &indices = std::vector<int>()) const;
 
 private:
     friend class cereal::access;

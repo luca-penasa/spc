@@ -6,10 +6,15 @@
 namespace spc
 {
 
+template <typename ScalarT, typename idtype = size_t>
 class DynamicScalarFieldEvaluator
 {
 public:
-    DynamicScalarFieldEvaluator();
+
+    typedef Eigen::Matrix<ScalarT, -1, 1> VectorT;
+    DynamicScalarFieldEvaluator()
+    {
+    }
 
     void setGenerator(VariableScalarFieldBase::ConstPtr model)
     {
@@ -22,14 +27,48 @@ public:
         in_cloud_ = in_cloud;
     }
 
-    void setIndices(const std::vector<int> indices)
+    void setIndices(const std::vector<idtype> indices)
     {
         indices_ = indices;
     }
 
-    int compute();
+    int compute()
+    {
+        if (!model_) {
+            LOG(ERROR) << "Model not found. set one before to compute";
+            return -1;
+        }
 
-    std::vector<float> getOutput()
+        if (!in_cloud_) {
+            LOG(ERROR) << "in cloud not found. set one before to compute";
+            return -1;
+        }
+
+        // populate indices if needed
+        if (indices_.empty()) {
+            // fill it with all the ids
+            for (int i = 0; i < in_cloud_->size(); ++i)
+                indices_.push_back(i);
+        }
+
+        output_.resize(indices_.size());
+
+#ifdef USE_OPENMP
+#pragma omp parallel for
+#endif
+        for (int i = 0; i < indices_.size(); ++i) {
+            int id = indices_.at(i);
+            Eigen::Vector3f point = in_cloud_->getPoint(id);
+            float val = model_->getScalarFieldValue(point);
+            output_(i) = val;
+        }
+
+        //    output_ = out; // do a copy
+
+        return 1; // to confirm everything is fine
+    }
+
+    Eigen::VectorXf getOutput()
     {
         return output_;
     }
@@ -46,14 +85,31 @@ private:
     //positions
     spc::PointCloudBase::ConstPtr in_cloud_;
 
-    //! \brief indices_ the set of int indices for which to compute the strat
+    //! \brief indices_ the set of int indices for which to compute the values
     //position
-    std::vector<int> indices_;
+    std::vector<idtype> indices_;
 
     //! \brief output_ it the results of all computations
-    std::vector<float> output_;
+    VectorT output_;
 };
+
+template<typename ScalarT, typename idtype = size_t>
+Eigen::Matrix<ScalarT, -1, 1> evaluate_dynamic_scalar_field_generator(const spc::PointCloudBase::ConstPtr in_cloud,
+                                                                      const spc::VariableScalarFieldBase::ConstPtr model,
+                                                                      const std::vector<idtype> & indices = std::vector<idtype>())
+{
+    spc::DynamicScalarFieldEvaluator<ScalarT, idtype> eval;
+    eval.setInputCloud(in_cloud);
+    eval.setIndices(indices);
+    eval.setGenerator(model);
+    eval.compute();
+
+    return eval.getOutput();
+}
 
 } // end nspace
 
 #endif // guard
+
+
+

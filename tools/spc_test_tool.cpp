@@ -9,10 +9,74 @@
 #include <spc/core/spc_eigen.h>
 #include <Eigen/SVD>
 
+#include <spc/core/eigen_extensions.h>
 
 
 
+#include <pcl/io/pcd_io.h>
+#include <pcl/features/normal_3d.h>
+void test3()
+{
+    std::string fname = "/home/luca/Desktop/test.pcd";
 
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::io::loadPCDFile(fname, *cloud);
+
+    Eigen::Matrix<float, -1, 3> asmat(cloud->size(), 3);
+    int counter = 0;
+    for (auto p: *cloud)
+    {
+        asmat( counter, 0 ) = p.x;
+        asmat( counter, 1 ) = p.y;
+        asmat( counter, 2 ) = p.z;
+        counter++;
+    }
+
+//    std::cout << "in mat: \n" << asmat << std::endl;
+
+    Eigen::Matrix<float, 3,1> avg;
+    Eigen::Matrix<float, 3,3> covmat = asmat.getSampleCovMatAndAvg(avg);
+
+    LOG(INFO) << "covmat " << covmat;
+    LOG(INFO) << "avg " <<  avg.transpose();
+
+    Eigen::Hyperplane<float, 3> plane = fitHyperplane(asmat);
+    LOG(INFO) << "normal " << plane.normal().transpose();
+    LOG(INFO) << "offset " << plane.offset();
+
+    Eigen::Vector4f pars;
+    float curv;
+    pcl::computePointNormal(*cloud, pars, curv);
+
+
+
+    LOG(INFO) << "plane pars: " << pars;
+
+
+    plane = spc::fitHyperplane(asmat);
+
+    LOG(INFO) << "normal " << plane.normal().transpose();
+    LOG(INFO) << "offset " << plane.offset();
+
+
+
+}
+
+void test4()
+{
+    std::string fname = "/home/luca/Desktop/test.pcd";
+
+
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::io::loadPCDFile(fname, *cloud);
+
+    Eigen::MatrixXf mapped= cloud->getMatrixXfMap(3,4,0).transpose();
+
+    LOG(INFO) << "Matrixt rows: " << mapped.rows();
+    LOG(INFO) << "Matrix cols: " << mapped.cols();
+
+    std::cout << "Matrix \n " << mapped << std::endl;
+}
 
 void test1()
 {
@@ -112,7 +176,7 @@ int main(int argc, char ** argv)
     FLAGS_colorlogtostderr=1;
     FLAGS_logtostderr=1;
 
-    test2();
+    test4();
 
 
 
