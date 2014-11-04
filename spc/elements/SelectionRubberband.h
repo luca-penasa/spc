@@ -7,7 +7,11 @@
 #include <pcl/io/pcd_io.h> //for debug only
 #include <spc/elements/PointCloudPcl.h>
 //#include <boost/serialization/shared_ptr.hpp>
+
+#include <spc/elements/SelectionBase.h>
 #include <boost/foreach.hpp>
+
+#include <spc/templated/PolyLine3D.h>
 
 namespace spc
 {
@@ -15,30 +19,44 @@ namespace spc
 /// NOTE this class must be splitted in a filter and a serializable object
 /// it is not good that an object does operations on data. Filters do them.
 
-class SelectionRubberband : public ElementBase
+class SelectionRubberband : public ElementBase, public SelectionOfPointsBase
 {
 public:
     SPC_OBJECT(SelectionRubberband)
     EXPOSE_TYPE
     typedef pcl::PointCloud<pcl::PointXYZ> cloudT;
 
-    SelectionRubberband();
-
-    SelectionRubberband(const SelectionRubberband &el)
+    SelectionRubberband(const PointCloudXYZBase &verts, float max_distance = 1): max_distance_(max_distance)
     {
-        verts_3d_ = el.getVertices();
-    }
-
-    pcl::PointCloud<pcl::PointXYZ>::Ptr getVertices() const
-    {
-        return verts_3d_;
-    }
-
-    void setVertices(pcl::PointCloud<pcl::PointXYZ>::Ptr verts)
-    {
-        verts_3d_ = verts;
+        DLOG(INFO) << "creating rubberband";
+        verts_ = PolyLine3D(verts);
         updateProjectionPlane();
         updatePolyVertices();
+    }
+
+//    SelectionRubberband(const SelectionRubberband &el)
+//    {
+//        verts_ = el.getVertices();
+//        updateProjectionPlane();
+//        updatePolyVertices();
+//    }
+
+    PolyLine3D getVertices() const
+    {
+        return verts_;
+    }
+
+    void setVertices(const PointCloudXYZBase &verts)
+    {
+//        verts_ = PolyLine3D(verts);
+        updateProjectionPlane();
+        updatePolyVertices();
+    }
+
+    virtual bool isInsideSelection(const Vector3f &obj) const
+    {
+        Vector2f on_plane = proj_plane_.projectOnPlane(obj).head(2);
+        DLOG(INFO) << "to be implemented";
     }
 
     float getMaxDistance() const
@@ -51,98 +69,90 @@ public:
         max_distance_ = d;
     }
 
-    void setInputCloud(PointCloudBase::Ptr cloud)
-    {
-        pcl::console::print_info("Settet input cloud! with %i points\n",
-                                 cloud->size());
-        in_cloud_ = cloud;
-        updateProjectedCloud();
-        updateIndices();
-    }
+//    void setInputCloud(PointCloudBase::Ptr cloud)
+//    {
+//        in_cloud_ = cloud;
+//        updateProjectedCloud();
+//        updateIndices();
+//    }
 
-    std::vector<int> getIndices()
-    {
-        return indices_;
-    }
+//    std::vector<int> getIndices()
+//    {
+//        return indices_;
+//    }
 
     void updateIndices()
     {
-        pcl::console::print_debug("Updating indices \n");
-
-        for (int i = 0; i < projected_cloud_.size(); ++i) {
-            if (projected_cloud_.at(i).z <= max_distance_) {
-                //                pcl::console::print_debug("less than min
-                // distance \n");
-                pcl::PointXY p;
-
-                p.x = projected_cloud_.at(i).x;
-                p.y = projected_cloud_.at(i).y;
-                if (isPointInPoly(p, verts_2d_) == 1) {
-                    //                    pcl::console::print_debug("found point
-                    // inside \n");
-                    indices_.push_back(i);
-                }
-            }
-            //            else
-            //                pcl::console::print_debug("too distant\n");
-        }
+//        DLOG(INFO) << "Updating indices";
+//        for (int i = 0; i < projected_cloud_.size(); ++i)
+//        {
+//            if (projected_cloud_.at(i).z <= max_distance_)
+//            {
+//                pcl::PointXY p;
+//                p.x = projected_cloud_.at(i).x;
+//                p.y = projected_cloud_.at(i).y;
+//                if (isPointInPoly(p, verts_2d_))
+//                    indices_.push_back(i);
+//            }
+//        }
+//        DLOG(INFO) << "Updating indices. Done";
     }
 
-    pcl::PointCloud<pcl::PointXYZ> getInside(PointCloudBase::Ptr in_cloud)
-    {
-        setInputCloud(in_cloud);
-        updateProjectedCloud();
-        updatePolyVertices();
-        updateIndices();
+//    pcl::PointCloud<pcl::PointXYZ> getInside(PointCloudBase::Ptr in_cloud)
+//    {
+//        setInputCloud(in_cloud);
+//        updateProjectedCloud();
+//        updatePolyVertices();
+//        updateIndices();
 
-        std::vector<int> indices = getIndices();
+//        std::vector<int> indices = getIndices();
 
-        std::cout << "found " << indices.size() << " valid indices\n"
-                  << std::endl;
+//        std::cout << "found " << indices.size() << " valid indices\n"
+//                  << std::endl;
 
-        // now filter out
+//        // now filter out
 
-        pcl::PointCloud<pcl::PointXYZ> cloud;
-        cloud.resize(indices.size());
+//        pcl::PointCloud<pcl::PointXYZ> cloud;
+//        cloud.resize(indices.size());
 
-        for(auto id: indices)
-        {
-            Vector3f point = in_cloud->getPoint(id);
-            pcl::PointXYZ p;
-            p.x = point(0);
-            p.y = point(1);
-            p.z = point(2);
-            cloud.push_back(p);
-        }
+//        for(auto id: indices)
+//        {
+//            Vector3f point = in_cloud->getPoint(id);
+//            pcl::PointXYZ p;
+//            p.x = point(0);
+//            p.y = point(1);
+//            p.z = point(2);
+//            cloud.push_back(p);
+//        }
 
-        return cloud;
-    }
+//        return cloud;
+//    }
 
 protected:
-    void updateProjectedCloud()
-    {
-        pcl::console::print_debug("Updating projected cloud.\n");
-        projected_cloud_
-            = in_cloud_->applyTransform(proj_plane_.get2DArbitraryRefSystem());
-        pcl::console::print_info("projected cloud has %i points\n",
-                                 projected_cloud_.size());
-        //        pcl::io::savePCDFileBinary("/home/luca/tmp.pcd",
-        // projected_cloud_);
-    }
+//    void updateProjectedCloud()
+//    {
+//        DLOG(INFO) <<"Updating projected cloud.";
+//        projected_cloud_ = in_cloud_->applyTransform(proj_plane_.get2DArbitraryRefSystem());
+
+//        DLOG(INFO) << "Projected cloud has N points" << projected_cloud_.size();
+//        pcl::io::savePCDFileBinary("/home/luca/tmp.pcd", projected_cloud_);
+//        DLOG(INFO) <<"Updating projected cloud. Done";
+
+
+//    }
 
     void updateProjectionPlane()
     {
-        pcl::console::print_info("Updating projection plane.\n");
-        proj_plane_.positionFromCentroid(*verts_3d_);
+        DLOG(INFO) << "Updating projection plane.";
+        proj_plane_.positionFromCentroid(verts_);
         Normal3D n;
-        n.normalFromBestFit(*verts_3d_);
+        n.normalFromBestFit(verts_);
         proj_plane_.setNormal(n.getNormal());
-        pcl::console::print_info("Normal now is %f %f %f.\n", n.getNormal()(0),
-                                 n.getNormal()(1), n.getNormal()(2));
+        LOG(INFO) << "Prjection plane normal " <<  n.getNormal().transpose();
     }
 
     /// http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-    int isPointInPoly(const pcl::PointXY P,
+    inline int isPointInPoly(const pcl::PointXY P,
                       const std::vector<pcl::PointXY> &polyVertices)
     {
         int nvert = polyVertices.size();
@@ -155,51 +165,38 @@ protected:
                           + polyVertices[i].x))
                 c = !c;
         }
-        //        pcl::console::print_debug("Tested in poly: %i", c);
         return c;
     }
 
     void updatePolyVertices()
     {
 
-        pcl::console::print_info("updating poly vertices\n");
-        verts_2d_.clear();
+       DLOG(INFO) << "Updating poly vertices";
 
-        //         =
-        // verts_3d_.applyTransform(proj_plane_.get2DArbitraryRefSystem());
+        DLOG(INFO) << "N initial poly verts: " << verts_.getNumberOfPoints();
 
-        pcl::console::print_info("there are %i initial poly verts\n",
-                                 verts_3d_->size());
 
-        pcl::PointCloud<pcl::PointXYZ> projected = PointCloudPCL(
-            *verts_3d_).applyTransform(proj_plane_.get2DArbitraryRefSystem());
+        PolyLine3D proj = verts_.transform<PolyLine3D>(proj_plane_.get2DArbitraryRefSystem());
 
-        for(auto & elem: projected)
+
+        DLOG(INFO) << "Cloud projected! copying as 2d cloud";
+        verts_2d_.resize(proj.getNumberOfPoints());
+        for(int i = 0; i < proj.getNumberOfPoints(); ++i)
         {
-            pcl::PointXY p2d;
-            pcl::PointXYZ p3d;
-            p3d = elem;
-
-            p2d.x = p3d.x;
-            p2d.y = p3d.y;
-
-            verts_2d_.push_back(p2d);
+            verts_2d_.setPoint(i, proj.getPoint(i).head(2));
         }
 
-        pcl::console::print_info("there are %i poly verts\n", verts_2d_.size());
+        DLOG(INFO) << "there are "<< verts_2d_.getNumberOfPoints() <<  " poly verts";
     }
 
     ///
     /// \brief m_points the points defining a polyline in 3D
     ///
-    pcl::PointCloud<pcl::PointXYZ>::Ptr verts_3d_;
-    ///
-    /// \brief in_cloud_ it the input cloud to be segmented
-    ///
-    PointCloudBase::Ptr in_cloud_;
+    spc::PolyLine3D verts_;
+
 
     /// things that will be auto-updated
-    std::vector<pcl::PointXY> verts_2d_;
+    spc::PolyLine2D verts_2d_;
 
     /// plane on which to perform the projection
     Plane proj_plane_;
@@ -207,12 +204,19 @@ protected:
     /// a distance limit from the projective plane
     float max_distance_;
 
-    /// good indexes (inside)
-    std::vector<int> indices_;
 
-    /// the input cloud projected in the 2d ref system
-    /// z is the distance from the proj_plane_
-    pcl::PointCloud<pcl::PointXYZ> projected_cloud_;
+//    /// this stuff will go into the evaluator.
+//    ///
+//    /// \brief in_cloud_ it the input cloud to be segmented
+//    ///
+//    PointCloudBase::Ptr in_cloud_;
+
+//    /// good indexes (inside)
+//    std::vector<int> indices_;
+
+//    /// the input cloud projected in the 2d ref system
+//    /// z is the distance from the proj_plane_
+//    pcl::PointCloud<pcl::PointXYZ> projected_cloud_;
 
 private:
     friend class cereal::access;
@@ -221,6 +225,10 @@ private:
     {
         ar(cereal::base_class<spc::ElementBase>(this), max_distance_);
     }
+
+    // ElementBase interface
+
+    // SelectionBase interface
 };
 
 } // end nspace

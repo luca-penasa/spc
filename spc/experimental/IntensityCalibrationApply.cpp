@@ -26,10 +26,10 @@ int ScalarFieldsCalcuator::compute()
     PCL_DEBUG("getting the fields...\n");
 
     Eigen::MatrixXf X;
-    X.resize(cloud_->size(),  function_->getInputSize());
+    X.resize(cloud_->getNumberOfPoints(),  function_->getInputSize());
 
     Eigen::MatrixXf Y;
-    Y.resize(cloud_->size(), function_->getOutputSize());
+    Y.resize(cloud_->getNumberOfPoints(), function_->getOutputSize());
 
 
     // create the input matrix

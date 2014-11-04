@@ -8,64 +8,67 @@ namespace spc
 {
 
 
-DtiClassType MovableElement::Type ("MovableElement", &ElementBase::Type);
+DtiClassType Point3D::Type ("Point3D", &ElementBase::Type);
 
-MovableElement::MovableElement() : position_(0, 0, 0)
+Point3D::Point3D() : position_(0, 0, 0, 1)
 {
 }
 
-MovableElement::MovableElement(const float x, const float y,
-                                         const float z)
+Point3D::Point3D(const float x,
+                 const float y,
+                 const float z)
 {
-    position_ = Eigen::Vector3f(x, y, z);
+    position_ << x,y,z,1;
 }
 
-MovableElement::MovableElement(const Eigen::Vector3f point)
+Point3D::Point3D(const Eigen::Vector3f point)
 {
-    position_ = point;
+    position_.head(3) = point;
+    position_(3) = 1;
 }
 
-void MovableElement::getPosition(float &x, float &y, float &z) const
+void Point3D::getPosition(float &x, float &y, float &z) const
 {
     x = position_(0);
     y = position_(1);
     z = position_(2);
 }
 
-Eigen::Vector3f &MovableElement::getPosition()
+void Point3D::setPositionH(const Eigen::Vector4f position)
 {
-    return position_;
+    position_ = position;
+    position_(3) = 1; // be sure the last element is one
 }
 
-Eigen::Vector3f MovableElement::getPosition() const
-{
-    return position_;
-}
 
-void MovableElement::setPosition(const MovableElement el)
+void Point3D::setPosition(const Point3D &el)
 {
     setPosition(el.getPosition());
 }
 
-void MovableElement::setPosition(const Eigen::Vector3f position)
+void Point3D::setPosition(const Eigen::Vector3f position)
 {
-    position_ = position;
+    position_.head(3) = position;
 }
 
-void MovableElement::positionFromCentroid(pcl::PointCloud
-                                               <pcl::PointXYZ> &cloud)
+void Point3D::positionFromCentroid(pcl::PointCloud<pcl::PointXYZ> &cloud)
 {
-
     Eigen::Vector4f centroid;
-
     pcl::compute3DCentroid(cloud, centroid);
-
     setPosition(centroid.head(3));
 }
+
+void Point3D::positionFromCentroid(const PointCloudXYZBase &cloud)
+{
+    DLOG(INFO) << "setting position from cloud centroid";
+        this->setPosition(cloud.getCentroid());
+    DLOG(INFO) << "now position is " << this->getPosition().transpose();
+}
+
 
 } // end nspace
 
 
 
 #include <spc/core/spc_cereal.hpp>
-SPC_CEREAL_REGISTER_TYPE(spc::MovableElement);
+SPC_CEREAL_REGISTER_TYPE(spc::Point3D);

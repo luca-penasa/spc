@@ -2,7 +2,7 @@
  namespace spc
 {
 
- DtiClassType Sample::Type ("Sample", &MovableElement::Type);
+ DtiClassType Sample::Type ("Sample", &Point3D::Type);
 
 
 }//end nspace

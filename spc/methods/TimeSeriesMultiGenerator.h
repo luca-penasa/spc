@@ -14,7 +14,7 @@ class SerializedTimeSeriesGenerator
 public:
     typedef float ScalarT;
 
-    typedef std::vector<int> Indices;
+    typedef std::vector<size_t> Indices;
     typedef std::vector<Indices> IndicesContainer;
 
     typedef spc::TimeSeriesEquallySpaced OutSeriesT;

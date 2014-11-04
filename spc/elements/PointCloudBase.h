@@ -13,18 +13,28 @@
 #include <spc/elements/OrientedSensor.h>
 
 
+#include <spc/templated/PointSetBase.h>
+
+
 namespace spc
 {
 
-class PointCloudBase : public ElementBase
-{
 
+
+class PointCloudBase : public ElementBase, public PointCloudXYZBase
+{
 public:
+
+    using PointSetBase::IndexT;
+    using PointSetBase::PointT;
+
+
+
     SPC_OBJECT(PointCloudBase)
     EXPOSE_TYPE
     PointCloudBase();
 
-    virtual int getNearestPointID(const Eigen::Vector3f query,
+    virtual int getNearestPointID(const PointT query,
                                   float &sq_distance);
 
 
@@ -33,14 +43,14 @@ public:
 
     virtual void setSensor(const OrientedSensor &sensor) const = 0;
 
-    virtual void getPoint(const int id, float &x, float &y, float &z) const
+    virtual void getPoint(const IndexT id, float &x, float &y, float &z) const
     {
         getFieldValue(id, "x", x);
         getFieldValue(id, "y", y);
         getFieldValue(id, "z", z);
     }
 
-    virtual void setPoint(const int id, const float x, const float y,
+    virtual void setPoint(const IndexT id, const float x, const float y,
                           const float z)
     {
         setFieldValue(id, "x", x);
@@ -49,14 +59,14 @@ public:
     }
 
     /// a generic cloud must implement these method
-    virtual void getNormal(const int id, float &x, float &y, float &z) const
+    virtual void getNormal(const IndexT id, float &x, float &y, float &z) const
     {
         getFieldValue(id, "normal_x", x);
         getFieldValue(id, "normal_y", y);
         getFieldValue(id, "normal_z", z);
     }
 
-    virtual void setNormal(const int id, const float x, const float y,
+    virtual void setNormal(const IndexT id, const float x, const float y,
                            const float z)
     {
         setFieldValue(id, "normal_x", x);
@@ -84,10 +94,10 @@ public:
         return searcher_;
     }
 
-    virtual void getFieldValue(const int id, const std::string fieldname,
+    virtual void getFieldValue(const IndexT id, const std::string fieldname,
                                float &val) const = 0;
 
-    virtual void setFieldValue(const int id, const std::string fieldname,
+    virtual void setFieldValue(const IndexT, const std::string fieldname,
                                const float &val) = 0;
 
     virtual void addField(const std::string &name) = 0;
@@ -95,24 +105,24 @@ public:
     virtual void addFields(const std::vector<std::string> field_names,
                            const Eigen::MatrixXf &data);
 
-    virtual int size() const = 0;
+    virtual size_t getNumberOfPoints() const = 0;
 
     virtual bool hasField(const std::string fieldname) const = 0;
 
     virtual std::vector<std::string> getFieldNames() const = 0;
 
-    virtual void resize(size_t s) = 0;
+    virtual void resize(const IndexT s) = 0;
 
-    virtual Eigen::Vector3f getPoint(const int id) const;
+    virtual PointT getPoint(const IndexT id) const;
 
-    virtual Eigen::Vector3f getNormal(const int id) const;
+    virtual Eigen::Vector3f getNormal(const IndexT id) const;
 
 //    template<class VEC>
     virtual std::vector<float> getField(const std::string fieldname,
-                                        std::vector<int> indices);
+                                        std::vector<IndexT> indices);
 
 
-    virtual void getField(const std::string fieldname, const std::vector<int> indices, Eigen::VectorXf & out);
+    virtual void getField(const std::string fieldname, const std::vector<IndexT> indices, Eigen::VectorXf & out);
 
 
     virtual std::vector<float> getField(const std::string fieldname);
@@ -123,11 +133,29 @@ public:
     applyTransform(const Eigen::Transform
                    <float, 3, Eigen::Affine, Eigen::AutoAlign> &T);
 
+    // PointSetBase interface
+public:
+    virtual void addPoint(const PointT &p) override
+    {
+        IndexT id = this->getNumberOfPoints();
+        this->resize(id + 1);
+        this->setPoint(id, p);
+    }
 
-    virtual pcl::PCLPointCloud2Ptr asPCLData() const;
+    virtual void setPoint(const IndexT id, const PointT &p) override
+    {
+        this->setPoint(id,  p(0), p(1), p(2));
+    }
+
+
+    virtual pcl::PCLPointCloud2Ptr asPCLData() const ;
 
     //! reurns true if ALL the fields exists
     bool hasFields(const std::vector<std::string> &field_names) const;
+
+
+
+
 
 protected:
     pcl::search::FlannSearch<pcl::PointXYZ>::Ptr searcher_;

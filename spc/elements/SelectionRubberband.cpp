@@ -4,9 +4,9 @@ namespace spc
 
 DtiClassType SelectionRubberband::Type ("SelectionRubberband", &ElementBase::Type);
 
-SelectionRubberband::SelectionRubberband() : max_distance_(1.0)
-{
-}
+//SelectionRubberband::SelectionRubberband() : max_distance_(1.0)
+//{
+//}
 
 
 
@@ -15,4 +15,4 @@ SelectionRubberband::SelectionRubberband() : max_distance_(1.0)
 
 
 #include <spc/core/spc_cereal.hpp>
-SPC_CEREAL_REGISTER_TYPE(spc::SelectionRubberband)
+//SPC_CEREAL_REGISTER_TYPE(spc::SelectionRubberband)

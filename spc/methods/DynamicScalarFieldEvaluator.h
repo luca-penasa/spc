@@ -47,7 +47,7 @@ public:
         // populate indices if needed
         if (indices_.empty()) {
             // fill it with all the ids
-            for (int i = 0; i < in_cloud_->size(); ++i)
+            for (int i = 0; i < in_cloud_->getNumberOfPoints(); ++i)
                 indices_.push_back(i);
         }
 

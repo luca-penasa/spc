@@ -2,7 +2,7 @@
 
 namespace spc
 {
-DtiClassType Cylinder::Type ("Cylinder", &MovableElement::Type);
+DtiClassType Cylinder::Type ("Cylinder", &Point3D::Type);
 }
 
 spc::Cylinder::Cylinder(const Eigen::Vector3f dir)
@@ -45,7 +45,7 @@ std::vector<int>
 spc::Cylinder::getIndicesInside(PointCloudBase::ConstPtr cloud)
 {
     std::vector<int> ids;
-    auto siz = cloud->size();
+    auto siz = cloud->getNumberOfPoints();
     for (int i = 0; i < siz; ++i) {
         Eigen::Vector3f p = cloud->getPoint(i);
         if (this->isPointWithinCylinder(p))

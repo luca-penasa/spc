@@ -89,7 +89,7 @@ public:
         x_field_name_ = field_name;
     }
 
-    void setMinMaxLog(float min, float max)
+    void setMinMaxLog(const float min, const float max)
     {
         min_x_ = min;
         max_x_ = max;
@@ -100,7 +100,7 @@ public:
     /// \param field_name the name of the field to be logged
     /// \note this var is mandatory
     ///
-    void setYFieldName(std::string field_name)
+    void setYFieldName(const std::string &field_name)
     {
         y_field_name_ = field_name;
     }
@@ -110,7 +110,7 @@ public:
     /// if not given all the points will be used!
     /// \param indices
     ///
-    void setIndices(std::vector<int> indices)
+    void setIndices(const std::vector<size_t> &indices)
     {
         indices_ = indices;
     }
@@ -119,7 +119,7 @@ public:
     /// \brief getOutputSeries
     /// \return the resulting series
     ///
-    inline OutSeriesPtrT getOutputSeries()
+    inline OutSeriesPtrT getOutputSeries() const
     {
         if (!out_series_)
             pcl::console::print_error(
@@ -158,7 +158,7 @@ protected:
 
         else // we should have a stratigrahic model
         {
-            x_field_ = evaluate_dynamic_scalar_field_generator<float,int>(in_cloud_,  model_, indices_);
+            x_field_ = evaluate_dynamic_scalar_field_generator<float,size_t>(in_cloud_,  model_, indices_);
         }
 
         in_cloud_->getField(y_field_name_, indices_, y_field_);
@@ -178,7 +178,7 @@ protected:
 
     OutSeriesPtrT out_series_;
 
-    std::vector<int> indices_;
+    std::vector<size_t> indices_;
 
     ScalarT min_x_;
 

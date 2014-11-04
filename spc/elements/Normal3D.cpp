@@ -1,5 +1,6 @@
 #include "Normal3D.h"
 #include <spc/core/eigen_extensions.h>
+#include <spc/elements/PointCloudBase.h>
 namespace spc
 {
 
@@ -33,14 +34,14 @@ void Normal3D::setUnitAxis(const int ax_id)
     normal_(ax_id) = 1.0;
 }
 
-void Normal3D::normalFromBestFit(const pcl::PointCloud<pcl::PointXYZ> &cloud)
+void Normal3D::normalFromBestFit(const PointCloudXYZBase &cloud)
 {
     DLOG(INFO) << "setting normal from best fit of plane.";
 
     // this will do a copy. I am sorry :-(
-    Eigen::Matrix<float, -1, 3> asmat= cloud.getMatrixXfMap(3,4,0).transpose();
+//    Eigen::Matrix<float, -1, 3> asmat= cloud.getMatrixXfMap(3,4,0).transpose();
 
-    Eigen::Hyperplane<float, 3> plane = spc::fitHyperplane(asmat);
+    Eigen::Hyperplane<float, 3> plane = cloud.fitHyperplane();
 
     setNormal(plane.normal());
 

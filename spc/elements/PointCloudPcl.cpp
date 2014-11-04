@@ -23,7 +23,7 @@ PointCloudPCL::PointCloudPCL(pcl::PCLPointCloud2Ptr cloud)
 
 
 
-void PointCloudPCL::getFieldValue(const int id,
+void PointCloudPCL::getFieldValue(const IndexT id,
                                   const std::string fieldname, float &val) const
 {
     if (!hasField(fieldname)) {
@@ -37,7 +37,7 @@ void PointCloudPCL::getFieldValue(const int id,
     memcpy(&val, &cloud_->data[value_pos], sizeof(float));
 }
 
-void PointCloudPCL::setFieldValue(const int id, const std::string fieldname,const float &val)
+void PointCloudPCL::setFieldValue(const IndexT id, const std::string fieldname, const float &val)
 {
     int field_id = pcl::getFieldIndex(*cloud_, fieldname);
 
@@ -62,12 +62,12 @@ bool PointCloudPCL::hasField(const std::string fieldname) const
         return false;
 }
 
-int PointCloudPCL::size() const
+size_t PointCloudPCL::getNumberOfPoints() const
 {
     return cloud_->height * cloud_->width;
 }
 
-void PointCloudPCL::resize(size_t s)
+void PointCloudPCL::resize(const IndexT s)
 {
     // we are assuming the cloud is not dense
     cloud_->data.resize(s * cloud_->point_step);

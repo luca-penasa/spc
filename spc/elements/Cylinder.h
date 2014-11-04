@@ -14,7 +14,7 @@ namespace spc
 /// element
 /// and with length and radius as in parameters
 ///
-class Cylinder : public MovableElement
+class Cylinder : public Point3D
 {
 public:
     SPC_OBJECT(Cylinder)
@@ -25,7 +25,7 @@ EXPOSE_TYPE
     {
     }
 
-    Cylinder(const Cylinder &cyl) : MovableElement(cyl)
+    Cylinder(const Cylinder &cyl) : Point3D(cyl)
     {
         // TODO we'll need to copy some other staff
     }
@@ -79,7 +79,7 @@ private:
 
     template <class Archive> void sserialize(Archive &ar)
     {
-        ar(cereal::base_class<spc::MovableElement>(this),
+        ar(cereal::base_class<spc::Point3D>(this),
            CEREAL_NVP(direction_), CEREAL_NVP(length_), CEREAL_NVP(radius_));
     }
 };

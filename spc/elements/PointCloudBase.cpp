@@ -12,7 +12,7 @@ PointCloudBase::PointCloudBase()
 
 }
 
-int PointCloudBase::getNearestPointID(const Eigen::Vector3f query, float &sq_distance)
+int PointCloudBase::getNearestPointID(const PointCloudBase::PointT query, float &sq_distance)
 {
     std::vector<float> sq_dists;
     std::vector<int> ids;
@@ -40,12 +40,12 @@ void PointCloudBase::updateXYZRepresentation()
 {
     DLOG(INFO) << "updating XYZ representation of cloud ";
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
-    cloud->resize(this->size());
+    cloud->resize(this->getNumberOfPoints());
 
 #ifdef USE_OPENMP
 #pragma omp parallel for
 #endif
-    for (int i = 0; i < this->size(); ++i) {
+    for (IndexT i = 0; i < this->getNumberOfPoints(); ++i) {
         Eigen::Vector3f p = getPoint(i);
         cloud->at(i).x = p(0);
         cloud->at(i).y = p(1);
@@ -61,9 +61,9 @@ void PointCloudBase::addFields(const std::vector<std::string> field_names,
                                const Eigen::MatrixXf &data)
 {
     CHECK(field_names.size() == data.cols()) << "the field names and the column of data must be equal";
-    CHECK (this->size() == data.rows()) << "the number of rows of data must be equal to the size of the cloud";
+    CHECK (this->getNumberOfPoints() == data.rows()) << "the number of rows of data must be equal to the size of the cloud";
 
-    size_t field_counter = 0;
+    IndexT field_counter = 0;
     for (std::string fname: field_names)
     {
         this->addField(fname);
@@ -71,7 +71,7 @@ void PointCloudBase::addFields(const std::vector<std::string> field_names,
 #ifdef USE_OPENMP
 #pragma omp parallel for
 #endif
-        for (int i = 0 ; i < data.rows(); ++i)
+        for (IndexT i = 0 ; i < data.rows(); ++i)
         {
             this->setFieldValue(i, fname, data( i, field_counter));
         }
@@ -95,7 +95,7 @@ std::vector<float> PointCloudBase::getField(const std::string fieldname)
     }
 
     float val;
-    for (int i = 0; i < size(); ++i) {
+    for (IndexT i = 0; i < getNumberOfPoints(); ++i) {
         getFieldValue(i, fieldname, val);
         out.push_back(val);
     }
@@ -110,14 +110,14 @@ bool PointCloudBase::getField(const std::string fieldname, Eigen::VectorXf &vect
     return true;
 }
 
-Eigen::Vector3f PointCloudBase::getPoint(const int id) const
+PointCloudBase::PointT PointCloudBase::getPoint(const IndexT id) const
 {
     float x, y, z;
     getPoint(id, x, y, z);
     return Eigen::Vector3f(x, y, z);
 }
 
-Eigen::Vector3f PointCloudBase::getNormal(const int id) const
+Eigen::Vector3f PointCloudBase::getNormal(const IndexT id) const
 {
     float x, y, z;
     getNormal(id, x, y, z);
@@ -128,13 +128,17 @@ pcl::PointCloud<pcl::PointXYZ>
 PointCloudBase::applyTransform(const Eigen::Transform
                                <float, 3, Eigen::Affine, Eigen::AutoAlign> &T)
 {
+
+    DLOG(INFO) << "applying transformation";
     pcl::PointCloud<pcl::PointXYZ> cloud;
 
-    for (int i = 0; i < size(); ++i) {
+    for (int i = 0; i < getNumberOfPoints(); ++i) {
         Eigen::Vector3f point = T * getPoint(i);
         pcl::PointXYZ p(point(0), point(1), point(2));
         cloud.push_back(p);
     }
+
+    DLOG(INFO) << "applying transformation. Done. Cloud returned";
 
     return cloud;
 }
@@ -144,18 +148,18 @@ pcl::PCLPointCloud2Ptr PointCloudBase::asPCLData() const
     // basic info from this
     std::vector<std::string> field_names = this->getFieldNames();
 
-    size_t n_fields = field_names.size();
-    size_t n_points = this->size();
+    IndexT n_fields = field_names.size();
+    IndexT n_points = this->getNumberOfPoints();
 
     pcl::PCLPointCloud2::Ptr cloud (new pcl::PCLPointCloud2);
 
     cloud->width = 1;
-    cloud->height = this->size();
+    cloud->height = this->getNumberOfPoints();
 
     cloud->point_step =sizeof(float) * n_fields;
     cloud->row_step =sizeof(float) * n_fields;
 
-    size_t total_size = sizeof(float) * n_points * n_fields;
+    IndexT total_size = sizeof(float) * n_points * n_fields;
     cloud->data.resize(total_size);
 
     // set up fields
@@ -209,8 +213,8 @@ bool PointCloudBase::hasFields(const std::vector<std::string> &field_names) cons
     return true;
 }
 
-std::vector<float> spc::PointCloudBase::getField(const std::string fieldname,
-                                                 std::vector<int> indices)
+std::vector<float> PointCloudBase::getField(const std::string fieldname,
+                                                 std::vector<IndexT> indices)
 {
     std::vector<float> out;
 
@@ -230,7 +234,7 @@ std::vector<float> spc::PointCloudBase::getField(const std::string fieldname,
     return out;
 }
 
-void PointCloudBase::getField(const std::string fieldname, const std::vector<int> indices, Eigen::VectorXf &out)
+void PointCloudBase::getField(const std::string fieldname, const std::vector<IndexT> indices, Eigen::VectorXf &out)
 {
     if (!hasField(fieldname)) {
         pcl::console::print_warn("[Error in generic_cloud] asked for field %s",

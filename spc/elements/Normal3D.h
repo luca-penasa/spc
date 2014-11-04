@@ -4,6 +4,8 @@
 #include <pcl/features/normal_3d.h>
 #include <cereal/types/polymorphic.hpp>
 
+#include <spc/elements/PointCloudBase.h>
+
 namespace spc
 {
 class Normal3D : public ElementBase
@@ -54,7 +56,7 @@ public:
 
     void setUnitAxis(const int ax_id = 2);
 
-    void normalFromBestFit(const pcl::PointCloud<pcl::PointXYZ> &cloud);
+    void normalFromBestFit(const PointCloudXYZBase &cloud);
 
 protected:
     Eigen::Vector3f normal_;

@@ -224,11 +224,11 @@ protected:
         for(auto & elem: clouds_)
         {
             CloudPtrT cloud = elem;
-            if (cloud->size() < 3)
+            if (cloud->getNumberOfPoints() < 3)
                 continue;
             else {
                 Normal3D n;
-                n.normalFromBestFit(*cloud->getAsPclXyz());
+                n.normalFromBestFit(*cloud);
                 normals.push_back(n.getUnitNormal());
             }
         }

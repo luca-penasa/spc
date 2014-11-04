@@ -5,33 +5,68 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 
+#include <spc/templated/PointSetBase.h>
+
+
+
 namespace spc
 {
-class MovableElement : public ElementBase
+
+
+// fwd delcarations
+class PointCloudBase;
+
+
+class Point3D : public ElementBase
 {
 public:
-    SPC_OBJECT(MovableElement)
+    SPC_OBJECT(Point3D)
     EXPOSE_TYPE
-    MovableElement();
+    Point3D();
 
-    MovableElement(const float x, const float y, const float z);
+    Point3D(const float x, const float y, const float z);
 
-    MovableElement(const Eigen::Vector3f point);
+    Point3D(const Eigen::Vector3f point);
 
-    Eigen::Vector3f getPosition() const;
+    Point3D(const Point3D &ref)
+    {
+        this->position_ = ref.position_;
+    }
 
-    Eigen::Vector3f &getPosition();
+    //! affine like accessors
+    Eigen::Vector4f getPositionH() const;
+
+    Eigen::Vector4f &getPositionH();
+
+    //! clasical 3d accessors for retro-comatibility.
+    //! notice you can write into the Point3D using what getPosition gives you back
+    inline Eigen::Block<Eigen::Vector4f, 3, 1> getPosition()
+    {
+        return Eigen::Block<Eigen::Vector4f, 3, 1> (position_, 0, 0);
+    }
+
+    inline const Eigen::Block<const Eigen::Vector4f, 3, 1> getPosition() const
+    {
+        return Eigen::Block<const Eigen::Vector4f, 3, 1> (position_, 0, 0);
+    }
+
+
 
     void getPosition(float &x, float &y, float &z) const;
 
-    void setPosition(const MovableElement el);
+    void setPosition(const Point3D &el);
 
     void setPosition(const Eigen::Vector3f position);
 
+    void setPositionH(const Eigen::Vector4f position);
+
+    //! this is deprecated. We are rying to move to the PoinCloudBase interface for cloud operations
     void positionFromCentroid(pcl::PointCloud<pcl::PointXYZ> &cloud);
 
+    void positionFromCentroid(const PointCloudXYZBase &cloud);
+
 protected:
-    Eigen::Vector3f position_;
+    Eigen::Vector4f position_; /**< we keep position in Homogeneous coords, to it will be easier to apply transforms*/
 
 private:
     friend class cereal::access;

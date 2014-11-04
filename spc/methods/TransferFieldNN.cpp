@@ -11,7 +11,7 @@ int PointCloudHelpers::transferNormals(PointCloudBase::Ptr from, PointCloudBase:
 #ifdef USE_OPENMP
 #pragma omp parallel for private(d)
 #endif
-    for (int i = 0; i < to->size(); ++i)
+    for (int i = 0; i < to->getNumberOfPoints(); ++i)
     {
         int nn_id = from->getNearestPointID(to->getPoint(i), d);
         if (sqrt(d) > max_distance)
@@ -57,7 +57,7 @@ int PointCloudHelpers::transferFieldsNN(PointCloudBase::Ptr from, PointCloudBase
 #ifdef USE_OPENMP
 #pragma omp parallel for private(value, d)
 #endif
-    for (int i = 0; i < to->size(); ++i)
+    for (int i = 0; i < to->getNumberOfPoints(); ++i)
     {
 
         // nearest point in from
@@ -111,7 +111,7 @@ int PointCloudHelpers::computeScatteringAngle(PointCloudBase::Ptr cloud, const s
 #ifdef USE_OPENMP
 #pragma omp parallel for
 #endif
-    for (int i  = 0; i < cloud->size(); ++i)
+    for (int i  = 0; i < cloud->getNumberOfPoints(); ++i)
     {
         Eigen::Vector3f p = cloud->getPoint(i);
         Eigen::Vector3f n = cloud->getNormal(i);
@@ -158,12 +158,10 @@ int PointCloudHelpers::computeDistanceFromSensor(PointCloudBase::Ptr cloud, std:
 #pragma omp parallel for
 #endif
 
-    for (int i  = 0; i < cloud->size(); ++i)
+    for (int i  = 0; i < cloud->getNumberOfPoints(); ++i)
     {
         Eigen::Vector3f p = cloud->getPoint(i);
-
         Eigen::Vector3f d = p -position;
-
         cloud->setFieldValue(i, fieldname, d.norm());
     }
 

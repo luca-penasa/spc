@@ -11,6 +11,7 @@ namespace spc
 
 class  PointCloudSpc : public PointCloudBaseWithSensor
 {
+    using PointCloudBaseWithSensor::IndexT;
 public:
     PointCloudSpc();
 
@@ -25,19 +26,19 @@ public:
     // PointCloudBase interface
 public:
 
-    virtual void getFieldValue(const int id, const std::string fieldname,
+    virtual void getFieldValue(const IndexT id, const std::string fieldname,
                                float &val) const
     {
         val = fields_manager_->atScalar(fieldname, id);
     }
 
-    virtual void setFieldValue(const int id, const std::string fieldname,
+    virtual void setFieldValue(const IndexT id, const std::string fieldname,
                                const float &val)
     {
        fields_manager_->atScalar(fieldname, id) = val;
     }
 
-    virtual int size() const
+    virtual IndexT getNumberOfPoints() const
     {
         return fields_manager_->getNumberOfRows();
     }
@@ -48,7 +49,7 @@ public:
         return (id >= 0);
     }
 
-    virtual void resize(size_t s)
+    virtual void resize(const IndexT s)
     {
         fields_manager_->resize(s);
     }

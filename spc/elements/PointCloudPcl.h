@@ -4,13 +4,17 @@
 
 #include <spc/elements/PointCloudBase.h>
 #include <spc/elements/point_types.h>
-
+#include <spc/templated/PointSetBase.h>
 
 namespace spc
 {
 
 class PointCloudPCL : public PointCloudBaseWithSensor
 {
+
+    using PointCloudBase::IndexT;
+
+
 public:
     SPC_OBJECT(PointCloudPCL)
     EXPOSE_TYPE
@@ -28,27 +32,27 @@ public:
 
 
     //// we assume here that is a float the value to be extracted
-    virtual void getFieldValue(const int id, const std::string fieldname,
+    virtual void getFieldValue(const IndexT id, const std::string fieldname,
                                float &val) const override;
 
-    virtual void setFieldValue(const int id, const std::string fieldname,const float &val);
+    virtual void setFieldValue(const IndexT id, const std::string fieldname,const float &val) override;
 
 
-    virtual bool hasField(const std::string fieldname) const;
+    virtual bool hasField(const std::string fieldname) const override;
 
-    virtual int size() const override;
+    virtual size_t getNumberOfPoints() const override;
 
-    virtual void resize(size_t s) override;
+    virtual void resize(const IndexT s) override;
 
 
 public:
-    virtual std::vector<std::string> getFieldNames() const;
+    virtual std::vector<std::string> getFieldNames() const override;
 
 
-    virtual void addField(const std::string &name);
+    virtual void addField(const std::string &name) override;
 
 
-    virtual pcl::PCLPointCloud2Ptr asPCLData() const
+    virtual pcl::PCLPointCloud2Ptr asPCLData() const override
     {
         return cloud_;
     }
@@ -58,6 +62,7 @@ protected:
     pcl::PCLPointCloud2Ptr cloud_;
 
     Eigen::Array3i xyz_offsets_;
+
 
 
 };

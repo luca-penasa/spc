@@ -10,7 +10,7 @@
 namespace spc
 {
 
-class Sample : public MovableElement
+class Sample : public Point3D
 {
 
 public:
@@ -21,11 +21,11 @@ EXPOSE_TYPE
     }
 
     Sample(const float x, const float y, const float z)
-        : MovableElement(x, y, z)
+        : Point3D(x, y, z)
     {
     }
 
-    Sample(const Eigen::Vector3f v) : MovableElement(v)
+    Sample(const Eigen::Vector3f v) : Point3D(v)
     {
     }
 
@@ -34,7 +34,7 @@ private:
 
     template <class Archive> void serialize(Archive &ar)
     {
-        ar(cereal::base_class<MovableElement>(this));
+        ar(cereal::base_class<Point3D>(this));
     }
 };
 

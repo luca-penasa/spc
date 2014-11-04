@@ -1,4 +1,22 @@
 
+//! yes we add iterators! straight from mrpt project
+typedef Scalar* iterator;
+typedef const Scalar* const_iterator;
+
+EIGEN_STRONG_INLINE iterator begin() { return derived().data(); }
+EIGEN_STRONG_INLINE iterator end() { return (&(derived().data()[size()-1]))+1; }
+EIGEN_STRONG_INLINE const_iterator begin() const { return derived().data(); }
+EIGEN_STRONG_INLINE const_iterator end() const { return (&(derived().data()[size()-1]))+1; }
+
+//! end iterators
+
+EIGEN_STRONG_INLINE size_t maxID() const
+{
+    size_t id;
+    derived().maxCoeff(id);
+    return id;
+}
+
 
 double mean() const
 {

@@ -25,7 +25,7 @@ int getFields(const std::vector<std::string> names,
                const PointCloudBase::Ptr cloud,
                Eigen::MatrixXf & out)
 {
-    out.resize(cloud->size(), names.size());
+    out.resize(cloud->getNumberOfPoints(), names.size());
     for (int i = 0; i < names.size(); ++i)
     {
         std::string fname = names.at(i);
