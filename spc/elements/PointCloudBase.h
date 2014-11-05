@@ -13,7 +13,7 @@
 #include <spc/elements/OrientedSensor.h>
 
 
-#include <spc/templated/PointSetBase.h>
+#include <spc/elements/templated/PointSetBase.h>
 
 
 namespace spc

@@ -1,7 +1,7 @@
 #ifndef POLYLINE3D_H
 #define POLYLINE3D_H
 
-#include <spc/templated/PointSet.h>
+#include <spc/elements/templated/PointSet.h>
 
 
 namespace spc

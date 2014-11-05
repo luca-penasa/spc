@@ -11,7 +11,7 @@
 #include <spc/elements/SelectionBase.h>
 #include <boost/foreach.hpp>
 
-#include <spc/templated/PolyLine3D.h>
+#include <spc/elements/templated/PolyLine3D.h>
 
 namespace spc
 {
@@ -26,10 +26,22 @@ public:
     EXPOSE_TYPE
     typedef pcl::PointCloud<pcl::PointXYZ> cloudT;
 
+
+    /** def const */
+    SelectionRubberband()
+    {
+
+    }
+
     SelectionRubberband(const PointCloudXYZBase &verts, float max_distance = 1): max_distance_(max_distance)
     {
-        DLOG(INFO) << "creating rubberband";
+        DLOG(INFO) << "creating rubberband with  " << verts.getNumberOfPoints() << " number of verts";
+        DLOG(INFO) << "max distance set to " << max_distance;
         verts_ = PolyLine3D(verts);
+
+        DLOG(INFO) << "polyline3d created";
+        verts_.asEigenMatrix();
+        DLOG(INFO) << "aseigen called and its ok";
         updateProjectionPlane();
         updatePolyVertices();
     }
@@ -45,6 +57,12 @@ public:
     {
         return verts_;
     }
+
+    Plane getProjectionPlane() const
+    {
+        return proj_plane_;
+    }
+
 
     void setVertices(const PointCloudXYZBase &verts)
     {
@@ -145,6 +163,8 @@ protected:
     {
         DLOG(INFO) << "Updating projection plane.";
         proj_plane_.positionFromCentroid(verts_);
+
+        DLOG(INFO) << "Centroid is " << proj_plane_.getPosition().transpose();
         Normal3D n;
         n.normalFromBestFit(verts_);
         proj_plane_.setNormal(n.getNormal());
@@ -167,6 +187,7 @@ protected:
         }
         return c;
     }
+
 
     void updatePolyVertices()
     {
@@ -223,7 +244,11 @@ private:
 
     template <class Archive> void serialize(Archive &ar)
     {
-        ar(cereal::base_class<spc::ElementBase>(this), max_distance_);
+        ar(cereal::base_class<spc::ElementBase>(this),
+           CEREAL_NVP(max_distance_),
+           CEREAL_NVP(verts_),
+           CEREAL_NVP(verts_2d_),
+           CEREAL_NVP(proj_plane_));
     }
 
     // ElementBase interface

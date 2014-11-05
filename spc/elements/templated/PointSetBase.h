@@ -6,6 +6,16 @@ namespace spc
 {
 
 template<typename ScalarT = float, size_t DIM = 3>
+struct BoundingBox
+{
+    typedef Eigen::Matrix<ScalarT, DIM,1> PointT;
+
+    PointT min_;
+    PointT max_;
+};
+
+
+template<typename ScalarT = float, size_t DIM = 3>
 class PointSetBase
 {
 public:
@@ -15,6 +25,8 @@ public:
     typedef Eigen::Transform<ScalarT, PointT::RowsAtCompileTime, Eigen::Affine, Eigen::AutoAlign> TransformT;
 
     typedef PointSetBase<ScalarT, DIM> self_t;
+
+    typedef BoundingBox<ScalarT, DIM> BBT;
 
     spcTypedefSharedPtrs(self_t)
 
@@ -59,13 +71,30 @@ public:
 
     virtual PointT getCentroid() const
     {
+
         PointT c = PointT::Zero();
+        LOG(INFO) << "getting centroid with n points: " << this->getNumberOfPoints();
         for (size_t i = 0 ; i < getNumberOfPoints(); ++i)
+        {
+//            LOG(INFO) << this->getPoint(i);
             c += this->getPoint(i);
+        }
+
+        DLOG(INFO) << "Sum is " << c.transpose();
 
         c /= getNumberOfPoints();
         return c;
     }
+
+    virtual BBT getBB() const
+    {
+          BBT out;
+          out.min_ = this->asEigenMatrix().colwise().minCoeff();
+          out.max_ = this->asEigenMatrix().colwise().maxCoeff();
+          return out;
+    }
+
+
 
     template<typename OutPointSet> OutPointSet
     transform(const TransformT &T) const
@@ -85,11 +114,6 @@ public:
     Eigen::Hyperplane<ScalarT, DIM>
     fitHyperplane() const
     {
-//        typedef typename MatrixT::Scalar ScalarT;
-//        typedef Eigen::Hyperplane<typename MatrixT::Scalar, MatrixT::ColsAtCompileTime> planeT;
-//        typedef Eigen::Matrix<ScalarT, MatrixT::ColsAtCompileTime, MatrixT::ColsAtCompileTime> CovMatT;
-//        typedef typename Eigen::Matrix<ScalarT, MatrixT::ColsAtCompileTime, 1> VectorT;
-
         PointT avg;
         Eigen::Matrix<ScalarT, DIM, DIM> covmat = this->asEigenMatrix().getSampleCovMatAndAvg(avg);
 

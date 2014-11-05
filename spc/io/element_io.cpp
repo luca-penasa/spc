@@ -23,8 +23,7 @@ int serializeToFile(const ISerializable::Ptr element, std::string filename,
                     const ARCHIVE_TYPE &type)
 {
     if (!element->isSerializable()) {
-        pcl::console::print_error(
-            "Trying to serialize an unserializable object. Nothing Done.\n");
+        LOG(ERROR) << "The file cannot be deserialized";
         return -1;
     }
 
@@ -85,6 +84,7 @@ int serializeToStream(const ISerializable::Ptr element, std::ostream &stream,
                       const ARCHIVE_TYPE &type)
 {
 
+    {
     if (type == XML) {
         cereal::XMLOutputArchive archive(stream);
         archive(cereal::make_nvp("SPCDataset", element));
@@ -99,6 +99,8 @@ int serializeToStream(const ISerializable::Ptr element, std::ostream &stream,
         cereal::BinaryOutputArchive archive(stream);
         archive(cereal::make_nvp("SPCDataset", element));
     }
+
+    }
 }
 
 ISerializable::Ptr deserializeFromStream(std::istream &stream,
@@ -106,6 +108,7 @@ ISerializable::Ptr deserializeFromStream(std::istream &stream,
 {
     ISerializable::Ptr ptr;
 
+    {
     try {
     if (type == XML) {
         cereal::XMLInputArchive archive(stream);
@@ -119,11 +122,12 @@ ISerializable::Ptr deserializeFromStream(std::istream &stream,
     }
     }
 
-    catch(...)
+    catch(const std::exception &exc)
     {
-        return ptr;
+        LOG(ERROR) << "Some problem deserializing the file: " << exc.what();
+        return NULL;
     }
-
+    }
 
     return ptr;
 }

@@ -5,7 +5,7 @@
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 
-#include <spc/templated/PointSetBase.h>
+#include <spc/elements/templated/PointSetBase.h>
 
 
 
@@ -61,7 +61,7 @@ public:
     void setPositionH(const Eigen::Vector4f position);
 
     //! this is deprecated. We are rying to move to the PoinCloudBase interface for cloud operations
-    void positionFromCentroid(pcl::PointCloud<pcl::PointXYZ> &cloud);
+//    void positionFromCentroid(pcl::PointCloud<pcl::PointXYZ> &cloud);
 
     void positionFromCentroid(const PointCloudXYZBase &cloud);
 

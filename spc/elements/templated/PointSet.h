@@ -1,7 +1,7 @@
 #ifndef POINTSET_H
 #define POINTSET_H
 
-#include <spc/templated/PointSetBase.h>
+#include <spc/elements/templated/PointSetBase.h>
 
 namespace spc
 {
@@ -15,8 +15,6 @@ public:
     using typename PointSetBase<ScalarT, DIM>::PointT;
 
     typedef PointSet<ScalarT, DIM> self_t;
-
-
 
     //! copy const
     PointSet( const self_t & other) : PointSetBase<ScalarT, DIM>(other)
@@ -34,22 +32,16 @@ public:
         }
     }
 
-
-
     //!def const
     PointSet()
     {
 
     }
 
-
     ~PointSet()
     {
         // nothing to do
     }
-
-
-
 
 public:
     virtual PointT getPoint(const IndexT id) const override
@@ -59,7 +51,7 @@ public:
 
     virtual IndexT getNumberOfPoints() const override
     {
-        return data_.size();
+        return data_.rows();
     }
 
     virtual void addPoint(const PointT &p) override
@@ -75,25 +67,27 @@ public:
         data_.row(id) = p;
     }
 
-
-
     virtual void resize(IndexT size)
     {
         data_.conservativeResize(size, DIM);
     }
 
-
-
-
 protected:
     Eigen::Matrix<ScalarT, -1, DIM> data_;
-
 
     // PointSetBase interface
 public:
     virtual Eigen::Matrix<ScalarT, -1, DIM> asEigenMatrix() const override
     {
         return data_;
+    }
+
+private:
+    friend class cereal::access;
+
+    template <class Archive> void serialize(Archive &ar)
+    {
+        ar(data_);
     }
 };
 

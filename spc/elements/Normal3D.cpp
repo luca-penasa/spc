@@ -45,7 +45,7 @@ void Normal3D::normalFromBestFit(const PointCloudXYZBase &cloud)
 
     setNormal(plane.normal());
 
-    DLOG(INFO) << "normal is now: " << plane.normal();
+    DLOG(INFO) << "normal is now: " << plane.normal().transpose();
 }
 
 } // end nspace

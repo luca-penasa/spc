@@ -51,18 +51,19 @@ void Point3D::setPosition(const Eigen::Vector3f position)
     position_.head(3) = position;
 }
 
-void Point3D::positionFromCentroid(pcl::PointCloud<pcl::PointXYZ> &cloud)
-{
-    Eigen::Vector4f centroid;
-    pcl::compute3DCentroid(cloud, centroid);
-    setPosition(centroid.head(3));
-}
+//void Point3D::positionFromCentroid(pcl::PointCloud<pcl::PointXYZ> &cloud)
+//{
+//    Eigen::Vector4f centroid;
+//    pcl::compute3DCentroid(cloud, centroid);
+//    setPosition(centroid.head(3));
+//}
 
 void Point3D::positionFromCentroid(const PointCloudXYZBase &cloud)
 {
     DLOG(INFO) << "setting position from cloud centroid";
-        this->setPosition(cloud.getCentroid());
-    DLOG(INFO) << "now position is " << this->getPosition().transpose();
+    Eigen::Vector3f pos = cloud.getCentroid();
+    this->setPosition(pos);
+    DLOG(INFO) << "now position is " << pos.transpose();
 }
 
 

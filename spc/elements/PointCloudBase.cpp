@@ -114,7 +114,9 @@ PointCloudBase::PointT PointCloudBase::getPoint(const IndexT id) const
 {
     float x, y, z;
     getPoint(id, x, y, z);
-    return Eigen::Vector3f(x, y, z);
+    Eigen::Vector3f p;
+    p << x, y, z;
+    return p;
 }
 
 Eigen::Vector3f PointCloudBase::getNormal(const IndexT id) const

@@ -4,7 +4,7 @@
 
 #include <spc/elements/PointCloudBase.h>
 #include <spc/elements/point_types.h>
-#include <spc/templated/PointSetBase.h>
+#include <spc/elements/templated/PointSetBase.h>
 
 namespace spc
 {

@@ -15,6 +15,35 @@
 
 #include <pcl/io/pcd_io.h>
 #include <pcl/features/normal_3d.h>
+
+#include <spc/elements/Attitude.h>
+#include <spc/io/element_io.h>
+void testAttitudeIO()
+{
+
+    Eigen::Vector3f normal, position;
+    normal = Eigen::Vector3f::Random();
+    position = Eigen::Vector3f::Random();
+    spc::Attitude::Ptr att(new spc::Attitude);
+    att->setNormal(normal);
+    att->setPosition(position);
+
+    std::cout << att->getNormal() << std::endl;
+    std::cout << att->getPosition() << std::endl;
+
+    spc::io::serializeToFile(att, "/home/luca/attitude", spc::io::JSON);
+
+
+    spc::ISerializable::Ptr reloaded =  spc::io::deserializeFromFile("/home/luca/attitude.json");
+    spc::Attitude::Ptr newatt = spcDynamicPointerCast<spc::Attitude> (reloaded);
+
+    std::cout << newatt->getNormal() << std::endl;
+    std::cout << newatt->getPosition() << std::endl;
+
+    spc::io::serializeToFile(newatt, "/home/luca/attitude2", spc::io::JSON);
+
+}
+
 void test3()
 {
     std::string fname = "/home/luca/Desktop/test.pcd";
@@ -176,7 +205,7 @@ int main(int argc, char ** argv)
     FLAGS_colorlogtostderr=1;
     FLAGS_logtostderr=1;
 
-    test4();
+    testAttitudeIO();
 
 
 
