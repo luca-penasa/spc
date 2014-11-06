@@ -25,9 +25,44 @@ endmacro()
 macro(spc_add_library)
     get_filename_component(libname ${CMAKE_CURRENT_SOURCE_DIR}  NAME)
 
-    file(GLOB_RECURSE SOURCES *.cpp)
-    file(GLOB_RECURSE HEADERS *.h)
-    file(GLOB_RECURSE IMPLS *.hpp)
+# Auto add all subdirectories
+file(GLOB subdirectories *)
+
+set(LIB_SOURCES "")
+set(LIB_HEADERS "")
+set(LIB_IMPLS "")
+
+foreach(dir ${subdirectories})
+    if(IS_DIRECTORY ${dir})
+        message("found dir " ${dir})
+        get_filename_component(subdirname ${dir}  NAME)
+
+        install(DIRECTORY ${dir} DESTINATION "${SPC_INSTALL_INCLUDE_DIR}/spc/${libname}"
+              FILES_MATCHING PATTERN "*.h")
+
+        install(DIRECTORY ${dir} DESTINATION "${SPC_INSTALL_INCLUDE_DIR}/spc/${libname}"
+              FILES_MATCHING PATTERN "*.hpp")
+
+
+        file(GLOB SOURCES ${dir}/*.cpp)
+        file(GLOB HEADERS ${dir}/*.h)
+        file(GLOB IMPLS ${dir}/*.hpp)
+
+        list(APPEND LIB_SOURCES ${SOURCES})
+        list(APPEND LIB_HEADERS ${HEADERS})
+        list(APPEND LIB_IMPLS ${IMPLS})
+
+    endif()
+endforeach()
+
+
+    file(GLOB SOURCES *.cpp)
+    file(GLOB HEADERS *.h)
+    file(GLOB IMPLS *.hpp)
+
+list(APPEND LIB_SOURCES ${SOURCES})
+list(APPEND LIB_HEADERS ${HEADERS})
+list(APPEND LIB_IMPLS ${IMPLS})
 
     set(sources ${SOURCES} ${HEADERS} ${IMPLS})
 #${HEADERS} ${IMPLS})

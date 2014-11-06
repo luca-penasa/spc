@@ -1,7 +1,7 @@
 #ifndef NANOFLANN_ADAPTERS_HPP
 #define NANOFLANN_ADAPTERS_HPP
 
-#include <submodules/nanoflann/include/nanoflann.hpp>
+#include <nanoflann.hpp>
 #include <spc/core/spc_eigen.h>
 
 using namespace Eigen;

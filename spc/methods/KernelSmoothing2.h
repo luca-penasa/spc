@@ -5,7 +5,7 @@
 #include <spc/elements/TimeSeriesEquallySpaced.h>
 #include <spc/core/nanoflann_adapters.hpp>
 
-#include <submodules/nanoflann/include/nanoflann.hpp>
+#include <nanoflann.hpp>
 
 #include <pcl/console/print.h>
 #include <boost/foreach.hpp>
