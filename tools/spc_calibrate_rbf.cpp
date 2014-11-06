@@ -33,15 +33,10 @@ int main (int argc, char ** argv)
 {
     google::InitGoogleLogging(argv[0]);
 
+    google::SetUsageMessage("Compute a rbf model for predicting a given scalar field (e.g. intensity) as function of any other scalar fields."
+                            "call as: " + std::string(argv[0]) + " database.spc [or xml/json] [...]");
+
     FLAGS_logtostderr = 1;
-
-//    Eigen::VectorXf a(2);
-//    a << 2, 3;
-
-//    DLOG(INFO) <<"TEST: " <<  spc::getPolynomialVariables(a,2).transpose();
-
-
-//    return 1;
     google::ParseCommandLineFlags(&argc, &argv, true);
 
 

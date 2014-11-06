@@ -130,7 +130,7 @@ protected:
 
     std::map<std::string, size_t> names_to_col_;
     std::map<size_t, std::string> cols_to_name_;
-    std::map<size_t, size_t> col_to_dim_;
+    std::map<std::string, size_t> col_to_dim_;
 };
 
 } // end nspace

@@ -65,17 +65,21 @@ void EigenTable::addNewComponent(const std::string &name, size_t dimensionality)
         size_t next_id
             = getNumberOfColumns(); // correspond to the next "free" column
 
+        DLOG(INFO) << "Adding new componet "<<name;
+        DLOG(INFO) << "dimensionality asked " << dimensionality;
+        DLOG(INFO) << "next free id: " << next_id;
         names_to_col_[name] = next_id;
-
-        col_to_dim_[next_id] = dimensionality;
-
+        col_to_dim_[name] = dimensionality;
         cols_to_name_[next_id] = name;
 
+
         if (dimensionality != 1) {
-            for (int i = 0; i < dimensionality; ++i) {
+            for (int i = 0; i < dimensionality; ++i)
+            {
                 std::string newname = getNameOfComponentAtDimension(name, i);
+                DLOG(INFO) << "added subcomponent: " << newname;
                 names_to_col_[newname] = next_id + i;
-                col_to_dim_[next_id + i] = 1;
+                col_to_dim_[newname] = 1;
                 cols_to_name_[next_id + i] = newname;
             }
         }
@@ -100,6 +104,8 @@ EigenTable::atVector(const std::string &name, const size_t &row)
 {
     size_t id = getColumnId(name);
     size_t dim = getColumnDimensionality(name);
+
+    DLOG(INFO) <<"accessing " << name << " field with dim " << dim;
 
     //        return mat_.block(row, id, 1, dim);
 
@@ -136,8 +142,7 @@ size_t EigenTable::getColumnId(const std::string &name) const
 
 size_t EigenTable::getColumnDimensionality(const std::string &name) const
 {
-    size_t dim = getColumnId(name);
-    return col_to_dim_.at(dim);
+    return col_to_dim_.at(name);
 }
 
 void EigenTable::resize(const size_t &rows)

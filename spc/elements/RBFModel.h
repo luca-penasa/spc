@@ -24,7 +24,7 @@ public:
 
 
 
-    RBFModel(): kernel_(new GaussianRBF<T>(1.0))
+    RBFModel(): kernel_(new GaussianApproxRBF<T>(1.0))
     {
 
     }

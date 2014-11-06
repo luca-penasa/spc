@@ -18,6 +18,12 @@
 #include <boost/spirit/home/support/detail/hold_any.hpp>
 
 #include <spc/io/element_io.h>
+
+
+#include <gflags/gflags.h>
+#include <spc/core/logging.h>
+
+
 using namespace std;
 using namespace pcl;
 using namespace pcl::console;
@@ -61,6 +67,15 @@ Eigen::Vector3f vector_from_string(const string line, const string separator)
 
 int main (int argc, char ** argv)
 {
+    google::InitGoogleLogging(argv[0]);
+
+    google::SetUsageMessage("USAGE: " + std::string(argv[0]) + "incloud1.pcd incloud2.pcd [... .pcd] -cp core_points.pcd  [options]");
+
+    FLAGS_logtostderr = 1;
+//    google::ParseCommandLineFlags(&argc, &argv, true);
+
+
+
     pcl::console::TicToc tt;
     tt.tic();
 

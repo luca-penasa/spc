@@ -21,7 +21,7 @@ namespace cereal
 //! if you dont provide an overloading as below for xml and json
 template <int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols> inline
 void
-save(BinaryOutputArchive & ar, Eigen::Matrix<float, _Rows, _Cols, _Options, _MaxRows, _MaxCols> const & m)
+save(BinaryOutputArchive & ar, Eigen::Matrix<float, _Rows, _Cols, _Options, _MaxRows, _MaxCols> const & m, const std::uint32_t version)
 {
     int32_t rows = m.rows();
     int32_t cols = m.cols();
@@ -34,7 +34,7 @@ save(BinaryOutputArchive & ar, Eigen::Matrix<float, _Rows, _Cols, _Options, _Max
 }
 
 template < int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols> inline
-void load(BinaryInputArchive & ar, Eigen::Matrix<float, _Rows, _Cols, _Options, _MaxRows, _MaxCols> & m)
+void load(BinaryInputArchive & ar, Eigen::Matrix<float, _Rows, _Cols, _Options, _MaxRows, _MaxCols> & m, const std::uint32_t version)
 {
     int32_t rows;
     int32_t cols;
@@ -54,7 +54,7 @@ void load(BinaryInputArchive & ar, Eigen::Matrix<float, _Rows, _Cols, _Options, 
 #define SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(ARTYPE, ROWS, COLS)\
 template <class _Scalar> inline \
 void \
-save(ARTYPE##OutputArchive & ar, Eigen::Matrix<_Scalar, ROWS, COLS> const & m)\
+save(ARTYPE##OutputArchive & ar, Eigen::Matrix<_Scalar, ROWS, COLS> const & m, const std::uint32_t version)\
 {\
     for (int i = 0; i <  ROWS; i++)\
         for (int j= 0; j < COLS; j++)\
@@ -62,7 +62,7 @@ save(ARTYPE##OutputArchive & ar, Eigen::Matrix<_Scalar, ROWS, COLS> const & m)\
 }\
 template <class _Scalar> inline \
 void \
-load(ARTYPE## InputArchive & ar, Eigen::Matrix<_Scalar, ROWS, COLS>  & m)\
+load(ARTYPE## InputArchive & ar, Eigen::Matrix<_Scalar, ROWS, COLS>  & m, const std::uint32_t version)\
 {\
     for (int i = 0; i <  ROWS; i++)\
         for (int j= 0; j < COLS; j++)\
@@ -75,18 +75,18 @@ load(ARTYPE## InputArchive & ar, Eigen::Matrix<_Scalar, ROWS, COLS>  & m)\
         } \
 }
 
-//SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(XML, 2, 1)
-//SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(JSON, 2, 1)
-//SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(XML, 2, 2)
-//SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(JSON, 2, 2)
+SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(XML, 2, 1)
+SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(JSON, 2, 1)
+SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(XML, 2, 2)
+SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(JSON, 2, 2)
 SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(XML, 3, 1)
-//SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(JSON, 3, 1)
-//SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(XML, 4, 1)
-//SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(JSON, 4, 1)
-//SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(XML, 3, 3)
-//SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(JSON, 3, 3)
-//SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(XML, 4, 4)
-//SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(JSON, 4, 4)
+SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(JSON, 3, 1)
+SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(XML, 4, 1)
+SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(JSON, 4, 1)
+SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(XML, 3, 3)
+SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(JSON, 3, 3)
+SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(XML, 4, 4)
+SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(JSON, 4, 4)
 
 
 
@@ -97,7 +97,7 @@ SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(XML, 3, 1)
 //! all the remaining eigen types will be saved a as binary dumps in xml
 template <class _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols> inline
 void
-save(cereal::XMLOutputArchive & ar, Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> const & m)
+save(cereal::XMLOutputArchive & ar, Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> const & m, const std::uint32_t version)
 {
     int32_t rows = m.rows();
     int32_t cols = m.cols();
@@ -111,7 +111,7 @@ save(cereal::XMLOutputArchive & ar, Eigen::Matrix<_Scalar, _Rows, _Cols, _Option
 
 template < class _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols> inline
 void
-load(cereal::XMLInputArchive & ar, Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> & m)
+load(cereal::XMLInputArchive & ar, Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> & m, const std::uint32_t version)
 {
     int32_t rows;
     int32_t cols;
@@ -129,7 +129,7 @@ load(cereal::XMLInputArchive & ar, Eigen::Matrix<_Scalar, _Rows, _Cols, _Options
 ////! all the remaining eigen types will be saved a as binary dumps in xml
 template <class _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols> inline
 void
-save(cereal::JSONOutputArchive & ar, Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> const & m)
+save(cereal::JSONOutputArchive & ar, Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> const & m, const std::uint32_t version)
 {
     int32_t rows = m.rows();
     int32_t cols = m.cols();
@@ -143,7 +143,7 @@ save(cereal::JSONOutputArchive & ar, Eigen::Matrix<_Scalar, _Rows, _Cols, _Optio
 
 template < class _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols> inline
 void
-load(cereal::JSONInputArchive & ar, Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> & m)
+load(cereal::JSONInputArchive & ar, Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> & m, const std::uint32_t version)
 {
     int32_t rows;
     int32_t cols;

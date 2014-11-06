@@ -197,6 +197,8 @@ CalibrationDataEstimator::computeSampleParameters(const size_t core_point_id,
                                                   const float search_radius)
 {
 
+    DLOG(INFO) << "computing sampl par";
+
     size_t counter = core_point_id + current_cloud_id_
                                      * core_points_cloud_->size();
 
@@ -210,6 +212,10 @@ CalibrationDataEstimator::computeSampleParameters(const size_t core_point_id,
 
     ////////////////////////////////// NORMAL ESTIMATION
     ////////////////////////////////
+
+    DLOG(INFO) << "normal estimation";
+
+
     // compute normal and average distance
     float nx(spcNANMacro);
     float ny(spcNANMacro);
@@ -231,27 +237,32 @@ CalibrationDataEstimator::computeSampleParameters(const size_t core_point_id,
     }
 
     /////////////////////// DISTANCE ESTIMATION ////////////////////////////
-    Eigen::Vector4f _c(spcNANMacro, spcNANMacro, spcNANMacro,
-                       spcNANMacro); // tmp_var
 
-    if (ids.size() > 0) {
-        pcl::compute3DCentroid(*current_point_cloud_, ids, _c);
+    DLOG(INFO) << "distance estimation";
+    Eigen::Vector4f c; // tmp_var
+    c.fill(spcNANMacro);
+
+    if (ids.size() > 0)
+    {
+        pcl::compute3DCentroid(*current_point_cloud_, ids, c);
     }
 
-    Eigen::Vector3f c(_c(0), _c(1), _c(2));
-    Eigen::Vector3f pos
-        = Eigen::Vector3f(current_sensor_center_(0), current_sensor_center_(1),
-                          current_sensor_center_(2));
-    Eigen::Vector3f ray = c - pos;
+    Eigen::Vector3f pos = current_sensor_center_.head(3);
+    Eigen::Vector3f ray = c.head(3) - pos;
 
     float distance = ray.norm();
 
-    auto n_vec = Eigen::Vector3f(nx, ny, nz);
-    //    auto lambdas = Eigen::Vector3f(lam0, lam1, lam2);
+     Eigen::Vector3f n_vec;
+     n_vec << nx, ny, nz;
+
+     Eigen::Vector3f lam_vec;
+     lam_vec << lam0, lam1, lam2;
 
     //////////////////////// INTENSITY ESTIMATION ////////////////////////
     float intensity = spcNANMacro;
     float intensity_std = spcNANMacro;
+
+    DLOG(INFO) << "intensity estimation";
 
     if (intensity_estimation_method_ == SIMPLE_AVERAGE)
         intensity = this->getAverageIntensity(*current_point_cloud_, ids,
@@ -259,6 +270,8 @@ CalibrationDataEstimator::computeSampleParameters(const size_t core_point_id,
 
     else if (intensity_estimation_method_ == GAUSSIAN_ESTIMATION) {
         // we redo a neighbors search
+        DLOG(INFO) << "intensity estimation gaussian";
+
 
         float full_radius = intensity_estimation_spatial_sigma_ * 4;
 
@@ -268,21 +281,28 @@ CalibrationDataEstimator::computeSampleParameters(const size_t core_point_id,
         current_cloud_searcher_->radiusSearch(point, full_radius, ids_int,
                                               dists_int);
 
+
+        DLOG(INFO) << "radius search redone";
+
         intensity = CalibrationDataEstimator::computeGaussianSmoothedIntensity(
             current_point_cloud_, ids_int, dists_int,
             intensity_estimation_spatial_sigma_, intensity_std);
+
+        DLOG(INFO) << "gaussian computed";
     }
 
     float angle
         = CalibrationDataEstimator::getMinimumAngleBetweenVectors(n_vec, ray);
 
 
+    DLOG(INFO) << "angle between vectors computed";
+
 
 
     db_->atScalar("n_neighbors", counter) = ids.size();
-    db_->atVector("normal", counter) = Eigen::Vector3f(nx, ny, nz);
-    db_->atVector("lambdas", counter) = Eigen::Vector3f(lam0, lam1, lam2);
-    db_->atVector("position", counter) = c;
+    db_->atVector("normal", counter) = n_vec;
+    db_->atVector("lambdas", counter) = lam_vec;
+    db_->atVector("position", counter) = c.head(3);
     db_->atScalar("core_id", counter) = core_point_id;
     db_->atScalar("cloud_id", counter) = current_cloud_id_;
     db_->atScalar("distance", counter) = distance;
@@ -290,7 +310,6 @@ CalibrationDataEstimator::computeSampleParameters(const size_t core_point_id,
     db_->atScalar("angle", counter) = angle;
     db_->atScalar("intensity_std", counter) = intensity_std;
     db_->atScalar("eigen_ratio", counter) = eigen_ratio;
-
 }
 
 float CalibrationDataEstimator::getMinimumAngleBetweenVectors(const Eigen::Vector3f x_,
