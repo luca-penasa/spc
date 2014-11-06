@@ -22,3 +22,19 @@ else()
     ## here we should use a find_package for finding the system' cereal lib
     ## nothing for now. It is a TODO.
 endif()
+
+    set(SPC_INCLUDE_DIRS "${SPC_INCLUDE_DIRS}" "@CONF_NANOFLANN_INCLUDE_DIRS@")
+
+
+# we find pcl for you
+find_package(PCL 1.7 REQUIRED)
+include_directories(${PCL_INCLUDE_DIRS})
+message("${PCL_INCLUDE_DIRS}")
+link_directories(${PCL_LIBRARY_DIRS})
+add_definitions(${PCL_DEFINITIONS})
+
+
+list(APPEND SPC_INCLUDE_DIRS ${PCL_INCLUDE_DIRS})
+list(APPEND SPC_LIBRARY_DIRS ${PCL_LIBRARY_DIRS})
+list(APPEND SPC_LIBRARIES ${PCL_LIBRARIES})
+list(APPEND SPC_DEFINITIONS ${PCL_DEFINITIONS})

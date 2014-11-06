@@ -1,6 +1,6 @@
 #ifndef ELEMENT_IO_H
 #define ELEMENT_IO_H
-
+#include <spc/core/macros_ptr.h>
 #include <spc/core/spc_eigen.h>
 #include <spc/elements/SerializableInterface.h>
 
@@ -55,6 +55,9 @@ ISerializable::Ptr deserializeFromString(std::string &string,
 
 static std::vector<int> parseLoadableFiles(int argc, char **argv);
 
+
+
+void testXMLMatrixWrite();
 } // end io namespace
 
 } // end nspace

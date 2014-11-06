@@ -1,5 +1,7 @@
 #ifndef SPC_EIGEN__H
 #define SPC_EIGEN__H
+
+#include <stdexcept>
 #include <spc/core/macros_ptr.h>
 #include <spc/core/logging.h>
 

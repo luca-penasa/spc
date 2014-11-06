@@ -36,13 +36,13 @@ foreach(dir ${subdirectories})
     if(IS_DIRECTORY ${dir})
         message("found dir " ${dir})
         get_filename_component(subdirname ${dir}  NAME)
+if(SPC_ENABLE_INSTALL)
+        install(DIRECTORY ${dir} DESTINATION "${SPC_INSTALL_INCLUDE_DIR}/spc/${libname}"
+                FILES_MATCHING PATTERN "*.h")
 
         install(DIRECTORY ${dir} DESTINATION "${SPC_INSTALL_INCLUDE_DIR}/spc/${libname}"
-              FILES_MATCHING PATTERN "*.h")
-
-        install(DIRECTORY ${dir} DESTINATION "${SPC_INSTALL_INCLUDE_DIR}/spc/${libname}"
-              FILES_MATCHING PATTERN "*.hpp")
-
+                FILES_MATCHING PATTERN "*.hpp")
+endif(SPC_ENABLE_INSTALL)
 
         file(GLOB SOURCES ${dir}/*.cpp)
         file(GLOB HEADERS ${dir}/*.h)

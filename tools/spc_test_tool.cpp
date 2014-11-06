@@ -205,8 +205,8 @@ int main(int argc, char ** argv)
     FLAGS_colorlogtostderr=1;
     FLAGS_logtostderr=1;
 
-    testAttitudeIO();
-
+//    testAttitudeIO();
+    spc::io::testXMLMatrixWrite();
 
 
 
