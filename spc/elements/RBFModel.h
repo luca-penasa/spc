@@ -7,6 +7,11 @@
 namespace spc
 {
 
+
+/** RBF models typically uses gaussian, multiquadric, inverse multiquadric
+ *  polyharmonic splines and thin plate splines
+ *  Some of them can be obtained from RBFKernelFactory
+ */
 template <typename T>
 class RBFModel: public ElementBase
 {
@@ -24,7 +29,7 @@ public:
 
 
 
-    RBFModel(): kernel_(new GaussianApproxRBF<T>(1.0))
+    RBFModel(): kernel_(new GaussianRBF<T>(1.0))
     {
 
     }

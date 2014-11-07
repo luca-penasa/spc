@@ -76,16 +76,19 @@ int CalibrationDataEstimator::compute()
         // load the cloud and create what we need
         this->loadCloudAndCreateSearcher(fname);
 
+        DLOG(INFO) << "cycling on cores.";
+
+#ifdef USE_OPENMP
+#pragma omp parallel for
+#endif
         // now we cycle on the core points for the current cloud
-        for (size_t i = 0; i < core_points_cloud_->size(); ++i) {
-            // just some verbosity
-            if (i % 100 == 0) {
-                pcl::console::print_info("core # %i\n", i);
-            }
+        for (size_t i = 0; i < core_points_cloud_->size(); ++i)
+        {
             this->computeSampleParameters(i, normal_estimation_search_radius_);
         }
-        current_cloud_id_ += 1;
+        DLOG(INFO) << "cycling on cores. Done";
 
+        current_cloud_id_ += 1;
         current_cloud_searcher_.reset();
         current_point_cloud_.reset();
     }
@@ -142,10 +145,10 @@ void CalibrationDataEstimator::setSearchRadius(const float rad)
 }
 
 float CalibrationDataEstimator::computeGaussianSmoothedIntensity(
-    const pcl::PointCloud<pcl::PointXYZI>::Ptr in_cloud,
-    const std::vector<int> &indices, const std::vector<float> &sq_distances,
-    const float &kernel_sigma, float &intensity_std,
-    const bool exclude_first_id)
+        const pcl::PointCloud<pcl::PointXYZI>::Ptr in_cloud,
+        const std::vector<int> &indices, const std::vector<float> &sq_distances,
+        const float &kernel_sigma, float &intensity_std,
+        const bool exclude_first_id)
 {
     assert(indices.size() == sq_distances.size());
     assert(kernel_sigma != 0.0f);
@@ -168,16 +171,16 @@ float CalibrationDataEstimator::computeGaussianSmoothedIntensity(
     // compute weights
     std::vector<float> weights(indices.size());
     std::transform(
-        sq_distances.begin(), sq_distances.end(), weights.begin(),
-        [&](const float &sq_dist) { return kernel(sq_dist, kernel_sigma); });
+                sq_distances.begin(), sq_distances.end(), weights.begin(),
+                [&](const float &sq_dist) { return kernel(sq_dist, kernel_sigma); });
 
     // now compute stats
     namespace bacc = boost::accumulators;
 
     // weighted mean/var accumulator
     bacc::accumulator_set
-        <float, bacc::features<bacc::tag::weighted_mean, bacc::tag::weighted_variance>, float>
-    acc;
+            <float, bacc::features<bacc::tag::weighted_mean, bacc::tag::weighted_variance>, float>
+            acc;
 
     typedef boost::tuple<float &, float &> ref_tuple;
     for(ref_tuple tup: boost::combine(intensities, weights))
@@ -197,10 +200,9 @@ CalibrationDataEstimator::computeSampleParameters(const size_t core_point_id,
                                                   const float search_radius)
 {
 
-    DLOG(INFO) << "computing sampl par";
 
     size_t counter = core_point_id + current_cloud_id_
-                                     * core_points_cloud_->size();
+            * core_points_cloud_->size();
 
     // get the point coordinates from core point cloud
     pcl::PointXYZI point = core_points_cloud_->at(core_point_id);
@@ -213,7 +215,6 @@ CalibrationDataEstimator::computeSampleParameters(const size_t core_point_id,
     ////////////////////////////////// NORMAL ESTIMATION
     ////////////////////////////////
 
-    DLOG(INFO) << "normal estimation";
 
 
     // compute normal and average distance
@@ -238,7 +239,6 @@ CalibrationDataEstimator::computeSampleParameters(const size_t core_point_id,
 
     /////////////////////// DISTANCE ESTIMATION ////////////////////////////
 
-    DLOG(INFO) << "distance estimation";
     Eigen::Vector4f c; // tmp_var
     c.fill(spcNANMacro);
 
@@ -252,25 +252,23 @@ CalibrationDataEstimator::computeSampleParameters(const size_t core_point_id,
 
     float distance = ray.norm();
 
-     Eigen::Vector3f n_vec;
-     n_vec << nx, ny, nz;
+    Eigen::Vector3f n_vec;
+    n_vec << nx, ny, nz;
 
-     Eigen::Vector3f lam_vec;
-     lam_vec << lam0, lam1, lam2;
+    Eigen::Vector3f lam_vec;
+    lam_vec << lam0, lam1, lam2;
 
     //////////////////////// INTENSITY ESTIMATION ////////////////////////
     float intensity = spcNANMacro;
     float intensity_std = spcNANMacro;
 
-    DLOG(INFO) << "intensity estimation";
 
     if (intensity_estimation_method_ == SIMPLE_AVERAGE)
         intensity = this->getAverageIntensity(*current_point_cloud_, ids,
                                               intensity_std);
 
-    else if (intensity_estimation_method_ == GAUSSIAN_ESTIMATION) {
-        // we redo a neighbors search
-        DLOG(INFO) << "intensity estimation gaussian";
+    else if (intensity_estimation_method_ == GAUSSIAN_ESTIMATION)
+    {
 
 
         float full_radius = intensity_estimation_spatial_sigma_ * 4;
@@ -282,22 +280,14 @@ CalibrationDataEstimator::computeSampleParameters(const size_t core_point_id,
                                               dists_int);
 
 
-        DLOG(INFO) << "radius search redone";
-
         intensity = CalibrationDataEstimator::computeGaussianSmoothedIntensity(
-            current_point_cloud_, ids_int, dists_int,
-            intensity_estimation_spatial_sigma_, intensity_std);
+                    current_point_cloud_, ids_int, dists_int,
+                    intensity_estimation_spatial_sigma_, intensity_std);
 
-        DLOG(INFO) << "gaussian computed";
     }
 
     float angle
-        = CalibrationDataEstimator::getMinimumAngleBetweenVectors(n_vec, ray);
-
-
-    DLOG(INFO) << "angle between vectors computed";
-
-
+            = CalibrationDataEstimator::getMinimumAngleBetweenVectors(n_vec, ray);
 
     db_->atScalar("n_neighbors", counter) = ids.size();
     db_->atVector("normal", counter) = n_vec;
@@ -342,7 +332,7 @@ float CalibrationDataEstimator::getAverageIntensity(const pcl::PointCloud
                    [&cloud](int id) { return cloud.at(id).intensity; });
 
     bacc::accumulator_set
-        <float, bacc::features<bacc::tag::mean, bacc::tag::variance>> acc;
+            <float, bacc::features<bacc::tag::mean, bacc::tag::variance>> acc;
     std::for_each(intensities.begin(), intensities.end(),
                   boost::bind<void>(boost::ref(acc), _1));
 
@@ -366,7 +356,7 @@ CalibrationDataEstimator::loadCloudAndCreateSearcher(const std::string fname)
 
     // convert to a PointCloud type object
     pcl::PointCloud
-        <pcl::PointXYZI>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZI>);
+            <pcl::PointXYZI>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZI>);
     pcl::fromPCLPointCloud2(*in_cloud, *cloud);
 
     pcl::console::print_info("cloud loaded\n");
@@ -379,7 +369,7 @@ CalibrationDataEstimator::loadCloudAndCreateSearcher(const std::string fname)
     current_point_cloud_.swap(cloud);
 
     pcl::search::FlannSearch<pcl::PointXYZI>::Ptr searcher(
-        new pcl::search::FlannSearch<pcl::PointXYZI>);
+                new pcl::search::FlannSearch<pcl::PointXYZI>);
     searcher->setInputCloud(current_point_cloud_);
 
     current_cloud_searcher_.swap(searcher);
@@ -392,7 +382,7 @@ void CalibrationDataEstimator::loadKeypointsCloud()
 {
     pcl::console::print_info("loading the core points cloud\n");
     pcl::PointCloud
-        <pcl::PointXYZI>::Ptr in_cloud(new pcl::PointCloud<pcl::PointXYZI>);
+            <pcl::PointXYZI>::Ptr in_cloud(new pcl::PointCloud<pcl::PointXYZI>);
     pcl::io::loadPCDFile(input_core_points_fname_, *in_cloud);
     core_points_cloud_ = in_cloud;
     pcl::console::print_info("core point cloud ok\n");
@@ -407,14 +397,14 @@ void CalibrationDataEstimator::loadInputNormalsCloud()
 {
     pcl::console::print_info("loading cloud with normals\n");
     pcl::PointCloud
-        <pcl::PointNormal>::Ptr in_cloud(new pcl::PointCloud<pcl::PointNormal>);
+            <pcl::PointNormal>::Ptr in_cloud(new pcl::PointCloud<pcl::PointNormal>);
     pcl::io::loadPCDFile(input_normal_surface_file_, *in_cloud);
     surface_for_normal_cloud_ = in_cloud;
     pcl::console::print_info("cloud with normals loaded\n");
 
     // we also create a searcher for this cloud
     pcl::search::FlannSearch<pcl::PointNormal>::Ptr searcher(
-        new pcl::search::FlannSearch<pcl::PointNormal>);
+                new pcl::search::FlannSearch<pcl::PointNormal>);
     searcher->setInputCloud(in_cloud);
 
     surface_for_normal_cloud_searcher_ = searcher;

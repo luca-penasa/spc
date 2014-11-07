@@ -105,10 +105,6 @@ EigenTable::atVector(const std::string &name, const size_t &row)
     size_t id = getColumnId(name);
     size_t dim = getColumnDimensionality(name);
 
-    DLOG(INFO) <<"accessing " << name << " field with dim " << dim;
-
-    //        return mat_.block(row, id, 1, dim);
-
     return Eigen::Block
         <Eigen::Matrix<float, -1, -1>, 1, -1>(mat_, row, id, 1, dim);
 }

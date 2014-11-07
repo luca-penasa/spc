@@ -4,6 +4,7 @@
 #include <spc/elements/RBFModel.h>
 #include <spc/core/spc_eigen.h>
 #include <spc/core/eigen_extensions.h>
+#include <spc/elements/RBFKernelFactory.h>
 
 
 namespace spc
@@ -29,6 +30,8 @@ public:
     RBFModelEstimator(): classical_rbf_(true), model_(new RBFModel<T>)
 
     {
+
+        model_->setKernel(RBFKernelFactory<T>::RBF_MULTIQUADRIC);
     }
 
     void setPoints(PointsT &points)

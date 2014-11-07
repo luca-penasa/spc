@@ -123,7 +123,7 @@ public:
     // BasicKernel interface
     virtual inline T eval(const T &squared_x) const
     {
-        return exp(squared_x * scale_squared_inv_neg_);
+        return exp(squared_x * 0.5* scale_squared_inv_neg_);
     }
 
 
@@ -157,7 +157,7 @@ public:
     // BasicKernel interface
     virtual inline T eval(const T &squared_x) const
     {
-        return fastexp(squared_x * scale_squared_inv_neg_);
+        return fastexp(squared_x * 0.5 * scale_squared_inv_neg_);
     }
 
 

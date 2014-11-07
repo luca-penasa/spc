@@ -28,6 +28,7 @@ DEFINE_uint64(poly_order, 1 , "polynomial order for the polynomial part of RBF")
 DEFINE_string(n_nodes, "6,6", "Number of splits on each dimension (one for each predictor)"
               "The total numbe of nodes will be the product of all these splits");
 
+DEFINE_string(input_database, "", "an input file containing the variables to be used for calibrating the model");
 
 int main (int argc, char ** argv)
 {
@@ -40,10 +41,7 @@ int main (int argc, char ** argv)
     google::ParseCommandLineFlags(&argc, &argv, true);
 
 
-
-    CHECK(argc == 2) << "please provide an argument";
-
-    std::string datadb = argv[1];
+    std::string datadb = FLAGS_input_database;
 
     LOG(INFO) << "working on file " << datadb;
 

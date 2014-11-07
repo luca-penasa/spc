@@ -1,4 +1,4 @@
-#include "initial_align.h"
+#include "spc_initial_align.h"
 #include "strings.h"
 
 

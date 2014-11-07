@@ -40,18 +40,21 @@ int main(int argc, char ** argv)
 
 
     spc::PointCloudBase::Ptr from_cloud = spc::io::loadPointCloud(FLAGS_from);
+
     LOG(INFO) << "cloud loaded!";
+
+
+    if (from_cloud == NULL)
+    {
+        LOG(FATAL) << "cannot load cloud " << FLAGS_from;
+    }
 
 
     if (!from_cloud->hasFields(fields))
     {
-        LOG(ERROR) << "looks like your cloud does not have the required input fields";
+        LOG(FATAL) << "looks like your cloud does not have the required input fields";
     }
 
-    if (from_cloud == NULL)
-    {
-        LOG(ERROR) << "cannot load cloud " << FLAGS_from;
-    }
 
     for (int i = 0 ; i < to_cloudnames.size(); ++i)
     {
@@ -62,7 +65,7 @@ int main(int argc, char ** argv)
 
         if(cloud == NULL)
         {
-            LOG(ERROR) << "cannot load cloud " << name;
+            LOG(FATAL) << "cannot load cloud " << name;
         }
 
         spc::PointCloudHelpers::transferFieldsNN(from_cloud, cloud, FLAGS_max_distance, fields);
