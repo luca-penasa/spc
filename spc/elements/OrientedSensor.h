@@ -10,12 +10,18 @@ class OrientedSensor: public ElementBase
 {
 public:
 
-    SPC_OBJECT(OrientedSensor)
+    SPC_ELEMENT(OrientedSensor)
     EXPOSE_TYPE
 
     OrientedSensor()
     {
 
+    }
+
+    OrientedSensor(const OrientedSensor & other) : ElementBase(other)
+    {
+        sensor_position_ = other.sensor_position_;
+        sensor_orientation_ = other.sensor_orientation_;
     }
 
     OrientedSensor(Eigen::Vector4f sensor_position,

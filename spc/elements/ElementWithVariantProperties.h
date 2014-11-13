@@ -12,6 +12,11 @@ public:
 
     ElementWithVariantProperties();
 
+    ElementWithVariantProperties(const ElementWithVariantProperties & other)
+    {
+        this->properties_ = other.getVariantPropertiesRecord();
+    }
+
     VariantPropertiesRecord getVariantPropertiesRecord() const
     {
         return properties_;

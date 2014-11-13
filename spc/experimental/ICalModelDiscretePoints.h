@@ -12,7 +12,7 @@ namespace spc
 class ModelDiscretePoints : public CalibrationModelBase
 {
 public:
-    SPC_OBJECT(ModelDiscretePoints)
+    SPC_ELEMENT(ModelDiscretePoints)
 EXPOSE_TYPE
     ModelDiscretePoints();
 

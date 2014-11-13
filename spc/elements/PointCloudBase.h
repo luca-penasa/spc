@@ -28,11 +28,22 @@ public:
     using PointSetBase::IndexT;
     using PointSetBase::PointT;
 
+//    SPC_ELEMENT(PointCloudBase)
 
-
-    SPC_OBJECT(PointCloudBase)
+    spcTypedefSharedPtrs(PointCloudBase)
     EXPOSE_TYPE
     PointCloudBase();
+
+    PointCloudBase(const PointCloudBase &other): ElementBase(other), PointCloudXYZBase(other)
+    {
+        searcher_ = other.searcher_;
+        xyz_representation_ = other.xyz_representation_;
+    }
+
+    ~PointCloudBase()
+    {
+
+    }
 
     virtual int getNearestPointID(const PointT query,
                                   float &sq_distance);
@@ -82,6 +93,48 @@ public:
         return xyz_representation_;
     }
 
+
+    template<typename SPCCloudT>
+    PointCloudBase::Ptr extractIDS(const std::vector<size_t> &ids) const
+    {
+        PointCloudBase::Ptr out (new SPCCloudT());
+
+        out->resize(ids.size());
+
+
+//        for (std::string fname: this->getFieldNames())
+//        {
+//            out->addField(fname);
+//        }
+
+
+
+//        out->addField("x");
+//        out->addField("y");
+//        out->addField("z");
+
+//        for (int i = 0; i < ids.size(); ++i)
+//        {
+//            out->setPoint(i, this->getPoint(ids.at(i)));
+//        }
+
+
+        float v;
+        for (std::string fname: this->getFieldNames())
+        {
+           out->addField(fname);
+
+            for (int i = 0; i < ids.size(); ++i)
+            {
+                this->getFieldValue(ids.at(i), fname, v);
+                out->setFieldValue(i, fname, v);
+            }
+
+        }
+
+        return out;
+    }
+
     void updateFlannSearcher();
 
     virtual void updateXYZRepresentation();
@@ -117,7 +170,6 @@ public:
 
     virtual Eigen::Vector3f getNormal(const IndexT id) const;
 
-//    template<class VEC>
     virtual std::vector<float> getField(const std::string fieldname,
                                         std::vector<IndexT> indices);
 
@@ -133,8 +185,7 @@ public:
     applyTransform(const Eigen::Transform
                    <float, 3, Eigen::Affine, Eigen::AutoAlign> &T);
 
-    // PointSetBase interface
-public:
+
     virtual void addPoint(const PointT &p) override
     {
         IndexT id = this->getNumberOfPoints();
@@ -153,10 +204,6 @@ public:
     //! reurns true if ALL the fields exists
     bool hasFields(const std::vector<std::string> &field_names) const;
 
-
-
-
-
 protected:
     pcl::search::FlannSearch<pcl::PointXYZ>::Ptr searcher_;
 
@@ -172,14 +219,17 @@ class PointCloudBaseWithSensor: public PointCloudBase
 {
 
 public:
-    SPC_OBJECT(PointCloudBaseWithSensor)
+    spcTypedefSharedPtrs(PointCloudBaseWithSensor)
     EXPOSE_TYPE
     PointCloudBaseWithSensor(): sensor_(new OrientedSensor)
     {
     }
 
-    // PointCloudBase interface
-public:
+    PointCloudBaseWithSensor(const PointCloudBaseWithSensor & other)
+    {
+        sensor_ = spcDynamicPointerCast<OrientedSensor>(other.sensor_->clone());
+    }
+
     virtual OrientedSensor getSensor() const
     {
         return *sensor_;

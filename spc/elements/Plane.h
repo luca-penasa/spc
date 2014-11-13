@@ -29,7 +29,7 @@ class Plane : public Point3D
 
 {
 public:
-    SPC_OBJECT(Plane)
+    SPC_ELEMENT(Plane)
     EXPOSE_TYPE
     /// Def const
     Plane()
@@ -47,6 +47,8 @@ public:
     {
         normal_.setNormal(normal);
     }
+
+
 
     void setNormal(Vector3f n)
     {

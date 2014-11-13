@@ -38,21 +38,16 @@ void PointCloudBase::updateFlannSearcher()
 
 void PointCloudBase::updateXYZRepresentation()
 {
-    DLOG(INFO) << "updating XYZ representation of cloud ";
-    pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
-    cloud->resize(this->getNumberOfPoints());
+    DLOG(INFO) << "updating XYZ representation of cloud ";      
 
-#ifdef USE_OPENMP
-#pragma omp parallel for
-#endif
-    for (IndexT i = 0; i < this->getNumberOfPoints(); ++i) {
-        Eigen::Vector3f p = getPoint(i);
-        cloud->at(i).x = p(0);
-        cloud->at(i).y = p(1);
-        cloud->at(i).z = p(2);
-    }
-    xyz_representation_ = cloud;
+    DLOG(INFO) << "got as pcl data ";
 
+     pcl::PCLPointCloud2Ptr c = this->asPCLData();
+
+     pcl::PointCloud<pcl::PointXYZ>::Ptr c2(new  pcl::PointCloud<pcl::PointXYZ>);
+     pcl::fromPCLPointCloud2(*c, *c2);
+
+    xyz_representation_ = c2;
     DLOG(INFO) << "updating XYZ representation of cloud. Done ";
 
 }

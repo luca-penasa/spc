@@ -52,8 +52,16 @@
         return this->membername;                                               \
     }
 
-#define SPC_OBJECT(classname) spcTypedefSharedPtrs(classname)
+#define spcAddClone(classname)\
+virtual ElementBase::Ptr clone() const override\
+{\
+    return ElementBase::Ptr(new classname(*this));\
+}
 
+
+
+
+#define SPC_ELEMENT(classname) spcTypedefSharedPtrs(classname) spcAddClone(classname)
 
 
 
@@ -66,6 +74,22 @@
 #define SPC_CEREAL_REGISTER_TYPE(type)\
     CEREAL_REGISTER_TYPE(type);
 
+//! just until some stuff in the dev branch of cereal is not merged with master
+#define SPC_CEREAL_CLASS_VERSION(TYPE, VERSION_NUMBER) \
+namespace cereal { namespace detail { \
+template <> struct Version<TYPE> \
+{ \
+static const std::uint32_t version; \
+static std::uint32_t registerVersion() \
+{ \
+::cereal::detail::StaticObject<Versions>::getInstance().mapping.emplace( \
+std::type_index(typeid(TYPE)).hash_code(), VERSION_NUMBER ); \
+return VERSION_NUMBER; \
+} \
+}; /* end Version */ \
+const std::uint32_t Version<TYPE>::version = \
+Version<TYPE>::registerVersion(); \
+} } // end namespaces
 
 
 

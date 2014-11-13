@@ -14,8 +14,8 @@ class Sample : public Point3D
 {
 
 public:
-    SPC_OBJECT(Sample)
-EXPOSE_TYPE
+    SPC_ELEMENT(Sample)
+    EXPOSE_TYPE
     Sample()
     {
     }

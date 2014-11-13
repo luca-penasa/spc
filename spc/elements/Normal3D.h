@@ -11,8 +11,8 @@ namespace spc
 class Normal3D : public ElementBase
 {
 
-    SPC_OBJECT(Normal3D)
-EXPOSE_TYPE
+    SPC_ELEMENT(Normal3D)
+    EXPOSE_TYPE
 public:
     Normal3D();
 
@@ -25,6 +25,13 @@ public:
     {
         normal_ = v;
     }
+
+    Normal3D(const Normal3D & other): ElementBase(other)
+    {
+        normal_ = other.normal_;
+    }
+
+
 
     /// this project a given 3d point onto the normal
     Eigen::Vector3f projectPoint(const Eigen::Vector3f &point) const

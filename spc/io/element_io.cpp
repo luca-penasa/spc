@@ -80,12 +80,19 @@ ISerializable::Ptr deserializeFromFile(const std::string filename)
 
     std::ifstream is(filename); // open filename
 
+    setlocale(LC_NUMERIC,"C");
+
+//    is.imbue(std::locale("C"));
+
+
     return deserializeFromStream(is, matched_type);
 }
 
 int serializeToStream(const ISerializable::Ptr element, std::ostream &stream,
                       const ARCHIVE_TYPE &type)
 {
+
+    stream.imbue(std::locale("C"));
 
     {
         if (type == XML) {
@@ -171,52 +178,52 @@ std::vector<int> parseLoadableFiles(int argc, char **argv)
     return spc_ids;
 }
 
-void testXMLMatrixWrite()
-{
-    LOG(INFO) << "performing matrix write test";
-    Eigen::Vector3f normal;
-    normal = Eigen::Vector3f::Random();
+//void testXMLMatrixWrite()
+//{
+//    LOG(INFO) << "performing matrix write test";
+//    Eigen::Vector3f normal;
+//    normal = Eigen::Vector3f::Random();
 
-    Eigen::Matrix3f mat = Eigen::Matrix3f::Random();
-    std::vector<double> v = {mat(0,0), mat(1,1), mat(2,2)};
+//    Eigen::Matrix3f mat = Eigen::Matrix3f::Random();
+//    std::vector<double> v = {mat(0,0), mat(1,1), mat(2,2)};
 
-    LOG(INFO) << "normal " << normal.transpose();
-    LOG(INFO) << "matrix \n" << mat;
+//    LOG(INFO) << "normal " << normal.transpose();
+//    LOG(INFO) << "matrix \n" << mat;
 
-    for (auto el: v)
-        LOG(INFO) << el;
+//    for (auto el: v)
+//        LOG(INFO) << el;
 
-    {
-        std::ofstream out("/home/luca/mat_test.xml");
-        cereal::XMLOutputArchive ar(out);
-        ar(normal);
-        ar(mat);
-        ar(v);
-    }
+//    {
+//        std::ofstream out("/home/luca/mat_test.xml");
+//        cereal::XMLOutputArchive ar(out);
+//        ar(normal);
+//        ar(mat);
+//        ar(v);
+//    }
 
 
 
-    {
-        Eigen::Vector3f n2;
-        Eigen::Matrix3f m2;
-        std::vector<double> v2;
+//    {
+//        Eigen::Vector3f n2;
+//        Eigen::Matrix3f m2;
+//        std::vector<double> v2;
 
-        // no load back
-        std::ifstream in("/home/luca/mat_test.xml");
-        cereal::XMLInputArchive ar(in);
+//        // no load back
+//        std::ifstream in("/home/luca/mat_test.xml");
+//        cereal::XMLInputArchive ar(in);
 
-        ar(n2);
-        ar(m2);
-        ar(v2);
+//        ar(n2);
+//        ar(m2);
+//        ar(v2);
 
-        LOG(INFO) << "normal2 " << n2.transpose();
-        LOG(INFO) << "matrix2 \n" << m2;
+//        LOG(INFO) << "normal2 " << n2.transpose();
+//        LOG(INFO) << "matrix2 \n" << m2;
 
-        for (auto el: v2)
-            LOG(INFO) << el;
+//        for (auto el: v2)
+//            LOG(INFO) << el;
 
-    }
-}
+//    }
+//}
 
 }
 }

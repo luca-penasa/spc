@@ -10,7 +10,7 @@ namespace spc
 class CalibrationModelBase : public ElementBase
 {
 public:
-    SPC_OBJECT(CalibrationModelBase)
+    spcTypedefSharedPtrs(CalibrationModelBase)
     EXPOSE_TYPE
     CalibrationModelBase();
 

@@ -47,6 +47,11 @@ target_link_libraries(${MY_TOOLS_PREFIX}bilateral ${PCL_LIBRARIES})
 spc_add_executable(${MY_TOOLS_PREFIX}test_tool spc_test_tool.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}test_tool ${PCL_LIBRARIES} ${SPC_LIBRARIES})
 
+spc_add_executable(${MY_TOOLS_PREFIX}extract_selection_example spc_extract_selection_example.cpp)
+target_link_libraries(${MY_TOOLS_PREFIX}extract_selection_example ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${GLOG_LIBRARIES} ${GFLAGS_LIBRARIES})
+
+
+
 #spc_add_executable(align_icp2 align_ICP_old.cpp)
 #target_link_libraries(align_icp2 ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 #
@@ -90,8 +95,8 @@ target_link_libraries(${MY_TOOLS_PREFIX}ptx2pcd ${PCL_LIBRARIES} ${SPC_LIBRARIES
 #spc_add_executable(resample_polynomial resample_polynomial.cpp)
 #target_link_libraries(resample_polynomial ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
-spc_add_executable(${MY_TOOLS_PREFIX}initial_align spc_initial_align.cpp spc_initial_align.h)
-target_link_libraries(${MY_TOOLS_PREFIX}initial_align ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
+#spc_add_executable(${MY_TOOLS_PREFIX}initial_align spc_initial_align.cpp spc_initial_align.h)
+#target_link_libraries(${MY_TOOLS_PREFIX}initial_align ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 #disabled for now -> it need pcl compiled with the segmentation module activated
 #spc_add_executable(${MY_TOOLS_PREFIX}euclidean_cluster euclidean_cluster.cpp)

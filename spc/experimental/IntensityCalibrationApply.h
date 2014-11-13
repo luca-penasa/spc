@@ -12,7 +12,7 @@ namespace spc
 class ScalarFieldsCalcuator
 {
 public:
-    SPC_OBJECT(ScalarFieldsCalcuator)
+    spcTypedefSharedPtrs(ScalarFieldsCalcuator)
 
     ScalarFieldsCalcuator();
 

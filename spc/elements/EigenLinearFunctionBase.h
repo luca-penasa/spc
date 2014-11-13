@@ -12,7 +12,7 @@ namespace spc
 class EigenLinearFunctionBase : public EigenFunctionBase
 {
 public:
-    SPC_OBJECT(EigenLinearFunctionBase)
+    spcTypedefSharedPtrs(EigenLinearFunctionBase)
     EXPOSE_TYPE
 
     EigenLinearFunctionBase(const size_t &in_dimension)

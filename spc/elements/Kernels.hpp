@@ -21,7 +21,7 @@ template <typename T>
 class RBFBase: public ElementBase
 {
 public:
-    SPC_OBJECT(RBFBase<T>)
+   spcTypedefSharedPtrs(RBFBase<T>)
 
     RBFBase(): scale_(1)
     {
@@ -35,6 +35,16 @@ public:
     {
         updateSecondary();
     }
+
+
+    RBFBase(const RBFBase & other): ElementBase(other)
+    {
+        scale_ = other.scale_;
+        updateSecondary();
+    }
+
+
+
 
     T getScale() const
     {
@@ -109,12 +119,21 @@ class GaussianRBF: public RBFBase<T>
 {
 public:
 
+    SPC_ELEMENT(GaussianRBF)
     using RBFBase<T>::scale_squared_inv_neg_;
 
 
     /** in the case of Gaussian the scale correspond to the sigma
      **/
     GaussianRBF (const T& sigma): RBFBase<T>(sigma) {}
+
+    GaussianRBF(const GaussianRBF & other): RBFBase<T> (other)
+    {
+
+    }
+
+
+
 
     /** def const
      **/
@@ -144,11 +163,21 @@ class GaussianApproxRBF: public RBFBase<T>
 {
 public:
 
+    SPC_ELEMENT(GaussianApproxRBF)
+
     using RBFBase<T>::scale_squared_inv_neg_;
 
     /** in the case of Gaussian the scale correspond to the sigma
      **/
     GaussianApproxRBF (const T& sigma): RBFBase<T>(sigma) {}
+
+    GaussianApproxRBF(const GaussianApproxRBF & other): RBFBase<T> (other)
+    {
+
+    }
+
+
+
 
     /** def const
      **/
@@ -180,6 +209,8 @@ class EpanechnikovRBF: public RBFBase<T>
 {
 public:
 
+    SPC_ELEMENT(EpanechnikovRBF)
+
     using RBFBase<T>::scale_squared_inv_;
     using RBFBase<T>::scale_;
 
@@ -187,6 +218,11 @@ public:
     /** in the case of Gaussian the scale correspond to the sigma
      **/
     EpanechnikovRBF (const T& sigma): RBFBase<T>(sigma) {}
+
+    EpanechnikovRBF(const EpanechnikovRBF & other): RBFBase<T> (other)
+    {
+
+    }
 
     /** def const
      **/
@@ -233,6 +269,19 @@ public:
      MultiquadricRBF (const T& sigma): RBFBase<T>(sigma) {}
 
      MultiquadricRBF(): RBFBase<T>() {}
+
+
+     MultiquadricRBF(const MultiquadricRBF & other): RBFBase<T> (other)
+     {
+
+     }
+
+
+     virtual ElementBase::Ptr clone() const override
+     {
+         return ElementBase::Ptr(new MultiquadricRBF(*this));
+     }
+
 
     // BasicKernel interface
     virtual inline T eval(const T &squared_x) const

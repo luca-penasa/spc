@@ -9,6 +9,8 @@
 namespace spc
 {
 
+//! In several places here we assume that the fields are FLOATS!
+//! \todo implement a field-type aware class!
 class PointCloudPCL : public PointCloudBaseWithSensor
 {
 
@@ -16,11 +18,33 @@ class PointCloudPCL : public PointCloudBaseWithSensor
 
 
 public:
-    SPC_OBJECT(PointCloudPCL)
+    SPC_ELEMENT(PointCloudPCL)
     EXPOSE_TYPE
 
+    //! def const
+    PointCloudPCL()
+    {
+
+        pcl::PointCloud<pcl::PointXYZ> cloud;
+
+        pcl::PCLPointCloud2Ptr c(new pcl::PCLPointCloud2);
+        pcl::toPCLPointCloud2(cloud, *c );
+
+
+        cloud_ = c;
+    }
+
+
+    //! copy const
+    PointCloudPCL (const PointCloudPCL &other): PointCloudBaseWithSensor(other)
+    {
+        cloud_ = other.cloud_;
+    }
+
+    //! wrap a PCL point cloud
     PointCloudPCL(pcl::PCLPointCloud2Ptr cloud);
 
+    //! wrap a PCL point clou of any type
     template <typename PointT>
     PointCloudPCL(const pcl::PointCloud<PointT> &cloud)
     {
@@ -28,6 +52,12 @@ public:
         pcl::toPCLPointCloud2(cloud, *c );
 
         cloud_ = c;
+    }
+
+    //! destructor. smart pointers take care of themselves
+    ~PointCloudPCL()
+    {
+
     }
 
 
@@ -61,7 +91,7 @@ public:
 protected:
     pcl::PCLPointCloud2Ptr cloud_;
 
-    Eigen::Array3i xyz_offsets_;
+//    Eigen::Array3i xyz_offsets_;
 
 
 

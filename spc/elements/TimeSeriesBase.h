@@ -13,7 +13,7 @@ namespace spc
 class TimeSeriesBase : public ElementBase
 {
 public:
-    SPC_OBJECT(TimeSeriesBase)
+    spcTypedefSharedPtrs(TimeSeriesBase)
     EXPOSE_TYPE
     TimeSeriesBase()
     {

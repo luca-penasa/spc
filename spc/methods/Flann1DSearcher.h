@@ -9,7 +9,7 @@ namespace spc
 template <typename ScalarT> class Flann1DSearcher
 {
 public:
-    SPC_OBJECT(Flann1DSearcher)
+    spcTypedefSharedPtrs(Flann1DSearcher)
 
     Flann1DSearcher(std::vector<ScalarT> v);
 

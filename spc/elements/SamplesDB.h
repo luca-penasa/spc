@@ -23,7 +23,7 @@ namespace spc
 class SamplesDB: public ElementBase
 {
 public:
-    SPC_OBJECT(SamplesDB)
+    SPC_ELEMENT(SamplesDB)
     EXPOSE_TYPE
 
     //! empty constructor

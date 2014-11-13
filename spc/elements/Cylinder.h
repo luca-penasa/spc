@@ -17,7 +17,7 @@ namespace spc
 class Cylinder : public Point3D
 {
 public:
-    SPC_OBJECT(Cylinder)
+    SPC_ELEMENT(Cylinder)
 EXPOSE_TYPE
 
     /// def constrcutor
@@ -25,12 +25,16 @@ EXPOSE_TYPE
     {
     }
 
-    Cylinder(const Cylinder &cyl) : Point3D(cyl)
+    Cylinder(const Cylinder &other): Point3D(other)
     {
-        // TODO we'll need to copy some other staff
+        this->direction_ = other.direction_;
+        this->length_ = other.length_;
+        this->radius_ = other.radius_;
     }
 
     Cylinder(const Eigen::Vector3f dir);
+
+
 
     Normal3D getDirection() const
     {

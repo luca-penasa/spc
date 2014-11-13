@@ -65,7 +65,7 @@ public:
         for (int i = 0; i < getNumberOfPoints(); ++i)
              mat.row(i)=this->getPoint(i);
 
-             return mat;
+        return mat;
     }
 
 
@@ -73,12 +73,9 @@ public:
     {
 
         PointT c = PointT::Zero();
-        LOG(INFO) << "getting centroid with n points: " << this->getNumberOfPoints();
+        DLOG(INFO) << "getting centroid with n points: " << this->getNumberOfPoints();
         for (size_t i = 0 ; i < getNumberOfPoints(); ++i)
-        {
-//            LOG(INFO) << this->getPoint(i);
             c += this->getPoint(i);
-        }
 
         DLOG(INFO) << "Sum is " << c.transpose();
 

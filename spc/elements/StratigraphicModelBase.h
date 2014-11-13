@@ -9,8 +9,8 @@ namespace spc
 class StratigraphicModelBase : public VariableScalarFieldBase
 {
 public:
-    SPC_OBJECT(StratigraphicModelBase)
-EXPOSE_TYPE
+    spcTypedefSharedPtrs(StratigraphicModelBase)
+    EXPOSE_TYPE
     StratigraphicModelBase()
     {
     }

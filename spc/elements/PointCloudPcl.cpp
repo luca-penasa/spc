@@ -13,11 +13,6 @@ DtiClassType PointCloudPCL::Type = DtiClassType("PointCloudPCL", &PointCloudBase
 PointCloudPCL::PointCloudPCL(pcl::PCLPointCloud2Ptr cloud)
 {
     cloud_ = cloud;
-
-    xyz_offsets_ << cloud_->fields[pcl::getFieldIndex (*cloud_, "x")].offset,
-      cloud_->fields[pcl::getFieldIndex (*cloud_, "y")].offset,
-      cloud_->fields[pcl::getFieldIndex (*cloud_, "z")].offset;
-
     DLOG(INFO) << "PointCloudPCL sucessfully created";
 }
 
@@ -26,8 +21,9 @@ PointCloudPCL::PointCloudPCL(pcl::PCLPointCloud2Ptr cloud)
 void PointCloudPCL::getFieldValue(const IndexT id,
                                   const std::string fieldname, float &val) const
 {
-    if (!hasField(fieldname)) {
-        PCL_WARN("[GenericCloud] Unable to find field %s in point type.\n", fieldname.c_str());
+    if (!hasField(fieldname))
+    {
+        DLOG_EVERY_N(WARNING, 100  ) <<"Unable to find field: " << fieldname;
         return;
     }
 
@@ -42,13 +38,12 @@ void PointCloudPCL::setFieldValue(const IndexT id, const std::string fieldname, 
     int field_id = pcl::getFieldIndex(*cloud_, fieldname);
 
     if (!hasField(fieldname)) {
-        PCL_WARN("[GenericCloud] Unable to find field %s in point type.\n", fieldname.c_str());
+        DLOG_EVERY_N(WARNING, 100)<< "Unable to find field: " << fieldname;
         return;
     }
 
     int value_pos = cloud_->fields[field_id].offset + cloud_->point_step * id;
     memcpy( &cloud_->data[value_pos], &val, sizeof(float));
-
 }
 
 
@@ -71,22 +66,38 @@ void PointCloudPCL::resize(const IndexT s)
 {
     // we are assuming the cloud is not dense
     cloud_->data.resize(s * cloud_->point_step);
-    cloud_->width += cloud_->point_step * s;
+    cloud_->width = s;
+    cloud_->height = 1; // force to one.
 }
 
 std::vector<std::string> PointCloudPCL::getFieldNames() const
 {
     std::string names = pcl::getFieldsList(*cloud_);
-    std::vector<std::string> fields;
+    std::vector<std::string> fields, out;
     boost::split(fields, names, boost::is_any_of(" "), boost::token_compress_on);
 
-    return  fields;
+    for (auto f: fields)
+    {
+        if (f != "_")
+            out.push_back(f);
+    }
+
+    for (auto f: out)
+        DLOG(INFO) << "FIELD found: " << f;
+
+    return  out;
 }
 
 void PointCloudPCL::addField(const std::string &name)
 {
+    if (this->hasField(name))
+    {
+        DLOG(WARNING) << "field yet exists: " << name;
+            return;
+    }
+
     pcl::PointCloud<PointScalar> newcloud;
-    newcloud.resize(cloud_->width * cloud_->height);
+    newcloud.resize(this->getNumberOfPoints());
 
     pcl::PCLPointCloud2 c, out;
     pcl::toPCLPointCloud2(newcloud, c);

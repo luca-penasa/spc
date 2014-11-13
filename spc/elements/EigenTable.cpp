@@ -7,7 +7,7 @@ namespace spc
 
 DtiClassType EigenTable::Type = DtiClassType("EigenTable", &ElementBase::Type);
 
-EigenTable::EigenTable(const EigenTable &other, bool only_structure)
+EigenTable::EigenTable(const EigenTable &other, bool only_structure): ElementBase(other)
 {
     names_to_col_ = other.names_to_col_;
     col_to_dim_ = other.col_to_dim_;

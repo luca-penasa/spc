@@ -123,10 +123,13 @@ public:
         clouds_.push_back(cloud);
         // compute its centroid
 
-        Vector4f centroid;
-        pcl::compute3DCentroid(*cloud->getAsPclXyz(), centroid);
 
-        centroids_.push_back(centroid.head(3));
+        Vector3f centroid = cloud->getCentroid();
+
+
+        DLOG(INFO) << "computed centroid " << centroid.transpose();
+
+        centroids_.push_back(centroid);
     }
 
     ///

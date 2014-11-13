@@ -19,7 +19,7 @@ public:
 
 //    friend class InterpolatorRbf;
 
-    SPC_OBJECT(RBFModel<T>)
+    SPC_ELEMENT(RBFModel<T>)
 
     typedef Eigen::Matrix<T, -1, -1> PointsT;
     typedef Eigen::Matrix<T, -1, 1> VectorT;

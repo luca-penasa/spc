@@ -15,7 +15,15 @@ class ISerializable
 public:
     spcTypedefSharedPtrs(ISerializable)
 
+
+
     ISerializable();
+
+    ~ISerializable()
+    {
+
+    }
+
 
     virtual bool isSerializable() const = 0;
 

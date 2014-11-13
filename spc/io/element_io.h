@@ -57,7 +57,7 @@ static std::vector<int> parseLoadableFiles(int argc, char **argv);
 
 
 
-void testXMLMatrixWrite();
+//void testXMLMatrixWrite();
 } // end io namespace
 
 } // end nspace

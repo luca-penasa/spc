@@ -13,15 +13,12 @@
 
 namespace cereal
 {
-// we should specialize this templates for binary only dump:
-// like they do here: http://stackoverflow.com/questions/22884216/serializing-eigenmatrix-using-cereal-library
-// see first answer.
 
 //! the generic eigen type. Any eigen type will be saved in this way
 //! if you dont provide an overloading as below for xml and json
-template <int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols> inline
+template <class Archive, class ST, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols> inline
 void
-save(BinaryOutputArchive & ar, Eigen::Matrix<float, _Rows, _Cols, _Options, _MaxRows, _MaxCols> const & m, const std::uint32_t version)
+save(Archive & ar, Eigen::Matrix<ST, _Rows, _Cols, _Options, _MaxRows, _MaxCols> const & m, const std::uint32_t version)
 {
     int32_t rows = m.rows();
     int32_t cols = m.cols();
@@ -33,8 +30,8 @@ save(BinaryOutputArchive & ar, Eigen::Matrix<float, _Rows, _Cols, _Options, _Max
             ar(m(i,j));
 }
 
-template < int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols> inline
-void load(BinaryInputArchive & ar, Eigen::Matrix<float, _Rows, _Cols, _Options, _MaxRows, _MaxCols> & m, const std::uint32_t version)
+template <class Archive, class ST, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols> inline
+void load(Archive & ar, Eigen::Matrix<ST, _Rows, _Cols, _Options, _MaxRows, _MaxCols> & m, const std::uint32_t version)
 {
     int32_t rows;
     int32_t cols;
@@ -75,87 +72,87 @@ load(ARTYPE## InputArchive & ar, Eigen::Matrix<_Scalar, ROWS, COLS>  & m, const 
         } \
 }
 
-SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(XML, 2, 1)
-SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(JSON, 2, 1)
-SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(XML, 2, 2)
-SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(JSON, 2, 2)
-SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(XML, 3, 1)
-SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(JSON, 3, 1)
-SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(XML, 4, 1)
-SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(JSON, 4, 1)
-SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(XML, 3, 3)
-SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(JSON, 3, 3)
-SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(XML, 4, 4)
-SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(JSON, 4, 4)
+//SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(XML, 2, 1)
+//SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(JSON, 2, 1)
+//SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(XML, 2, 2)
+//SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(JSON, 2, 2)
+//SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(XML, 3, 1)
+//SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(JSON, 3, 1)
+//SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(XML, 4, 1)
+//SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(JSON, 4, 1)
+//SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(XML, 3, 3)
+//SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(JSON, 3, 3)
+//SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(XML, 4, 4)
+//SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(JSON, 4, 4)
 
 
 
 
 
-
-
-//! all the remaining eigen types will be saved a as binary dumps in xml
-template <class _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols> inline
-void
-save(cereal::XMLOutputArchive & ar, Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> const & m, const std::uint32_t version)
-{
-    int32_t rows = m.rows();
-    int32_t cols = m.cols();
-    ar(rows);
-    ar(cols);
-
-    ar.saveBinaryValue( m.data(), sizeof(_Scalar) * m.size(), "EigenMatrixBase64" );
-
-    //      ar(binary_data(m.data(), rows * cols * sizeof(_Scalar)));
-}
-
-template < class _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols> inline
-void
-load(cereal::XMLInputArchive & ar, Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> & m, const std::uint32_t version)
-{
-    int32_t rows;
-    int32_t cols;
-    ar(rows);
-    ar(cols);
-
-    m.resize(rows, cols);
-
-    ar.loadBinaryValue(m.data(), sizeof(_Scalar) * m.size(), "EigenMatrixBase64" );
-
-    //      ar(binary_data(m.data(), static_cast<std::size_t>(rows * cols * sizeof(_Scalar))));
-}
 
 
 ////! all the remaining eigen types will be saved a as binary dumps in xml
-template <class _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols> inline
-void
-save(cereal::JSONOutputArchive & ar, Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> const & m, const std::uint32_t version)
-{
-    int32_t rows = m.rows();
-    int32_t cols = m.cols();
-    ar(rows);
-    ar(cols);
+//template <class _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols> inline
+//void
+//save(cereal::XMLOutputArchive & ar, Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> const & m, const std::uint32_t version)
+//{
+//    int32_t rows = m.rows();
+//    int32_t cols = m.cols();
+//    ar(rows);
+//    ar(cols);
 
-    ar.saveBinaryValue( m.data(), sizeof(_Scalar) * m.size(), "EigenMatrixBase64" );
+//    ar.saveBinaryValue( m.data(), sizeof(_Scalar) * m.size(), "EigenMatrixBase64" );
 
-    //      ar(binary_data(m.data(), rows * cols * sizeof(_Scalar)));
-}
+//    //      ar(binary_data(m.data(), rows * cols * sizeof(_Scalar)));
+//}
 
-template < class _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols> inline
-void
-load(cereal::JSONInputArchive & ar, Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> & m, const std::uint32_t version)
-{
-    int32_t rows;
-    int32_t cols;
-    ar(rows);
-    ar(cols);
+//template < class _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols> inline
+//void
+//load(cereal::XMLInputArchive & ar, Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> & m, const std::uint32_t version)
+//{
+//    int32_t rows;
+//    int32_t cols;
+//    ar(rows);
+//    ar(cols);
 
-    m.resize(rows, cols);
+//    m.resize(rows, cols);
 
-    ar.loadBinaryValue(m.data(), sizeof(_Scalar) * m.size(), "EigenMatrixBase64" );
+//    ar.loadBinaryValue(m.data(), sizeof(_Scalar) * m.size(), "EigenMatrixBase64" );
 
-    //      ar(binary_data(m.data(), static_cast<std::size_t>(rows * cols * sizeof(_Scalar))));
-}
+//    //      ar(binary_data(m.data(), static_cast<std::size_t>(rows * cols * sizeof(_Scalar))));
+//}
+
+
+//////! all the remaining eigen types will be saved a as binary dumps in xml
+//template <class _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols> inline
+//void
+//save(cereal::JSONOutputArchive & ar, Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> const & m, const std::uint32_t version)
+//{
+//    int32_t rows = m.rows();
+//    int32_t cols = m.cols();
+//    ar(rows);
+//    ar(cols);
+
+//    ar.saveBinaryValue( m.data(), sizeof(_Scalar) * m.size(), "EigenMatrixBase64" );
+
+//    //      ar(binary_data(m.data(), rows * cols * sizeof(_Scalar)));
+//}
+
+//template < class _Scalar, int _Rows, int _Cols, int _Options, int _MaxRows, int _MaxCols> inline
+//void
+//load(cereal::JSONInputArchive & ar, Eigen::Matrix<_Scalar, _Rows, _Cols, _Options, _MaxRows, _MaxCols> & m, const std::uint32_t version)
+//{
+//    int32_t rows;
+//    int32_t cols;
+//    ar(rows);
+//    ar(cols);
+
+//    m.resize(rows, cols);
+
+//    ar.loadBinaryValue(m.data(), sizeof(_Scalar) * m.size(), "EigenMatrixBase64" );
+
+//    //      ar(binary_data(m.data(), static_cast<std::size_t>(rows * cols * sizeof(_Scalar))));
+//}
 
 
 

@@ -14,5 +14,13 @@ DtiClassType SelectionRubberband::Type ("SelectionRubberband", &ElementBase::Typ
 } // end nspace
 
 
+
+
+
 #include <spc/core/spc_cereal.hpp>
 SPC_CEREAL_REGISTER_TYPE(spc::SelectionRubberband)
+
+
+SPC_CEREAL_CLASS_VERSION( spc::SelectionRubberband, 1 );
+
+

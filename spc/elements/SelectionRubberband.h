@@ -6,12 +6,19 @@
 #include <spc/elements/Plane.h>
 #include <pcl/io/pcd_io.h> //for debug only
 #include <spc/elements/PointCloudPcl.h>
-//#include <boost/serialization/shared_ptr.hpp>
-
 #include <spc/elements/SelectionBase.h>
 #include <boost/foreach.hpp>
 
 #include <spc/elements/templated/PolyLine3D.h>
+
+#include <spc/elements/PointCloudSpc.h>
+
+#include <spc/elements/StratigraphicModelBase.h>
+
+
+#include <cereal/cereal.hpp>
+
+
 
 namespace spc
 {
@@ -22,15 +29,24 @@ namespace spc
 class SelectionRubberband : public ElementBase, public SelectionOfPointsBase
 {
 public:
-    SPC_OBJECT(SelectionRubberband)
+    SPC_ELEMENT(SelectionRubberband)
     EXPOSE_TYPE
-    typedef pcl::PointCloud<pcl::PointXYZ> cloudT;
 
+    typedef Transform<float, 3, Affine, AutoAlign>  TransT;
 
     /** def const */
     SelectionRubberband()
     {
+        DLOG(INFO) << "now SelectionRubberband created from def const";
+    }
 
+    SelectionRubberband(const SelectionRubberband & other): ElementBase(other), SelectionOfPointsBase(other)
+    {
+        verts_ = other.verts_;
+        verts_2d_ = other.verts_2d_;
+        proj_plane_ = other.proj_plane_;
+        max_distance_ = other.max_distance_;
+        transform_ = other.transform_;
     }
 
     SelectionRubberband(const PointCloudXYZBase &verts, float max_distance = 1): max_distance_(max_distance)
@@ -46,13 +62,6 @@ public:
         updatePolyVertices();
     }
 
-//    SelectionRubberband(const SelectionRubberband &el)
-//    {
-//        verts_ = el.getVertices();
-//        updateProjectionPlane();
-//        updatePolyVertices();
-//    }
-
     PolyLine3D getVertices() const
     {
         return verts_;
@@ -63,7 +72,6 @@ public:
         return proj_plane_;
     }
 
-
     void setVertices(const PointCloudXYZBase &verts)
     {
 //        verts_ = PolyLine3D(verts);
@@ -71,10 +79,17 @@ public:
         updatePolyVertices();
     }
 
-    virtual bool isInsideSelection(const Vector3f &obj) const
+    virtual bool contains(const Vector3f &obj) const
     {
-        Vector2f on_plane = proj_plane_.projectOnPlane(obj).head(2);
-        DLOG(INFO) << "to be implemented";
+
+        if (proj_plane_.distanceTo(obj) > max_distance_)
+            return false;
+        else
+        {
+            Vector2f on_plane = (transform_ * obj).head(2);
+            return isPointInPoly(on_plane, verts_2d_);
+        }
+
     }
 
     float getMaxDistance() const
@@ -87,78 +102,12 @@ public:
         max_distance_ = d;
     }
 
-//    void setInputCloud(PointCloudBase::Ptr cloud)
-//    {
-//        in_cloud_ = cloud;
-//        updateProjectedCloud();
-//        updateIndices();
-//    }
-
-//    std::vector<int> getIndices()
-//    {
-//        return indices_;
-//    }
-
-    void updateIndices()
+    TransT getPojectionTransform() const
     {
-//        DLOG(INFO) << "Updating indices";
-//        for (int i = 0; i < projected_cloud_.size(); ++i)
-//        {
-//            if (projected_cloud_.at(i).z <= max_distance_)
-//            {
-//                pcl::PointXY p;
-//                p.x = projected_cloud_.at(i).x;
-//                p.y = projected_cloud_.at(i).y;
-//                if (isPointInPoly(p, verts_2d_))
-//                    indices_.push_back(i);
-//            }
-//        }
-//        DLOG(INFO) << "Updating indices. Done";
+        return transform_;
     }
 
-//    pcl::PointCloud<pcl::PointXYZ> getInside(PointCloudBase::Ptr in_cloud)
-//    {
-//        setInputCloud(in_cloud);
-//        updateProjectedCloud();
-//        updatePolyVertices();
-//        updateIndices();
-
-//        std::vector<int> indices = getIndices();
-
-//        std::cout << "found " << indices.size() << " valid indices\n"
-//                  << std::endl;
-
-//        // now filter out
-
-//        pcl::PointCloud<pcl::PointXYZ> cloud;
-//        cloud.resize(indices.size());
-
-//        for(auto id: indices)
-//        {
-//            Vector3f point = in_cloud->getPoint(id);
-//            pcl::PointXYZ p;
-//            p.x = point(0);
-//            p.y = point(1);
-//            p.z = point(2);
-//            cloud.push_back(p);
-//        }
-
-//        return cloud;
-//    }
-
 protected:
-//    void updateProjectedCloud()
-//    {
-//        DLOG(INFO) <<"Updating projected cloud.";
-//        projected_cloud_ = in_cloud_->applyTransform(proj_plane_.get2DArbitraryRefSystem());
-
-//        DLOG(INFO) << "Projected cloud has N points" << projected_cloud_.size();
-//        pcl::io::savePCDFileBinary("/home/luca/tmp.pcd", projected_cloud_);
-//        DLOG(INFO) <<"Updating projected cloud. Done";
-
-
-//    }
-
     void updateProjectionPlane()
     {
         DLOG(INFO) << "Updating projection plane.";
@@ -172,32 +121,40 @@ protected:
     }
 
     /// http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-    inline int isPointInPoly(const pcl::PointXY P,
-                      const std::vector<pcl::PointXY> &polyVertices)
+    inline bool isPointInPoly(const Eigen::Vector2f &P,
+                      const PolyLine2D &polyVertices) const
     {
-        int nvert = polyVertices.size();
+        int nvert = polyVertices.getNumberOfPoints();
         int i, j, c = 0;
-        for (i = 0, j = nvert - 1; i < nvert; j = i++) {
-            if (((polyVertices[i].y > P.y) != (polyVertices[j].y > P.y))
-                && (P.x < (polyVertices[j].x - polyVertices[i].x)
-                          * (P.y - polyVertices[i].y)
-                          / (polyVertices[j].y - polyVertices[i].y)
-                          + polyVertices[i].x))
+        for (i = 0, j = nvert - 1; i < nvert; j = i++)
+        {
+            if (((polyVertices.getPoint(i)(1) > P(1)) != (polyVertices.getPoint(j)(1) > P(1)))
+                && (P(0) < (polyVertices.getPoint(j)(0) - polyVertices.getPoint(i)(0))
+                          * (P(1) - polyVertices.getPoint(i)(1))
+                          / (polyVertices.getPoint(j)(1) - polyVertices.getPoint(i)(1))
+                          + polyVertices.getPoint(i)(0)))
                 c = !c;
         }
-        return c;
+        return (bool) c;
+    }
+
+    void updateTMatrix()
+    {
+        transform_ = proj_plane_.get2DArbitraryRefSystem();
+        DLOG(INFO) << "transform is "<< transform_.matrix();
     }
 
 
     void updatePolyVertices()
     {
 
-       DLOG(INFO) << "Updating poly vertices";
+        DLOG(INFO) << "Updating poly vertices";
 
         DLOG(INFO) << "N initial poly verts: " << verts_.getNumberOfPoints();
 
+        updateTMatrix();
 
-        PolyLine3D proj = verts_.transform<PolyLine3D>(proj_plane_.get2DArbitraryRefSystem());
+        PolyLine3D proj = verts_.transform<PolyLine3D>(transform_);
 
 
         DLOG(INFO) << "Cloud projected! copying as 2d cloud";
@@ -210,11 +167,36 @@ protected:
         DLOG(INFO) << "there are "<< verts_2d_.getNumberOfPoints() <<  " poly verts";
     }
 
+public:
+    bool hasModel() const
+    {
+        if (model_)
+            return true;
+        else
+            return false;
+    }
+
+
+    void linkToStratigraphicModel(spc::StratigraphicModelBase::Ptr mod)
+    {
+        if (hasModel())
+        {
+            LOG(WARNING) << "linked model changed";
+        }
+        model_ =  mod;
+    }
+
+
+    spc::StratigraphicModelBase::Ptr getLinkedStratigraphicModel() const
+    {
+        return model_;
+    }
+
+protected:
+
     ///
     /// \brief m_points the points defining a polyline in 3D
-    ///
     spc::PolyLine3D verts_;
-
 
     /// things that will be auto-updated
     spc::PolyLine2D verts_2d_;
@@ -226,36 +208,62 @@ protected:
     float max_distance_;
 
 
-//    /// this stuff will go into the evaluator.
-//    ///
-//    /// \brief in_cloud_ it the input cloud to be segmented
-//    ///
-//    PointCloudBase::Ptr in_cloud_;
+    Transform<float, 3, Affine, AutoAlign> transform_;
 
-//    /// good indexes (inside)
-//    std::vector<int> indices_;
 
-//    /// the input cloud projected in the 2d ref system
-//    /// z is the distance from the proj_plane_
-//    pcl::PointCloud<pcl::PointXYZ> projected_cloud_;
+    spc::StratigraphicModelBase::Ptr model_;
 
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+    template <class Archive> void save(Archive &ar,std::uint32_t const version) const
     {
         ar(cereal::base_class<spc::ElementBase>(this),
            CEREAL_NVP(max_distance_),
            CEREAL_NVP(verts_),
            CEREAL_NVP(verts_2d_),
-           CEREAL_NVP(proj_plane_));
+           CEREAL_NVP(proj_plane_)
+           );
+
+        if (version >= 1)
+            ar(CEREAL_NVP(model_));
+
+
     }
 
-    // ElementBase interface
+    template <class Archive> void load(Archive &ar, std::uint32_t const version)
+    {
+        ar(cereal::base_class<spc::ElementBase>(this),
+           CEREAL_NVP(max_distance_),
+           CEREAL_NVP(verts_),
+           CEREAL_NVP(verts_2d_),
+           CEREAL_NVP(proj_plane_)
+        );
 
-    // SelectionBase interface
+
+           this->updateTMatrix();
+
+        if (version >= 1)
+            ar(CEREAL_NVP(model_));
+    }
+
 };
 
+
+
+
 } // end nspace
+
+
+namespace cereal
+{
+  template <class Archive>
+  struct specialize<Archive, spc::SelectionRubberband, cereal::specialization::member_load_save> {};
+  // cereal no longer has any ambiguity when serializing MyDerived
+}
+
+
+
+
 
 #endif // SPCPLANARSELECTION_H

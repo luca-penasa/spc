@@ -14,7 +14,7 @@ namespace spc
 class CorrectionFactorBase
 {
 public:
-    SPC_OBJECT(CorrectionFactorBase)
+    spcTypedefSharedPtrs(CorrectionFactorBase)
     EXPOSE_TYPE
     //! we pass a CalibrationSamplesDB because some factors may require to know
     //! some stuff before everything

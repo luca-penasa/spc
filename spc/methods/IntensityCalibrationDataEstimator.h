@@ -21,7 +21,7 @@ namespace spc
 class CalibrationDataEstimator
 {
 public:
-    SPC_OBJECT(CalibrationDataEstimator)
+    spcTypedefSharedPtrs(CalibrationDataEstimator)
 
     enum NORMAL_COMPUTATION_METHOD {
         FULL_NORMALS_ESTIMATION = 0,

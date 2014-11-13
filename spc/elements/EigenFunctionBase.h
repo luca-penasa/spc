@@ -11,7 +11,7 @@ namespace spc
 class EigenFunctionBase : public ElementBase
 {
 public:
-    SPC_OBJECT(EigenFunctionBase)
+    spcTypedefSharedPtrs(EigenFunctionBase)
     EXPOSE_TYPE
 
     EigenFunctionBase()
@@ -22,6 +22,12 @@ public:
     {
         input_size_ = input_s;
         output_size_ = output_s;
+    }
+
+    EigenFunctionBase(const EigenFunctionBase & other)
+    {
+        input_size_ = other.input_size_;
+        output_size_ = other.output_size_;
     }
 
     virtual Eigen::VectorXf operator()(const Eigen::VectorXf &v) = 0;

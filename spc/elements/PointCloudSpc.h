@@ -21,7 +21,7 @@ public:
 
     }
 
-    SPC_OBJECT(PointCloudSpc)
+    SPC_ELEMENT(PointCloudSpc)
 
     // PointCloudBase interface
 public:

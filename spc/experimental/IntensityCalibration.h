@@ -46,7 +46,7 @@ struct FunctorBase
 class IntensityCalibrator
 {
 public:
-    SPC_OBJECT(IntensityCalibrator)
+    spcTypedefSharedPtrs(IntensityCalibrator)
 
     IntensityCalibrator();
     

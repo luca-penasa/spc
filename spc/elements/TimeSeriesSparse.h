@@ -21,7 +21,7 @@ namespace spc
 class TimeSeriesSparse : public TimeSeriesBase
 {
 public:
-    SPC_OBJECT(TimeSeriesSparse)
+    SPC_ELEMENT(TimeSeriesSparse)
 EXPOSE_TYPE
     typedef typename TimeSeriesBase::VectorT VectorT;
     typedef typename TimeSeriesBase::ScalarT ScalarT;

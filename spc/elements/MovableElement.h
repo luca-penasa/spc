@@ -20,7 +20,7 @@ class PointCloudBase;
 class Point3D : public ElementBase
 {
 public:
-    SPC_OBJECT(Point3D)
+    SPC_ELEMENT(Point3D)
     EXPOSE_TYPE
     Point3D();
 
@@ -28,10 +28,12 @@ public:
 
     Point3D(const Eigen::Vector3f point);
 
-    Point3D(const Point3D &ref)
+    Point3D(const Point3D &other): ElementBase(other)
     {
-        this->position_ = ref.position_;
+        this->position_ = other.position_;
     }
+
+
 
     //! affine like accessors
     Eigen::Vector4f getPositionH() const;

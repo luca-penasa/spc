@@ -27,7 +27,7 @@ namespace spc
 class TimeSeriesEquallySpaced : public spc::TimeSeriesBase
 {
 public:
-    SPC_OBJECT(TimeSeriesEquallySpaced)
+    SPC_ELEMENT(TimeSeriesEquallySpaced)
 EXPOSE_TYPE
     using typename spc::TimeSeriesBase::VectorT;
 

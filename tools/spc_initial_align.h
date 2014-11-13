@@ -7,7 +7,7 @@
 // #include <pcl/features/impl/normal_3d_omp.hpp>
 #include <pcl/keypoints/sift_keypoint.h> //for sift keypoints
 
-#include <pcl/v
+#include <pcl/vis
 
 #include "pcl/features/fpfh.h"
 #include <pcl/features/fpfh_omp.h>

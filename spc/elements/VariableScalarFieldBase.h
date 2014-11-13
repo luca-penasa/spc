@@ -23,7 +23,7 @@ using namespace Eigen;
 class VariableScalarFieldBase : public ElementBase
 {
 public:
-    SPC_OBJECT(VariableScalarFieldBase)
+    spcTypedefSharedPtrs(VariableScalarFieldBase)
     EXPOSE_TYPE
     //! Def constructor
     VariableScalarFieldBase();

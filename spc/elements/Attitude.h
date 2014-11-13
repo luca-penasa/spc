@@ -19,7 +19,7 @@ namespace spc
 class Attitude : public Plane
 {
 public:
-    SPC_OBJECT(Attitude)
+    SPC_ELEMENT(Attitude)
     EXPOSE_TYPE
 
     /// def contructor
@@ -44,6 +44,8 @@ public:
     Attitude(const Attitude &att) : Plane(att)
     {
     }
+
+
 
     //////////////////////////////////////
     //// GEOLOGICAL AWARE GETTERS ////////

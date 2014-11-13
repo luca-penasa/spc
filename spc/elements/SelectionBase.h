@@ -16,7 +16,7 @@ public:
     SelectionBase()
     {}
 
-    virtual bool isInsideSelection(const ElementT &obj) const = 0;
+    virtual bool contains(const ElementT &obj) const = 0;
 };
 
 

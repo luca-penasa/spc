@@ -32,7 +32,7 @@ public:
         STDVECi
     };
 
-    SPC_OBJECT(FieldBase)
+   spcTypedefSharedPtrs(FieldBase)
     EXPOSE_TYPE
 
     virtual size_t size() const = 0;
@@ -142,7 +142,7 @@ private:
 class FieldFloat : public FieldTemplate<float>
 {
 public:
-    SPC_OBJECT(FieldFloat)
+    SPC_ELEMENT(FieldFloat)
     EXPOSE_TYPE
 
     virtual bool isScalarField() const
@@ -154,7 +154,7 @@ public:
 class FieldInt : public FieldTemplate<int>
 {
 public:
-    SPC_OBJECT(FieldInt)
+    SPC_ELEMENT(FieldInt)
     EXPOSE_TYPE
 
     virtual bool isScalarField() const
@@ -166,14 +166,14 @@ public:
 class FieldString : public FieldTemplate<std::string>
 {
 public:
-    SPC_OBJECT(FieldString)
+    SPC_ELEMENT(FieldString)
     EXPOSE_TYPE
 };
 
 class FieldVector3f : public FieldTemplate<Eigen::Vector3f>
 {
 public:
-    SPC_OBJECT(FieldVector3f)
+    SPC_ELEMENT(FieldVector3f)
     EXPOSE_TYPE
 
     virtual bool isVector3Field() const
@@ -185,28 +185,28 @@ public:
 class FieldVectorXf : public FieldTemplate<Eigen::VectorXf>
 {
 public:
-    SPC_OBJECT(FieldVectorXf)
+    SPC_ELEMENT(FieldVectorXf)
     EXPOSE_TYPE
 };
 
 class FieldVectorXi : public FieldTemplate<Eigen::VectorXi>
 {
 public:
-    SPC_OBJECT(FieldVectorXi)
+    SPC_ELEMENT(FieldVectorXi)
     EXPOSE_TYPE
 };
 
 class FieldVectorStdf : public FieldTemplate<std::vector<float>>
 {
 public:
-    SPC_OBJECT(FieldVectorStdf)
+    SPC_ELEMENT(FieldVectorStdf)
     EXPOSE_TYPE
 };
 
 class FieldVectorStdi : public FieldTemplate<std::vector<int>>
 {
 public:
-    SPC_OBJECT(FieldVectorStdi)
+    SPC_ELEMENT(FieldVectorStdi)
     EXPOSE_TYPE
 };
 
@@ -247,7 +247,7 @@ public:
 class FieldsManager : public ElementBase
 {
 public:
-    SPC_OBJECT(FieldsManager)
+    SPC_ELEMENT(FieldsManager)
     EXPOSE_TYPE
 
     typedef std::pair<std::string, spc::FieldBase::Ptr> PairT;

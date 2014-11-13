@@ -22,7 +22,7 @@ namespace spc
 class EigenTable : public ElementBase
 {
 public:
-    SPC_OBJECT(EigenTable)
+    SPC_ELEMENT(EigenTable)
 
     EXPOSE_TYPE
 
@@ -30,7 +30,12 @@ public:
     {
     }
 
-    EigenTable(const EigenTable &other, bool only_structure = false);
+
+
+    EigenTable(const EigenTable &other, bool only_structure = false) ;
+
+
+
 
     Eigen::MatrixXf &mat()
     {
