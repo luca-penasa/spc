@@ -1,10 +1,11 @@
 #ifndef STRATIGRAPHICSOLVER_H
 #define STRATIGRAPHICSOLVER_H
 
-#include <spc/elements/SelectionRubberband.h>
+//#include <spc/elements/StratigraphicPositionableElement.h>
 #include <spc/elements/StratigraphicModelBase.h>
 #include <spc/elements/StratigraphicConstrain.h>
-#include <spc/elements/CloudDataSourceOnDisk.h>
+#include <spc/elements/StratigraphicPositionableElement.h>
+
 
 namespace spc
 {
@@ -14,45 +15,55 @@ class StratigraphicSolver
 public:
     StratigraphicSolver();
 
-    void addAreaOfInteres(SelectionRubberband::Ptr area)
+    void extractInputFromChildrens()
     {
-        areas_.push_back(area);
-        LOG(INFO) << "added new interest area to the sover";
-    }
 
-    void addStratigraphicModel(StratigraphicModelBase::Ptr model)
-    {
-        models_.push_back(model);
-        LOG(INFO) << "added new stratigraphic model to the solver";
-    }
+        constrains_.clear();
+        positionables_.clear();
 
-    void addStratigraphicConstrain(StratigraphicConstrain::Ptr constrain)
-    {
-        constrains_.push_back(constrain);
-        LOG(INFO) << "added new stratigraphic constrain between areas of interest";
-    }
-
-    void assignModelToAreas()
-    {
-        for (StratigraphicModelBase::Ptr model: models_)
+        for(StratigraphicModelBase::Ptr mod: models_)
         {
-            for (SelectionRubberband::Ptr area: areas_)
+            std::vector<spc::ElementBase::Ptr> pos = getChildsThatAre(&spc::StratigraphicPositionableElement::Type);
 
+            for (spc::ElementBase::Ptr el: pos)
             {
-//               area->contains(model->get)
+                spc::StratigraphicPositionableElement::Ptr p = spcDynamicPointerCast<spc::StratigraphicPositionableElement>(el);
+                if (p->getManual()) //! < only elements set to manual can provide a constrain
+                {
+                    positionables_.push_back(p);
+                }
             }
+
+            std::vector<spc::ElementBase::Ptr> constrains = getChildsThatAre(&spc::StratigraphicConstrain::Type);
+
+
+            for (ElementBase::Ptr el: constrains)
+            {
+                spc::StratigraphicConstrain::Ptr p = spcDynamicPointerCast<StratigraphicConstrain>(el);
+
+
+
+
+            }
+
+
+
         }
     }
 
 
 
+
+
 protected:
-    std::vector<SelectionRubberband::Ptr> areas_;
     std::vector<StratigraphicModelBase::Ptr> models_;
     std::vector<StratigraphicConstrain::Ptr> constrains_;
+    std::vector<StratigraphicPositionableElement::Ptr> positionables_;
 
 
-    std::map<SelectionRubberband::Ptr, StratigraphicModelBase::Ptr> area_to_model_;
+
+
+
 
 
 };

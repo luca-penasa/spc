@@ -2,7 +2,7 @@
 #ifndef SAMPLE_H
 #define SAMPLE_H
 
-#include <spc/elements/MovableElement.h>
+#include <spc/elements/StratigraphicPositionableElement.h>
 #include <spc/elements/VariantPropertiesRecord.h>
 #include <spc/core/macros.h>
 #include <spc/elements/ElementWithVariantProperties.h>
@@ -10,7 +10,7 @@
 namespace spc
 {
 
-class Sample : public Point3D
+class Sample : public StratigraphicPositionableElement
 {
 
 public:
@@ -20,12 +20,22 @@ public:
     {
     }
 
+    Sample(const Sample &other) : StratigraphicPositionableElement(other)
+    {
+
+    }
+
+    ~Sample()
+    {
+
+    }
+
     Sample(const float x, const float y, const float z)
-        : Point3D(x, y, z)
+        : StratigraphicPositionableElement(x, y, z)
     {
     }
 
-    Sample(const Eigen::Vector3f v) : Point3D(v)
+    Sample(const Eigen::Vector3f v) : StratigraphicPositionableElement(v)
     {
     }
 
@@ -34,7 +44,7 @@ private:
 
     template <class Archive> void serialize(Archive &ar)
     {
-        ar(cereal::base_class<Point3D>(this));
+        ar(cereal::base_class<StratigraphicPositionableElement>(this));
     }
 };
 

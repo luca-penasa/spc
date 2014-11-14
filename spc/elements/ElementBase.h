@@ -22,9 +22,10 @@ public:
     {
     }
 
-    Ptr getPtr() {
+    Ptr getPtr()
+    {
            return shared_from_this();
-       }
+    }
 
     ElementBase (const ElementBase& other): ElementWithVariantProperties(other)
     {
@@ -38,7 +39,16 @@ public:
 
     }
 
+    //! a generic call to a virtual update() method
+    //! some elements may depend upon other elements
+    //! if this is reimplemented we have a way to actually update internals stuff
+
     virtual void update();
+
+    virtual void modified()
+    {
+        this->modified_ = true;
+    }
 
     /// this should also be present in the interface for elements with variant
     /// properties
@@ -52,6 +62,8 @@ public:
         DLOG(WARNING) << "called clone in ElementBase class. This method must be re-implemented in derived classes";
         return ElementBase::Ptr(new ElementBase(*this));
     }
+
+
 
 
 
@@ -80,7 +92,7 @@ public:
         return childs_;
     }
 
-
+    //! only at the first level
     std::vector<ElementBase::Ptr> getChildsThatAre(const DtiClassType * dti) const
     {
 
@@ -97,8 +109,8 @@ public:
     void removeChild(ElementBase::Ptr child)
     {
         childs_.erase(std::remove(childs_.begin(), childs_.end(), child), childs_.end());
-        // we are not parent of this child anymore
 
+        // we are not parent of this child anymore
         child->setParent(NULL);
     }
 
@@ -134,7 +146,7 @@ private:
 
            ar(CEREAL_NVP(name_));
            ar(CEREAL_NVP(childs_));
-           ar(CEREAL_NVP(parent_));
+           //we do not save the parent!
 
 
     }

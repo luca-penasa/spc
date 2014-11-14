@@ -13,9 +13,7 @@ DtiClassType ElementBase::Type ("ElementBase"); // it is a root
 void ElementBase::update()
 {
     // do stuff in subclasses
-    pcl::console::print_debug(
-        "Called update in base method, update() not implemented in %s",
-        this->getType()->getClassName().c_str());
+    LOG(INFO) << "Called update in base method, update() not implemented";
     modified_ = false;
 }
 

@@ -44,7 +44,16 @@ int serializeToFile(const ISerializable::Ptr element, std::string filename,
     filename += extension;
 
     std::ofstream os(filename); // open file as ofstream
-    serializeToStream(element, os, type);
+
+    try
+    {
+        serializeToStream(element, os, type);
+    }
+    catch(const std::exception &exc)
+    {
+        LOG(ERROR) << "Some problem serializing the file: " << exc.what();
+        return -1;
+    }
 
     return 1;
 }

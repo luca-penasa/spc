@@ -31,6 +31,8 @@ public:
         }
 
         filename_ = fname;
+
+        setElementName(fname);
     }
 
     //def const

@@ -4,6 +4,8 @@
 #include<spc/elements/MovableElement.h>
 #include <spc/elements/templated/PointSet.h>
 
+#include <spc/elements/StratigraphicPositionableElement.h>
+
 #include <spc/elements/templated/PolyLine3D.h>
 namespace spc
 {
@@ -21,7 +23,7 @@ public:
 
     }
 
-    void addVertex(Point3D::Ptr v)
+    void addVertex(StratigraphicPositionableElement::Ptr v)
     {
         vertices_.push_back(v);
         updatePointSetRepresentation();
@@ -50,9 +52,24 @@ public:
         return polyline_rep_;
     }
 
+    float getSquaredResidual() const
+    {
+        float sqres;
+        StratigraphicPositionableElement::Ptr thisvert = vertices_.at(0);
+        for(int i = 1 ; i < vertices_.size(); ++i)
+        {
+            StratigraphicPositionableElement::Ptr nextvert = vertices_.at(i);
+            float diff = thisvert->getStratigraphicPosition() - nextvert->getStratigraphicPosition();
+            sqres += diff*diff;
+
+            thisvert = nextvert;
+        }
+
+        return sqres;
+    }
 
 protected:
-    std::vector<Point3D::Ptr> vertices_;
+    std::vector<StratigraphicPositionableElement::Ptr> vertices_;
 
     // a representation os polylin of the points defining the constrain
     PolyLine3D polyline_rep_;

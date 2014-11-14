@@ -9,6 +9,7 @@
 
 
 
+
 namespace spc
 {
 
@@ -32,8 +33,6 @@ public:
     {
         this->position_ = other.position_;
     }
-
-
 
     //! affine like accessors
     Eigen::Vector4f getPositionH() const;
@@ -68,7 +67,7 @@ public:
     void positionFromCentroid(const PointCloudXYZBase &cloud);
 
 protected:
-    Eigen::Vector4f position_; /**< we keep position in Homogeneous coords, to it will be easier to apply transforms*/
+    Eigen::Vector4f position_; /**< we keep position in Homogeneous coords, it will be easier to apply transforms*/
 
 private:
     friend class cereal::access;
