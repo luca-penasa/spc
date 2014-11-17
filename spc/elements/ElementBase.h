@@ -7,7 +7,7 @@
 #include <spc/elements/UniversalUniqueID.h>
 #include <spc/elements/SerializableInterface.h>
 #include <spc/elements/ElementWithVariantProperties.h>
-
+#include <stack>
 #include <spc/core/logging.h>
 
 namespace spc
@@ -25,6 +25,11 @@ public:
     Ptr getPtr()
     {
            return shared_from_this();
+    }
+
+    ConstPtr getPtr() const
+    {
+        return shared_from_this();
     }
 
     ElementBase (const ElementBase& other): ElementWithVariantProperties(other)
@@ -105,6 +110,107 @@ public:
 
         return out;
     }
+
+    template<class Type>
+    std::vector<typename Type::Ptr> getChildsThatAre(const DtiClassType * dti) const
+    {
+        std::vector<typename Type::Ptr> out;
+        std::vector<spc::ElementBase::Ptr> el = this->getChildsThatAre(dti);
+        for (spc::ElementBase::Ptr e: el)
+        {
+            typename Type::Ptr astype = spcDynamicPointerCast<Type> (e);
+
+            if (astype)
+                out.push_back(astype);
+        }
+
+        return out;
+
+    }
+
+
+    std::vector<ElementBase::Ptr> findElementsThatAre(const DtiClassType * dti)
+    {
+        std::vector<ElementBase::Ptr> out;
+
+        std::stack<ElementBase::Ptr> tocheck;
+        tocheck.push(this->getPtr());
+
+        while (!tocheck.empty())
+        {
+            ElementBase::Ptr thisel = tocheck.top();
+            tocheck.pop();
+
+            if (thisel->isA(dti))
+            {
+                out.push_back(thisel);
+            }
+
+            for (spc::ElementBase::Ptr child: thisel->getChilds())
+            {
+                tocheck.push(child);
+            }
+
+        }
+
+        return out;
+    }
+
+
+    std::vector<ElementBase::Ptr> findElementsInParents(const DtiClassType * dti) const
+    {
+        std::vector<ElementBase::Ptr> out;
+       spc::ElementBase::Ptr current_parent = this->getParent();
+
+        while (current_parent != NULL)
+        {
+            if (current_parent->isA(dti))
+            {
+                out.push_back(current_parent);
+            }
+
+            current_parent = current_parent->getParent();
+        }
+
+        return out;
+    }
+
+
+    template <class T>
+    std::vector<typename T::Ptr> findElementsInParents(const DtiClassType * dti) const
+    {
+        std::vector<ElementBase::Ptr> good = findElementsInParents(dti);
+
+        std::vector<typename T::Ptr> out;
+        for (ElementBase::Ptr el: good)
+        {
+            typename T::Ptr outel = spcDynamicPointerCast<T> (el);
+
+            if (outel)
+                out.push_back(outel);
+        }
+
+        return out;
+    }
+
+
+    template<class T>
+    std::vector<typename T::Ptr> findElementsThatAre(const DtiClassType * dti)
+    {
+        std::vector<ElementBase::Ptr> good = findElementsThatAre(dti);
+
+        std::vector<typename T::Ptr> out;
+        for (ElementBase::Ptr el: good)
+        {
+            typename T::Ptr outel = spcDynamicPointerCast<T> (el);
+
+            if (outel)
+                out.push_back(outel);
+        }
+
+        return out;
+    }
+
 
     void removeChild(ElementBase::Ptr child)
     {

@@ -98,11 +98,14 @@ Eigen::Matrix<ScalarT, -1, 1> evaluate_dynamic_scalar_field_generator(const spc:
                                                                       const spc::VariableScalarFieldBase::ConstPtr model,
                                                                       const std::vector<idtype> & indices = std::vector<idtype>())
 {
+
+    LOG(INFO) << "evaluating the scalar field";
     spc::DynamicScalarFieldEvaluator<ScalarT, idtype> eval;
     eval.setInputCloud(in_cloud);
     eval.setIndices(indices);
     eval.setGenerator(model);
     eval.compute();
+    LOG(INFO) << "evaluating the scalar field. Done";
 
     return eval.getOutput();
 }

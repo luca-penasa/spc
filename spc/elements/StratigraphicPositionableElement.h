@@ -43,6 +43,8 @@ public:
 
     }
 
+
+
     void modelFromParent()
     {
         if (this->getParent()!=NULL && this->getParent()->isA(&spc::StratigraphicModelBase::Type))
@@ -70,17 +72,23 @@ public:
     spcGetMacro(Manual, manual_, bool)
     spcSetMacro(Manual, manual_, bool)
 
-//    float getSquaredResidual() const
-//    {
-//        if
-//    }
+    float getSquaredResidual() const
+    {
+        if (!getManual())
+            return 0;
+        else
+        {
+            float out = strat_model_->predictStratigraphicPosition(this->getPosition()) - getStratigraphicPosition();
+            return out*out;
+        }
+    }
 
     float getStratigraphicPosition() const
     {
         if (manual_ | strat_model_ == NULL)
             return stratigraphic_position_;
         else
-            return strat_model_->getScalarFieldValue(this->getPosition());
+            return strat_model_->predictStratigraphicPosition(this->getPosition());
     }
 
 

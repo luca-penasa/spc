@@ -18,30 +18,32 @@ public:
     SPC_ELEMENT(StratigraphicModelSingleAttitude)
 EXPOSE_TYPE
     /// def const
-    StratigraphicModelSingleAttitude() : additional_shift_(0.0)
+    StratigraphicModelSingleAttitude()
     {
     }
 
     /// copy const
-    StratigraphicModelSingleAttitude(const StratigraphicModelSingleAttitude &model)
+    StratigraphicModelSingleAttitude(const StratigraphicModelSingleAttitude &model): StratigraphicModelBase(model)
     {
-        additional_shift_ = model.getAdditionalShift();
         attitude_ = model.attitude_;
     }
 
     /// copy from an attitude
     StratigraphicModelSingleAttitude(const Attitude &attitude)
     {
-        additional_shift_ = 0.0;
 
         attitude_ = attitude;
     }
 
     StratigraphicModelSingleAttitude(const Attitude::Ptr attitude)
     {
-        additional_shift_ = 0.0;
 
         attitude_ = *attitude;
+    }
+
+    float predictStratigraphicPosition(const Eigen::Vector3f & point) const override
+    {
+        return this->getScalarFieldValue(point);
     }
 
     /// inherited from StratigraphicModelBase
@@ -52,23 +54,11 @@ EXPOSE_TYPE
     Vector3f getPointAtStratigraphicPosition(float sp) const
     {
         return attitude_.getPosition() + attitude_.getUnitNormal()
-                                         * (sp - additional_shift_);
+                                         * (sp - getStratigraphicShift());
     }
 
-    float getAdditionalShift() const
-    {
-        return additional_shift_;
-    }
 
-    void setAdditionalShift(const float additional_shift)
-    {
-        additional_shift_ = additional_shift;
-    }
 
-    void addShift(const float shift)
-    {
-        additional_shift_ += shift;
-    }
 
     void setAttitude(const Attitude &attitude)
     {
@@ -85,6 +75,11 @@ EXPOSE_TYPE
         attitude_.setNormal(n);
     }
 
+    Vector3f getNormal() const
+    {
+        return attitude_.getNormal();
+    }
+
 private:
     friend class cereal::access;
 
@@ -95,7 +90,6 @@ private:
     }
 
 protected:
-    float additional_shift_;
 
     Attitude attitude_;
 };

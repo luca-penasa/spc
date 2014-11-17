@@ -3,7 +3,7 @@
 #define DTICLASS_H
 
 #include <string>
-#include <iostream> //for debug
+//#include <iostream> //for debug
 
 class DtiClassType
 {

@@ -72,13 +72,13 @@ public:
         }
 
         outvector.resize(eval_points.rows());
-
+        LOG(INFO) << "going to compute kernel smoothing";
 #ifdef USE_OPENMP
 #pragma omp parallel for
 #endif
         for (int i = 0; i < eval_points.rows(); ++i)
             outvector(i) = single_eval(eval_points.row(i));
-
+        LOG(INFO) << "going to compute kernel smoothing. Done";
         return 1;
     }
 
@@ -130,11 +130,11 @@ protected:
 
         nanoflann::SearchParams pars;
         pars.sorted = false; // we get a nice speed-up not sorting them
-//        LOG(INFO) << "eval point " << eval_point.transpose();
-        MatchSetT matches;                
+        //        LOG(INFO) << "eval point " << eval_point.transpose();
+        MatchSetT matches;
         index_->radiusSearch(eval_point, search_support_squared_,  matches, pars);
 
-//        LOG(INFO) << "N matches "<< matches.size();
+        //        LOG(INFO) << "N matches "<< matches.size();
 
         if (matches.size() == 0)
             return std::numeric_limits<ScalarT>::quiet_NaN();
@@ -156,7 +156,7 @@ protected:
 
     // flann index
     typename NanoFlannIndexT::Ptr index_;
-//    ScalarT kernel_raidius_; /**< AKA the bandwidth of the estimator */
+    //    ScalarT kernel_raidius_; /**< AKA the bandwidth of the estimator */
 
     const Eigen::Ref<const MatrixT>  points_;
     const Eigen::Ref<const VectorT> values_;

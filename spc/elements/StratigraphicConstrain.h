@@ -7,6 +7,8 @@
 #include <spc/elements/StratigraphicPositionableElement.h>
 
 #include <spc/elements/templated/PolyLine3D.h>
+
+#include <cereal/cereal.hpp>
 namespace spc
 {
 
@@ -46,6 +48,11 @@ public:
         }
     }
 
+    std::vector<StratigraphicPositionableElement::Ptr> getVertices() const
+    {
+        return vertices_;
+    }
+
 
     PolyLine3D getPolyLineRep() const
     {
@@ -77,12 +84,24 @@ protected:
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+
+
+
+    template <class Archive> void load(Archive &ar)
+    {
+        ar(cereal::base_class<ElementBase>(this), CEREAL_NVP(vertices_));
+        updatePointSetRepresentation();
+
+    }
+
+    template <class Archive> void save(Archive &ar) const
     {
         ar(cereal::base_class<ElementBase>(this), CEREAL_NVP(vertices_));
     }
 
 };
+
+
 
 }
 

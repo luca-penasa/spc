@@ -16,7 +16,7 @@ class Sample : public StratigraphicPositionableElement
 public:
     SPC_ELEMENT(Sample)
     EXPOSE_TYPE
-    Sample()
+    Sample(): StratigraphicPositionableElement()
     {
     }
 

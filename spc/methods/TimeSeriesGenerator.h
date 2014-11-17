@@ -13,6 +13,9 @@
 
 #include <spc/methods/DynamicScalarFieldEvaluator.h>
 
+#include <spc/elements/SelectionRubberband.h>
+#include <spc/methods/SelectionExtractor.h>
+
 namespace spc
 {
 
@@ -128,6 +131,16 @@ public:
         return out_series_;
     }
 
+    void setSelection(spc::SelectionRubberband::Ptr sel)
+    {
+        selection_ = sel;
+    }
+
+    SelectionRubberband::Ptr getSelection() const
+    {
+        return selection_;
+    }
+
     ///
     /// \brief compute make computations
     /// \return status -1 if something wrong!
@@ -151,7 +164,47 @@ protected:
 
     void extractFields()
     {
+
+        if (selection_ != NULL)
+        {
+            LOG(INFO) << "Extracting selection";
+            SelectionExtractor<Eigen::Vector3f, size_t> extractor;
+            extractor.setSelection(selection_);
+            extractor.setInputSet(in_cloud_);
+            extractor.compute();
+            indices_ = extractor.getInsideIds();
+
+            LOG(INFO) << "extracted the " << extractor.getPercentageInside() << "% of points";
+        }
+        else
+        {
+            LOG(INFO) << "no selection found";
+        }
+
         fillIndicesIfNeeded();
+
+        if (do_autocalibration_)
+        {
+
+            LOG(INFO) << "going to compute an automatic calibration";
+            // get the fields used in the autocalibration process
+            if (in_cloud_->hasField(distance_field_name_))
+            {
+                in_cloud_->getField(distance_field_name_, indices_, distance_field_);
+                LOG(INFO) << "distance field found";
+            }
+
+            if (in_cloud_->hasField(angle_field_name_))
+            {
+                in_cloud_->getField(angle_field_name_, indices_, angle_field_);
+                LOG(INFO) << "angle field found";
+            }
+
+            LOG(INFO) << "fields for auto calibration extracted from cloud";
+
+        }
+
+
 
         if (!x_field_name_.empty())
             in_cloud_->getField(x_field_name_, indices_, x_field_);
@@ -163,6 +216,8 @@ protected:
 
         in_cloud_->getField(y_field_name_, indices_, y_field_);
     }
+
+    SelectionRubberband::Ptr selection_;
 
     VariableScalarFieldBase::Ptr model_;
 
@@ -184,6 +239,19 @@ protected:
 
     ScalarT max_x_;
 
+// autocalibration stuff
+    bool do_autocalibration_ = true;
+
+    VectorT distance_field_;
+    VectorT angle_field_;
+
+    std::string distance_field_name_ = "distance";
+    std::string angle_field_name_ = "angle";
+
+
+    int n_distance_splits_ = 4;
+    int n_angle_splits_ = 4;
+
 private:
     ///
     /// \brief x_data field
@@ -194,6 +262,11 @@ private:
     /// \brief y_data field
     ///
     VectorT y_field_;
+
+
+
+
+
 };
 
 } // end nspace

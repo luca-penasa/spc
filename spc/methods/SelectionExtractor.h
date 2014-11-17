@@ -45,7 +45,10 @@ public:
             return -1;
         }
 
-
+//#ifdef USE_OPENMP
+//#pragma omp parallel for private(selection_)
+//#endif
+        // not parallelized for now cause we does no know beforehand the number of inside points
         for (size_t i= 0; i <(size_t) in_set_->getNumberOfPoints(); ++i)
         {
             bool inside = selection_->contains(in_set_->getPoint(i));

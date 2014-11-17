@@ -45,7 +45,10 @@ int main(int argc, char ** argv)
             LOG(ERROR) << "cannot load cloud " << name;
         }
 
-        spc::PointCloudHelpers::computeScatteringAngle(cloud);
+        if (cloud->hasField("normal_x"))
+            spc::PointCloudHelpers::computeScatteringAngle(cloud);
+
+
         spc::PointCloudHelpers::computeDistanceFromSensor(cloud);
 
         std::string newname  = spc::fs::appendPostfix(name, FLAGS_postfix, "_").string();

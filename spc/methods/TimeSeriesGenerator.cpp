@@ -5,6 +5,8 @@
 #include <pcl/console/print.h>
 #include <spc/methods/KernelSmoothing2.h>
 
+#include <spc/methods/RBFModelEstimator.h>
+
 namespace spc
 {
 
@@ -30,6 +32,62 @@ int TimeSeriesGenerator::compute()
         return -1;
     }
 
+    if (do_autocalibration_)
+    {
+        DLOG(INFO) << "everything ok going to perform autocalibration";
+        spc::RBFModelEstimator<float> estimator;
+
+        int col_n  = 1;
+        if (angle_field_.size() != 0)
+            col_n++;
+
+        Eigen::MatrixXf vars(distance_field_.rows(), col_n);
+        vars.col(0) = distance_field_;
+        if (angle_field_.size() != 0)
+            vars.col(1) = angle_field_;
+
+
+
+        estimator.setPoints(vars);
+        estimator.autosetScales(0); // fixing the distance as scale
+
+
+        // configuring the splits
+        Eigen::VectorXi nsplits;
+        nsplits.resize(1);
+        nsplits(0)  = n_distance_splits_;
+        if (angle_field_.size() !=0)
+        {
+            nsplits.conservativeResize(2);
+            nsplits(1) = n_angle_splits_;
+        }
+
+        estimator.autosetNodes(nsplits);
+
+
+        estimator.autosetSigma();
+
+
+        estimator.setLambda(0.1);
+
+        estimator.setInputValues(y_field_);
+
+
+        estimator.getModel()->setPolyOrder(1);
+
+        CHECK(estimator.solveProblem()!= -1) << "cannot solve -- see log info please";
+
+        LOG(INFO) << "autocalibration computed. Correcting intensities";
+
+        RBFModel<float>::Ptr model = estimator.getModel();
+        Eigen::VectorXf predicted;
+        model->operator ()(vars, predicted);
+
+        // apply correction
+        y_field_ = y_field_.array() / predicted.array();
+
+        LOG(INFO) << "model correctly applied";
+    }
     KernelSmoothing<ScalarT> ks(x_field_, y_field_);
     ks.setKernelSigma(bandwidth_);
 
