@@ -64,6 +64,8 @@ public:
         fields_manager_ = man;
     }
 
+
+
 private:
     EigenTable::Ptr fields_manager_;
 

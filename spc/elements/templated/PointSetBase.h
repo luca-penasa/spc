@@ -1,6 +1,9 @@
 #ifndef SIMPLEPOINTSET_H
 #define SIMPLEPOINTSET_H
 #include <spc/core/spc_eigen.h>
+#include <spc/core/nanoflann_adapters.hpp>
+
+#include <nanoflann.hpp>
 
 namespace spc
 {
@@ -21,12 +24,19 @@ class PointSetBase
 public:
     typedef size_t IndexT;
     typedef Eigen::Matrix<ScalarT, DIM, 1> PointT;
+    typedef Eigen::Matrix<ScalarT, -1, DIM> MatrixT;
 
     typedef Eigen::Transform<ScalarT, PointT::RowsAtCompileTime, Eigen::Affine, Eigen::AutoAlign> TransformT;
 
     typedef PointSetBase<ScalarT, DIM> self_t;
 
     typedef BoundingBox<ScalarT, DIM> BBT;
+
+// this stuff may go in a dedicate class in a future
+    typedef NanoFlannEigenMatrixAdaptor<MatrixT> SearcherT;
+//    typedef spcSharedPtrMacro<SearcherT> SearcherPtrT;
+//    typedef spcSharedPtrMacro<const SearcherT> SearcherConstPtrT;
+
 
     spcTypedefSharedPtrs(self_t)
 
@@ -93,6 +103,9 @@ public:
 
 
 
+
+
+
     template<typename OutPointSet> OutPointSet
     transform(const TransformT &T) const
     {
@@ -122,6 +135,27 @@ public:
 
         return plane;
     }
+
+    void updateSearcher()
+    {
+        DLOG(INFO) << "updating the searcher";
+        searcher_ = typename SearcherT::Ptr (new SearcherT(this->asEigenMatrix(), 50));
+        DLOG(INFO) << "done";
+    }
+
+    typename SearcherT::ConstPtr getSearcher() const
+    {
+        if (searcher_ == NULL)
+            updateSearcher();
+
+        return searcher_;
+    }
+
+
+
+protected:
+    typename SearcherT::Ptr searcher_;
+
 };
 
 

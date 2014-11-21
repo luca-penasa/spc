@@ -107,7 +107,7 @@ int main (int argc, char ** argv)
     if (FLAGS_sigma == 0 )
         estimator.autosetSigma();
     else
-        estimator.model_->setSigma(FLAGS_sigma);
+        estimator.getModel()->setSigma(FLAGS_sigma);
 
     estimator.setLambda(FLAGS_lambda);
 

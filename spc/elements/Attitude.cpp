@@ -10,11 +10,14 @@ DtiClassType Attitude::Type ("Attitude", &Plane::Type);
 
 Attitude::Attitude()
 {
+
 }
 
 Attitude::Attitude(const Vector3f &direction, const Vector3f &position)
     : Plane(direction, position)
 {
+   if (getNormal()(2) < 0)
+       normal_.flipNormal();
 }
 
 Attitude::Attitude(const float dipAngle, const float dip, Vector3f position)

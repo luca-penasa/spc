@@ -216,7 +216,12 @@ protected:
 
         in_cloud_->getField(y_field_name_, indices_, y_field_);
     }
-
+public:
+    void setDoAutoCalibration(const bool & status)
+    {
+        do_autocalibration_ = status;
+    }
+protected:
     SelectionRubberband::Ptr selection_;
 
     VariableScalarFieldBase::Ptr model_;
@@ -240,7 +245,7 @@ protected:
     ScalarT max_x_;
 
 // autocalibration stuff
-    bool do_autocalibration_ = true;
+    bool do_autocalibration_ = false;
 
     VectorT distance_field_;
     VectorT angle_field_;

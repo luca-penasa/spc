@@ -23,8 +23,10 @@ class RBFModelEstimator
     typedef Eigen::Matrix<T, -1, 1> VectorT;
     typedef Eigen::Matrix<T, -1, 1> PointT;
     typedef Eigen::Matrix<T, -1, -1> MatrixT;
+    typedef Eigen::Matrix<size_t, -1, 1> IDVectorT;
 
 
+    friend class IntensityCalibratorRBF;
 public:
     //! default constructor
     RBFModelEstimator(): classical_rbf_(true), model_(new RBFModel<T>)
@@ -167,7 +169,7 @@ public:
     //! classic RBF uses a node for each input point. This result in a peculiar matrix
     //! and the regularization is added as described in many papers.
     //! when the nodes are user-chosen the system is overdetermined and a tikhonov regularization is used
-    //! and the square root of lambda is used
+    //! and the square root of lambda is used as often described for tikhonov reg.
     void setLambda(const T& lambda)
     {
         lambda_ = lambda;
@@ -193,11 +195,7 @@ public:
             return false;
     }
 
-public:
-
-    //! this method takes care of initializing A_ matrix and b_ vector for
-    //! solving the problem
-    int initProblem()
+    int doChecksBeforeInit()
     {
         // a lot of safety checks here!
         if (points_.size() == 0)
@@ -236,6 +234,37 @@ public:
                                "but it looks like your weights size is different than number of points";
                 return -1;
             }
+        }
+
+
+//        if (getCorrespondenceIds().size() == 0)
+//        {
+//            LOG(INFO) << "no correspondences provided. no additional constrains for correspondent points will be used "
+//                         "caibrating the model";
+//        }
+//        else
+//        {
+//            if (getCorrespondenceIds().size() != points_.rows())
+//            {
+//                LOG(ERROR) << "the provided correspondences for points have a different number of entries in"
+//                              "respect to the total number of points";
+//                return -1;
+//            }
+//        }
+
+    return 1;
+    }
+
+public:
+
+    //! this method takes care of initializing A_ matrix and b_ vector for
+    //! solving the problem
+    int initProblem()
+    {
+        if (!doChecksBeforeInit())
+        {
+            LOG(ERROR) << "some error occurred. cannot init the problem. please see log info.";
+            return -1;
         }
 
         //////////// checks are ok... go ahead!
@@ -413,13 +442,20 @@ public:
             DLOG(INFO) << "system correctly solved via JacobiSVD";
         } else
         {
-            DLOG(INFO) << "Cannot solve the system cause is missing constraints in the A matrix (rows)";
+            DLOG(INFO) << "Cannot solve the system cause constraints are missing in the A matrix (rows)";
             return -1; // unsuccessfull;
         }
     }
 
 
+
+//    spcSetMacro(OriginIds, origin_ids_, IDVectorT)
+//    spcGetMacro(OriginIds, origin_ids_, IDVectorT)
+
+private:
+
     //! the points used to estimate the RBF
+    //! points are in the variable space.
     PointsT points_;
     size_t n_points_;
 
@@ -440,9 +476,17 @@ public:
     //! it is automatically switched to false when setNodes() is called
     bool classical_rbf_ ;
 
+    //! the output model we are calibrating
     typename RBFModel<T>::Ptr model_;
 
+//    //! the ids of the point. For each subset of points in points_ which have the same id here
+//    //! additional constrains will be added to the system so to have that points
+//    //! with he same id will be forced to have the same predicted value (in a least square sense, obviously)
+//    IDVectorT correspondence_ids_;
 
+//    //! the id of the origin.
+//    //! this may be useful to add a shift in model depending on the data source in a future
+////    IDVectorT origin_ids_;
 
 
 

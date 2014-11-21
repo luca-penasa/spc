@@ -70,28 +70,28 @@ int main (int argc, char ** argv)
 
 
     spc::CalibrationDataEstimator calibrator;
-    calibrator.setInputClouds(cloud_names);
+//    calibrator.setInputClouds(cloud_names);
 
-    if (!FLAGS_normals_cloud.empty())
-    {
-        calibrator.setInputNormalsCloudName(FLAGS_normals_cloud);
-        calibrator.setNormalEstimationMethod(spc::CalibrationDataEstimator::PRECOMPUTED_NORMALS);
-        calibrator.setMaximumDistanceForGettingNormal(FLAGS_acceptable_distance);
-    }
+//    if (!FLAGS_normals_cloud.empty())
+//    {
+//        calibrator.setInputNormalsCloudName(FLAGS_normals_cloud);
+//        calibrator.setNormalEstimationMethod(spc::CalibrationDataEstimator::PRECOMPUTED_NORMALS);
+//        calibrator.setMaximumDistanceForGettingNormal(FLAGS_acceptable_distance);
+//    }
 
-    calibrator.setInputSamples(FLAGS_core_points_cloud);
+//    calibrator.setInputKeypoints(FLAGS_core_points_cloud);
 
-    calibrator.setSearchRadius(FLAGS_search_radius);
+//    calibrator.setSearchRadius(FLAGS_search_radius);
 
-    if (FLAGS_gaussian)
-    {
-        calibrator.setIntensityEstimationMethod(spc::CalibrationDataEstimator::GAUSSIAN_ESTIMATION);
-        calibrator.setIntensityGaussianSpatialSigma(FLAGS_gaussian_sigma);
-    }
+//    if (FLAGS_gaussian)
+//    {
+//        calibrator.setIntensityEstimationMethod(spc::CalibrationDataEstimator::GAUSSIAN_ESTIMATION);
+//        calibrator.setIntensityGaussianSpatialSigma(FLAGS_gaussian_sigma);
+//    }
 
-    LOG(INFO) << "going to compute";
-    calibrator.compute();
-    LOG(INFO) << "going to compute.Done";
+//    LOG(INFO) << "going to compute";
+//    calibrator.compute();
+//    LOG(INFO) << "going to compute.Done";
 
 
 

@@ -129,7 +129,7 @@ protected:
     {
 
         nanoflann::SearchParams pars;
-        pars.sorted = false; // we get a nice speed-up not sorting them
+        pars.sorted = false; // we get some speed-up not sorting them maybe
         //        LOG(INFO) << "eval point " << eval_point.transpose();
         MatchSetT matches;
         index_->radiusSearch(eval_point, search_support_squared_,  matches, pars);

@@ -4,9 +4,7 @@ namespace spc
 
 
 
-StratigraphicSolver::StratigraphicSolver()
-{
-}
+
 
 
 }//end

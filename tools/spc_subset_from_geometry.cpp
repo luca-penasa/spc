@@ -73,10 +73,10 @@ int main(int argc, char ** argv)
     string ids_file;
     parse_argument(argc, argv, "-id", ids_file);
    pcl::PCLPointCloud2 original_cloud;
-    io::loadPCDFile(argv[pcd_files_indices[0]], original_cloud); //load first cloud
+    pcl::io::loadPCDFile(argv[pcd_files_indices[0]], original_cloud); //load first cloud
 
    pcl::PCLPointCloud2 query_cloud;
-    io::loadPCDFile(argv[pcd_files_indices[1]], query_cloud); //load the second as gemetric query cloud
+    pcl::io::loadPCDFile(argv[pcd_files_indices[1]], query_cloud); //load the second as gemetric query cloud
 
     //to PCL xyz
     PointCloud<PointXYZ>::Ptr original_cloud_pcl (new PointCloud<PointXYZ>);
@@ -104,7 +104,7 @@ int main(int argc, char ** argv)
     else
     {
         print_highlight("Using %s as ids file\n", ids_file.c_str());
-        io::loadPCDFile(ids_file, ids_cloud);
+        pcl::io::loadPCDFile(ids_file, ids_cloud);
         //put these ids into the indices vector
         indices.resize(ids_cloud.size());
         std::transform(ids_cloud.begin(), ids_cloud.end(), indices.begin(), []( PointId &point){return point.id;});

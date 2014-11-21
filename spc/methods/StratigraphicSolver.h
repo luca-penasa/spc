@@ -88,7 +88,10 @@ protected:
 
 public:
 
-    StratigraphicSolver();
+    StratigraphicSolver()
+    {
+    }
+
 
     void clear()
     {

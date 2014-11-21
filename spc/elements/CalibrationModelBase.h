@@ -12,7 +12,7 @@ class CalibrationModelBase
 public:
     CalibrationModelBase();
 
-    Eigen::VectorXf getCorrectedIntensity(spc::PointCloudBase::Ptr cloud, const std::vector<size_t> ids) = 0;
+    virtual Eigen::VectorXf getCorrectedIntensity(spc::PointCloudBase::Ptr cloud, const std::vector<size_t> ids) = 0;
 
 };
 

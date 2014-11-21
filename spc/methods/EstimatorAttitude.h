@@ -96,6 +96,7 @@ public:
         std::cout << "att: \n" << att.getNormal() << std::endl;
         Vector3f n = att.getUnitNormal();
 
+
         for (int i = 0; i < clouds_.size(); ++i) {
             Attitude new_att(n, centroids_.at(i));
             atts.push_back(new_att);

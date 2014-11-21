@@ -78,6 +78,7 @@ public:
 
                 generator.setInputCloud(loaded_cloud);
                 generator.setSelection(sel);
+                generator.setDoAutoCalibration(true);
                 generator.setStratigraphicModel(model);
                 generator.setBandwidth(bandwidth_);
                 generator.setSamplingStep(sampling_step_);

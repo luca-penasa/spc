@@ -72,6 +72,23 @@ public:
         data_.conservativeResize(size, DIM);
     }
 
+    virtual PointSet operator +(const PointSet &other) const
+    {
+        PointSet out(*this);
+        out.resize(out.getNumberOfPoints() + other.getNumberOfPoints());
+        out.data_.bottomRows(out.getNumberOfPoints() - this->getNumberOfPoints()) = other.data_;
+        return out;
+    }
+
+
+    virtual void operator += (const PointSet &other)
+    {
+        size_t old_size = this->getNumberOfPoints();
+        this->resize(old_size + other.getNumberOfPoints());
+
+        data_.bottomRows(this->getNumberOfPoints() - old_size) = other.data_;
+    }
+
 protected:
     Eigen::Matrix<ScalarT, -1, DIM> data_;
 

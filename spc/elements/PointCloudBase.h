@@ -13,7 +13,7 @@
 #include <spc/elements/OrientedSensor.h>
 
 
-#include <spc/elements/templated/PointSetBase.h>
+#include <spc/elements/templated/PointSet.h>
 
 
 namespace spc
@@ -93,6 +93,37 @@ public:
         return xyz_representation_;
     }
 
+    PointSet<> extractAsPointSet(const std::vector<size_t> &ids = std::vector<size_t>()) const
+    {
+        PointSet<> out;
+
+        if (ids.size() == 0)
+        {
+            out.resize(getNumberOfPoints());
+#ifdef USE_OPENMP
+#pragma omp parallel for
+#endif
+            for (int i = 0; i < getNumberOfPoints(); ++i)
+            {
+                out.setPoint(i, this->getPoint(i));
+            }
+        }
+
+        else
+        {
+            out.resize(ids.size());
+#ifdef USE_OPENMP
+#pragma omp parallel for
+#endif
+            for (int i = 0; i < ids.size(); ++i)
+            {
+                out.setPoint(i, this->getPoint(ids.at(i)));
+            }
+        }
+
+        return out;
+    }
+
 
     template<typename SPCCloudT>
     PointCloudBase::Ptr extractIDS(const std::vector<size_t> &ids) const
@@ -100,24 +131,6 @@ public:
         PointCloudBase::Ptr out (new SPCCloudT());
 
         out->resize(ids.size());
-
-
-//        for (std::string fname: this->getFieldNames())
-//        {
-//            out->addField(fname);
-//        }
-
-
-
-//        out->addField("x");
-//        out->addField("y");
-//        out->addField("z");
-
-//        for (int i = 0; i < ids.size(); ++i)
-//        {
-//            out->setPoint(i, this->getPoint(ids.at(i)));
-//        }
-
 
         float v;
         for (std::string fname: this->getFieldNames())
