@@ -1,6 +1,6 @@
 #include <spc/elements/Attitude.h>
 #include <math.h>
-#include <Eigen/Geometry>
+//#include <Eigen/Geometry>
 #include <sstream>
 #include <string>
 namespace spc

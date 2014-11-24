@@ -1,6 +1,6 @@
 #ifndef INTENSITYCALIBRATOR_H
 #define INTENSITYCALIBRATOR_H
-
+#include <spc/core/eigen_extensions.h>
 #include <spc/experimental/ICalModelFactors.h>
 #include <spc/elements/SamplesDB.h>
 #include <boost/current_function.hpp>

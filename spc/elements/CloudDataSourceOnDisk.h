@@ -6,7 +6,7 @@
 
 //#include <spc/elements/PointCloudBase.h>
 #include <spc/elements/PointCloudPcl.h>
-
+#include <spc/elements/NewSpcPointCloud.h>
 #include <pcl/io/pcd_io.h>
 #include <spc/io/io_helper.h>
 
@@ -72,6 +72,12 @@ public:
         }
 
         return io::loadPointCloud(filename_);
+    }
+
+    NewSpcPointCloud::Ptr load2() const
+    {
+        NewSpcPointCloud::Ptr out = NewSpcPointCloud::fromPointCloudBase(*io::loadPointCloud(filename_));
+        return out;
     }
 
 protected:

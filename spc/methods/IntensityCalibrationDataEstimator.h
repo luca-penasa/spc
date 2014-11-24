@@ -1,19 +1,19 @@
 #ifndef SPC_CALIBRATION_DATA_ESTIMATOR_H
 #define SPC_CALIBRATION_DATA_ESTIMATOR_H
 
-#include <pcl/search/flann_search.h>
-#include <pcl/search/impl/flann_search.hpp>
-#include <pcl/common/centroid.h>
-#include <pcl/common/distances.h>
-#include <pcl/console/time.h>
+//#include <pcl/search/flann_search.h>
+//#include <pcl/search/impl/flann_search.hpp>
+//#include <pcl/common/centroid.h>
+//#include <pcl/common/distances.h>
+//#include <pcl/console/time.h>
 
-#include <pcl/io/pcd_io.h>
-#include <spc/methods/PointCloudEigenIndicesEstimator.h>
-#include <boost/any.hpp>
-#include <spc/core/std_helpers.hpp>
+//#include <pcl/io/pcd_io.h>
+//#include <spc/methods/PointCloudEigenIndicesEstimator.h>
+//#include <boost/any.hpp>
+//#include <spc/core/std_helpers.hpp>
 
 
-#include <spc/elements/EigenTable.h>
+//#include <spc/elements/EigenTable.h>
 
 #include <spc/elements/CloudDataSourceOnDisk.h>
 
@@ -38,7 +38,7 @@ public:
 
     void setInputClouds(std::vector<CloudDataSourceOnDisk::Ptr> cloud_names);
 
-    void setInputKeypoints(PointCloudBase::ConstPtr kpoints);
+    void setInputKeypoints(NewSpcPointCloud::ConstPtr kpoints);
 
     int compute();
 
@@ -52,7 +52,7 @@ public:
         intensity_estimation_method_ = met;
     }
 
-    EigenTable::Ptr getCalibrationDB();
+    NewSpcPointCloud::Ptr getCalibrationDB();
 
     void setSearchRadius(const float rad);
 
@@ -97,17 +97,7 @@ public:
     }
 
     void fillCalibrationDataAtkeypointForCloud(calibration::PerCloudCalibrationData::Ptr data_holder,
-                                               PointCloudBase::Ptr cloud)
-
-    {
-        PointCloudBase::SearcherT::ConstPtr searcher = cloud->getSearcher();
-
-        std::vector<std::pair<size_t, float>> matches;
-        searcher->radiusSearch(data_holder->parent_keypoint->position, intensity_estimation_spatial_sigma_ * 4, matches);
-
-
-
-    }
+                                               NewSpcPointCloud::Ptr cloud);
 
 
 
@@ -117,7 +107,7 @@ private:
     std::vector<CloudDataSourceOnDisk::Ptr> input_clouds_ondisk_;
 
     //! the core points
-    PointCloudBase::ConstPtr keypoints_cloud_;
+    NewSpcPointCloud::ConstPtr keypoints_cloud_;
 
     //////////////////// CURRENT SENSOR STUFF /////////////////
     //! current sensor position
@@ -135,7 +125,7 @@ private:
     float maximum_squared_distance_for_normal_getting_;
 
     ////////////// OUTPUT DATABASE /////////////////////////
-    EigenTable::Ptr db_;
+    NewSpcPointCloud::Ptr db_;
 
     std::vector<PointSet<>> accumulators_;
 

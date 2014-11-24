@@ -1,9 +1,4 @@
-#include<pcl/io/file_io.h>
-#include <pcl/console/parse.h>
-#include <pcl/console/time.h>
-#include <pcl/io/pcd_io.h>
-#include <pcl/kdtree/kdtree_flann.h>
-#include <pcl/common/centroid.h>
+
 #include <spc/core/spc_eigen.h>
 
 #include <spc/core/strings.h>
@@ -56,12 +51,15 @@ int main (int argc, char ** argv)
     google::ParseCommandLineFlags(&argc, &argv, true);
 
 
-
-    pcl::console::TicToc tt;
-    tt.tic();
-
-
     std::vector<std::string> cloud_names = spc::splitStringAtSeparator(FLAGS_in_clouds);
+
+
+    std::vector<CloudDataSourceOnDisk::Ptr> sources;
+    for (std::string name : cloud_names)
+    {
+        CloudDataSourceOnDisk::Ptr s (new CloudDataSourceOnDisk(name));
+        sources.push_back(s);
+    }
 
     for (std::string s: cloud_names)
     {
@@ -70,7 +68,7 @@ int main (int argc, char ** argv)
 
 
     spc::CalibrationDataEstimator calibrator;
-//    calibrator.setInputClouds(cloud_names);
+    calibrator.setInputClouds(sources);
 
 //    if (!FLAGS_normals_cloud.empty())
 //    {
@@ -79,9 +77,13 @@ int main (int argc, char ** argv)
 //        calibrator.setMaximumDistanceForGettingNormal(FLAGS_acceptable_distance);
 //    }
 
-//    calibrator.setInputKeypoints(FLAGS_core_points_cloud);
+    CloudDataSourceOnDisk keys(FLAGS_core_points_cloud);
+    NewSpcPointCloud::Ptr key_cloud = keys.load2();
 
-//    calibrator.setSearchRadius(FLAGS_search_radius);
+    calibrator.setInputKeypoints(key_cloud);
+    calibrator.setSearchRadius(FLAGS_search_radius);
+    calibrator.compute();
+
 
 //    if (FLAGS_gaussian)
 //    {
@@ -95,10 +97,10 @@ int main (int argc, char ** argv)
 
 
 
-    spc::EigenTable::Ptr db = calibrator.getCalibrationDB();
+//    spc::EigenTable::Ptr db = calibrator.getCalibrationDB();
 
 
-    spc::io::serializeToFile(db, FLAGS_out, spc::io::XML);
+//    spc::io::serializeToFile(db, FLAGS_out, spc::io::XML);
 
 
 

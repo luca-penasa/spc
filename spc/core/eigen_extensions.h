@@ -48,7 +48,7 @@ lstsq(const Eigen::MatrixBase<Derived> &A, const Eigen::MatrixBase<Derived2> &b)
         return x;
     } else {
         x.fill(std::numeric_limits<typename Derived::Scalar>::quiet_NaN());
-        std::cout << "Error solving linear system" << std::endl;
+        LOG(ERROR) << "Error solving linear system" ;
         return x;
     }
 }

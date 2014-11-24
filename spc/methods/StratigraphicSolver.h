@@ -5,7 +5,7 @@
 #include <spc/elements/StratigraphicModelBase.h>
 #include <spc/elements/StratigraphicConstrain.h>
 #include <spc/elements/StratigraphicPositionableElement.h>
-
+#include <spc/core/spc_eigen.h>
 #include <unsupported/Eigen/NonLinearOptimization>
 #include <unsupported/Eigen/NumericalDiff>
 namespace spc

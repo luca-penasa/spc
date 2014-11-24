@@ -1,7 +1,7 @@
 #pragma once
 #ifndef SPC_OBJECT_H
 #define SPC_OBJECT_H
-
+#include <spc/core/spc_eigen.h>
 #include <spc/core/macros.h>
 //#include <cereal/cereal.hpp>
 #include <spc/elements/UniversalUniqueID.h>

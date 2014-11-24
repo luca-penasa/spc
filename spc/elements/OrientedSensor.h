@@ -39,7 +39,7 @@ public:
 
 
 protected:
-    Eigen::Vector4f sensor_position_;
+    Eigen::Vector4f sensor_position_ ;
     Eigen::Quaternionf sensor_orientation_;
 };
 

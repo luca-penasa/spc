@@ -5,9 +5,8 @@
 #include <spc/elements/MovableElement.h>
 #include <spc/elements/Normal3D.h>
 #include <spc/core/spc_eigen.h>
-#include <spc/core/spc_eigen.h>
 
-#include <Eigen/Geometry>
+//#include <Eigen/Geometry>
 
 //#include <boost/serialization/base_object.hpp>
 

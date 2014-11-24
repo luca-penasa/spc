@@ -28,20 +28,20 @@ CalibrationDataEstimator::CalibrationDataEstimator()
     : normal_estimation_search_radius_(0.1),      
       maximum_squared_distance_for_normal_getting_(0.1),
       intensity_estimation_method_(SIMPLE_AVERAGE),
-      intensity_estimation_spatial_sigma_(0.1), db_(new EigenTable)
+      intensity_estimation_spatial_sigma_(0.1), db_(new NewSpcPointCloud)
 {
 
-    db_->addNewComponent("n_neighbors", 1);
-    db_->addNewComponent("normal", 3);
-    db_->addNewComponent("lambdas", 3);
-    db_->addNewComponent("position", 3);
-    db_->addNewComponent("core_id", 1);
-    db_->addNewComponent("cloud_id", 1);
-    db_->addNewComponent("distance", 1);
-    db_->addNewComponent("intensity", 1);
-    db_->addNewComponent("angle", 1);
-    db_->addNewComponent("intensity_std", 1);
-    db_->addNewComponent("eigen_ratio", 1);
+    db_->addNewField("n_neighbors", 1);
+    db_->addNewField("normal", 3);
+    db_->addNewField("lambdas", 3);
+    db_->addNewField("position", 3);
+    db_->addNewField("core_id", 1);
+    db_->addNewField("cloud_id", 1);
+    db_->addNewField("distance", 1);
+    db_->addNewField("intensity", 1);
+    db_->addNewField("angle", 1);
+    db_->addNewField("intensity_std", 1);
+    db_->addNewField("eigen_ratio", 1);
 }
 
 void CalibrationDataEstimator::setInputClouds(std::vector<CloudDataSourceOnDisk::Ptr> cloud_names)
@@ -49,7 +49,7 @@ void CalibrationDataEstimator::setInputClouds(std::vector<CloudDataSourceOnDisk:
     input_clouds_ondisk_ = cloud_names;
 }
 
-void CalibrationDataEstimator::setInputKeypoints(PointCloudBase::ConstPtr kpoints)
+void CalibrationDataEstimator::setInputKeypoints(NewSpcPointCloud::ConstPtr kpoints)
 {
     keypoints_cloud_ = kpoints;
 }
@@ -59,17 +59,14 @@ int CalibrationDataEstimator::compute()
     // init the keypoints
     for (int i = 0 ; i < keypoints_cloud_->getNumberOfPoints(); ++i)
     {
-        auto k =calibration::CalibrationKeyPoint::Ptr(new  calibration::CalibrationKeyPoint(keypoints_cloud_->getPoint(i)));
+        auto k =calibration::CalibrationKeyPoint::Ptr(new  calibration::CalibrationKeyPoint(keypoints_cloud_-> getFieldByName("position").row(i)));
         keypoints_.push_back(k);
     }
 
     for (CloudDataSourceOnDisk::Ptr source: input_clouds_ondisk_)
     {
-
-
-
         // load the cloud
-        PointCloudBase::Ptr cloud = source->load();
+        NewSpcPointCloud::Ptr cloud = source->load2();
 
         if (cloud == NULL)
         {
@@ -299,17 +296,31 @@ float CalibrationDataEstimator::getMinimumAngleBetweenVectors(const Eigen::Vecto
     return theta;
 }
 
+void CalibrationDataEstimator::fillCalibrationDataAtkeypointForCloud(calibration::PerCloudCalibrationData::Ptr data_holder, NewSpcPointCloud::Ptr cloud)
+
+{
+
+    NewSpcPointCloud::SearcherT::Ptr searcher = cloud->getSearcher();
+
+    LOG(INFO) << "going to do matches" << std::endl;
+    std::vector<std::pair<size_t, float>> matches;
+    searcher->radiusSearch(data_holder->parent_keypoint->position, intensity_estimation_spatial_sigma_ * 4, matches);
+
+    LOG(INFO) << "number of matches " << matches.size();
+
+}
+
 float CalibrationDataEstimator::getAverageIntensity(const PointCloudBase::ConstPtr
-                                                   cloud,
+                                                    cloud,
                                                     std::vector<int> ids,
                                                     float &std)
 {
-//    if (ids.size() == 0)
-//        return spcNANMacro;
+    //    if (ids.size() == 0)
+    //        return spcNANMacro;
 
-//    namespace bacc = boost::accumulators;
+    //    namespace bacc = boost::accumulators;
 
-//    std::vector<float> intensities(ids.size());
+    //    std::vector<float> intensities(ids.size());
 //    std::transform(ids.begin(), ids.end(), intensities.begin(),
 //                   [&cloud](int id) { return cloud.at(id).intensity; });
 
@@ -327,7 +338,7 @@ float CalibrationDataEstimator::getAverageIntensity(const PointCloudBase::ConstP
 
 
 
-EigenTable::Ptr CalibrationDataEstimator::getCalibrationDB()
+NewSpcPointCloud::Ptr CalibrationDataEstimator::getCalibrationDB()
 {
     return db_;
 }

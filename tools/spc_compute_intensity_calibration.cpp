@@ -1,3 +1,6 @@
+#include <spc/core/spc_eigen.h>
+
+
 #include<pcl/io/file_io.h>
 #include <pcl/console/parse.h>
 #include <pcl/console/time.h>

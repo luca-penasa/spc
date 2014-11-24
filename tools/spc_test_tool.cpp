@@ -150,6 +150,29 @@ void test1()
     }
 
 }
+#include <spc/elements/NewSpcPointCloud.h>
+
+void testNewCloud()
+{
+    spc::NewSpcPointCloud cloud;
+
+    cloud.conservativeResize(10);
+
+    cloud.addNewField("test", 2);
+    cloud.getFieldByName("test")(0,0) = 100;
+    cloud.getFieldByName("test")(0,1) = 100;
+//    cloud.getFieldByName("test")(0,2) = 100;
+
+    cloud.addNewField("test2", 3);
+    std::cout << cloud.getData() << std::endl;
+    std::cout << cloud.getFieldByName("test") << std::endl;
+
+
+    std::cout << cloud.getFieldByName("test2") << std::endl;
+
+//    std::cout << cloud.getFieldByName("test2") <<std::endl;
+}
+
 
 void test2()
 {
@@ -208,7 +231,7 @@ int main(int argc, char ** argv)
 //    testAttitudeIO();
 
 
-
+    testNewCloud();
 
 
 //    DLOG(INFO) << "done----" ;
