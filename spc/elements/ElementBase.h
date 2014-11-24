@@ -13,6 +13,7 @@
 namespace spc
 {
 
+
 class ElementBase : public ISerializable, public ElementWithVariantProperties, public std::enable_shared_from_this<ElementBase>
 {
 public:
@@ -25,11 +26,6 @@ public:
     Ptr getPtr()
     {
            return shared_from_this();
-    }
-
-    ConstPtr getPtr() const
-    {
-        return shared_from_this();
     }
 
     ElementBase (const ElementBase& other): ElementWithVariantProperties(other)

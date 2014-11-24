@@ -36,7 +36,7 @@ public:
 
     CalibrationDataEstimator();
 
-    void setInputClouds(std::vector<CloudDataSourceOnDisk> cloud_names);
+    void setInputClouds(std::vector<CloudDataSourceOnDisk::Ptr> cloud_names);
 
     void setInputKeypoints(PointCloudBase::ConstPtr kpoints);
 
@@ -97,10 +97,15 @@ public:
     }
 
     void fillCalibrationDataAtkeypointForCloud(calibration::PerCloudCalibrationData::Ptr data_holder,
-                                               PointCloudBase::ConstPtr cloud)
+                                               PointCloudBase::Ptr cloud)
 
     {
-        cloud->
+        PointCloudBase::SearcherT::ConstPtr searcher = cloud->getSearcher();
+
+        std::vector<std::pair<size_t, float>> matches;
+        searcher->radiusSearch(data_holder->parent_keypoint->position, intensity_estimation_spatial_sigma_ * 4, matches);
+
+
 
     }
 
@@ -109,7 +114,7 @@ public:
 private:
     /////////////////// STRING STUFF //////////////////////////////
     //! list of pcd files to use for calibration
-    std::vector<CloudDataSourceOnDisk> input_clouds_ondisk_;
+    std::vector<CloudDataSourceOnDisk::Ptr> input_clouds_ondisk_;
 
     //! the core points
     PointCloudBase::ConstPtr keypoints_cloud_;
@@ -135,7 +140,7 @@ private:
     std::vector<PointSet<>> accumulators_;
 
 
-    std::vector<calibration::CalibrationKeyPoint> keypoints_;
+    std::vector<calibration::CalibrationKeyPoint::Ptr> keypoints_;
 };
 }
 #endif // INTENSITYAUTOCALIBRATOR_H

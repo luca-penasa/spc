@@ -16,22 +16,22 @@ class PerCloudCalibrationData
 public:
     spcTypedefSharedPtrs(PerCloudCalibrationData)
 
-    PerCloudCalibrationData(CloudDataSourceOnDisk::ConstPtr ref_cloud, CalibrationKeyPointPtr parent)
+    PerCloudCalibrationData(CloudDataSourceOnDisk::Ptr ref_cloud, CalibrationKeyPointPtr parent)
     {
         parent_keypoint = parent;
-        cloud_ = ref_cloud;
+        cloud = ref_cloud;
     }
     CalibrationKeyPointPtr getParent() const
     {
         return parent_keypoint;
     }
 
-    CloudDataSourceOnDisk::ConstPtr getCloud() const
+    CloudDataSourceOnDisk::Ptr getCloud() const
     {
         return cloud;
     }
 
-    CloudDataSourceOnDisk::ConstPtr cloud;
+    CloudDataSourceOnDisk::Ptr cloud;
 
     CalibrationKeyPointPtr parent_keypoint;
 

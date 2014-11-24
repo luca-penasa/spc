@@ -44,8 +44,7 @@ CalibrationDataEstimator::CalibrationDataEstimator()
     db_->addNewComponent("eigen_ratio", 1);
 }
 
-void CalibrationDataEstimator::setInputClouds(std::vector
-                                              <CloudDataSourceOnDisk> cloud_names)
+void CalibrationDataEstimator::setInputClouds(std::vector<CloudDataSourceOnDisk::Ptr> cloud_names)
 {
     input_clouds_ondisk_ = cloud_names;
 }
@@ -60,27 +59,31 @@ int CalibrationDataEstimator::compute()
     // init the keypoints
     for (int i = 0 ; i < keypoints_cloud_->getNumberOfPoints(); ++i)
     {
-        k = calibration::CalibrationKeyPoint(keypoints_cloud_->getPoint(i));
+        auto k =calibration::CalibrationKeyPoint::Ptr(new  calibration::CalibrationKeyPoint(keypoints_cloud_->getPoint(i)));
         keypoints_.push_back(k);
     }
 
-    for (CloudDataSourceOnDisk source: input_clouds_ondisk_)
+    for (CloudDataSourceOnDisk::Ptr source: input_clouds_ondisk_)
     {
 
 
 
-        if (!source.exists())
+        // load the cloud
+        PointCloudBase::Ptr cloud = source->load();
+
+        if (cloud == NULL)
         {
-            LOG(WARNING) << "the cloud " << source.getFilename() << " does not exists on disk";
+            LOG(ERROR) << "some error loading the cloud. see log please";
             continue;
         }
 
-        // load the cloud
-        PointCloudBase::Ptr cloud = spc::io::loadPointCloud(source.getFilename());
-
-        for (calibration::CalibrationKeyPointPtr keypoint: keypoints_)
+        for (calibration::CalibrationKeyPoint::Ptr keypoint: keypoints_)
         {
-            data = calibration::PerCloudCalibrationData(source, keypoint);
+            calibration::PerCloudCalibrationData::Ptr data = keypoint->newPerCloudData(source);
+
+            fillCalibrationDataAtkeypointForCloud(data, cloud);
+
+
         }
 
         //fill calibration data for this keypoint and cloud

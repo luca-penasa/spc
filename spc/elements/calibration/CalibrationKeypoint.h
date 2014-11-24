@@ -8,16 +8,26 @@ namespace spc
 namespace calibration
 {
 
-class CalibrationKeyPoint
+class CalibrationKeyPoint: public ElementBase
 {
 public:
+    spcTypedefSharedPtrs(CalibrationKeyPoint)
 
-    CalibrationKeyPoint(const Eigen::Vector3i &position)
+
+    CalibrationKeyPoint(const Eigen::Vector3f &position)
     {
         original_position = position;
     }
 
-    spcTypedefSharedPtrs(CalibrationKeyPoint)
+
+    PerCloudCalibrationData::Ptr newPerCloudData(CloudDataSourceOnDisk::Ptr cloud)
+    {
+        PerCloudCalibrationData::Ptr cdata (new PerCloudCalibrationData(cloud,
+                                                                        std::static_pointer_cast<CalibrationKeyPoint>(this->getPtr())));
+        per_cloud_data.push_back(cdata);
+        return cdata;
+    }
+
 
     Eigen::Vector3f normal;
     Eigen::Vector3f position;

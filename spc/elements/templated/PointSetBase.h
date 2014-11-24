@@ -143,7 +143,7 @@ public:
         DLOG(INFO) << "done";
     }
 
-    typename SearcherT::ConstPtr getSearcher() const
+    typename SearcherT::ConstPtr getSearcher()
     {
         if (searcher_ == NULL)
             updateSearcher();
