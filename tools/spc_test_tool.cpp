@@ -154,29 +154,27 @@ void test1()
 
 void testNewCloud()
 {
-    spc::NewSpcPointCloud cloud;
+    spc::NewSpcPointCloud cloud1, cloud2;
 
-    cloud.conservativeResize(4);
+    cloud1.conservativeResize(4);
 
-    cloud.addNewField("position", 3);
+    cloud1.addNewField("position", 3);
 
     //    cloud.getFieldByName("test")(0,2) = 100;
 
-    cloud.addNewField("test2", 3);
+    cloud2.conservativeResize(2);
+    cloud2.addNewField("position", 3);
 
-    Eigen::Vector3f point;
-    point << 0, 1, 2;
-
-    std::vector<std::pair<size_t, float>> matches;
+    cloud2.getFieldByName("position") << 1,2,3,4,5,6;
 
 
-    spc::NewSpcPointCloud::SearcherT::Ptr searcher = cloud.getSearcher();
-    searcher->radiusSearch(point, 10, matches);
+    std::cout << cloud1.getFieldByName("position") << std::endl;
 
-    std::cout << cloud.getData() << std::endl;
+    cloud1.concatenate(cloud2);
+    std::cout << cloud1.getFieldByName("position") << std::endl;
 
 
-    std::cout << cloud.getFieldByName("test2") << std::endl;
+
 
     //    std::cout << cloud.getFieldByName("test2") <<std::endl;
 }

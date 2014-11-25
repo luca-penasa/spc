@@ -135,7 +135,7 @@ public:
     EXPOSE_TYPE
 
     typedef float ScalarT;
-    typedef Eigen::Matrix<ScalarT, Eigen::Dynamic, Eigen::Dynamic > MatrixT;
+    typedef Eigen::Matrix<ScalarT, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> MatrixT;
     typedef Eigen::Block<MatrixT> BlockT;
 
     typedef Eigen::Hyperplane<ScalarT, 3> EigenPlaneT;
@@ -249,7 +249,9 @@ public:
 
     void conservativeResize(const size_t n_points)
     {
-        fields_.resize(n_points, fields_.cols());
+        size_t before = fields_.rows();
+        fields_.conservativeResize(n_points, fields_.cols());
+        fields_.bottomRows(fields_.rows() - before).fill(spcNANMacro);
     }
 
 
