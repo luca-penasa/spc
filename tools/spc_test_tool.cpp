@@ -61,7 +61,7 @@ void test3()
         counter++;
     }
 
-//    std::cout << "in mat: \n" << asmat << std::endl;
+    //    std::cout << "in mat: \n" << asmat << std::endl;
 
     Eigen::Matrix<float, 3,1> avg;
     Eigen::Matrix<float, 3,3> covmat = asmat.getSampleCovMatAndAvg(avg);
@@ -109,7 +109,7 @@ void test4()
 
 void test1()
 {
-//    typedef  NanoFlannIndexT;
+    //    typedef  NanoFlannIndexT;
 
 
     Eigen::VectorXf points(5);
@@ -117,13 +117,13 @@ void test1()
     DLOG(INFO) << "input rows "<< points.rows();
     DLOG(INFO) << "input cols "<< points.cols();
 
-//    Eigen::MatrixXf * mat2 = &points;
+    //    Eigen::MatrixXf * mat2 = &points;
 
     points << 1.2, 22., 35, 41, 25;
 
     LOG(INFO) << "going to create an index";
     NanoFlannEigenMatrixAdaptor<Eigen::MatrixXf> index (points, 10);
-//    index.index->buildIndex();
+    //    index.index->buildIndex();
 
     LOG(INFO) << "points after  " << points.transpose();
 
@@ -156,21 +156,29 @@ void testNewCloud()
 {
     spc::NewSpcPointCloud cloud;
 
-    cloud.conservativeResize(10);
+    cloud.conservativeResize(4);
 
-    cloud.addNewField("test", 2);
-    cloud.getFieldByName("test")(0,0) = 100;
-    cloud.getFieldByName("test")(0,1) = 100;
-//    cloud.getFieldByName("test")(0,2) = 100;
+    cloud.addNewField("position", 3);
+
+    //    cloud.getFieldByName("test")(0,2) = 100;
 
     cloud.addNewField("test2", 3);
+
+    Eigen::Vector3f point;
+    point << 0, 1, 2;
+
+    std::vector<std::pair<size_t, float>> matches;
+
+
+    spc::NewSpcPointCloud::SearcherT::Ptr searcher = cloud.getSearcher();
+    searcher->radiusSearch(point, 10, matches);
+
     std::cout << cloud.getData() << std::endl;
-    std::cout << cloud.getFieldByName("test") << std::endl;
 
 
     std::cout << cloud.getFieldByName("test2") << std::endl;
 
-//    std::cout << cloud.getFieldByName("test2") <<std::endl;
+    //    std::cout << cloud.getFieldByName("test2") <<std::endl;
 }
 
 
@@ -188,15 +196,15 @@ void test2()
 
     spc::KernelSmoothing<float> sm(x, y);
 
-//    sm.setKernel(RBFKernelFactory<float>::RBF_GAUSSIAN_APPROX);
+    //    sm.setKernel(RBFKernelFactory<float>::RBF_GAUSSIAN_APPROX);
     sm.setKernel(RBFKernelFactory<float>::RBF_GAUSSIAN);
-//    sm.setKernel(RBFKernelFactory<float>::RBF_EPANECHNIKOV);
+    //    sm.setKernel(RBFKernelFactory<float>::RBF_EPANECHNIKOV);
 
 
-//    sm.setInputPoints(x);
-//    sm.setValues(y);
+    //    sm.setInputPoints(x);
+    //    sm.setValues(y);
     sm.setKernelSigma(0.1);
-//    sm.initFlann();
+    //    sm.initFlann();
 
 
 
@@ -223,32 +231,32 @@ int main(int argc, char ** argv)
 {
 
     google::InitGoogleLogging(argv[0]);
-//    std::cout << "INIZIO" << std::endl;
+    //    std::cout << "INIZIO" << std::endl;
 
     FLAGS_colorlogtostderr=1;
     FLAGS_logtostderr=1;
 
-//    testAttitudeIO();
+    //    testAttitudeIO();
 
 
     testNewCloud();
 
 
-//    DLOG(INFO) << "done----" ;
+    //    DLOG(INFO) << "done----" ;
 
 
-//    std::cout << eqser->getY() <<std::endl;
+    //    std::cout << eqser->getY() <<std::endl;
 
 
 
-//    MatrixXi m(1, 5);
-//    m << 1, 2, 3, 4, 5;
-//    m = (m.array() > 3).select(3, m);
+    //    MatrixXi m(1, 5);
+    //    m << 1, 2, 3, 4, 5;
+    //    m = (m.array() > 3).select(3, m);
 
 
-//    std::cout << m << std::endl;
+    //    std::cout << m << std::endl;
 
-//    std::cout << "Fine" << std::endl;
+    //    std::cout << "Fine" << std::endl;
     return 0;
 }
 

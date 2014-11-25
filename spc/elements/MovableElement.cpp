@@ -10,8 +10,10 @@ namespace spc
 
 DtiClassType Point3D::Type ("Point3D", &ElementBase::Type);
 
-Point3D::Point3D() : position_(0, 0, 0, 1)
+Point3D::Point3D()
 {
+    position_.fill(spcNANMacro);
+    position_(3) = spcNANMacro;
 }
 
 Point3D::Point3D(const float x,

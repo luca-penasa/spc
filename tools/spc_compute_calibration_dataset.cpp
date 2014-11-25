@@ -28,17 +28,16 @@ using namespace pcl::io;
 
 DEFINE_string(in_clouds, "", "space separated list of input clouds");
 DEFINE_string(core_points_cloud, "", "file containing the core points");
-DEFINE_string(normals_cloud, "", "file containing the normals");
 
-DEFINE_string(out, "", "out file without extension");
+DEFINE_string(out, "calibration_data", "out file without extension");
 
 DEFINE_double(search_radius, 0.1, "the search radius to use when normals are estimated directly");
-DEFINE_double(acceptable_distance, 0.1, "maximum accettable distance for normal transferring");
 
-
-DEFINE_bool(gaussian, true, "use gaussian filtering for estimating the average intensity");
 DEFINE_double(gaussian_sigma, 0.1, "the spatial sigma for intensity sampling with gaussian");
 
+DEFINE_bool(export_as_cloud, true, "save the points as a cloud also");
+
+DEFINE_bool(export_as_ascii, true, "save the data as pure ascii, e.g. for inspection");
 
 
 int main (int argc, char ** argv)
@@ -70,39 +69,31 @@ int main (int argc, char ** argv)
     spc::CalibrationDataEstimator calibrator;
     calibrator.setInputClouds(sources);
 
-//    if (!FLAGS_normals_cloud.empty())
-//    {
-//        calibrator.setInputNormalsCloudName(FLAGS_normals_cloud);
-//        calibrator.setNormalEstimationMethod(spc::CalibrationDataEstimator::PRECOMPUTED_NORMALS);
-//        calibrator.setMaximumDistanceForGettingNormal(FLAGS_acceptable_distance);
-//    }
 
     CloudDataSourceOnDisk keys(FLAGS_core_points_cloud);
     NewSpcPointCloud::Ptr key_cloud = keys.load2();
 
     calibrator.setInputKeypoints(key_cloud);
-    calibrator.setSearchRadius(FLAGS_search_radius);
+    calibrator.setNormalEstimationSearchRadius(FLAGS_search_radius);
     calibrator.compute();
 
+    calibration::CalibrationDataHolder::Ptr data = calibrator.getCalibrationDataHolder();
 
-//    if (FLAGS_gaussian)
-//    {
-//        calibrator.setIntensityEstimationMethod(spc::CalibrationDataEstimator::GAUSSIAN_ESTIMATION);
-//        calibrator.setIntensityGaussianSpatialSigma(FLAGS_gaussian_sigma);
-//    }
+    spc::io::serializeToFile(data, FLAGS_out, spc::io::XML);
 
-//    LOG(INFO) << "going to compute";
-//    calibrator.compute();
-//    LOG(INFO) << "going to compute.Done";
+    if (FLAGS_export_as_cloud)
+    {
+        std::string cloud_name = FLAGS_out + "_cloud";
+        spc::io::serializeToFile(data->asPointCloud(), cloud_name , spc::io::XML);
+    }
 
+    if (FLAGS_export_as_ascii)
+    {
+        std::string cloud_name = FLAGS_out + "_cloud";
+        spc::io::serializeToFile(data->asPointCloud(), cloud_name , spc::io::ASCII);
+    }
 
-
-//    spc::EigenTable::Ptr db = calibrator.getCalibrationDB();
-
-
-//    spc::io::serializeToFile(db, FLAGS_out, spc::io::XML);
-
-
+    LOG(INFO) << "saved";
 
 
     return 1;

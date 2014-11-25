@@ -46,6 +46,21 @@ void load(Archive & ar, Eigen::Matrix<ST, _Rows, _Cols, _Options, _MaxRows, _Max
 
 }
 
+
+template <class Archive> inline
+void
+save(Archive & ar, const Eigen::Quaternionf & quaternion, const std::uint32_t version)
+{
+    ar(quaternion.coeffs());
+}
+
+template <class Archive> inline
+void load(Archive & ar, Eigen::Quaternionf & quaternion, const std::uint32_t version)
+{
+    ar(quaternion.coeffs());
+}
+
+
 //! this macro permits to specialize load and save coupelts for a given format and shape of matrices
 //! it is needed to force cereal to output some matrices always as string and not binary
 #define SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(ARTYPE, ROWS, COLS)\
@@ -71,6 +86,10 @@ load(ARTYPE## InputArchive & ar, Eigen::Matrix<_Scalar, ROWS, COLS>  & m, const 
             m(i,j) = v;\
         } \
 }
+
+
+
+
 
 //SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(XML, 2, 1)
 //SPECIALIZE_CEREAL_EIGEN_MATRIX_TO_STRING(JSON, 2, 1)

@@ -18,7 +18,8 @@ namespace io
 enum ARCHIVE_TYPE {
     XML,
     JSON,
-    SPC
+    SPC,
+    ASCII
 }; // spc is cereal-binary
 
 /**

@@ -11,9 +11,14 @@
 namespace spc
 {
 
-struct FieldLabel
+class FieldLabel
 {
+public:
 
+    FieldLabel(): field_name_("None"), dimensionality_(0)
+    {
+
+    }
 
     FieldLabel(const std::string & name, const size_t dim)
     {
@@ -21,22 +26,35 @@ struct FieldLabel
         dimensionality_ = dim;
     }
 
-    bool operator== (const FieldLabel &other)
+    bool operator== (const FieldLabel &other) const
     {
         return (this->field_name_ == other.field_name_) && (this->dimensionality_ == other.dimensionality_);
     }
 
-
-
     std::string field_name_;
     size_t dimensionality_;
+
+private:
+    friend class cereal::access;
+
+    template <class Archive> void serialize(Archive &ar)
+    {
+        ar(CEREAL_NVP(field_name_),
+           CEREAL_NVP(dimensionality_)
+           );
+    }
+
+
+
+
 };
 
-struct LabelsContainer: std::vector<FieldLabel>
+class LabelsContainer
 {
+public:
     bool hasField(const std::string &name) const
     {
-        for (const FieldLabel& label: *this)
+        for (const FieldLabel& label: labels_)
         {
             if (label.field_name_ ==name)
                 return true;
@@ -47,30 +65,85 @@ struct LabelsContainer: std::vector<FieldLabel>
 
     FieldLabel getLabelByName(const std::string name) const
     {
-        for (const FieldLabel& label: *this)
+        for (const FieldLabel& label: labels_)
         {
             if (label.field_name_ ==name)
                 return label;
         }
     }
 
+    bool hasLabel(const FieldLabel & label2) const
+    {
+        for (const FieldLabel& label: labels_)
+        {
+            if (label == label2)
+                return true;
+
+        }
+        return false;
+    }
+
+    void push_back(const FieldLabel & lab)
+    {
+        labels_.push_back(lab);
+    }
+
+
+    size_t size() const
+    {
+        return labels_.size();
+    }
+
+    FieldLabel &getLabel(const size_t id)
+    {
+        return labels_.at(id);
+    }
+
+    FieldLabel getLabel(const size_t id) const
+    {
+        return labels_.at(id);
+    }
+
+    std::vector<FieldLabel> &getLabels()
+    {
+        return labels_;
+    }
+
+    std::vector<FieldLabel> getLabels() const
+    {
+        return labels_;
+    }
+
+private:
+    friend class cereal::access;
+
+    template <class Archive> void serialize(Archive &ar)
+    {
+            ar(CEREAL_NVP(labels_));
+    }
+
+    std::vector<FieldLabel> labels_;
 };
 
 
 
-class NewSpcPointCloud
+class NewSpcPointCloud: public ElementBase
 {
 public:
+
+    SPC_ELEMENT(NewSpcPointCloud)
+    EXPOSE_TYPE
 
     typedef float ScalarT;
     typedef Eigen::Matrix<ScalarT, Eigen::Dynamic, Eigen::Dynamic > MatrixT;
     typedef Eigen::Block<MatrixT> BlockT;
 
+    typedef Eigen::Hyperplane<ScalarT, 3> EigenPlaneT;
+
     typedef const Eigen::Block<const MatrixT> ConstBlockT;
 
-    typedef NanoFlannEigenMatrixAdaptor<MatrixT> SearcherT;
+    typedef NanoFlannEigenBlockAdaptor<MatrixT> SearcherT;
 
-    spcTypedefSharedPtrs(NewSpcPointCloud)
 
 
     NewSpcPointCloud();
@@ -79,7 +152,9 @@ public:
     static NewSpcPointCloud::Ptr fromPointCloudBase(const spc::PointCloudBase &other);
 
 
-    NewSpcPointCloud fromIds(const std::vector<size_t> &ids, const std::vector<std::string> &fields = {"position"})
+    //! by default it will copy ALL the fields for the requested ids.
+    //! it is often better to provide a fields list to copy
+    NewSpcPointCloud fromIds(const std::vector<size_t> &ids, const std::vector<std::string> &fields = {})
     {
         NewSpcPointCloud out;
 
@@ -96,7 +171,7 @@ public:
 
             out.conservativeResize(ids.size());
 
-            size_t counter;
+            size_t counter = 0;
             for (const size_t  &id: ids)
             {
                 for (const std::string f: fields)
@@ -118,7 +193,7 @@ public:
 
             out.labels_ = this->labels_;
 
-            size_t counter;
+            size_t counter = 0;
             for (const size_t &id: ids)
             {
                 out.fields_.row(counter++) =  this->getData().row(id);
@@ -146,6 +221,8 @@ public:
         labels_.push_back(newf);
 
         field_to_col_[name] = fields_.cols() - dim;
+
+        this->getFieldByName(name).fill(spcNANMacro);
 
         LOG(INFO) << "now dimensions are " << fields_.rows() << " x " << fields_.cols();
     }
@@ -176,10 +253,15 @@ public:
     }
 
 
-    void updateSearcher()
+    void updateSearcher(const std::string & on_field = "position")
     {
         if (searcher_ == NULL)
             searcher_ = typename SearcherT::Ptr (new SearcherT(this->getFieldByName("position"), 20));
+    }
+
+    void resetSearcher()
+    {
+        searcher_ = NULL;
     }
 
     Eigen::Vector3f getCentroid()
@@ -187,9 +269,9 @@ public:
         return getFieldByName("position").colwise().sum() / getNumberOfPoints();
     }
 
-    SearcherT::Ptr getSearcher()
+    SearcherT::Ptr getSearcher(const std::string & on_field = "position")
     {
-        updateSearcher();
+        updateSearcher(on_field);
         return searcher_;
     }
 
@@ -198,12 +280,14 @@ public:
         return sensor_;
     }
 
-    Eigen::Hyperplane<ScalarT, 3> fitPlane(Eigen::Vector3f &eigenvalues) const
+    EigenPlaneT fitPlane(Eigen::Vector3f &eigenvalues) const
     {
         Eigen::VectorXf avg;
+
+
         Eigen::Matrix<ScalarT, -1, -1> covmat =this->getFieldByName("position").getSampleCovMatAndAvg(avg);
 
-        Eigen::Hyperplane<ScalarT, 3> plane;
+        EigenPlaneT plane;
 
         Eigen::SelfAdjointEigenSolver<Eigen::Matrix<ScalarT, 3, 3>> eig(covmat);
         plane.normal() = eig.eigenvectors().col(0);
@@ -211,6 +295,57 @@ public:
         plane.offset() = - plane.normal().dot(avg);
 
         return plane;
+    }
+
+    //! only if all the fields are present in both concatenation will work fine
+    void concatenate (const NewSpcPointCloud &other)
+    {
+
+        for (int i = 0 ; i < other.labels_.size(); ++i)
+        {
+            FieldLabel lab = other.labels_.getLabel(i);
+            if (!labels_.hasLabel(lab))
+            {
+                LOG(WARNING) << "nothin done. some fields missing";
+                return;
+            }
+        }
+
+        size_t old_size = this->getNumberOfPoints();
+        this->conservativeResize(old_size + other.getNumberOfPoints());
+
+        this->fields_.bottomRows(this->getNumberOfPoints() - old_size) = other.fields_;
+    }
+
+    virtual bool isAsciiSerializable() const override
+    {
+        return true;
+    }
+
+    virtual int toAsciiStream(std::ostream &stream) const override
+    {
+        for (const FieldLabel & label: labels_.getLabels())
+        {
+            stream << label.field_name_ << ":" << label.dimensionality_ << " ";
+        }
+        stream << "\n";
+        stream << fields_;
+
+        return 1;
+    }
+
+private:
+    friend class cereal::access;
+
+    template <class Archive> void serialize(Archive &ar)
+    {
+        ar(cereal::base_class<spc::ElementBase> (this),
+           CEREAL_NVP(fields_),
+           CEREAL_NVP(labels_),
+           CEREAL_NVP(field_to_col_),
+//           CEREAL_NVP(searcher_),
+           CEREAL_NVP(sensor_)
+           );
     }
 
 

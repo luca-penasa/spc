@@ -75,6 +75,25 @@ public:
      **/
     virtual T eval(const T& squared_x) const = 0;
 
+
+    virtual Eigen::Matrix<T, -1, 1> eval(const Eigen::Matrix<T, -1, 1> &squared_xs) const
+    {
+        Eigen::Matrix<T, -1, 1> w;
+        w.resize(squared_xs.rows());
+
+#ifdef USE_OPENMP
+#pragma omp parallel for
+#endif
+        for (size_t i = 0; i < squared_xs.rows(); ++i)
+        {
+
+            w(i) = this->eval( squared_xs(i));
+        }
+
+        return w;
+
+    }
+
     void updateSecondary()
     {
         scale_inv_ = 1 / scale_;

@@ -48,6 +48,8 @@ endif(SPC_ENABLE_INSTALL)
         file(GLOB HEADERS ${dir}/*.h)
         file(GLOB IMPLS ${dir}/*.hpp)
 
+        message("sources: ${SOURCES}" )
+
         list(APPEND LIB_SOURCES ${SOURCES})
         list(APPEND LIB_HEADERS ${HEADERS})
         list(APPEND LIB_IMPLS ${IMPLS})
@@ -64,7 +66,7 @@ list(APPEND LIB_SOURCES ${SOURCES})
 list(APPEND LIB_HEADERS ${HEADERS})
 list(APPEND LIB_IMPLS ${IMPLS})
 
-    set(sources ${SOURCES} ${HEADERS} ${IMPLS})
+    set(sources ${LIB_SOURCES} ${LIB_HEADERS} ${LIB_IMPLS})
 #${HEADERS} ${IMPLS})
     set(libs ${SPC_LIBRARIES} ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES} ${PCL_FILTERS_LIBRARIES} ${GLOG_LIBRARIES} ${PCL_FEATURES_LIBRARIES} ${additional_libs})
     spc_compile_and_link(spc_${libname} "${sources}" "${libs}")

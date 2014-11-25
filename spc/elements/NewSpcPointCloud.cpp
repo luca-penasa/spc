@@ -2,6 +2,10 @@
 
 namespace spc
 {
+
+DtiClassType NewSpcPointCloud::Type ("NewSpcPointCloud", &ElementBase::Type);
+
+
 NewSpcPointCloud::NewSpcPointCloud(): sensor_(new OrientedSensor)
 {
 }
@@ -62,4 +66,11 @@ NewSpcPointCloud::Ptr NewSpcPointCloud::fromPointCloudBase(const PointCloudBase 
     return out;
 }
 
+
+
+
 }
+
+
+#include <spc/core/spc_cereal.hpp>
+SPC_CEREAL_REGISTER_TYPE(spc::NewSpcPointCloud)

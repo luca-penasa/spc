@@ -11,16 +11,18 @@ namespace calibration
 class CalibrationKeyPoint;
 typedef spcSharedPtrMacro<CalibrationKeyPoint> CalibrationKeyPointPtr;
 
-class PerCloudCalibrationData
+class PerCloudCalibrationData: public std::enable_shared_from_this<PerCloudCalibrationData>
 {
 public:
     spcTypedefSharedPtrs(PerCloudCalibrationData)
 
-    PerCloudCalibrationData(CloudDataSourceOnDisk::Ptr ref_cloud, CalibrationKeyPointPtr parent)
+    //! so that cereal does not complain. should not be used
+    PerCloudCalibrationData()
     {
-        parent_keypoint = parent;
-        cloud = ref_cloud;
+
     }
+
+    PerCloudCalibrationData(CloudDataSourceOnDisk::Ptr ref_cloud, CalibrationKeyPointPtr parent);
     CalibrationKeyPointPtr getParent() const
     {
         return parent_keypoint;
@@ -31,17 +33,39 @@ public:
         return cloud;
     }
 
+
+    //////////////////////// THE DATA
     CloudDataSourceOnDisk::Ptr cloud;
 
     CalibrationKeyPointPtr parent_keypoint;
 
-    size_t n_neighbors;
-    float distance;
-    float angle;
-    float intensity;
-    float intensity_std;
+    size_t n_neighbors_intensity = 0;
+    float distance = spcNANMacro;
+    float angle= spcNANMacro;
+    float intensity= spcNANMacro;
+    float intensity_std= spcNANMacro;
 
     Eigen::Vector3f sensor_position;
+
+    NewSpcPointCloud extract_for_normal_;
+
+private:
+    friend class cereal::access;
+
+    template <class Archive> void serialize(Archive &ar)
+    {
+        ar(CEREAL_NVP(cloud),
+           CEREAL_NVP(parent_keypoint),
+           CEREAL_NVP(n_neighbors_intensity),
+           CEREAL_NVP(distance),
+           CEREAL_NVP(angle),
+           CEREAL_NVP(intensity),
+           CEREAL_NVP(intensity_std),
+           CEREAL_NVP(sensor_position),
+           CEREAL_NVP(extract_for_normal_)
+           );
+    }
+
 
 
 };

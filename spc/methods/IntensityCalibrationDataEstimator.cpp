@@ -25,23 +25,14 @@ namespace spc
 {
 
 CalibrationDataEstimator::CalibrationDataEstimator()
-    : normal_estimation_search_radius_(0.1),      
-      maximum_squared_distance_for_normal_getting_(0.1),
-      intensity_estimation_method_(SIMPLE_AVERAGE),
-      intensity_estimation_spatial_sigma_(0.1), db_(new NewSpcPointCloud)
+    : normal_estimation_search_radius_(0.1),
+      intensity_estimation_spatial_sigma_(0.1),
+      kernel_(new GaussianRBF<float>(0.1)),
+      calibration_data_(new calibration::CalibrationDataHolder)
+
 {
 
-    db_->addNewField("n_neighbors", 1);
-    db_->addNewField("normal", 3);
-    db_->addNewField("lambdas", 3);
-    db_->addNewField("position", 3);
-    db_->addNewField("core_id", 1);
-    db_->addNewField("cloud_id", 1);
-    db_->addNewField("distance", 1);
-    db_->addNewField("intensity", 1);
-    db_->addNewField("angle", 1);
-    db_->addNewField("intensity_std", 1);
-    db_->addNewField("eigen_ratio", 1);
+
 }
 
 void CalibrationDataEstimator::setInputClouds(std::vector<CloudDataSourceOnDisk::Ptr> cloud_names)
@@ -51,18 +42,11 @@ void CalibrationDataEstimator::setInputClouds(std::vector<CloudDataSourceOnDisk:
 
 void CalibrationDataEstimator::setInputKeypoints(NewSpcPointCloud::ConstPtr kpoints)
 {
-    keypoints_cloud_ = kpoints;
+    calibration_data_->initFromCloud(kpoints);
 }
 
 int CalibrationDataEstimator::compute()
 {
-    // init the keypoints
-    for (int i = 0 ; i < keypoints_cloud_->getNumberOfPoints(); ++i)
-    {
-        auto k =calibration::CalibrationKeyPoint::Ptr(new  calibration::CalibrationKeyPoint(keypoints_cloud_-> getFieldByName("position").row(i)));
-        keypoints_.push_back(k);
-    }
-
     for (CloudDataSourceOnDisk::Ptr source: input_clouds_ondisk_)
     {
         // load the cloud
@@ -74,212 +58,38 @@ int CalibrationDataEstimator::compute()
             continue;
         }
 
-        for (calibration::CalibrationKeyPoint::Ptr keypoint: keypoints_)
+        if (calibration_data_->getData().empty())
+        {
+            LOG(ERROR) << "no keypoints to be processed";
+            return -1;
+        }
+
+        for (calibration::CalibrationKeyPoint::Ptr keypoint: calibration_data_->getData())
         {
             calibration::PerCloudCalibrationData::Ptr data = keypoint->newPerCloudData(source);
 
-            fillCalibrationDataAtkeypointForCloud(data, cloud);
-
-
+            extractDataForKeypointAndCloud(data, cloud);
         }
-
-        //fill calibration data for this keypoint and cloud
-
-
     }
 
-//    // load the core points cloud
-//    this->loadKeypointsCloud();
+    computeDerivedData();
 
-//    current_cloud_id_ = 0;
-//    for(CloudDataSourceOnDisk cloud_on_disk: input_clouds_ondisk_)
-//    {
-//        LOG(INFO) << "working on " << cloud.getFilename();
+    return 1;
 
-//        // load the cloud and create what we need
-//        this->loadCloudAndCreateSearcher(fname);
-//        PointCloudBase::Ptr cloud = cloud_on_disk.load();
-
-//#ifdef USE_OPENMP
-//#pragma omp parallel for
-//#endif
-//        // now we cycle on the core points for the current cloud
-//        for (size_t i = 0; i < keypoints_(); ++i)
-//        {
-//            this->computeSampleParameters(i, normal_estimation_search_radius_);
-//        }
-//        DLOG(INFO) << "cycling on cores. Done";
-
-//        current_cloud_id_ += 1;
-//        current_cloud_searcher_.reset();
-//        current_point_cloud_.reset();
-//    }
 }
 
 
 
 
-void CalibrationDataEstimator::setSearchRadius(const float rad)
+void CalibrationDataEstimator::setNormalEstimationSearchRadius(const float rad)
 {
     normal_estimation_search_radius_ = rad;
 }
 
-float CalibrationDataEstimator::computeGaussianSmoothedIntensity(const PointCloudBase::ConstPtr in_cloud,
-        const std::vector<int> &indices, const std::vector<float> &sq_distances,
-        const float &kernel_sigma, float &intensity_std,
-        const bool exclude_first_id)
-{
-//    assert(indices.size() == sq_distances.size());
-//    assert(kernel_sigma != 0.0f);
-//    assert(in_cloud);
-
-//    if (indices.size() == 1)
-//        return in_cloud->at(indices.at(0)).intensity;
-
-//    if ((indices.size() == 1) & (exclude_first_id))
-//        return spcNANMacro;
-
-//    if (indices.size() == 0)
-//        return spcNANMacro;
-
-//    // extract intensities
-//    std::vector<float> intensities(indices.size());
-//    std::transform(indices.begin(), indices.end(), intensities.begin(),
-//                   [&](int id) { return in_cloud->at(id).intensity; });
-
-//    // compute weights
-//    std::vector<float> weights(indices.size());
-//    std::transform(
-//                sq_distances.begin(), sq_distances.end(), weights.begin(),
-//                [&](const float &sq_dist) { return kernel(sq_dist, kernel_sigma); });
-
-//    // now compute stats
-//    namespace bacc = boost::accumulators;
-
-//    // weighted mean/var accumulator
-//    bacc::accumulator_set
-//            <float, bacc::features<bacc::tag::weighted_mean, bacc::tag::weighted_variance>, float>
-//            acc;
-
-//    typedef boost::tuple<float &, float &> ref_tuple;
-//    for(ref_tuple tup: boost::combine(intensities, weights))
-//    {
-//        float a = tup.get<0>();
-//        float b = tup.get<1>();
-//        acc(a, bacc::weight = b);
-//    }
-
-//    intensity_std = std::sqrt(bacc::variance(acc));
-
-//    return bacc::mean(acc);
-}
-
-void
-CalibrationDataEstimator::computeSampleParameters(const size_t core_point_id,
-                                                  const float search_radius)
-{
-
-
-//    size_t counter = core_point_id + current_cloud_id_
-//            * core_points_cloud_->size();
-
-//    // get the point coordinates from core point cloud
-//    pcl::PointXYZI point = core_points_cloud_->at(core_point_id);
-
-//    std::vector<float> dists;
-//    std::vector<int> ids;
-
-//    current_cloud_searcher_->radiusSearch(point, search_radius, ids, dists);
-
-//    ////////////////////////////////// NORMAL ESTIMATION
-//    ////////////////////////////////
 
 
 
-//    // compute normal and average distance
-//    float nx(spcNANMacro);
-//    float ny(spcNANMacro);
-//    float nz(spcNANMacro);
-//    float lam0(spcNANMacro);
-//    float lam1(spcNANMacro);
-//    float lam2(spcNANMacro);
-//    float eigen_ratio;
 
-//    if (normal_estimation_method_ == FULL_NORMALS_ESTIMATION) {
-//        spc::computePointNormal(*current_point_cloud_, ids, nx, ny, nz, lam0,
-//                                lam1, lam2);
-
-//    } else if (normal_estimation_method_ == PRECOMPUTED_NORMALS) {
-//        getNearestNormal(point, nx, ny, nz,
-//                         maximum_squared_distance_for_normal_getting_, eigen_ratio);
-
-
-//    }
-
-//    /////////////////////// DISTANCE ESTIMATION ////////////////////////////
-
-//    Eigen::Vector4f c; // tmp_var
-//    c.fill(spcNANMacro);
-
-//    if (ids.size() > 0)
-//    {
-//        pcl::compute3DCentroid(*current_point_cloud_, ids, c);
-//    }
-
-//    Eigen::Vector3f pos = current_sensor_center_.head(3);
-//    Eigen::Vector3f ray = c.head(3) - pos;
-
-//    float distance = ray.norm();
-
-//    Eigen::Vector3f n_vec;
-//    n_vec << nx, ny, nz;
-
-//    Eigen::Vector3f lam_vec;
-//    lam_vec << lam0, lam1, lam2;
-
-//    //////////////////////// INTENSITY ESTIMATION ////////////////////////
-//    float intensity = spcNANMacro;
-//    float intensity_std = spcNANMacro;
-
-
-//    if (intensity_estimation_method_ == SIMPLE_AVERAGE)
-//        intensity = this->getAverageIntensity(*current_point_cloud_, ids,
-//                                              intensity_std);
-
-//    else if (intensity_estimation_method_ == GAUSSIAN_ESTIMATION)
-//    {
-
-
-//        float full_radius = intensity_estimation_spatial_sigma_ * 4;
-
-//        std::vector<float> dists_int;
-//        std::vector<int> ids_int;
-
-//        current_cloud_searcher_->radiusSearch(point, full_radius, ids_int,
-//                                              dists_int);
-
-
-//        intensity = CalibrationDataEstimator::computeGaussianSmoothedIntensity(
-//                    current_point_cloud_, ids_int, dists_int,
-//                    intensity_estimation_spatial_sigma_, intensity_std);
-
-//    }
-
-//    float angle
-//            = CalibrationDataEstimator::getMinimumAngleBetweenVectors(n_vec, ray);
-
-//    db_->atScalar("n_neighbors", counter) = ids.size();
-//    db_->atVector("normal", counter) = n_vec;
-//    db_->atVector("lambdas", counter) = lam_vec;
-//    db_->atVector("position", counter) = c.head(3);
-//    db_->atScalar("core_id", counter) = core_point_id;
-//    db_->atScalar("cloud_id", counter) = current_cloud_id_;
-//    db_->atScalar("distance", counter) = distance;
-//    db_->atScalar("intensity", counter) = intensity;
-//    db_->atScalar("angle", counter) = angle;
-//    db_->atScalar("intensity_std", counter) = intensity_std;
-//    db_->atScalar("eigen_ratio", counter) = eigen_ratio;
-}
 
 float CalibrationDataEstimator::getMinimumAngleBetweenVectors(const Eigen::Vector3f x_,
                                                               const Eigen::Vector3f y_)
@@ -296,41 +106,126 @@ float CalibrationDataEstimator::getMinimumAngleBetweenVectors(const Eigen::Vecto
     return theta;
 }
 
-void CalibrationDataEstimator::fillCalibrationDataAtkeypointForCloud(calibration::PerCloudCalibrationData::Ptr data_holder, NewSpcPointCloud::Ptr cloud)
+void CalibrationDataEstimator::extractDataForKeypointAndCloud(calibration::PerCloudCalibrationData::Ptr data_holder, NewSpcPointCloud::Ptr cloud)
 
 {
+    //! extract and save the sensor position
+    data_holder->sensor_position = cloud->getSensor()->getPosition().head(3);
+
+    LOG(INFO) <<"senso position: " << data_holder->sensor_position;
 
     NewSpcPointCloud::SearcherT::Ptr searcher = cloud->getSearcher();
 
     LOG(INFO) << "going to do matches" << std::endl;
     std::vector<std::pair<size_t, float>> matches;
-    searcher->radiusSearch(data_holder->parent_keypoint->position, intensity_estimation_spatial_sigma_ * 4, matches);
+
+    // these points will be used for normal estimation
+    LOG(INFO) << "point " << data_holder->parent_keypoint->original_position;
+    searcher->radiusSearch(data_holder->parent_keypoint->original_position, normal_estimation_search_radius_, matches);
 
     LOG(INFO) << "number of matches " << matches.size();
 
+    std::vector<size_t> ids;
+    Eigen::VectorXf sq_distances;
+
+    decompressMatches(matches, ids, sq_distances);
+
+    NewSpcPointCloud extract = cloud->fromIds(ids, {"position"}); // extract only the position
+
+    LOG(INFO) << "new cloud has "<< extract.getNumberOfPoints() << " points";
+
+    // cumulate the cloud. Normal estimation will be performed only at the end
+    data_holder->extract_for_normal_ = extract;
+
+    // NOW INTENSITY STUFF
+    // now repeat the search for the intensity estimation
+
+    std::vector<std::pair<size_t, float>> matches_int;
+    searcher->radiusSearch(data_holder->parent_keypoint->original_position, intensity_estimation_spatial_sigma_ * 4, matches_int);
+
+
+    LOG(INFO) << "found matches:" << matches_int.size();
+    std::vector<size_t> ids_int;
+    Eigen::VectorXf sq_distances_int;
+
+    decompressMatches(matches_int, ids_int, sq_distances_int);
+
+    LOG(INFO) << "extractin fields " ;
+
+
+    NewSpcPointCloud intensities = cloud->fromIds(ids_int, {intensity_field_name_});
+
+    LOG(INFO) << "int cloud is of size " << intensities.getNumberOfPoints();
+    Eigen::VectorXf ints = intensities.getFieldByName(intensity_field_name_);
+
+    LOG(INFO) << "ints computed are " << ints.rows();
+
+    LOG(INFO) << "doing weighting " ;
+
+    Eigen::VectorXf weights = kernel_->eval(sq_distances_int);
+
+    LOG(INFO) << "weights computed are " << weights.rows();
+
+
+    float avg_intensity = ints.cwiseProduct(weights).sum() / weights.sum();
+    Eigen::VectorXf diff = ints.array() - avg_intensity;
+    diff = diff.cwiseProduct(diff); // squared
+    float std_intensity = sqrt(diff.cwiseProduct(weights).sum() / weights.sum()); // standard deviation
+
+    data_holder->intensity = avg_intensity;
+    data_holder->intensity_std = std_intensity;
+    data_holder->n_neighbors_intensity = ints.rows();
+
+    LOG(INFO) << "avg is " << avg_intensity;
+    LOG(INFO) << "std is " << std_intensity;
 }
 
-float CalibrationDataEstimator::getAverageIntensity(const PointCloudBase::ConstPtr
-                                                    cloud,
-                                                    std::vector<int> ids,
-                                                    float &std)
+void CalibrationDataEstimator::computeDerivedData()
 {
-    //    if (ids.size() == 0)
-    //        return spcNANMacro;
 
-    //    namespace bacc = boost::accumulators;
+    for (calibration::CalibrationKeyPoint::Ptr keypoint: calibration_data_->getData())
+    {
+        for (calibration::PerCloudCalibrationData::Ptr data_holder: keypoint->per_cloud_data)
+        {
+            LOG(INFO) << "extrat for normas has size " << data_holder->extract_for_normal_.getNumberOfPoints();
+            keypoint->cumulative_set.concatenate(data_holder->extract_for_normal_);
+        }
 
-    //    std::vector<float> intensities(ids.size());
-//    std::transform(ids.begin(), ids.end(), intensities.begin(),
-//                   [&cloud](int id) { return cloud.at(id).intensity; });
+        LOG(INFO) << "cumulative set has " << keypoint->cumulative_set.getNumberOfPoints();
 
-//    bacc::accumulator_set
-//            <float, bacc::features<bacc::tag::mean, bacc::tag::variance>> acc;
-//    std::for_each(intensities.begin(), intensities.end(),
-//                  boost::bind<void>(boost::ref(acc), _1));
+        if (keypoint->cumulative_set.getNumberOfPoints() >= min_number_of_points_for_normal_estimation_)
+        {
 
-//    std = std::sqrt(bacc::variance(acc));
-//    return bacc::mean(acc);
+            Eigen::Vector3f lambdas;
+            NewSpcPointCloud::EigenPlaneT plane = keypoint->cumulative_set.fitPlane(lambdas);
+
+            keypoint->fitting_plane = Plane::fromEigenHyperplane3f(plane);
+            keypoint->lambdas = lambdas;
+            keypoint->eigen_ratio = lambdas(0) / lambdas.sum();
+
+            LOG(INFO) << "found normal: " << keypoint->fitting_plane.getNormal().transpose() << "with lambdas: " << lambdas.transpose();
+
+
+            Eigen::Vector3f centroid = keypoint->cumulative_set.getCentroid();
+            //! project the centroid onto the fitting plane to get a better estimate of the position
+            Eigen::Vector3f newpos = keypoint->fitting_plane.projectPointOnPlane(centroid);
+            LOG(INFO) << "new pos is " << newpos.transpose() << " original was " <<keypoint->original_position.transpose();
+            LOG(INFO) << "centroid was" << centroid;
+            keypoint->post_position = newpos;
+
+            //! no we can compute distance and angle
+            for (calibration::PerCloudCalibrationData::Ptr per_cloud: keypoint->per_cloud_data)
+            {
+                Eigen::Vector3f ray = keypoint->post_position - per_cloud->sensor_position;
+
+                per_cloud->angle = getMinimumAngleBetweenVectors(keypoint->fitting_plane.getNormal(), ray);
+                per_cloud->distance = sqrt(ray.dot(ray));
+
+                LOG(INFO) << "angle " << per_cloud->angle << " and distance " << per_cloud->distance;
+
+            }
+        }
+    }
 }
 
 
@@ -338,9 +233,7 @@ float CalibrationDataEstimator::getAverageIntensity(const PointCloudBase::ConstP
 
 
 
-NewSpcPointCloud::Ptr CalibrationDataEstimator::getCalibrationDB()
-{
-    return db_;
-}
+
+
 
 } // end nspace

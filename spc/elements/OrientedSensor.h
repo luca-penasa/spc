@@ -15,7 +15,8 @@ public:
 
     OrientedSensor()
     {
-
+        sensor_orientation_.coeffs().fill(spcNANMacro);
+        sensor_position_.fill(spcNANMacro);
     }
 
     OrientedSensor(const OrientedSensor & other) : ElementBase(other)
@@ -36,6 +37,16 @@ public:
 
     spcGetMacro(Orientation, sensor_orientation_, Eigen::Quaternionf)
     spcSetMacro(Orientation, sensor_orientation_, Eigen::Quaternionf)
+
+    private:
+        friend class cereal::access;
+
+        template <class Archive> void serialize(Archive &ar)
+        {
+            ar(cereal::base_class<spc::ElementBase> (this),
+               CEREAL_NVP(sensor_orientation_),
+               CEREAL_NVP(sensor_position_) );
+        }
 
 
 protected:

@@ -30,6 +30,8 @@ int serializeToFile(const ISerializable::Ptr element, std::string filename,
         return -1;
     }
 
+
+
     std::string extension; // we could put them in a map maybe
 
     if (type == XML)
@@ -40,6 +42,9 @@ int serializeToFile(const ISerializable::Ptr element, std::string filename,
 
     else if (type == SPC)
         extension = ".spc";
+
+    else if (type ==ASCII)
+        extension = ".txt";
 
     filename += extension;
 
@@ -119,7 +124,27 @@ int serializeToStream(const ISerializable::Ptr element, std::ostream &stream,
             archive(cereal::make_nvp("SPCDataset", element));
         }
 
+        if (type == ASCII)
+        {
+            if (element->isAsciiSerializable())
+            {
+                if (element->toAsciiStream(stream) != 1)
+                {
+                    LOG(WARNING) << "some error occured while serializing to ascii. see log";
+                    return -1;
+
+                }
+
+            }
+            else
+            {
+                LOG(WARNING) << "ascii serialization to a non-ascii-serializable element. nothing done";
+                return -1;
+            }
+        }
+
     }
+    return 1;
 }
 
 ISerializable::Ptr deserializeFromStream(std::istream &stream,
@@ -187,52 +212,7 @@ std::vector<int> parseLoadableFiles(int argc, char **argv)
     return spc_ids;
 }
 
-//void testXMLMatrixWrite()
-//{
-//    LOG(INFO) << "performing matrix write test";
-//    Eigen::Vector3f normal;
-//    normal = Eigen::Vector3f::Random();
 
-//    Eigen::Matrix3f mat = Eigen::Matrix3f::Random();
-//    std::vector<double> v = {mat(0,0), mat(1,1), mat(2,2)};
-
-//    LOG(INFO) << "normal " << normal.transpose();
-//    LOG(INFO) << "matrix \n" << mat;
-
-//    for (auto el: v)
-//        LOG(INFO) << el;
-
-//    {
-//        std::ofstream out("/home/luca/mat_test.xml");
-//        cereal::XMLOutputArchive ar(out);
-//        ar(normal);
-//        ar(mat);
-//        ar(v);
-//    }
-
-
-
-//    {
-//        Eigen::Vector3f n2;
-//        Eigen::Matrix3f m2;
-//        std::vector<double> v2;
-
-//        // no load back
-//        std::ifstream in("/home/luca/mat_test.xml");
-//        cereal::XMLInputArchive ar(in);
-
-//        ar(n2);
-//        ar(m2);
-//        ar(v2);
-
-//        LOG(INFO) << "normal2 " << n2.transpose();
-//        LOG(INFO) << "matrix2 \n" << m2;
-
-//        for (auto el: v2)
-//            LOG(INFO) << el;
-
-//    }
-//}
 
 }
 }

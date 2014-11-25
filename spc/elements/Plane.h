@@ -47,6 +47,18 @@ public:
         normal_.setNormal(normal);
     }
 
+    static Plane fromEigenHyperplane3f(const Eigen::Hyperplane<float, 3>& hyperplane3)
+    {
+        Plane out;
+        out.setNormal(hyperplane3.normal());
+        out.normal_.normalize();
+        // this is a point which is obvisouly on the plane
+        // but we may use any other point.
+        Eigen::Vector3f point_on_plane = -  hyperplane3.offset() * hyperplane3.normal();
+        out.setPosition(point_on_plane);
+        return out;
+    }
+
 
 
     void setNormal(Vector3f n)
@@ -64,10 +76,16 @@ public:
         return normal_.getNormal();
     }
 
+    //! this project an
     Vector3f projectOnPlane(const Vector3f &v) const
     {
         Vector3f n = getUnitNormal();
         return v - v.dot(n) * n;
+    }
+
+    Vector3f projectPointOnPlane(const Vector3f &point)
+    {
+            return point - getNormal() * distanceTo(point);
     }
 
     /// distance of a point to this plane
