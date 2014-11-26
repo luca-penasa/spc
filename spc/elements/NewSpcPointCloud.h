@@ -8,6 +8,8 @@
 
 #include <spc/core/spc_eigen.h>
 
+
+
 namespace spc
 {
 
@@ -135,7 +137,10 @@ public:
     EXPOSE_TYPE
 
     typedef float ScalarT;
-    typedef Eigen::Matrix<ScalarT, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> MatrixT;
+    //! \todo we should move to a rowmajor format for the matrix.
+    //! but we must also take care of the correspondent serialization function for cereal.
+    //! that will create bad stuff on reloading. (I verified this!!!)
+    typedef Eigen::Matrix<ScalarT, Eigen::Dynamic, Eigen::Dynamic> MatrixT;
     typedef Eigen::Block<MatrixT> BlockT;
 
     typedef Eigen::Hyperplane<ScalarT, 3> EigenPlaneT;
@@ -154,57 +159,7 @@ public:
 
     //! by default it will copy ALL the fields for the requested ids.
     //! it is often better to provide a fields list to copy
-    NewSpcPointCloud fromIds(const std::vector<size_t> &ids, const std::vector<std::string> &fields = {})
-    {
-        NewSpcPointCloud out;
-
-        if (!fields.empty())
-        {
-
-            size_t ncols = 0;
-            for (const std::string &fname : fields)
-            {
-                FieldLabel label = labels_.getLabelByName(fname);
-                ncols += label.dimensionality_;
-                out.addNewField(fname, label.dimensionality_);
-            }
-
-            out.conservativeResize(ids.size());
-
-            size_t counter = 0;
-            for (const size_t  &id: ids)
-            {
-                for (const std::string f: fields)
-                {
-                    out.getFieldByName(f).row(counter) =  this->getFieldByName(f).row(id);
-                }
-
-                counter++;
-            }
-
-            return out;
-
-        }
-
-
-        else // cpy everything
-        {
-            out.fields_.conservativeResize(ids.size(), this->getData().cols());
-
-            out.labels_ = this->labels_;
-
-            size_t counter = 0;
-            for (const size_t &id: ids)
-            {
-                out.fields_.row(counter++) =  this->getData().row(id);
-            }
-
-            return out;
-
-
-        }
-
-    }
+    NewSpcPointCloud fromIds(const std::vector<size_t> &ids, const std::vector<std::string> &fields = {}) const ;
 
     BlockT getData()
     {
@@ -213,19 +168,7 @@ public:
 
 
 
-    void addNewField(const std::string & name, size_t dim = 1)
-    {
-        LOG(INFO) <<"adding new field wih name " << name << " and dim " << dim;
-        FieldLabel newf(name, dim);
-        fields_.conservativeResize(getNumberOfPoints(), fields_.cols() + dim);
-        labels_.push_back(newf);
-
-        field_to_col_[name] = fields_.cols() - dim;
-
-        this->getFieldByName(name).fill(spcNANMacro);
-
-        LOG(INFO) << "now dimensions are " << fields_.rows() << " x " << fields_.cols();
-    }
+    void addNewField(const std::string & name, size_t dim = 1);
 
     size_t getNumberOfPoints() const
     {
@@ -246,6 +189,29 @@ public:
         return fields_.block(0, id, getNumberOfPoints(), dim);
     }
 
+    NewSpcPointCloud filterOutNans(const std::vector<std::string> &fields = {"position"}) const
+    {
+        Eigen::Matrix<bool, -1, 1> to_keep(fields_.rows());
+        to_keep.fill(true); // none (rows) to remove at beginning
+
+        for (const std::string f: fields)
+        {
+            to_keep.array() *= this->getFieldByName(f).finiteness().rowwise().prod().array();
+        }
+
+        std::vector<size_t> good_ids;
+        for (int id = 0; id < fields_.rows(); ++id )
+        {
+            if (to_keep(id) == true)
+            {
+                good_ids.push_back(id);
+            }
+        }
+
+        return this->fromIds(good_ids);
+
+
+    }
 
     void conservativeResize(const size_t n_points)
     {
@@ -282,42 +248,15 @@ public:
         return sensor_;
     }
 
-    EigenPlaneT fitPlane(Eigen::Vector3f &eigenvalues) const
+    EigenPlaneT fitPlane(Eigen::Vector3f &eigenvalues) const;
+
+    bool hasField(const std::string &fname) const
     {
-        Eigen::VectorXf avg;
-
-
-        Eigen::Matrix<ScalarT, -1, -1> covmat =this->getFieldByName("position").getSampleCovMatAndAvg(avg);
-
-        EigenPlaneT plane;
-
-        Eigen::SelfAdjointEigenSolver<Eigen::Matrix<ScalarT, 3, 3>> eig(covmat);
-        plane.normal() = eig.eigenvectors().col(0);
-        eigenvalues = eig.eigenvalues();
-        plane.offset() = - plane.normal().dot(avg);
-
-        return plane;
+        return labels_.hasField(fname);
     }
 
     //! only if all the fields are present in both concatenation will work fine
-    void concatenate (const NewSpcPointCloud &other)
-    {
-
-        for (int i = 0 ; i < other.labels_.size(); ++i)
-        {
-            FieldLabel lab = other.labels_.getLabel(i);
-            if (!labels_.hasLabel(lab))
-            {
-                LOG(WARNING) << "nothin done. some fields missing";
-                return;
-            }
-        }
-
-        size_t old_size = this->getNumberOfPoints();
-        this->conservativeResize(old_size + other.getNumberOfPoints());
-
-        this->fields_.bottomRows(this->getNumberOfPoints() - old_size) = other.fields_;
-    }
+    void concatenate (const NewSpcPointCloud &other);
 
     virtual bool isAsciiSerializable() const override
     {

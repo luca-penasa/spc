@@ -161,7 +161,18 @@ public:
     }
 
 
+    //! this allows to inject additional stuff
+    //! into the A (and b -just use getb() method-) matrix (and vector)
+    //! befoe perfoming the actual solution
+    Eigen::Ref<MatrixT> getA()
+    {
+        return Eigen::Ref<MatrixT> (A_);
+    }
 
+    Eigen::Ref<VectorT> getb()
+    {
+        return Eigen::Ref<VectorT> (A_);
+    }
 
 
     //! lambda is the regularization term
@@ -337,7 +348,7 @@ public:
 
 
 
-        // now fill A with the preditors
+        // now fill A with the predictors
 #ifdef USE_OPENMP
 #pragma omp parallel for
 #endif

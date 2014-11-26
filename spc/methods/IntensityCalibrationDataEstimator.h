@@ -9,7 +9,8 @@
 
 namespace spc
 {
-
+namespace calibration
+{
 
 class CalibrationDataEstimator
 {
@@ -29,6 +30,11 @@ public:
     {
         intensity_estimation_spatial_sigma_ = rad;
         kernel_->setScale(rad);
+    }
+
+    void setMaterialsFieldName(const std::string material_fname)
+    {
+        material_field_name_ = material_fname;
     }
 
     void extractDataForKeypointAndCloud(calibration::PerCloudCalibrationData::Ptr data_holder,
@@ -74,7 +80,10 @@ private:
 
     std::string intensity_field_name_ = "intensity";
 
+    std::string material_field_name_ = "material";
+
     size_t min_number_of_points_for_normal_estimation_ = 5;
 };
+}
 }
 #endif // INTENSITYAUTOCALIBRATOR_H

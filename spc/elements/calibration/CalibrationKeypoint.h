@@ -20,7 +20,7 @@ public:
         lambdas.fill(spcNANMacro);
     }
 
-    CalibrationKeyPoint(const Eigen::Vector3f &pos);
+    CalibrationKeyPoint(const Eigen::Vector3f &pos, const size_t mat_id);
 
 
     PerCloudCalibrationData::Ptr newPerCloudData(CloudDataSourceOnDisk::Ptr cloud);
@@ -31,6 +31,7 @@ public:
     Eigen::Vector3f post_position;
     float eigen_ratio;
     Eigen::Vector3f lambdas;
+    size_t material_id;
 
     std::vector<PerCloudCalibrationData::Ptr> per_cloud_data;
 
@@ -48,7 +49,8 @@ private:
            CEREAL_NVP(eigen_ratio),
            CEREAL_NVP(lambdas),
            CEREAL_NVP(per_cloud_data),
-           CEREAL_NVP(cumulative_set));
+           CEREAL_NVP(cumulative_set),
+           CEREAL_NVP(material_id));
     }
 };
 

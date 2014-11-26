@@ -66,6 +66,109 @@ NewSpcPointCloud::Ptr NewSpcPointCloud::fromPointCloudBase(const PointCloudBase 
     return out;
 }
 
+NewSpcPointCloud NewSpcPointCloud::fromIds(const std::vector<size_t> &ids, const std::vector<std::string> &fields) const
+{
+    NewSpcPointCloud out;
+
+    if (!fields.empty())
+    {
+
+        size_t ncols = 0;
+        for (const std::string &fname : fields)
+        {
+            FieldLabel label = labels_.getLabelByName(fname);
+            ncols += label.dimensionality_;
+            out.addNewField(fname, label.dimensionality_);
+        }
+
+        out.conservativeResize(ids.size());
+
+        size_t counter = 0;
+        for (const size_t  &id: ids)
+        {
+            for (const std::string f: fields)
+            {
+                out.getFieldByName(f).row(counter) =  this->getFieldByName(f).row(id);
+            }
+
+            counter++;
+        }
+
+        return out;
+
+    }
+
+
+    else // cpy everything
+    {
+        out.fields_.conservativeResize(ids.size(), fields_.cols());
+        out.field_to_col_ = field_to_col_;
+        out.labels_ = this->labels_;
+        *out.sensor_  = *sensor_;
+
+        size_t counter = 0;
+        for (const size_t &id: ids)
+        {
+            out.fields_.row(counter++) =  fields_.row(id);
+        }
+
+        return out;
+
+
+    }
+
+}
+
+void NewSpcPointCloud::addNewField(const std::string &name, size_t dim)
+{
+    LOG(INFO) <<"adding new field wih name " << name << " and dim " << dim;
+    FieldLabel newf(name, dim);
+    fields_.conservativeResize(getNumberOfPoints(), fields_.cols() + dim);
+    labels_.push_back(newf);
+
+    field_to_col_[name] = fields_.cols() - dim;
+
+    this->getFieldByName(name).fill(spcNANMacro);
+
+    DLOG(INFO) << "now dimensions are " << fields_.rows() << " x " << fields_.cols();
+}
+
+NewSpcPointCloud::EigenPlaneT NewSpcPointCloud::fitPlane(Vector3f &eigenvalues) const
+{
+    Eigen::VectorXf avg;
+
+
+    Eigen::Matrix<ScalarT, -1, -1> covmat =this->getFieldByName("position").getSampleCovMatAndAvg(avg);
+
+    EigenPlaneT plane;
+
+    Eigen::SelfAdjointEigenSolver<Eigen::Matrix<ScalarT, 3, 3>> eig(covmat);
+    plane.normal() = eig.eigenvectors().col(0);
+    eigenvalues = eig.eigenvalues();
+    plane.offset() = - plane.normal().dot(avg);
+
+    return plane;
+}
+
+void NewSpcPointCloud::concatenate(const NewSpcPointCloud &other)
+{
+
+    for (int i = 0 ; i < other.labels_.size(); ++i)
+    {
+        FieldLabel lab = other.labels_.getLabel(i);
+        if (!labels_.hasLabel(lab))
+        {
+            LOG(WARNING) << "nothin done. some fields missing";
+            return;
+        }
+    }
+
+    size_t old_size = this->getNumberOfPoints();
+    this->conservativeResize(old_size + other.getNumberOfPoints());
+
+    this->fields_.bottomRows(this->getNumberOfPoints() - old_size) = other.fields_;
+}
+
 
 
 

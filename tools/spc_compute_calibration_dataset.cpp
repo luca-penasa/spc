@@ -18,7 +18,7 @@
 #include <gflags/gflags.h>
 #include <spc/core/logging.h>
 
-
+#include <spc/methods/IntensityCalibratorRBF.h>
 using namespace std;
 using namespace pcl;
 using namespace pcl::console;
@@ -66,7 +66,7 @@ int main (int argc, char ** argv)
     }
 
 
-    spc::CalibrationDataEstimator calibrator;
+    spc::calibration::CalibrationDataEstimator calibrator;
     calibrator.setInputClouds(sources);
 
 
@@ -79,18 +79,26 @@ int main (int argc, char ** argv)
 
     calibration::CalibrationDataHolder::Ptr data = calibrator.getCalibrationDataHolder();
 
+
+
+
     spc::io::serializeToFile(data, FLAGS_out, spc::io::XML);
+
+
+    NewSpcPointCloud::Ptr outcloud (new NewSpcPointCloud);
+
+    *outcloud = data->asPointCloud()->filterOutNans({"intensity", "distance"});
 
     if (FLAGS_export_as_cloud)
     {
         std::string cloud_name = FLAGS_out + "_cloud";
-        spc::io::serializeToFile(data->asPointCloud(), cloud_name , spc::io::XML);
+        spc::io::serializeToFile(outcloud, cloud_name , spc::io::XML);
     }
 
     if (FLAGS_export_as_ascii)
     {
         std::string cloud_name = FLAGS_out + "_cloud";
-        spc::io::serializeToFile(data->asPointCloud(), cloud_name , spc::io::ASCII);
+        spc::io::serializeToFile(outcloud, cloud_name , spc::io::ASCII);
     }
 
     LOG(INFO) << "saved";

@@ -24,7 +24,7 @@ double mean() const
     return derived().sum()/static_cast<double>(size());
 }
 
- bool empty() const { return this->size() == 0; }
+bool empty() const { return this->size() == 0; }
 
 /** Computes a row with the mean values of each column in the matrix and the associated vector with the standard deviation of each column.
  * \sa mean,meanAndStdAll \exception std::exception If the matrix/vector is empty.
@@ -101,65 +101,107 @@ nonZeroCoeffs()
 //}
 
 //template<typename OtherDerived>
- EIGEN_STRONG_INLINE
- Eigen::Matrix<bool, RowsAtCompileTime, ColsAtCompileTime>
- finiteness() const
+EIGEN_STRONG_INLINE
+Eigen::Matrix<bool, RowsAtCompileTime, ColsAtCompileTime>
+finiteness() const
 {
-   return unaryExpr([](const float &x){return std::isfinite(x);}).template cast<bool>();
+    return unaryExpr([](const float &x){return std::isfinite(x);}).template cast<bool>();
 }
 
 
- EIGEN_STRONG_INLINE
- void push_back(Scalar val)
- {
-     const Index N = size();
-     derived().conservativeResize(N+1);
-     coeffRef(N) = val;
- }
+EIGEN_STRONG_INLINE
+void push_back(Scalar val)
+{
+    const Index N = size();
+    derived().conservativeResize(N+1);
+    coeffRef(N) = val;
+}
 
- EIGEN_STRONG_INLINE
- Eigen::Matrix<Scalar, -1, 1>
- only_finites() const
- {
-       Eigen::Matrix<bool, RowsAtCompileTime, ColsAtCompileTime> bools = finiteness();
+EIGEN_STRONG_INLINE
+Eigen::Matrix<Scalar, -1, 1>
+only_finites() const
+{
+    Eigen::Matrix<bool, RowsAtCompileTime, ColsAtCompileTime> bools = finiteness();
 
-       return select(bools);
- }
-
-
- template<typename OtherDerived>
- Eigen::Matrix<Scalar, -1, 1>
- select(const OtherDerived & selection_matrix) const
- {
-     DCHECK(selection_matrix.rows() == rows() && selection_matrix.cols() == cols());
-
-     size_t n = selection_matrix.template cast<int>().array().sum();
-     Eigen::Matrix<Scalar, -1, 1> out(n);
-
-     size_t counter = 0;
-     for (int i = 0 ; i < size(); ++i)
-     {
-         if(selection_matrix(i))
-             out(counter++, 0) = array()(i);
-     }
-     return out;
- }
+    return select(bools);
+}
 
 
+template<typename OtherDerived>
+Eigen::Matrix<Scalar, -1, 1>
+select(const OtherDerived & selection_matrix) const
+{
+    DCHECK(selection_matrix.rows() == rows() && selection_matrix.cols() == cols());
+
+    size_t n = selection_matrix.template cast<int>().array().sum();
+    Eigen::Matrix<Scalar, -1, 1> out(n);
+
+    size_t counter = 0;
+    for (int i = 0 ; i < size(); ++i)
+    {
+        if(selection_matrix(i))
+            out(counter++, 0) = array()(i);
+    }
+    return out;
+}
+
+/** Remove rows of the matrix. The unsafe version assumes that, the indices are sorted in ascending order. */
+EIGEN_STRONG_INLINE void unsafeRemoveRows(const std::vector<size_t> &idxs)
+{
+    size_t k = 1;
+    for (std::vector<size_t>::reverse_iterator it = idxs.rbegin(); it != idxs.rend(); ++it, ++k)
+    {
+        const size_t nR = rows() - *it - k;
+        if( nR > 0 )
+            derived().block(*it,0,nR,cols()) = derived().block(*it+1,0,nR,cols()).eval();
+    }
+    derived().conservativeResize(rows()-idxs.size(),NoChange);
+}
 
 
- Eigen::Matrix<Scalar, ColsAtCompileTime, ColsAtCompileTime>
- getSampleCovMatAndAvg(Eigen::Matrix<Scalar, ColsAtCompileTime, 1> &avg) const
- {
-     typedef Scalar ScalarT;
- //    typedef Eigen::Matrix<typename MatrixT::Scalar, MatrixT::ColsAtCompileTime, 1> VectorT;
-     typedef Eigen::Matrix<ScalarT, ColsAtCompileTime, ColsAtCompileTime> CovMatT;
+/** Remove rows of the matrix. */
+ EIGEN_STRONG_INLINE void removeRows(const std::vector<size_t> &idxsToRemove)
+  {
+  std::vector<size_t> idxs = idxsToRemove;
+  std::sort( idxs.begin(), idxs.end() );
+  std::vector<size_t>::iterator itEnd = std::unique( idxs.begin(), idxs.end() );
+  idxs.resize( itEnd - idxs.begin() );
 
-     avg = derived().colwise().mean();
-     auto centered = derived().rowwise() - avg.transpose();
-     CovMatT cov = (centered.adjoint() * centered) / ScalarT(derived().rows() - 1);
-     return cov;
- }
+  unsafeRemoveRows( idxs );
+  }
+
+Eigen::Matrix<Scalar, -1, 1> unique() const
+{
+    Derived tmp = derived();
+
+    std::sort(tmp.data(), tmp.data() + tmp.size());
+    auto last = std::unique(tmp.data(), tmp.data() + tmp.size());
+
+    size_t n_elements = last - tmp.data();
+
+    Eigen::Matrix<Scalar, -1, 1> out;
+
+    //! flatten it
+    Eigen::Map<Eigen::Matrix<Scalar, -1, 1>> v(tmp.data(),tmp.size());
+    out =  v.head(n_elements);
+    return out;
+
+}
+
+
+
+Eigen::Matrix<Scalar, ColsAtCompileTime, ColsAtCompileTime>
+getSampleCovMatAndAvg(Eigen::Matrix<Scalar, ColsAtCompileTime, 1> &avg) const
+{
+    typedef Scalar ScalarT;
+    //    typedef Eigen::Matrix<typename MatrixT::Scalar, MatrixT::ColsAtCompileTime, 1> VectorT;
+    typedef Eigen::Matrix<ScalarT, ColsAtCompileTime, ColsAtCompileTime> CovMatT;
+
+    avg = derived().colwise().mean();
+    auto centered = derived().rowwise() - avg.transpose();
+    CovMatT cov = (centered.adjoint() * centered) / ScalarT(derived().rows() - 1);
+    return cov;
+}
 
 
 

@@ -265,6 +265,6 @@ fitHyperplane(const MatrixT &mat)
 
 
 
-} // end namespace ll
+} // end namespace spc
 
 #endif // EIGEN_EXTENSIONS_H

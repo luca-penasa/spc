@@ -195,7 +195,14 @@ spc_add_executable(${MY_TOOLS_PREFIX}transfer_fields spc_transfer_fields.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}transfer_fields ${SPC_LIBRARIES} ${GLOG_LIBRARIES} ${GFLAGS_LIBRARIES})
 
 
-
-
 spc_add_executable(${MY_TOOLS_PREFIX}compute_angles_distances spc_compute_angles_distances.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}compute_angles_distances ${SPC_LIBRARIES} ${GLOG_LIBRARIES} ${GFLAGS_LIBRARIES})
+
+
+spc_add_executable(spc_quad_example spc_quad_example.cpp)
+target_link_libraries(spc_quad_example)
+
+
+spc_add_executable(${MY_TOOLS_PREFIX}calibrate_intensity_rbf spc_calibrate_intensity_rbf)
+target_link_libraries(${MY_TOOLS_PREFIX}calibrate_intensity_rbf ${SPC_LIBRARIES} spc_methods ${GFLAGS_LIBRARIES})
+

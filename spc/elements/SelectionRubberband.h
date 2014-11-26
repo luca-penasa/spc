@@ -121,7 +121,7 @@ protected:
     }
 
     /// http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-    inline bool isPointInPoly(const Eigen::Vector2f &P,
+    bool isPointInPoly(const Eigen::Vector2f &P,
                       const PolyLine2D &polyVertices) const
     {
         int nvert = polyVertices.getNumberOfPoints();

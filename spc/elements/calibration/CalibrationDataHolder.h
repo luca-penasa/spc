@@ -17,19 +17,42 @@ public:
     CalibrationDataHolder();
 
 
-
-    CalibrationKeyPoint::Ptr newKeypoint(const Eigen::Vector3f &pos)
+    CalibrationKeyPoint::Ptr newKeypoint(const Eigen::Vector3f &pos, size_t material_id)
     {
-        CalibrationKeyPoint::Ptr kp(new CalibrationKeyPoint(pos));
-        getData().push_back(kp);
+        CalibrationKeyPoint::Ptr kp(new CalibrationKeyPoint(pos, material_id));
+        keypoints_.push_back(kp);
         return kp;
     }
 
-    void initFromCloud(const NewSpcPointCloud::ConstPtr pointset)
+    void initFromCloud(const NewSpcPointCloud::ConstPtr pointset, std::string material_field_name)
     {
-        for (int i = 0 ; i < pointset->getNumberOfPoints(); ++i)
-            this->newKeypoint(pointset->getFieldByName("position").row(i));
+        if (!pointset->hasField(material_field_name))
+        {
+            LOG(WARNING) << "No material field "<< material_field_name <<" found in keypoints. All keypoints will be considered of the same material";
+            for (int i = 0 ; i < pointset->getNumberOfPoints(); ++i)
+                this->newKeypoint(pointset->getFieldByName("position").row(i), 0);
+        }
+        else
+        {
+            LOG(INFO) << "Using the field " << material_field_name << " as field for materials";
+            for (int i = 0 ; i < pointset->getNumberOfPoints(); ++i)
+                this->newKeypoint(pointset->getFieldByName("position").row(i), (size_t) pointset->getFieldByName(material_field_name).row(i)(0));
+        }
+
     }
+
+    size_t getTotalNumberOfEntries() const
+    {
+        size_t total_number=0;
+        for (calibration::CalibrationKeyPoint::Ptr keypoint: getData())
+        {
+                total_number += keypoint->per_cloud_data.size();
+        }
+
+        return total_number;
+    }
+
+
 
     std::vector<CalibrationKeyPoint::Ptr> getData() const
     {
@@ -41,68 +64,37 @@ public:
         return keypoints_;
     }
 
+    std::vector<CloudDataSourceOnDisk::Ptr> getDataSources() const
+    {
+        std::vector<CloudDataSourceOnDisk::Ptr> sources;
 
-     NewSpcPointCloud::Ptr asPointCloud() const
-     {
-         NewSpcPointCloud::Ptr out(new NewSpcPointCloud);
+        for (CalibrationKeyPoint::Ptr kpoint : keypoints_)
+        {
+            for (PerCloudCalibrationData::Ptr per_cloud: kpoint->per_cloud_data)
+            {
+                CloudDataSourceOnDisk::Ptr cloud = per_cloud->cloud;
 
-         size_t total_number=0;
-         for (calibration::CalibrationKeyPoint::Ptr keypoint: getData())
-         {
-             for (calibration::PerCloudCalibrationData::Ptr data_holder: keypoint->per_cloud_data)
-             {
-                 total_number += keypoint->per_cloud_data.size();
-             }
-         }
+                if (std::find(sources.begin(), sources.end(), cloud) == sources.end())
+                {
+                    sources.push_back(cloud);
+                }
+            }
+        }
 
-
-         out->addNewField("n_neighbors", 1);
-         out->addNewField("normal", 3);
-         out->addNewField("lambdas", 3);
-         out->addNewField("position", 3);
-         out->addNewField("core_id", 1);
-         //    out->addNewField("cloud_id", 1);
-         out->addNewField("distance", 1);
-         out->addNewField("intensity", 1);
-         out->addNewField("angle", 1);
-         out->addNewField("intensity_std", 1);
-         out->addNewField("eigen_ratio", 1);
+        return sources;
+    }
 
 
-
-         out->conservativeResize(total_number);
-
-         size_t counter = 0;
-         for (calibration::CalibrationKeyPoint::Ptr keypoint: getData())
-         {
-             for (calibration::PerCloudCalibrationData::Ptr data_holder: keypoint->per_cloud_data)
-             {
-                 out->getFieldByName("n_neighbors")(counter, 0) = data_holder->n_neighbors_intensity;
-                 out->getFieldByName("normal").row(counter) = keypoint->fitting_plane.getNormal();
-                 out->getFieldByName("lambdas").row(counter ) = keypoint->lambdas;
-                 out->getFieldByName("position").row(counter ) = keypoint->post_position;
-                 out->getFieldByName("intensity")(counter, 0) = data_holder->intensity;
-                 out->getFieldByName("intensity_std")(counter, 0) = data_holder->intensity_std;
-                 out->getFieldByName("eigen_ratio")(counter, 0) = keypoint->eigen_ratio;
-                 out->getFieldByName("distance")(counter, 0) = data_holder->distance;
-                 out->getFieldByName("angle")(counter, 0) = data_holder->angle;
-
-                 counter++;
-             }
-         }
-
-         return out;
-     }
+    NewSpcPointCloud::Ptr asPointCloud() const;
 protected:
-     std::vector<CalibrationKeyPoint::Ptr> keypoints_;
+    std::vector<CalibrationKeyPoint::Ptr> keypoints_;
 
 private:
     friend class cereal::access;
 
     template <class Archive> void serialize(Archive &ar)
     {
-        ar(cereal::base_class<spc::ElementBase>(this)
-           ,
+        ar(cereal::base_class<spc::ElementBase>(this),
            CEREAL_NVP(keypoints_)
            );
     }

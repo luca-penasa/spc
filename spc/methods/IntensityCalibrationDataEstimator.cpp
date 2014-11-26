@@ -23,7 +23,8 @@
 #include <spc/elements/calibration/CalibrationKeypoint.h>
 namespace spc
 {
-
+namespace calibration
+{
 CalibrationDataEstimator::CalibrationDataEstimator()
     : normal_estimation_search_radius_(0.1),
       intensity_estimation_spatial_sigma_(0.1),
@@ -42,7 +43,7 @@ void CalibrationDataEstimator::setInputClouds(std::vector<CloudDataSourceOnDisk:
 
 void CalibrationDataEstimator::setInputKeypoints(NewSpcPointCloud::ConstPtr kpoints)
 {
-    calibration_data_->initFromCloud(kpoints);
+    calibration_data_->initFromCloud(kpoints, material_field_name_);
 }
 
 int CalibrationDataEstimator::compute()
@@ -112,18 +113,17 @@ void CalibrationDataEstimator::extractDataForKeypointAndCloud(calibration::PerCl
     //! extract and save the sensor position
     data_holder->sensor_position = cloud->getSensor()->getPosition().head(3);
 
-    LOG(INFO) <<"senso position: " << data_holder->sensor_position;
+    DLOG(INFO) <<"sensor position: " << data_holder->sensor_position;
 
     NewSpcPointCloud::SearcherT::Ptr searcher = cloud->getSearcher();
 
-    LOG(INFO) << "going to do matches" << std::endl;
+    DLOG(INFO) << "going to do matches" << std::endl;
     std::vector<std::pair<size_t, float>> matches;
 
     // these points will be used for normal estimation
-    LOG(INFO) << "point " << data_holder->parent_keypoint->original_position;
     searcher->radiusSearch(data_holder->parent_keypoint->original_position, normal_estimation_search_radius_, matches);
 
-    LOG(INFO) << "number of matches " << matches.size();
+    DLOG(INFO) << "number of matches " << matches.size();
 
     std::vector<size_t> ids;
     Eigen::VectorXf sq_distances;
@@ -131,8 +131,6 @@ void CalibrationDataEstimator::extractDataForKeypointAndCloud(calibration::PerCl
     decompressMatches(matches, ids, sq_distances);
 
     NewSpcPointCloud extract = cloud->fromIds(ids, {"position"}); // extract only the position
-
-    LOG(INFO) << "new cloud has "<< extract.getNumberOfPoints() << " points";
 
     // cumulate the cloud. Normal estimation will be performed only at the end
     data_holder->extract_for_normal_ = extract;
@@ -144,27 +142,23 @@ void CalibrationDataEstimator::extractDataForKeypointAndCloud(calibration::PerCl
     searcher->radiusSearch(data_holder->parent_keypoint->original_position, intensity_estimation_spatial_sigma_ * 4, matches_int);
 
 
-    LOG(INFO) << "found matches:" << matches_int.size();
+    DLOG(INFO) << "found matches for intensity estimation:" << matches_int.size();
     std::vector<size_t> ids_int;
     Eigen::VectorXf sq_distances_int;
 
     decompressMatches(matches_int, ids_int, sq_distances_int);
 
-    LOG(INFO) << "extractin fields " ;
+
 
 
     NewSpcPointCloud intensities = cloud->fromIds(ids_int, {intensity_field_name_});
 
-    LOG(INFO) << "int cloud is of size " << intensities.getNumberOfPoints();
+
     Eigen::VectorXf ints = intensities.getFieldByName(intensity_field_name_);
-
-    LOG(INFO) << "ints computed are " << ints.rows();
-
-    LOG(INFO) << "doing weighting " ;
 
     Eigen::VectorXf weights = kernel_->eval(sq_distances_int);
 
-    LOG(INFO) << "weights computed are " << weights.rows();
+
 
 
     float avg_intensity = ints.cwiseProduct(weights).sum() / weights.sum();
@@ -187,11 +181,10 @@ void CalibrationDataEstimator::computeDerivedData()
     {
         for (calibration::PerCloudCalibrationData::Ptr data_holder: keypoint->per_cloud_data)
         {
-            LOG(INFO) << "extrat for normas has size " << data_holder->extract_for_normal_.getNumberOfPoints();
+            DLOG(INFO) << "extract for normas has size " << data_holder->extract_for_normal_.getNumberOfPoints();
             keypoint->cumulative_set.concatenate(data_holder->extract_for_normal_);
         }
 
-        LOG(INFO) << "cumulative set has " << keypoint->cumulative_set.getNumberOfPoints();
 
         if (keypoint->cumulative_set.getNumberOfPoints() >= min_number_of_points_for_normal_estimation_)
         {
@@ -203,14 +196,13 @@ void CalibrationDataEstimator::computeDerivedData()
             keypoint->lambdas = lambdas;
             keypoint->eigen_ratio = lambdas(0) / lambdas.sum();
 
-            LOG(INFO) << "found normal: " << keypoint->fitting_plane.getNormal().transpose() << "with lambdas: " << lambdas.transpose();
+            DLOG(INFO) << "found normal: " << keypoint->fitting_plane.getNormal().transpose() << " with lambdas: " << lambdas.transpose();
 
 
             Eigen::Vector3f centroid = keypoint->cumulative_set.getCentroid();
             //! project the centroid onto the fitting plane to get a better estimate of the position
             Eigen::Vector3f newpos = keypoint->fitting_plane.projectPointOnPlane(centroid);
             LOG(INFO) << "new pos is " << newpos.transpose() << " original was " <<keypoint->original_position.transpose();
-            LOG(INFO) << "centroid was" << centroid;
             keypoint->post_position = newpos;
 
             //! no we can compute distance and angle
@@ -234,6 +226,6 @@ void CalibrationDataEstimator::computeDerivedData()
 
 
 
-
+}
 
 } // end nspace
