@@ -25,6 +25,8 @@ namespace io
 int serializeToFile(const ISerializable::Ptr element, std::string filename,
                     const ARCHIVE_TYPE &type)
 {
+    CHECK(element != NULL) << "Cannot serialize element. ptr is null";
+
     if (!element->isSerializable()) {
         LOG(ERROR) << "The file cannot be deserialized";
         return -1;

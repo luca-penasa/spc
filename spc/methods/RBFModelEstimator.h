@@ -61,6 +61,81 @@ public:
         model_ = model;
     }
 
+    //! ths actually states that all the points must have the same value
+    //! see also appendEqualityConstrain(); method
+    //! it is used when calibrating models for intensities. Not sure if it can be used in other contexts
+    //! so if you want to use it please verify what it is doing and if it is good for you.
+    //! if you have points A, B and C this method will add constrains which will state that:
+    //! A = B, A = C and B = C
+    void appendEqualityConstrainForPoints(const PointsT &points,
+                                          const VectorT & values)
+    {
+        for (size_t i  = 0; i < points.rows() - 1; ++i)
+        {
+            PointT p1 =points.row(i);
+            PointT p2 =points.row(i+1);
+
+            T v1 = values(i);
+            T v2 = values(i+1);
+
+            int status = this->appendEqualityConstrain(p1, v1, p2, v2);
+
+            if (status != 1)
+            {
+                LOG(ERROR) << "cannot add constrains. see log. Nothing done";
+                return;
+            }
+
+
+        }
+    }
+
+    //! this add to the Ax = b system additional constrains about equality between two points
+    //! it is used when calibrating  intensities
+    //! equals to say that \f$I_1/f(a_1, d_1) = I_2/f(a_2, d_2)\f$. or equally that the corrected intensity
+    //! for the point a must be equal to the corrected intensity for point b
+    //! \todo better explanations here
+    int appendEqualityConstrain(const PointT &point1, const T &value1,
+                                 const PointT &point2, const T &value2)
+    {
+
+            if (A_.rows() == 0)
+            {
+                LOG(ERROR) << "looks like you are adding the constrains befoe the A matrix. "
+                              "Please add your eq. constrains only after the system has been setup. "
+                              "Nothin done.";
+                return -1;
+            }
+
+
+
+
+            VectorT a = model_->getPredictorVector(point1) / value1;
+            VectorT b = model_->getPredictorVector(point2) / value2;
+
+            VectorT Aline = a .array() - b.array();
+
+            if (A_.cols() != Aline.rows())
+            {
+                LOG(ERROR) << "you are adding the constrain on a matrix with a different number of columns. "
+                              "this may means that you are using the classical rbf but constrains are not allowed"
+                              " with that method. Nothing done";
+
+                return - 1;
+            }
+
+//            LOG(INFO) << "new line: " << Aline.transpose();
+
+//            LOG(A_>bottomRows(1).rows())
+            A_.conservativeResize(A_.rows() + 1, Eigen::NoChange );
+            A_.bottomRows(1) = Aline.transpose();
+
+            b_.push_back(0);
+
+            return 1;
+
+    }
+
 
     /**
      * \brief autosetNodes
@@ -407,13 +482,6 @@ public:
     //! once coefficients are computed the interpolator is compeltely defined.
     int solveProblem()
     {
-        int status = initProblem();
-        if (status != 1)
-        {
-            LOG(WARNING) << "initialization of linar system failed" ;
-            return -1;
-        }
-
         if (A_.cols() > A_.rows())
         {
             LOG(WARNING)     << "looks like your problem is underdetermined. Consider reducing the number of polynomials terms \n"
@@ -446,22 +514,39 @@ public:
             DLOG(INFO) << "system correctly solved via Housolder QR";
 
 
-        } else if (A_.rows() > A_.cols()) {
+        }
+        else if (A_.rows() > A_.cols()) {
             // solving via SVD
-            coeffs = A_.jacobiSvd(Eigen::ComputeThinU | Eigen::ComputeThinV).solve(b_);
+             Eigen::JacobiSVD< MatrixT> svd = A_.jacobiSvd(Eigen::ComputeThinU | Eigen::ComputeThinV);
+
+             LOG(INFO) << "mat U" << svd.matrixU() ;
+             LOG(INFO) << "mat V" << svd.matrixV() ;
+
+//             A_(0,0) = std::numeric_limits<float>::quiet_NaN();
+             LOG(INFO) << "some data " << A_.finiteness().count() << " over " << A_.size();
+             LOG(INFO) << "some data " << b_.finiteness().count() << " over " << b_.size();
+
+
+
+
+
+             LOG(WARNING) << "NONZERO SV: " << svd.nonzeroSingularValues() << " over " << A_.cols();
+            coeffs =svd.solve(b_);
+            LOG(INFO) << "solution is " << coeffs.transpose();
             model_->setCoefficients(coeffs);
-            DLOG(INFO) << "system correctly solved via JacobiSVD";
-        } else
+            LOG(INFO) << "system correctly solved via JacobiSVD";
+        }
+        else
         {
-            DLOG(INFO) << "Cannot solve the system cause constraints are missing in the A matrix (rows)";
+            LOG(WARNING) << "Cannot solve the system cause constraints are missing in the A matrix (rows)";
             return -1; // unsuccessfull;
         }
+
+        return 1;
     }
 
 
 
-//    spcSetMacro(OriginIds, origin_ids_, IDVectorT)
-//    spcGetMacro(OriginIds, origin_ids_, IDVectorT)
 
 private:
 
@@ -490,14 +575,7 @@ private:
     //! the output model we are calibrating
     typename RBFModel<T>::Ptr model_;
 
-//    //! the ids of the point. For each subset of points in points_ which have the same id here
-//    //! additional constrains will be added to the system so to have that points
-//    //! with he same id will be forced to have the same predicted value (in a least square sense, obviously)
-//    IDVectorT correspondence_ids_;
 
-//    //! the id of the origin.
-//    //! this may be useful to add a shift in model depending on the data source in a future
-////    IDVectorT origin_ids_;
 
 
 

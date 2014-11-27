@@ -47,7 +47,7 @@ NewSpcPointCloud::Ptr NewSpcPointCloud::fromPointCloudBase(const PointCloudBase 
         {
             continue;
         }
-        LOG(INFO) << "going to add field " << fname;
+//        LOG(INFO) << "going to add field " << fname;
 
         out->addNewField(fname, 1);
 
@@ -61,7 +61,7 @@ NewSpcPointCloud::Ptr NewSpcPointCloud::fromPointCloudBase(const PointCloudBase 
 
     }
 
-    LOG(INFO) << "copy done";
+//    LOG(INFO) << "copy done";
 
     return out;
 }
@@ -121,7 +121,7 @@ NewSpcPointCloud NewSpcPointCloud::fromIds(const std::vector<size_t> &ids, const
 
 void NewSpcPointCloud::addNewField(const std::string &name, size_t dim)
 {
-    LOG(INFO) <<"adding new field wih name " << name << " and dim " << dim;
+//    DLOG(INFO) <<"adding new field wih name " << name << " and dim " << dim;
     FieldLabel newf(name, dim);
     fields_.conservativeResize(getNumberOfPoints(), fields_.cols() + dim);
     labels_.push_back(newf);
@@ -130,7 +130,7 @@ void NewSpcPointCloud::addNewField(const std::string &name, size_t dim)
 
     this->getFieldByName(name).fill(spcNANMacro);
 
-    DLOG(INFO) << "now dimensions are " << fields_.rows() << " x " << fields_.cols();
+//    DLOG(INFO) << "now dimensions are " << fields_.rows() << " x " << fields_.cols();
 }
 
 NewSpcPointCloud::EigenPlaneT NewSpcPointCloud::fitPlane(Vector3f &eigenvalues) const

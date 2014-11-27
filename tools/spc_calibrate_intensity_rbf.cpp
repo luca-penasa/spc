@@ -23,7 +23,7 @@ DEFINE_string(out, "rbf_model", "Out Filename.");
 DEFINE_double(sigma, 0, "Sigma value for the kernel of RBF. If 0 it will be automatically chosen");
 DEFINE_double(lambda, 0.01, "Lambda value for regularization (smoothness) of RBF");
 
-
+DEFINE_bool(angles, true, "If calibrate the model to account for scattering angles");
 DEFINE_uint64(poly_order, 1 , "polynomial order for the polynomial part of RBF");
 DEFINE_string(n_nodes, "6,6", "Number of splits on each dimension (one for each predictor)"
               "The total numbe of nodes will be the product of all these splits");
@@ -54,12 +54,12 @@ int main (int argc, char ** argv)
 
     CHECK(o != NULL) << "cannot deserialize the file";
 
-    NewSpcPointCloud::Ptr cloud = spcDynamicPointerCast<NewSpcPointCloud> (o);
+    calibration::CalibrationDataHolder::Ptr cal_data = spcDynamicPointerCast<calibration::CalibrationDataHolder> (o);
 
 
     LOG(INFO) << "going do perform calibration";
     calibration::IntensityCalibratorRBF calibrator;
-    calibrator.setCalibrationData(cloud);
+    calibrator.setCalibrationData(cal_data);
 
     LOG(INFO) << "computing";
 
@@ -70,56 +70,6 @@ int main (int argc, char ** argv)
 
 
 
-//    Eigen::MatrixXf points(table_->getNumberOfRows(), fields.size());
-//    for (int i = 0; i < predictors.size(); ++i)
-//    {
-//        points.col(i) = predictors.at(i);
-//    }
-
-//    predictors.clear();
-
-
-//    Eigen::VectorXf observation = table_->column(FLAGS_observation_field);
-
-//    CHECK(observation.size() != 0) << "some problem locating the observation fields in the dataset";
-
-
-
-//    std::vector<std::string> nod = splitStringAtSeparator(FLAGS_n_nodes, ",");
-//    CHECK(nod.size() == points.cols()) << "You need to specify a number of splits for EACH predictor variable";
-
-//    Eigen::VectorXi n_splits(nod.size());
-
-//    size_t i = 0;
-//    for (auto s: nod)
-//    {
-//        n_splits(i++) = atoi(s.c_str());
-//    }
-
-//    spc::RBFModelEstimator<float> estimator;
-//    estimator.setPoints(points);
-//    estimator.autosetScales(0);
-//    estimator.autosetNodes(n_splits);
-
-//    if (FLAGS_sigma == 0 )
-//        estimator.autosetSigma();
-//    else
-//        estimator.getModel()->setSigma(FLAGS_sigma);
-
-//    estimator.setLambda(FLAGS_lambda);
-
-//    estimator.setInputValues(observation);
-
-
-//    estimator.getModel()->setPolyOrder(FLAGS_poly_order);
-
-//    CHECK(estimator.solveProblem()!= -1) << "cannot solve -- see log info please";
-
-
-
-
-//    LOG(INFO) << "Saving the model to " << FLAGS_out;
-//    spc::io::serializeToFile(estimator.getModel(), FLAGS_out, spc::io::XML);
 
 
     return 1;

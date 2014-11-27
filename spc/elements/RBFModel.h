@@ -149,7 +149,14 @@ public:
         VectorT out(getNumberOfNodes() + getNumberOfpolynomialTerms());
 
 
+
+
         out << rbf, pol;
+
+        if (out.finiteness().count() != out.size())
+        {
+            LOG(FATAL) << "error of finiteness: " << out.transpose();
+        }
 
         return out;
 

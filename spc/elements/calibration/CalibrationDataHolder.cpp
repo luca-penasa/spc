@@ -32,21 +32,21 @@ NewSpcPointCloud::Ptr CalibrationDataHolder::asPointCloud() const
     out->addNewField("angle", 1);
     out->addNewField("intensity", 1);
 
+    out->addNewField("n_neighbors", 1);
+    out->addNewField("intensity_std", 1);
+    out->addNewField("eigen_ratio", 1);
 
     out->addNewField("material", 1);
     out->addNewField("keypoint_id", 1);
     out->addNewField("source_id", 1);
     out->addNewField("progressive_id", 1);
 
-
-
     out->addNewField("normal", 3);
+    out->addNewField("lambdas", 3);
+
     out->addNewField("position", 3);
 
-    out->addNewField("lambdas", 3);
-    out->addNewField("n_neighbors", 1);
-    out->addNewField("intensity_std", 1);
-    out->addNewField("eigen_ratio", 1);
+
 
 
 

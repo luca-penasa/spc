@@ -75,6 +75,8 @@ int CalibrationDataEstimator::compute()
 
     computeDerivedData();
 
+    DLOG(INFO) << "done computing derived data";
+
     return 1;
 
 }
@@ -113,17 +115,17 @@ void CalibrationDataEstimator::extractDataForKeypointAndCloud(calibration::PerCl
     //! extract and save the sensor position
     data_holder->sensor_position = cloud->getSensor()->getPosition().head(3);
 
-    DLOG(INFO) <<"sensor position: " << data_holder->sensor_position;
+//    DLOG(INFO) <<"sensor position: " << data_holder->sensor_position;
 
     NewSpcPointCloud::SearcherT::Ptr searcher = cloud->getSearcher();
 
-    DLOG(INFO) << "going to do matches" << std::endl;
+//    DLOG(INFO) << "going to do matches" << std::endl;
     std::vector<std::pair<size_t, float>> matches;
 
     // these points will be used for normal estimation
     searcher->radiusSearch(data_holder->parent_keypoint->original_position, normal_estimation_search_radius_, matches);
 
-    DLOG(INFO) << "number of matches " << matches.size();
+//    DLOG(INFO) << "number of matches " << matches.size();
 
     std::vector<size_t> ids;
     Eigen::VectorXf sq_distances;
@@ -142,7 +144,7 @@ void CalibrationDataEstimator::extractDataForKeypointAndCloud(calibration::PerCl
     searcher->radiusSearch(data_holder->parent_keypoint->original_position, intensity_estimation_spatial_sigma_ * 4, matches_int);
 
 
-    DLOG(INFO) << "found matches for intensity estimation:" << matches_int.size();
+//    DLOG(INFO) << "found matches for intensity estimation:" << matches_int.size();
     std::vector<size_t> ids_int;
     Eigen::VectorXf sq_distances_int;
 
@@ -170,18 +172,22 @@ void CalibrationDataEstimator::extractDataForKeypointAndCloud(calibration::PerCl
     data_holder->intensity_std = std_intensity;
     data_holder->n_neighbors_intensity = ints.rows();
 
-    LOG(INFO) << "avg is " << avg_intensity;
-    LOG(INFO) << "std is " << std_intensity;
+//    LOG(INFO) << "avg is " << avg_intensity;
+//    LOG(INFO) << "std is " << std_intensity;
 }
 
 void CalibrationDataEstimator::computeDerivedData()
 {
-
-    for (calibration::CalibrationKeyPoint::Ptr keypoint: calibration_data_->getData())
+#ifdef USE_OPENMP
+#pragma omp parallel for
+#endif
+    for (size_t i = 0 ; i <calibration_data_->getData().size(); ++i)
     {
+
+        calibration::CalibrationKeyPoint::Ptr keypoint = calibration_data_->getData().at(i);
         for (calibration::PerCloudCalibrationData::Ptr data_holder: keypoint->per_cloud_data)
         {
-            DLOG(INFO) << "extract for normas has size " << data_holder->extract_for_normal_.getNumberOfPoints();
+//            DLOG(INFO) << "extract for normas has size " << data_holder->extract_for_normal_.getNumberOfPoints();
             keypoint->cumulative_set.concatenate(data_holder->extract_for_normal_);
         }
 
@@ -196,13 +202,13 @@ void CalibrationDataEstimator::computeDerivedData()
             keypoint->lambdas = lambdas;
             keypoint->eigen_ratio = lambdas(0) / lambdas.sum();
 
-            DLOG(INFO) << "found normal: " << keypoint->fitting_plane.getNormal().transpose() << " with lambdas: " << lambdas.transpose();
+//            DLOG(INFO) << "found normal: " << keypoint->fitting_plane.getNormal().transpose() << " with lambdas: " << lambdas.transpose();
 
 
             Eigen::Vector3f centroid = keypoint->cumulative_set.getCentroid();
             //! project the centroid onto the fitting plane to get a better estimate of the position
             Eigen::Vector3f newpos = keypoint->fitting_plane.projectPointOnPlane(centroid);
-            LOG(INFO) << "new pos is " << newpos.transpose() << " original was " <<keypoint->original_position.transpose();
+//            LOG(INFO) << "new pos is " << newpos.transpose() << " original was " <<keypoint->original_position.transpose();
             keypoint->post_position = newpos;
 
             //! no we can compute distance and angle
@@ -213,11 +219,14 @@ void CalibrationDataEstimator::computeDerivedData()
                 per_cloud->angle = getMinimumAngleBetweenVectors(keypoint->fitting_plane.getNormal(), ray);
                 per_cloud->distance = sqrt(ray.dot(ray));
 
-                LOG(INFO) << "angle " << per_cloud->angle << " and distance " << per_cloud->distance;
+//                LOG(INFO) << "angle " << per_cloud->angle << " and distance " << per_cloud->distance;
 
             }
         }
     }
+
+
+//    LOG(INFO) << "Derived data computed!";
 }
 
 

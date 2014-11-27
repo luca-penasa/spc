@@ -18,10 +18,37 @@ public:
     CalibrationKeyPoint()
     {
         lambdas.fill(spcNANMacro);
+        material_id = std::numeric_limits<int>::quiet_NaN();
+
+        //! \todo add nan init for other members
+    }
+
+    CalibrationKeyPoint(const CalibrationKeyPoint & other)
+    {
+
     }
 
     CalibrationKeyPoint(const Eigen::Vector3f &pos, const size_t mat_id);
 
+    void removeInvalidEntries(const bool &consider_angle)
+    {
+
+        std::vector<PerCloudCalibrationData::Ptr> good ;
+        for (PerCloudCalibrationData::Ptr d: per_cloud_data)
+        {
+            if (d->isValid(consider_angle))
+                good.push_back(d);
+        }
+
+        per_cloud_data = good;
+
+
+    }
+
+    size_t getNumberOfEntries() const
+    {
+        return per_cloud_data.size();
+    }
 
     PerCloudCalibrationData::Ptr newPerCloudData(CloudDataSourceOnDisk::Ptr cloud);
 
@@ -31,7 +58,7 @@ public:
     Eigen::Vector3f post_position;
     float eigen_ratio;
     Eigen::Vector3f lambdas;
-    size_t material_id;
+    int material_id; //! < a mateial id of -1 will be considered as unknwon material
 
     std::vector<PerCloudCalibrationData::Ptr> per_cloud_data;
 

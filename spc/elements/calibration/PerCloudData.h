@@ -34,6 +34,32 @@ public:
     }
 
 
+    bool hasValidDistance() const
+    {
+        return std::isfinite(distance);
+    }
+
+    bool hasValidAngle() const
+    {
+        return std::isfinite(angle);
+    }
+
+    bool hasValidIntensity() const
+    {
+        return std::isfinite(intensity);
+    }
+
+
+
+    //! consider_angle says if also a finite angle must be present to consider the data "good"
+    bool isValid(bool consider_angle) const
+    {
+        if (consider_angle = true)
+            return hasValidAngle() && hasValidDistance() && hasValidIntensity();
+        else
+            return hasValidDistance() && hasValidIntensity();
+    }
+
     //////////////////////// THE DATA
     CloudDataSourceOnDisk::Ptr cloud;
 

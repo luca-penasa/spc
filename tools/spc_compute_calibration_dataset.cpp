@@ -79,21 +79,22 @@ int main (int argc, char ** argv)
 
     calibration::CalibrationDataHolder::Ptr data = calibrator.getCalibrationDataHolder();
 
+    LOG(INFO) << "saving to file as spc";
 
-
-
-    spc::io::serializeToFile(data, FLAGS_out, spc::io::XML);
+    spc::io::serializeToFile(data, FLAGS_out, spc::io::SPC);
 
 
     NewSpcPointCloud::Ptr outcloud (new NewSpcPointCloud);
 
     *outcloud = data->asPointCloud()->filterOutNans({"intensity", "distance"});
 
-    if (FLAGS_export_as_cloud)
-    {
-        std::string cloud_name = FLAGS_out + "_cloud";
-        spc::io::serializeToFile(outcloud, cloud_name , spc::io::XML);
-    }
+//    if (FLAGS_export_as_cloud)
+//    {
+//       LOG(INFO) << "saving to file as spc";
+
+//        std::string cloud_name = FLAGS_out + "_cloud";
+//        spc::io::serializeToFile(outcloud, cloud_name , spc::io::XML);
+//    }
 
     if (FLAGS_export_as_ascii)
     {

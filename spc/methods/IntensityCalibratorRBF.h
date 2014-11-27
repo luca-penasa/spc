@@ -17,113 +17,97 @@ class IntensityCalibratorRBF
 public:
     IntensityCalibratorRBF();
 
-    int checkTheInputData()
-    {
 
-        LOG(INFO) << "perfoming checks";
 
-        if (!calibration_data_->hasField("intensity"))
-        {
-            LOG(WARNING) << "cannot find the intensity field into the data. Cannot proceed.";
-            return -1;
-        }
-        else
-        {
-            LOG(INFO) << "inensity ok";
-        }
-
-        if (!calibration_data_->hasField("distance"))
-        {
-            LOG(WARNING) << "cannot find the distance field into the data. Cannot proceed.";
-            return -1;
-        }
-        else
-        {
-            LOG(INFO) << "distance ok";
-        }
-
-        if (calibration_data_->hasField("material"))
-        {
-            LOG(INFO) << "material list present";
-            LOG(INFO) << "following materials in data: " << calibration_data_->getFieldByName("material").unique();
-            has_materials = true;
-        }
-        else
-        {
-            LOG(WARNING) << "no materials found";
-            has_materials = false;
-        }
-
-        if (calibration_data_->hasField("angle"))
-        {
-            LOG(INFO) << "found angle data. Going to calibrate using the angle";
-            has_angle = true;
-        }
-        else
-        {
-            LOG(WARNING) << "no angle data found";
-            has_angle = false;
-        }
-
-        return 1;
-    }
-
-    void setCalibrationData(const NewSpcPointCloud::Ptr clouddata)
+    void setCalibrationData(const CalibrationDataHolder::Ptr clouddata)
     {
         calibration_data_ = clouddata;
+    }
+
+
+    static  void
+    extractVariablesAsMatrix(CalibrationDataHolder::Ptr holder, Eigen::Matrix<float, -1, -1> &points, Eigen::Matrix<float, -1, 1> &intensity, bool also_angle)
+
+    {
+
+        NewSpcPointCloud::Ptr ascloud = holder->asPointCloud();
+        points.resize(ascloud->getNumberOfPoints(), 1);
+        intensity.resize(ascloud->getNumberOfPoints());
+
+
+        points.col(0) = ascloud->getFieldByName("distance");
+
+        if (also_angle)
+        {
+            points.conservativeResize(Eigen::NoChange, 2);
+            points.col(1) = ascloud->getFieldByName("angle");
+        }
+
+
+        intensity = ascloud->getFieldByName("intensity");
+    }
+
+    static void
+    extractVariablesAsMatrix(CalibrationKeyPoint::Ptr data, Eigen::Matrix<float, -1, -1> &points, Eigen::Matrix<float, -1, 1> &intensity, bool also_angle)
+    {
+        points.resize(data->getNumberOfEntries(), 1);
+        intensity.resize(data->getNumberOfEntries());
+        if (also_angle)
+        {
+            points.resize(Eigen::NoChange, 2);
+        }
+
+        size_t counter = 0;
+        for (PerCloudCalibrationData::Ptr cdata: data->per_cloud_data)
+        {
+            points(counter, 0) = cdata->distance;
+            if (also_angle)
+            {
+                points(counter, 1) = cdata->angle;
+            }
+
+            intensity(counter) = cdata->intensity;
+            counter++;
+        }
     }
 
 
     int calibrate()
     {
 
-        int status = checkTheInputData();
-        if (status != 1)
+        calibration_data_->ereaseInvalidPerCloudEntries(use_angle);
+
+        calibration_data_ = calibration_data_->getValidKeypoints();
+
+        LOG(INFO) << "data has " << calibration_data_->getTotalNumberOfEntries() << " valid entries after cleaning";
+
+        Eigen::VectorXi materials_ids = calibration_data_->getDefinedMaterials();
+        LOG(INFO) << "materials (ids) found in file: " << materials_ids;
+        for (int i = 0; i < materials_ids.rows(); ++i)
         {
-            LOG(ERROR) << "some error i the input dataset, please see log";
-            return -1;
+            int mat_id = materials_ids(i);
+            LOG(INFO) << "mat id " << mat_id << " has " << calibration_data_->getKeypointsOnMaterial(mat_id)->getTotalNumberOfEntries() << " valid entries";
         }
 
-        // filter out nans from the dataset
-        *calibration_data_ = calibration_data_->filterOutNans({"intensity", "distance"});
+        calibration::CalibrationDataHolder::Ptr init_data = calibration_data_->getKeypointsOnMaterial(init_set_material_id);
+
+        LOG(INFO) << "Using " << init_data->getTotalNumberOfEntries() << " datapoints for initializing the problem";
 
 
-        LOG(INFO) << "nans filtered out";
-        Eigen::VectorXf distance = calibration_data_->getFieldByName("distance");
-        Eigen::VectorXf intensity = calibration_data_->getFieldByName("intensity");
-        Eigen::VectorXi materials(distance.rows());
-        Eigen::VectorXf angle(distance.rows());
+        Eigen::Matrix<float, -1, -1> points;
+        Eigen::Matrix<float, -1, 1> intensities;
 
-        if (has_materials)
-            materials = calibration_data_->getFieldByName("material").cast<int>();
-        else
-        {
-            materials.fill(0);
-            LOG(WARNING) << "considering the points as coming from the same material";
-        }
+        LOG(INFO) << "using angle: " << use_angle;
+        extractVariablesAsMatrix(init_data, points, intensities, use_angle);
 
-        if (has_angle)
-        {
-            angle = calibration_data_->getFieldByName("angle");
-        }
+        LOG(INFO) << points.transpose();
+        LOG(INFO) << intensities.transpose();
 
-        std::vector<Eigen::VectorXf> predictors;
-        predictors.push_back(distance);
-        if (has_angle)
-            predictors.push_back(angle);
-
-        Eigen::MatrixXf points( intensity.rows(), predictors.size());
-        for (int i = 0; i < predictors.size(); ++i)
-        {
-            points.col(i) = predictors.at(i);
-        }
-
-        predictors.clear();
 
         Eigen::VectorXi n_splits;
         n_splits.push_back(n_splits_distance_);
 
-        if (has_angle)
+        if (use_angle)
             n_splits.push_back(n_splits_angle_);
 
 
@@ -139,15 +123,93 @@ public:
             estimator.getModel()->setSigma(sigma_);
 
         estimator.setLambda(lambda_);
-
-        estimator.setInputValues(intensity);
-
+        estimator.setInputValues(intensities);
         estimator.getModel()->setPolyOrder(poly_order_);
+        estimator.initProblem();
 
-        CHECK(estimator.solveProblem()!= -1) << "cannot solve -- see log info please";
 
 
+        ///////////////////////////////
+        /// set in the weights here ///
+        ///////////////////////////////
+
+
+        /////////////////// NOW ALL THE ADDITIONAL CONSTRAINTS /////////////////////////////////////
+
+        if (append_additional_materials_constraints)
+        {
+            for (int i = 0; i < materials_ids.rows(); ++i)
+            {
+                int mid =  materials_ids(i);
+                if (mid == -1 | mid == init_set_material_id)
+                    continue;
+
+                LOG(INFO) << "adding secondary constraints for material id " << mid ;
+
+                //! for each of these materials we will add an additional set of contraints
+                Eigen::Matrix<float, -1, -1> points;
+                Eigen::Matrix<float, -1, 1> intensities;
+
+                extractVariablesAsMatrix(calibration_data_->getKeypointsOnMaterial(mid), points, intensities, use_angle);
+
+                LOG(INFO) << points.transpose();
+                LOG(INFO) << intensities.transpose();
+
+
+                LOG(INFO) << "Added  " << points.rows() - 1 << " new constraints" ;
+
+
+                estimator.appendEqualityConstrainForPoints(points, intensities);
+            }
+
+        }
+
+        else
+        {
+            LOG(WARNING) << "not using any constraints for additional materials";
+        }
+
+
+
+        if (append_undef_material_constraints)
+        {
+            CalibrationDataHolder::Ptr other = calibration_data_->getKeypointsOnMaterial(-1);
+            LOG(INFO) << "adding constraints for keypoints on unprecised materials";
+            LOG(INFO) << "found " <<other->getTotalNumberOfEntries() << " entries";
+
+
+            size_t  counter = 0;
+            for(CalibrationKeyPoint::Ptr kp: other->getData())
+            {
+                if (kp->getNumberOfEntries() <=1)
+                    continue;
+
+                else
+                {
+                    Eigen::Matrix<float, -1, -1> points;
+                    Eigen::Matrix<float, -1, 1> intensities;
+
+                    extractVariablesAsMatrix(kp, points, intensities, use_angle);
+
+                    estimator.appendEqualityConstrainForPoints(points, intensities);
+                    counter++;
+                }
+            }
+
+            LOG(INFO) << "added " << counter +1  << "additional constraints for undef materials";
+
+        }
+
+        else
+        {
+            LOG(WARNING) << "not using any constraints undefined materials keypoints";
+        }
+
+        CHECK(estimator.solveProblem() == 1) << "cannot solve -- see log info please";
+
+        //        LOG(INFO) << estimator.getA() ;
         model_ = estimator.getModel();
+
         return 1;
     }
 
@@ -163,10 +225,15 @@ protected:
     //! we keep the calibration data in its cloud representation cause its easier to
     //! use and more portable (and a cloud representation can be easily created from
     //! the CalibrationDataHolder, but not vice-versa for now)
-    NewSpcPointCloud::Ptr calibration_data_;
+    CalibrationDataHolder::Ptr calibration_data_;
 
 
-    bool has_angle;
+    bool use_angle = false;
+    bool use_weights = true;
+
+    bool append_undef_material_constraints = true;
+    bool append_additional_materials_constraints = true;
+
     bool has_materials;
 
     size_t n_splits_angle_ = 4;
@@ -176,6 +243,9 @@ protected:
 
     float lambda_ = 0.01;
     float sigma_ =0.0;
+
+
+    size_t init_set_material_id = 0;
 
     RBFModel<float>::Ptr model_;
 

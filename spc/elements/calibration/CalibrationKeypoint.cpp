@@ -9,13 +9,13 @@ namespace calibration
 
 CalibrationKeyPoint::CalibrationKeyPoint(const Vector3f &pos, const size_t mat_id)
 {
-    LOG(INFO) << "creating a new calibration keypoint at "<< pos.transpose();
+//    LOG(INFO) << "creating a new calibration keypoint at "<< pos.transpose();
     original_position = pos;
     material_id = mat_id;
     cumulative_set.addNewField("position", 3);
     lambdas.fill(spcNANMacro);
 
-    material_id = std::numeric_limits<size_t>::quiet_NaN();
+    material_id = mat_id;
 
 }
 

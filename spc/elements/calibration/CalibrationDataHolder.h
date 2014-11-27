@@ -24,7 +24,12 @@ public:
         return kp;
     }
 
-    void initFromCloud(const NewSpcPointCloud::ConstPtr pointset, std::string material_field_name)
+    void appendKeypoint(CalibrationKeyPoint::Ptr kpoint)
+    {
+        keypoints_.push_back(kpoint);
+    }
+
+    void initFromCloud(const NewSpcPointCloud::ConstPtr pointset, const std::string material_field_name)
     {
         if (!pointset->hasField(material_field_name))
         {
@@ -34,9 +39,10 @@ public:
         }
         else
         {
-            LOG(INFO) << "Using the field " << material_field_name << " as field for materials";
+            LOG(WARNING) << "Using the field " << material_field_name << " as field for materials. Remember that all integers are ok as material index but -1 "
+                            " will be considered as keypoints on unprecised and undifferentiated materials";
             for (int i = 0 ; i < pointset->getNumberOfPoints(); ++i)
-                this->newKeypoint(pointset->getFieldByName("position").row(i), (size_t) pointset->getFieldByName(material_field_name).row(i)(0));
+                this->newKeypoint(pointset->getFieldByName("position").row(i), (int) pointset->getFieldByName(material_field_name).row(i)(0));
         }
 
     }
@@ -51,6 +57,58 @@ public:
 
         return total_number;
     }
+
+    Eigen::Matrix<float, -1, 1> getDistanceForKPointsOnMaterial(const size_t mat_id) const
+    {
+
+    }
+
+    void ereaseInvalidPerCloudEntries(const bool consider_angle)
+    {
+        for (CalibrationKeyPoint::Ptr kp: keypoints_)
+            kp->removeInvalidEntries(consider_angle);
+    }
+
+    //! returns a cleaned version of the CalibrationDataHolder
+    //! no data copies are actually made. so only the pointers are copied into the new
+    //! holder
+    CalibrationDataHolder::Ptr getValidKeypoints() const
+    {
+        CalibrationDataHolder::Ptr out(new CalibrationDataHolder());
+        for (CalibrationKeyPoint::Ptr kp: keypoints_)
+        {
+            if (kp->getNumberOfEntries() > 0)
+                out->appendKeypoint(kp);
+        }
+
+        return out;
+    }
+
+    CalibrationDataHolder::Ptr getKeypointsOnMaterial(const size_t mat_id) const
+    {
+        CalibrationDataHolder::Ptr out(new CalibrationDataHolder());
+        for (CalibrationKeyPoint::Ptr kp: keypoints_)
+        {
+           if (kp->material_id == mat_id)
+               out->appendKeypoint(kp);
+        }
+        return out;
+    }
+
+    //! this will report a vector of the ids of the materialis into the dataset
+    //! notice that it will not report uncategorized materials
+    Eigen::VectorXi getDefinedMaterials() const
+    {
+        Eigen::VectorXi out;
+        for (calibration::CalibrationKeyPoint::Ptr keypoint: keypoints_)
+        {
+           out.push_back( keypoint->material_id );
+        }
+
+        return out.unique();
+    }
+
+
 
 
 
