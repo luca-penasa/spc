@@ -29,7 +29,7 @@ public:
 
 
 
-    RBFModel(): kernel_(new GaussianRBF<T>(1.0))
+    RBFModel(): kernel_(new MultiquadricRBF<T>(1.0))
     {
 
     }

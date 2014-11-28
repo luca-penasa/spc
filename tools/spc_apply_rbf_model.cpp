@@ -96,6 +96,16 @@ int main(int argc, char ** argv)
 
     std::vector<std::string> clouds =  spc::splitStringAtSeparator(FLAGS_clouds, " ");
 
+    if (clouds.size() == 0) // we use the arguments
+    {
+        for (int i = 0 ; i < argc; ++i)
+        {
+            clouds.push_back(argv[i]);
+        }
+    }
+
+
+
     for (auto s: clouds)
     {
         LOG(INFO) << "Cloud file: " << s;

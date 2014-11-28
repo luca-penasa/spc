@@ -141,10 +141,14 @@ public:
      * \brief autosetNodes
      * \param n_nodes the number of nodes in each dimension
      */
-    void autosetNodes(const Eigen::VectorXi &n_nodes)
+    void autosetNodes(const Eigen::VectorXi &n_nodes, PointsT input_points = PointsT())
     {
-        CHECK (points_.size() != 0) << "set the points before calling this method";
-        CHECK (n_nodes.rows() == points_.cols()) << "dimensions and number of splits does not match";
+
+        if (input_points.size() == 0)
+            input_points = points_;
+
+        CHECK (input_points.size() != 0) << "set the points before calling this method";
+        CHECK (n_nodes.rows() == input_points.cols()) << "dimensions and number of splits does not match";
 
         DLOG(INFO) << "autosetting nodes";
 
@@ -152,10 +156,10 @@ public:
         DLOG(INFO) << "total number of nodes " << total_nodes_ << std::endl;
 
         std::vector<VectorT> nod_coords;
-        for (int i =0; i < points_.cols(); ++i)
+        for (int i =0; i < input_points.cols(); ++i)
         {
-            T min = points_.col(i).minCoeff();
-            T max = points_.col(i).maxCoeff();
+            T min = input_points.col(i).minCoeff();
+            T max = input_points.col(i).maxCoeff();
 
 
             VectorT coords = VectorT::LinSpaced(n_nodes(i), min, max);
@@ -172,23 +176,28 @@ public:
 
     }
 
-    void autosetScales(const size_t fixed_dimension = 0)
+    void autosetScales(const size_t fixed_dimension = 0, PointsT input_points = PointsT())
     {
-        CHECK(points_.size() != 0) <<"set the input points before to call this method";
-        CHECK(fixed_dimension <= points_.cols()) << "you have to set a fixed dimension index lower or equal than the dimensions";
+
+        if (input_points.size() == 0)
+            input_points = points_;
+
+
+        CHECK(input_points.size() != 0) <<"set the input points before to call this method";
+        CHECK(fixed_dimension <= input_points.cols()) << "you have to set a fixed dimension index lower or equal than the dimensions";
 
         DLOG(INFO) << "autodefining scales" ;
 
         VectorT m, std;
-        points_.meanAndStd(m, std);
+        input_points.meanAndStd(m, std);
         DLOG(INFO) << "mean: \n" << m ;
         DLOG(INFO) << "std: \n" << std ;
 
-        VectorT scales(points_.cols());
+        VectorT scales(input_points.cols());
 
         T fixed_std = std(fixed_dimension);
 
-        for (int i = 0; i < points_.cols(); ++i)
+        for (int i = 0; i <input_points.cols(); ++i)
         {
             if (i == fixed_dimension)
                 scales(i) = 1;
@@ -519,12 +528,12 @@ public:
             // solving via SVD
              Eigen::JacobiSVD< MatrixT> svd = A_.jacobiSvd(Eigen::ComputeThinU | Eigen::ComputeThinV);
 
-             LOG(INFO) << "mat U" << svd.matrixU() ;
-             LOG(INFO) << "mat V" << svd.matrixV() ;
+//             LOG(INFO) << "mat U" << svd.matrixU() ;
+//             LOG(INFO) << "mat V" << svd.matrixV() ;
 
 //             A_(0,0) = std::numeric_limits<float>::quiet_NaN();
-             LOG(INFO) << "some data " << A_.finiteness().count() << " over " << A_.size();
-             LOG(INFO) << "some data " << b_.finiteness().count() << " over " << b_.size();
+             LOG(INFO) << "A finiteness " << A_.finiteness().count() << " over " << A_.size();
+             LOG(INFO) << "b finiteness " << b_.finiteness().count() << " over " << b_.size();
 
 
 

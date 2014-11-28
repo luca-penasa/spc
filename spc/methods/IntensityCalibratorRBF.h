@@ -100,8 +100,8 @@ public:
         LOG(INFO) << "using angle: " << use_angle;
         extractVariablesAsMatrix(init_data, points, intensities, use_angle);
 
-        LOG(INFO) << points.transpose();
-        LOG(INFO) << intensities.transpose();
+//        LOG(INFO) << points.transpose();
+//        LOG(INFO) << intensities.transpose();
 
 
         Eigen::VectorXi n_splits;
@@ -111,10 +111,18 @@ public:
             n_splits.push_back(n_splits_angle_);
 
 
+
+        Eigen::Matrix<float, -1, -1> points_all;
+        Eigen::Matrix<float, -1, 1> intensities_all;
+
+        LOG(INFO) << "using angle: " << use_angle;
+        extractVariablesAsMatrix(calibration_data_, points_all, intensities_all, use_angle);
+
+
         spc::RBFModelEstimator<float> estimator;
         estimator.setPoints(points);
-        estimator.autosetScales(0);
-        estimator.autosetNodes(n_splits);
+        estimator.autosetScales(0, points_all);
+        estimator.autosetNodes(n_splits, points_all);
 
 
         if (sigma_ == 0 )
@@ -152,8 +160,8 @@ public:
 
                 extractVariablesAsMatrix(calibration_data_->getKeypointsOnMaterial(mid), points, intensities, use_angle);
 
-                LOG(INFO) << points.transpose();
-                LOG(INFO) << intensities.transpose();
+//                LOG(INFO) << points.transpose();
+//                LOG(INFO) << intensities.transpose();
 
 
                 LOG(INFO) << "Added  " << points.rows() - 1 << " new constraints" ;
@@ -219,6 +227,19 @@ public:
         return model_;
     }
 
+    spcSetMacro (UseAngle, use_angle, bool)
+    spcSetMacro (UseWeights, use_weights, bool)
+    spcSetMacro (AppendUndefMaterialsConstraints, append_undef_material_constraints, bool)
+    spcSetMacro (AppendAdditionalMaterialsConstraints, append_additional_materials_constraints, bool)
+    spcSetMacro (NAngleSplits, n_splits_angle_, size_t)
+    spcSetMacro (NDistanceSplits, n_splits_distance_, size_t)
+
+    spcSetMacro (Lambda, lambda_, float)
+    spcSetMacro (ManualSigma, sigma_, float)
+
+    spcSetMacro (InitSetMaterial, init_set_material_id, int)
+
+
 
 protected:
 
@@ -228,7 +249,7 @@ protected:
     CalibrationDataHolder::Ptr calibration_data_;
 
 
-    bool use_angle = false;
+    bool use_angle = true;
     bool use_weights = true;
 
     bool append_undef_material_constraints = true;
@@ -236,16 +257,16 @@ protected:
 
     bool has_materials;
 
-    size_t n_splits_angle_ = 4;
-    size_t n_splits_distance_ = 4;
+    size_t n_splits_angle_ = 5;
+    size_t n_splits_distance_ = 6;
 
     size_t poly_order_ = 1;
 
-    float lambda_ = 0.01;
-    float sigma_ =0.0;
+    float lambda_ = 0.00; //! < no lambda by def
+    float sigma_ =0.0; //! < this will force the auto-mode by default
 
 
-    size_t init_set_material_id = 0;
+    int init_set_material_id = 0;
 
     RBFModel<float>::Ptr model_;
 

@@ -82,7 +82,9 @@ private:
 
     std::string material_field_name_ = "material";
 
-    size_t min_number_of_points_for_normal_estimation_ = 5;
+    size_t min_number_of_points_for_normal_estimation_ = 10;
+
+    size_t min_number_of_points_for_intensity_estimation_ = 20;
 };
 }
 }
