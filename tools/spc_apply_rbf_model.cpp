@@ -7,7 +7,7 @@
 
 #include <spc/elements/RBFModel.h>
 #include <spc/core/filesystem.h>
-
+using namespace gflags;
 using namespace spc;
 DEFINE_string(predictors, "distance,angle", "The field name of the distance field");
 DEFINE_string(observation, "intensity", "The field name of the observation to which apply correction");
@@ -55,7 +55,7 @@ int main(int argc, char ** argv)
 {
 
     google::InitGoogleLogging(argv[0]);
-    google::SetUsageMessage("Calibrate the intensity field of input cloud using the RBF model provided");
+    SetUsageMessage("Calibrate the intensity field of input cloud using the RBF model provided");
 
     LOG(INFO) << spc::fs::Path(argv[0]).stem();
 
@@ -65,7 +65,7 @@ int main(int argc, char ** argv)
 
 //    FLAGS_helpmatch = argv[0];
 
-    google::ParseCommandLineFlags(&argc, &argv, true);
+    ParseCommandLineFlags(&argc, &argv, true);
 
     // load the modes and chek if its ok
     spc::ISerializable::Ptr obj = spc::io::deserializeFromFile(FLAGS_model);

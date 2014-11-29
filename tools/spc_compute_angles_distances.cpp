@@ -14,7 +14,7 @@
 DEFINE_string(clouds, "", "a space separated list of clouds for which to compute scattering angles and sensor distance");
 
 DEFINE_string(postfix, "with_angles_distance", "a postfix string to add to the output filename");
-
+using namespace gflags;
 int main(int argc, char ** argv)
 {
     google::InitGoogleLogging(argv[0]);
@@ -22,7 +22,7 @@ int main(int argc, char ** argv)
     FLAGS_logtostderr = 1;
 
 
-    google::ParseCommandLineFlags(&argc, &argv, true);
+    ParseCommandLineFlags(&argc, &argv, true);
 
 
     if(FLAGS_clouds =="")

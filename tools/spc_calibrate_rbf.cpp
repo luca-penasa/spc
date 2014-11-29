@@ -29,16 +29,16 @@ DEFINE_string(n_nodes, "6,6", "Number of splits on each dimension (one for each 
               "The total numbe of nodes will be the product of all these splits");
 
 DEFINE_string(input_database, "", "an input file containing the variables to be used for calibrating the model");
-
+using namespace gflags;
 int main (int argc, char ** argv)
 {
     google::InitGoogleLogging(argv[0]);
 
-    google::SetUsageMessage("Compute a rbf model for predicting a given scalar field (e.g. intensity) as function of any other scalar fields."
+    SetUsageMessage("Compute a rbf model for predicting a given scalar field (e.g. intensity) as function of any other scalar fields."
                             "call as: " + std::string(argv[0]) + " database.spc [or xml/json] [...]");
 
     FLAGS_logtostderr = 1;
-    google::ParseCommandLineFlags(&argc, &argv, true);
+    ParseCommandLineFlags(&argc, &argv, true);
 
 
     std::string datadb = FLAGS_input_database;
