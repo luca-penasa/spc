@@ -16,14 +16,14 @@ DEFINE_string(fields, "", "a space separated list of fields to transfer");
 DEFINE_string(postfix, "with_transferred_fields", "a postfix string to add to the output filename");
 
 DEFINE_double(max_distance, 0.1, "nearest neighbor maximum distance considered as acceptable");
-using namespace gflags;
+
 int main(int argc, char ** argv)
 {
     google::InitGoogleLogging(argv[0]);
 
     FLAGS_logtostderr = 1;
 
-    ParseCommandLineFlags(&argc, &argv, true);
+    google::ParseCommandLineFlags(&argc, &argv, true);
 
     CHECK_GT(FLAGS_max_distance, 0.0);
 

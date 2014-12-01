@@ -55,16 +55,16 @@ DEFINE_bool(sample_model, true, "sample the calibrated model in a regular grid f
 
 DEFINE_bool(init_data_correction, true, "sample the calibrated model at the points defined by the material 0. "
                                         "a txt file with the data will be saved");
-using namespace gflags;
+
 int main (int argc, char ** argv)
 {
     google::InitGoogleLogging(argv[0]);
 
-    SetUsageMessage("Compute a rbf model for predicting a given scalar field (e.g. intensity) as function of any other scalar fields."
+    google::SetUsageMessage("Compute a rbf model for predicting a given scalar field (e.g. intensity) as function of any other scalar fields."
                             "call as: " + std::string(argv[0]) + " database.spc [or xml/json] [...]");
 
     FLAGS_logtostderr = 1;
-    ParseCommandLineFlags(&argc, &argv, true);
+    google::ParseCommandLineFlags(&argc, &argv, true);
 
     if (FLAGS_input_database == "")
         FLAGS_input_database = argv[1]; // get it from the first arg

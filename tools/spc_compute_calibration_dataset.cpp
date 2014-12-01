@@ -39,15 +39,15 @@ DEFINE_bool(export_as_cloud, true, "save the points as a cloud also");
 
 DEFINE_bool(export_as_ascii, true, "save the data as pure ascii, e.g. for inspection");
 
-using namespace gflags;
+
 int main (int argc, char ** argv)
 {
     google::InitGoogleLogging(argv[0]);
 
-    SetUsageMessage("computes a dataset of sampled scalar fields for calibrating the device");
+    google::SetUsageMessage("computes a dataset of sampled scalar fields for calibrating the device");
 
     FLAGS_logtostderr = 1;
-    ParseCommandLineFlags(&argc, &argv, true);
+    google::ParseCommandLineFlags(&argc, &argv, true);
 
 
     std::vector<std::string> cloud_names = spc::splitStringAtSeparator(FLAGS_in_clouds);

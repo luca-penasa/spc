@@ -13,7 +13,7 @@
 #include <spc/elements/PointCloudPcl.h>
 DEFINE_string(selection, "", "the spc file containing a selection");
 DEFINE_string(cloud, "", "the point cloud file to select from");
-using namespace gflags;
+
 
 int main(int argc, char ** argv)
 {
@@ -24,7 +24,7 @@ int main(int argc, char ** argv)
     FLAGS_colorlogtostderr=1;
     FLAGS_logtostderr=1;
 
-    ParseCommandLineFlags(&argc, &argv, true);
+    google::ParseCommandLineFlags(&argc, &argv, true);
 
     spc::ISerializable::Ptr ser =  spc::io::deserializeFromFile(FLAGS_selection);
 
