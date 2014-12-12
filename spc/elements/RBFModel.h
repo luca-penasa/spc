@@ -29,7 +29,7 @@ public:
 
 
 
-    RBFModel(): kernel_(new MultiquadricRBF<T>(1.0))
+	RBFModel(): kernel_(new GaussianApproxRBF<T>(1.0))
     {
 
     }
@@ -260,7 +260,7 @@ public:
             return false;
     }
 
-    size_t getNumberOfPredictors() const
+	size_t getDimensionality() const
     {
         return dim_;
     }

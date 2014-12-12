@@ -52,6 +52,13 @@ int main (int argc, char ** argv)
 
     std::vector<std::string> cloud_names = spc::splitStringAtSeparator(FLAGS_in_clouds);
 
+	if (cloud_names.size() == 0) // we use the arguments
+	{
+		for (int i = 1 ; i < argc; ++i)
+		{
+			cloud_names.push_back(argv[i]);
+		}
+	}
 
     std::vector<CloudDataSourceOnDisk::Ptr> sources;
     for (std::string name : cloud_names)

@@ -19,10 +19,10 @@ CalibrationKeyPoint::CalibrationKeyPoint(const Vector3f &pos, const size_t mat_i
 
 }
 
-PerCloudCalibrationData::Ptr
+Observation::Ptr
 CalibrationKeyPoint::newPerCloudData(CloudDataSourceOnDisk::Ptr cloud)
 {
-    PerCloudCalibrationData::Ptr cdata (new PerCloudCalibrationData(cloud, shared_from_this()));
+    Observation::Ptr cdata (new Observation(cloud, shared_from_this()));
     per_cloud_data.push_back(cdata);
     return cdata;
 }

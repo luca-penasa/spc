@@ -11,18 +11,18 @@ namespace calibration
 class CalibrationKeyPoint;
 typedef spcSharedPtrMacro<CalibrationKeyPoint> CalibrationKeyPointPtr;
 
-class PerCloudCalibrationData: public std::enable_shared_from_this<PerCloudCalibrationData>
+class Observation: public std::enable_shared_from_this<Observation>
 {
 public:
-    spcTypedefSharedPtrs(PerCloudCalibrationData)
+	spcTypedefSharedPtrs(Observation)
 
     //! so that cereal does not complain. should not be used
-    PerCloudCalibrationData()
+	Observation()
     {
 
     }
 
-    PerCloudCalibrationData(CloudDataSourceOnDisk::Ptr ref_cloud, CalibrationKeyPointPtr parent);
+	Observation(CloudDataSourceOnDisk::Ptr ref_cloud, CalibrationKeyPointPtr parent);
     CalibrationKeyPointPtr getParent() const
     {
         return parent_keypoint;
@@ -49,6 +49,20 @@ public:
         return std::isfinite(intensity);
     }
 
+	Eigen::VectorXf getAsEigenPoint(const bool also_angle = true) const
+	{
+		Eigen::VectorXf v(1);
+		v(0) = distance;
+
+		if (also_angle)
+		{
+			v.conservativeResize(2);
+			v(1) = angle;
+		}
+
+		return v;
+	}
+
 
 
     //! consider_angle says if also a finite angle must be present to consider the data "good"
@@ -70,6 +84,8 @@ public:
     float angle= spcNANMacro;
     float intensity= spcNANMacro;
     float intensity_std= spcNANMacro;
+
+	float intensity_corrected = spcNANMacro; // we don't save this value											 // when serializing
 
     Eigen::Vector3f sensor_position;
 

@@ -37,7 +37,7 @@ public:
         material_field_name_ = material_fname;
     }
 
-    void extractDataForKeypointAndCloud(calibration::PerCloudCalibrationData::Ptr data_holder,
+    void extractDataForKeypointAndCloud(calibration::Observation::Ptr data_holder,
                                                NewSpcPointCloud::Ptr cloud);
 
     void computeDerivedData();

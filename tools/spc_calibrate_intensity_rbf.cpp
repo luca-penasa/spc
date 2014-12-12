@@ -10,7 +10,7 @@
 
 #include <spc/elements/NewSpcPointCloud.h>
 #include <spc/methods/IntensityCalibratorRBF.h>
-
+#include <spc/methods/IntensityCalibratorRBFNonLinear.h>
 using namespace spc;
 using Eigen::Matrix;
 
@@ -32,10 +32,16 @@ DEFINE_bool(undef_mat, true, "Append additional constrains for keypoints seen by
                              "different point of views but of unknown materials. "
                              "Not granted to provide better results. (see also -adds_mat flag)");
 
+DEFINE_double(undef_mat_w, 1, "Overall weight for the undefined materials. Tweak this to give more or less"
+			  "importance to the observations for which a material was not specified.");
+
 DEFINE_bool(adds_mat, true, "append additional constraints for the additional materials provided "
                             "notice that additional materials can be provided but it is likely that "
                             "the law controllig angle-effect it is not the same for the materials. "
                             "so this does not automatically provides better results. ");
+
+DEFINE_double(adds_mat_w, 1, "Overall weight for the additional materials. Tweak this to give more or less"
+			  "importance to the additional materials.");
 
 DEFINE_uint64(n_dist, 6, "Number of nodes along the angles for constructing the rbf model");
 DEFINE_uint64(n_ang, 6,  "Number of nodes along the angles for constructing the rbf model"
@@ -55,6 +61,8 @@ DEFINE_bool(sample_model, true, "sample the calibrated model in a regular grid f
 
 DEFINE_bool(init_data_correction, true, "sample the calibrated model at the points defined by the material 0. "
                                         "a txt file with the data will be saved");
+
+DEFINE_bool(nonlin, true, "Do an additiona nonlinear optimization step to oeptimize the rbf model against additional constraints");
 
 int main (int argc, char ** argv)
 {
@@ -88,6 +96,7 @@ int main (int argc, char ** argv)
 
     LOG(INFO) << "going do perform calibration";
     calibration::IntensityCalibratorRBF calibrator;
+	calibrator.setUseWeights(FLAGS_weights);
     calibrator.setCalibrationData(cal_data);
     calibrator.setNAngleSplits(FLAGS_n_ang);
     calibrator.setNDistanceSplits(FLAGS_n_dist);
@@ -95,7 +104,10 @@ int main (int argc, char ** argv)
     calibrator.setAppendUndefMaterialsConstraints(FLAGS_undef_mat);
     calibrator.setManualSigma(FLAGS_sigma);
     calibrator.setLambda(FLAGS_lambda);
-
+	calibrator.setAdditionalMaterialsWeight(FLAGS_adds_mat_w);
+	calibrator.setUndefMaterialsWeight(FLAGS_undef_mat_w);
+	calibrator.setPolyOrder(FLAGS_poly_order);
+	calibrator.setInitSetMaterial(FLAGS_init_set);
 
     LOG(INFO) << "computing";
 
@@ -103,7 +115,22 @@ int main (int argc, char ** argv)
 
     spc::RBFModel<float>::Ptr model = calibrator.getModel();
 
-    CHECK(model != NULL) << "null ptr as model";
+	CHECK(model != NULL) << "null ptr as model";
+
+
+	if (FLAGS_nonlin)
+	{
+		calibration::IntensityCalibratorRBFNonLinear optimizer;
+		optimizer.setModel(model);
+		optimizer.setCalibrationData(cal_data);
+		optimizer.setFixedMaterialId(FLAGS_init_set);
+//		optimizer.updateSecondary();
+		optimizer.optimize();
+
+		model = optimizer.getModel();
+	}
+
+
 
 
 

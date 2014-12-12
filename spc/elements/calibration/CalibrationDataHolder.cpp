@@ -57,7 +57,7 @@ NewSpcPointCloud::Ptr CalibrationDataHolder::asPointCloud() const
     size_t keypoint_id = 0;
     for (calibration::CalibrationKeyPoint::Ptr keypoint: getData())
     {
-        for (calibration::PerCloudCalibrationData::Ptr data_holder: keypoint->per_cloud_data)
+        for (calibration::Observation::Ptr data_holder: keypoint->per_cloud_data)
         {
             out->getFieldByName("n_neighbors")(counter, 0) = data_holder->n_neighbors_intensity;
             out->getFieldByName("normal").row(counter) = keypoint->fitting_plane.getNormal();

@@ -14,8 +14,7 @@ namespace spc
 
 
 
-//! D is the number of dimensions
-//! on which interpolation is performed
+
 template <typename T>
 class RBFModelEstimator
 {
@@ -33,7 +32,7 @@ public:
 
     {
 
-        model_->setKernel(RBFKernelFactory<T>::RBF_MULTIQUADRIC);
+		model_->setKernel(RBFKernelFactory<T>::RBF_GAUSSIAN_APPROX);
     }
 
     void setPoints(PointsT &points)
@@ -67,8 +66,9 @@ public:
     //! so if you want to use it please verify what it is doing and if it is good for you.
     //! if you have points A, B and C this method will add constrains which will state that:
     //! A = B, A = C and B = C
-    void appendEqualityConstrainForPoints(const PointsT &points,
-                                          const VectorT & values)
+	void appendEqualityConstrainForPoints(const PointsT & points,
+										  const VectorT & values,
+										  const VectorT & weights)
     {
         for (size_t i  = 0; i < points.rows() - 1; ++i)
         {
@@ -78,7 +78,18 @@ public:
             T v1 = values(i);
             T v2 = values(i+1);
 
-            int status = this->appendEqualityConstrain(p1, v1, p2, v2);
+
+			//! we will use the minimum weight between the two
+
+			T w;
+			int status = -1;
+			if (weights.size() != 0) // this should mean some weights were actually passed
+			{
+				w = std::min( weights(i), weights(i+1) );
+				status = this->appendEqualityConstrain(p1, v1, p2, v2, w);
+			}
+			else
+				status = this->appendEqualityConstrain(p1, v1, p2, v2);
 
             if (status != 1)
             {
@@ -95,8 +106,10 @@ public:
     //! equals to say that \f$I_1/f(a_1, d_1) = I_2/f(a_2, d_2)\f$. or equally that the corrected intensity
     //! for the point a must be equal to the corrected intensity for point b
     //! \todo better explanations here
+	//! optionally also a weight for this observation can be applied
     int appendEqualityConstrain(const PointT &point1, const T &value1,
-                                 const PointT &point2, const T &value2)
+								 const PointT &point2, const T &value2,
+								const T &weight = 1)
     {
 
             if (A_.rows() == 0)
@@ -114,6 +127,9 @@ public:
             VectorT b = model_->getPredictorVector(point2) / value2;
 
             VectorT Aline = a .array() - b.array();
+
+			if (weight != 1)
+				Aline = Aline * weight;
 
             if (A_.cols() != Aline.rows())
             {
@@ -537,7 +553,8 @@ public:
 
 
 
-
+			LOG(INFO) << "singular values: " << svd.singularValues();
+			LOG(INFO) << "condition number: " << svd.singularValues()(0) / svd.singularValues()(A_.cols() -1);
 
              LOG(WARNING) << "NONZERO SV: " << svd.nonzeroSingularValues() << " over " << A_.cols();
             coeffs =svd.solve(b_);

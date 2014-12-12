@@ -2,6 +2,7 @@
 #define CALIBRATIONDATAHOLDER_H
 #include <spc/elements/calibration/CalibrationKeypoint.h>
 #include <spc/elements/NewSpcPointCloud.h>
+
 namespace spc
 {
 namespace calibration {
@@ -16,6 +17,21 @@ public:
 
     CalibrationDataHolder();
 
+	std::vector<Observation::Ptr> getAllObservations() const
+	{
+		std::vector<Observation::Ptr> out ;
+		for (CalibrationKeyPointPtr kpoint: getData())
+		{
+			for (Observation::Ptr pcd: kpoint->per_cloud_data)
+			{
+				out.push_back(pcd);
+			}
+		}
+
+		return out;
+
+	}
+
 
     CalibrationKeyPoint::Ptr newKeypoint(const Eigen::Vector3f &pos, size_t material_id)
     {
@@ -29,6 +45,9 @@ public:
         keypoints_.push_back(kpoint);
     }
 
+	//! this will create an empty keypoint for each point in pointset
+	//! if the pointset contains the scalar field specified with material_field_name
+	//! the material information will be copied in the newly created keypoints.
     void initFromCloud(const NewSpcPointCloud::ConstPtr pointset, const std::string material_field_name)
     {
         if (!pointset->hasField(material_field_name))
@@ -58,10 +77,7 @@ public:
         return total_number;
     }
 
-    Eigen::Matrix<float, -1, 1> getDistanceForKPointsOnMaterial(const size_t mat_id) const
-    {
 
-    }
 
     void ereaseInvalidPerCloudEntries(const bool consider_angle)
     {
@@ -96,7 +112,7 @@ public:
     }
 
     //! this will report a vector of the ids of the materialis into the dataset
-    //! notice that it will not report uncategorized materials
+	//! notice that it will ALSO report uncategorized materials
     Eigen::VectorXi getDefinedMaterials() const
     {
         Eigen::VectorXi out;
@@ -128,7 +144,7 @@ public:
 
         for (CalibrationKeyPoint::Ptr kpoint : keypoints_)
         {
-            for (PerCloudCalibrationData::Ptr per_cloud: kpoint->per_cloud_data)
+			for (Observation::Ptr per_cloud: kpoint->per_cloud_data)
             {
                 CloudDataSourceOnDisk::Ptr cloud = per_cloud->cloud;
 

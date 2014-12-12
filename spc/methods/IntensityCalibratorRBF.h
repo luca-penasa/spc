@@ -26,7 +26,12 @@ public:
 
 
     static  void
-    extractVariablesAsMatrix(CalibrationDataHolder::Ptr holder, Eigen::Matrix<float, -1, -1> &points, Eigen::Matrix<float, -1, 1> &intensity, bool also_angle)
+	extractVariablesAsMatrix(CalibrationDataHolder::Ptr holder,
+							 Eigen::Matrix<float, -1, -1> &points,
+							 Eigen::Matrix<float, -1, 1> &intensity,
+							 Eigen::Matrix<float, -1, 1> &weights,
+							 bool also_angle,
+							 bool extract_weights)
 
     {
 
@@ -45,28 +50,75 @@ public:
 
 
         intensity = ascloud->getFieldByName("intensity");
+
+
+		if (extract_weights)
+		{
+			weights.resize(ascloud->getNumberOfPoints());
+
+			size_t counter = 0;
+			//! we got the fields but we also need to get the weights
+			for (CalibrationKeyPointPtr k: holder->getData())
+			{
+				for (Observation::Ptr observation: k->per_cloud_data)
+				{
+					float w = computeWeight(observation);
+					weights(counter++) = w;
+				}
+			}
+		}
     }
 
+	//! compute a weighting coefficient for the given observation
+	static float
+	computeWeight(Observation::Ptr per_cloud_data)
+	{
+		float std = per_cloud_data->intensity_std;
+		float er = per_cloud_data->getParent()->eigen_ratio;
+
+		float w = 0;
+		if (std != 0)
+			w = 1/(std*std) * (1 - 3*er);
+		else
+			w =(1 - 3*er);
+//		LOG(INFO) << "w: " << w;
+		return w;
+	}
+
     static void
-    extractVariablesAsMatrix(CalibrationKeyPoint::Ptr data, Eigen::Matrix<float, -1, -1> &points, Eigen::Matrix<float, -1, 1> &intensity, bool also_angle)
+	//! extract the variables distance, angle and intensity for the "data" keypoint.
+	//! if also_angle == true also the angle is extracted into the matrix
+	//! points matrix will contain the distance and optionally the angle as a n x 1 (or 2) column vector.
+	//! the intensity will be placed in the intensity column vector
+	extractVariablesAsMatrix(CalibrationKeyPoint::Ptr data,
+							 Eigen::Matrix<float, -1, -1> &points,
+							 Eigen::Matrix<float, -1, 1> &intensity,
+							 Eigen::Matrix<float, -1, 1> &weights,
+							 bool also_angle,
+							 bool extract_weights
+							 )
     {
         points.resize(data->getNumberOfEntries(), 1);
         intensity.resize(data->getNumberOfEntries());
+
+		if (extract_weights)
+			weights.resize(data->getNumberOfEntries());
+
         if (also_angle)
-        {
             points.resize(Eigen::NoChange, 2);
-        }
 
         size_t counter = 0;
-        for (PerCloudCalibrationData::Ptr cdata: data->per_cloud_data)
+		for (Observation::Ptr cdata: data->per_cloud_data)
         {
-            points(counter, 0) = cdata->distance;
-            if (also_angle)
-            {
-                points(counter, 1) = cdata->angle;
-            }
+            points(counter, 0) = cdata->distance;			
+			intensity(counter) = cdata->intensity;
 
-            intensity(counter) = cdata->intensity;
+			if (also_angle)
+                points(counter, 1) = cdata->angle;
+
+			if (extract_weights)
+				weights(counter) = computeWeight(cdata);
+
             counter++;
         }
     }
@@ -95,10 +147,11 @@ public:
 
 
         Eigen::Matrix<float, -1, -1> points;
-        Eigen::Matrix<float, -1, 1> intensities;
+		Eigen::Matrix<float, -1, 1> intensities, w;
 
         LOG(INFO) << "using angle: " << use_angle;
-        extractVariablesAsMatrix(init_data, points, intensities, use_angle);
+		LOG(INFO) << "using weights: " << use_weights;
+		extractVariablesAsMatrix(init_data, points, intensities, w, use_angle, use_weights);
 
 //        LOG(INFO) << points.transpose();
 //        LOG(INFO) << intensities.transpose();
@@ -110,17 +163,24 @@ public:
         if (use_angle)
             n_splits.push_back(n_splits_angle_);
 
+		spc::RBFModelEstimator<float> estimator;
+		estimator.setPoints(points);
+		estimator.setWeights(w);
+		estimator.setInputValues(intensities);
+		estimator.getModel()->setPolyOrder(poly_order_);
+
+		LOG(INFO) << "Polynomial order: " << poly_order_;
 
 
+
+		//we extract here the whole dataset, so to have an idea of the ranges of the
+		// variables, these will be used to autosetScales and autosetNodes
         Eigen::Matrix<float, -1, -1> points_all;
-        Eigen::Matrix<float, -1, 1> intensities_all;
+		Eigen::Matrix<float, -1, 1> intensities_all;
 
         LOG(INFO) << "using angle: " << use_angle;
-        extractVariablesAsMatrix(calibration_data_, points_all, intensities_all, use_angle);
 
-
-        spc::RBFModelEstimator<float> estimator;
-        estimator.setPoints(points);
+		extractVariablesAsMatrix(calibration_data_, points_all, intensities_all, w, use_angle, false); //! we dont need to get also the weights
         estimator.autosetScales(0, points_all);
         estimator.autosetNodes(n_splits, points_all);
 
@@ -131,15 +191,8 @@ public:
             estimator.getModel()->setSigma(sigma_);
 
         estimator.setLambda(lambda_);
-        estimator.setInputValues(intensities);
         estimator.getModel()->setPolyOrder(poly_order_);
         estimator.initProblem();
-
-
-
-        ///////////////////////////////
-        /// set in the weights here ///
-        ///////////////////////////////
 
 
         /////////////////// NOW ALL THE ADDITIONAL CONSTRAINTS /////////////////////////////////////
@@ -157,8 +210,9 @@ public:
                 //! for each of these materials we will add an additional set of contraints
                 Eigen::Matrix<float, -1, -1> points;
                 Eigen::Matrix<float, -1, 1> intensities;
+				Eigen::Matrix<float, -1, 1> weights;
 
-                extractVariablesAsMatrix(calibration_data_->getKeypointsOnMaterial(mid), points, intensities, use_angle);
+				extractVariablesAsMatrix(calibration_data_->getKeypointsOnMaterial(mid), points, intensities, weights, use_angle, use_weights);
 
 //                LOG(INFO) << points.transpose();
 //                LOG(INFO) << intensities.transpose();
@@ -166,8 +220,13 @@ public:
 
                 LOG(INFO) << "Added  " << points.rows() - 1 << " new constraints" ;
 
+				if (additional_materials_weight != 1)
+				{
+					LOG(INFO) << "Overall weight for additional materials: " << additional_materials_weight;
+					weights.array() *= additional_materials_weight;
+				}
 
-                estimator.appendEqualityConstrainForPoints(points, intensities);
+				estimator.appendEqualityConstrainForPoints(points, intensities, weights);
             }
 
         }
@@ -195,11 +254,19 @@ public:
                 else
                 {
                     Eigen::Matrix<float, -1, -1> points;
-                    Eigen::Matrix<float, -1, 1> intensities;
+					Eigen::Matrix<float, -1, 1> intensities, weights;
 
-                    extractVariablesAsMatrix(kp, points, intensities, use_angle);
+					extractVariablesAsMatrix(kp, points, intensities, weights,  use_angle, use_weights);
 
-                    estimator.appendEqualityConstrainForPoints(points, intensities);
+
+					if (undef_material_weight != 1)
+					{
+						LOG(INFO) << "Overall weight for additional materials: " << undef_material_weight;
+						weights.array() *= undef_material_weight;
+					}
+
+
+					estimator.appendEqualityConstrainForPoints(points, intensities, weights);
                     counter++;
                 }
             }
@@ -239,7 +306,14 @@ public:
 
     spcSetMacro (InitSetMaterial, init_set_material_id, int)
 
+	spcSetMacro(AdditionalMaterialsWeight, additional_materials_weight, float)
+	spcGetMacro(AdditionalMaterialsWeight, additional_materials_weight, float)
 
+	spcSetMacro(UndefMaterialsWeight, undef_material_weight, float)
+	spcGetMacro(UndefMaterialsWeight, undef_material_weight, float)
+
+	spcSetMacro(PolyOrder, poly_order_, size_t)
+	spcGetMacro(PolyOrder, poly_order_, size_t)
 
 protected:
 
@@ -253,7 +327,10 @@ protected:
     bool use_weights = true;
 
     bool append_undef_material_constraints = true;
+	float undef_material_weight = 1;
+
     bool append_additional_materials_constraints = true;
+	float additional_materials_weight = 1;
 
     bool has_materials;
 

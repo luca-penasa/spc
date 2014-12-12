@@ -78,7 +78,7 @@ int main(int argc, char ** argv)
         LOG(FATAL) << "your model file can be loaded but it does not look like a RBF model. Check your file";
 
 
-    size_t model_dimensions = model->getNumberOfPredictors();
+	size_t model_dimensions = model->getDimensionality();
 
     LOG(INFO) << "Model has " << model_dimensions << " dimensions";
 
@@ -98,7 +98,7 @@ int main(int argc, char ** argv)
 
     if (clouds.size() == 0) // we use the arguments
     {
-        for (int i = 0 ; i < argc; ++i)
+		for (int i = 1 ; i < argc; ++i)
         {
             clouds.push_back(argv[i]);
         }

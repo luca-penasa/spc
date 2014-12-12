@@ -67,7 +67,7 @@ int CalibrationDataEstimator::compute()
 
         for (calibration::CalibrationKeyPoint::Ptr keypoint: calibration_data_->getData())
         {
-            calibration::PerCloudCalibrationData::Ptr data = keypoint->newPerCloudData(source);
+            calibration::Observation::Ptr data = keypoint->newPerCloudData(source);
 
             extractDataForKeypointAndCloud(data, cloud);
         }
@@ -109,7 +109,7 @@ float CalibrationDataEstimator::getMinimumAngleBetweenVectors(const Eigen::Vecto
     return theta;
 }
 
-void CalibrationDataEstimator::extractDataForKeypointAndCloud(calibration::PerCloudCalibrationData::Ptr data_holder, NewSpcPointCloud::Ptr cloud)
+void CalibrationDataEstimator::extractDataForKeypointAndCloud(calibration::Observation::Ptr data_holder, NewSpcPointCloud::Ptr cloud)
 
 {
     //! extract and save the sensor position
@@ -189,7 +189,7 @@ void CalibrationDataEstimator::computeDerivedData()
     {
 
         calibration::CalibrationKeyPoint::Ptr keypoint = calibration_data_->getData().at(i);
-        for (calibration::PerCloudCalibrationData::Ptr data_holder: keypoint->per_cloud_data)
+        for (calibration::Observation::Ptr data_holder: keypoint->per_cloud_data)
         {
             //            DLOG(INFO) << "extract for normas has size " << data_holder->extract_for_normal_.getNumberOfPoints();
             keypoint->cumulative_set.concatenate(data_holder->extract_for_normal_);
@@ -216,7 +216,7 @@ void CalibrationDataEstimator::computeDerivedData()
             keypoint->post_position = newpos;
 
             //! no we can compute distance and angle
-            for (calibration::PerCloudCalibrationData::Ptr per_cloud: keypoint->per_cloud_data)
+            for (calibration::Observation::Ptr per_cloud: keypoint->per_cloud_data)
             {
                 Eigen::Vector3f ray = keypoint->post_position - per_cloud->sensor_position;
 
