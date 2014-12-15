@@ -167,7 +167,7 @@ if(GFLAGS_FOUND)
     INCLUDE_DIRECTORIES(${GFLAGS_INCLUDE_DIRS})
 
 message ("GFLAGS Is in namespace: " ${GFLAGS_NAMESPACE})
-    if(GFLAGS_NAMESPACE EQUAL "google")
+    if(GFLAGS_NAMESPACE STREQUAL "google")
         message("set a new precompiler definition for gflags")
         set(SPC_DEFINITIONS ${SPC_DEFINITIONS} "-DGFLAGS_IN_NS_GOOGLE")
     endif()
