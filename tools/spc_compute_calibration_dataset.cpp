@@ -44,10 +44,10 @@ int main (int argc, char ** argv)
 {
     google::InitGoogleLogging(argv[0]);
 
-    google::SetUsageMessage("computes a dataset of sampled scalar fields for calibrating the device");
+   gflags::SetUsageMessage("computes a dataset of sampled scalar fields for calibrating the device");
 
     FLAGS_logtostderr = 1;
-    google::ParseCommandLineFlags(&argc, &argv, true);
+    gflags::ParseCommandLineFlags(&argc, &argv, true);
 
 
     std::vector<std::string> cloud_names = spc::splitStringAtSeparator(FLAGS_in_clouds);

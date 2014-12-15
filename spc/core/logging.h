@@ -1,6 +1,6 @@
 #pragma once
 #ifndef SPC_LOGGING_H
-#define SPCLOGGING_H
+#define SPC_LOGGING_H
 
 
 

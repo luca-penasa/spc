@@ -9,6 +9,7 @@
 
 #include <spc/io/io_helper.h>
 
+#include <spc/core/flagging.h>
 
 #include <spc/elements/PointCloudPcl.h>
 DEFINE_string(selection, "", "the spc file containing a selection");
@@ -24,7 +25,7 @@ int main(int argc, char ** argv)
     FLAGS_colorlogtostderr=1;
     FLAGS_logtostderr=1;
 
-    google::ParseCommandLineFlags(&argc, &argv, true);
+    gflags::ParseCommandLineFlags(&argc, &argv, true);
 
     spc::ISerializable::Ptr ser =  spc::io::deserializeFromFile(FLAGS_selection);
 

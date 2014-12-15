@@ -7,6 +7,7 @@
 
 #include <gflags/gflags.h>
 #include <spc/core/logging.h>
+#include <spc/core/flagging.h>
 
 using namespace spc;
 using Eigen::Matrix;
@@ -34,11 +35,11 @@ int main (int argc, char ** argv)
 {
     google::InitGoogleLogging(argv[0]);
 
-    google::SetUsageMessage("Compute a rbf model for predicting a given scalar field (e.g. intensity) as function of any other scalar fields."
+    gflags::SetUsageMessage("Compute a rbf model for predicting a given scalar field (e.g. intensity) as function of any other scalar fields."
                             "call as: " + std::string(argv[0]) + " database.spc [or xml/json] [...]");
 
     FLAGS_logtostderr = 1;
-    google::ParseCommandLineFlags(&argc, &argv, true);
+    gflags::ParseCommandLineFlags(&argc, &argv, true);
 
 
     std::string datadb = FLAGS_input_database;

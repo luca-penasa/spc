@@ -75,6 +75,8 @@ option(SPC_BUILD_SANDBOX_TOOLS "Build sandbox tools." OFF)
 option(SPC_BUILD_TESTS "Do tests" OFF)
 option(SPC_ENABLE_INSTALL "Enable/Disable the install target" OFF)
 
+option(SPC_GFLAGS_IN_NAMESPACE_GOOGLE "says if gflags is expected to be into the google namespace" OFF)
+
 
 option(SPC_USE_PARALLEL_OPENMP "Enable paralellization of some algorithms via OpenMP" ON)
 option(SPC_BUILD_TESTING_TOOLS "Build the tools contained into the tests folder" OFF)
@@ -107,6 +109,10 @@ message("LIB ${SPC_INSTALL_LIB_DIR}")
 message("BIN ${SPC_INSTALL_BIN_DIR}")
 message("CMAKE ${SPC_INSTALL_CMAKE_DIR}")
 
+
+if(SPC_GFLAGS_IN_NAMESPACE_GOOGLE)
+        set(SPC_DEFINITIONS ${SPC_DEFINITIONS} "-DGFLAGS_IN_NS_GOOGLE")
+endif()
 
 
 if(SPC_USE_PARALLEL_OPENMP) # a definition if use parallelization where possible
@@ -157,10 +163,12 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/functions.cmake)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 
+
 find_package(Gflags REQUIRED)
 
 if(GFLAGS_FOUND)
     message("GFLAGS FOUND")
+    message("version: ${GLFAGS_VERSION}")
     INCLUDE_DIRECTORIES(${GFLAGS_INCLUDE_DIRS})
 endif()
 

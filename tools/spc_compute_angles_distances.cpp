@@ -3,7 +3,7 @@
 #include <spc/core/strings.h>
 
 #include <pcl/io/file_io.h>
-#include <gflags/gflags.h>
+#include <spc/core/flagging.h>
 
 #include <spc/elements/PointCloudPcl.h>
 
@@ -22,7 +22,7 @@ int main(int argc, char ** argv)
     FLAGS_logtostderr = 1;
 
 
-    google::ParseCommandLineFlags(&argc, &argv, true);
+    gflags::ParseCommandLineFlags(&argc, &argv, true);
 
 
     if(FLAGS_clouds =="")
