@@ -84,7 +84,7 @@ int main (int argc, char ** argv)
     calibrator.setNormalEstimationSearchRadius(FLAGS_search_radius);
     calibrator.compute();
 
-    calibration::CalibrationDataHolder::Ptr data = calibrator.getCalibrationDataHolder();
+    calibration::DataHolder::Ptr data = calibrator.getCalibrationDataHolder();
 
     LOG(INFO) << "saving to file as spc";
 

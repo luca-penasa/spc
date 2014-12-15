@@ -1,17 +1,17 @@
-#include "CalibrationDataHolder.h"
+#include "DataHolder.h"
 
 namespace spc
 {
 namespace calibration
 {
 
-DtiClassType CalibrationDataHolder::Type ("CalibrationDataHolder", &ElementBase::Type);
+DtiClassType DataHolder::Type ("DataHolder", &ElementBase::Type);
 
-CalibrationDataHolder::CalibrationDataHolder()
+DataHolder::DataHolder()
 {
 }
 
-NewSpcPointCloud::Ptr CalibrationDataHolder::asPointCloud() const
+NewSpcPointCloud::Ptr DataHolder::asPointCloud() const
 {
     std::vector<CloudDataSourceOnDisk::Ptr> sources = getDataSources();
     std::map<CloudDataSourceOnDisk::Ptr, size_t> source_to_id;
@@ -24,7 +24,7 @@ NewSpcPointCloud::Ptr CalibrationDataHolder::asPointCloud() const
 
     NewSpcPointCloud::Ptr out(new NewSpcPointCloud);
 
-    size_t total_number= getTotalNumberOfEntries();
+	size_t total_number= getTotalNumberOfObservations();
 
     DLOG(INFO) << "we have a total number of entries: " << total_number;
 
@@ -46,18 +46,13 @@ NewSpcPointCloud::Ptr CalibrationDataHolder::asPointCloud() const
 
     out->addNewField("position", 3);
 
-
-
-
-
-
     out->conservativeResize(total_number);
 
     size_t counter = 0;
     size_t keypoint_id = 0;
-    for (calibration::CalibrationKeyPoint::Ptr keypoint: getData())
+    for (calibration::KeyPoint::Ptr keypoint: getData())
     {
-        for (calibration::Observation::Ptr data_holder: keypoint->per_cloud_data)
+		for (calibration::Observation::Ptr data_holder: keypoint->observations)
         {
             out->getFieldByName("n_neighbors")(counter, 0) = data_holder->n_neighbors_intensity;
             out->getFieldByName("normal").row(counter) = keypoint->fitting_plane.getNormal();
@@ -85,4 +80,4 @@ NewSpcPointCloud::Ptr CalibrationDataHolder::asPointCloud() const
 }
 }
 #include <spc/core/spc_cereal.hpp>
-SPC_CEREAL_REGISTER_TYPE(spc::calibration::CalibrationDataHolder)
+SPC_CEREAL_REGISTER_TYPE(spc::calibration::DataHolder)

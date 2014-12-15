@@ -4,7 +4,7 @@
 
 #include <spc/elements/CloudDataSourceOnDisk.h>
 
-#include <spc/elements/calibration/CalibrationDataHolder.h>
+#include <spc/elements/calibration/DataHolder.h>
 #include <spc/elements/Kernels.hpp>
 
 namespace spc
@@ -56,7 +56,7 @@ public:
         }
     }
 
-    calibration::CalibrationDataHolder::Ptr getCalibrationDataHolder() const
+    calibration::DataHolder::Ptr getCalibrationDataHolder() const
     {
         return calibration_data_;
     }
@@ -74,7 +74,7 @@ private:
     float intensity_estimation_spatial_sigma_ = 0.1;
 
     ////////////// OUTPUT DATABASE /////////////////////////
-    calibration::CalibrationDataHolder::Ptr calibration_data_;
+    calibration::DataHolder::Ptr calibration_data_;
 
     RBFBase<float>::Ptr kernel_ ;
 

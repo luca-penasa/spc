@@ -3,7 +3,7 @@
 
 
 #include <spc/elements/RBFModel.h>
-#include <spc/elements/calibration/CalibrationDataHolder.h>
+#include <spc/elements/calibration/DataHolder.h>
 
 #include <unsupported/Eigen/NonLinearOptimization>
 #include <unsupported/Eigen/NumericalDiff>
@@ -16,7 +16,54 @@ namespace spc
 namespace calibration
 {
 
+//! a material is just a collector of keypoints
+//! taken from just a single material
+class Material: public DataHolder
+{
+public:
+	spcTypedefSharedPtrs(Material)
 
+	Material(const float factor, int orig_material_id)
+	{
+		factor_ = factor;
+		original_material_id_ = orig_material_id;
+	}
+
+	Material(const float factor, int orig_material_id,  const DataHolder &other) : DataHolder(other)
+	{
+		factor_ = factor;
+		original_material_id_ = orig_material_id;
+	}
+
+	bool isLocked() const
+	{
+		return is_locked_;
+	}
+
+	void lock()
+	{
+		is_locked_ = true;
+	}
+
+	bool unlock()
+	{
+		is_locked_ = false;
+	}
+
+	spcGetMacro(Factor, factor_, float)
+
+	void setFactor(const float & factor)
+	{
+		if (!isLocked())
+			factor_ = factor;
+	}
+
+
+protected:
+	float factor_ = spcNANMacro;
+	bool is_locked_ = false;
+	int original_material_id_ = std::numeric_limits<int>::quiet_NaN();
+};
 
 template <typename _Scalar, int NX = Dynamic, int NY = Dynamic> struct Functor
 {
@@ -47,6 +94,8 @@ template <typename _Scalar, int NX = Dynamic, int NY = Dynamic> struct Functor
 	{
 		return m_values;
 	}
+
+
 };
 
 
@@ -60,8 +109,103 @@ public:
 	spcSetObjectMacro(Model, model_, RBFModel<float>)
 	spcGetObjectMacro(Model, model_, RBFModel<float>)
 
-	spcSetObjectMacro(CalibrationData, keypoint_holder_, CalibrationDataHolder)
-	spcGetObjectMacro(CalibrationData, keypoint_holder_, CalibrationDataHolder)
+	void setCalibrationData(DataHolder::Ptr data)
+	{
+
+		all_keypoints_ = data;
+
+		//! we split the data in "materials"
+		Eigen::VectorXi materials = data->getUniqueMaterials();
+
+		for (int i = 0; i < materials.rows(); i++)
+		{
+			int mat_id = materials(i);
+
+			if (mat_id == -1) // -1 is unclassified stuff, each material will be made of just 1 keypoint
+			{
+				DataHolder::Ptr unclassified = data->getKeypointsOnMaterial(-1);
+				for (KeyPoint::Ptr kpoint: unclassified->getData())
+				{
+
+					Material::Ptr newmat (new Material(0,  mat_id));
+					newmat->appendKeypoint(kpoint);
+					materials_.push_back(newmat);
+
+//					newmat->lock(); // keep locked for DEBUG
+				}
+
+			}
+
+			else // all other materials are treated the same actually
+			{
+				DataHolder::Ptr keys = data->getKeypointsOnMaterial(mat_id);
+				Material::Ptr newmat (new Material(0,  mat_id, *keys));
+
+				if (mat_id == fixed_material_id_)
+				{
+					newmat->lock();
+					newmat->setFactor(value_for_fixed_material_);
+				}
+
+				materials_.push_back(newmat);
+			}
+		}
+
+	}
+
+	void initMaterialsFactorFromCurrentModel()
+	{
+		for (Material::Ptr mat: materials_)
+		{
+			if (mat->isLocked())
+				continue;
+
+			Eigen::VectorXf all_factors (mat->getTotalNumberOfObservations());
+			int counter = 0;
+			for (Observation::Ptr ob: mat->getAllObservations())
+			{
+				float prediction = model_->operator ()(ob->getAsEigenPoint());
+				if (!std::isfinite(prediction) | prediction == 0)
+				{
+					prediction = 1;
+				}
+				all_factors(counter ++) = ob->intensity / prediction;
+			}
+
+			float avg = all_factors.sum() / all_factors.rows();
+
+			mat->setFactor(avg);
+
+			LOG(INFO) << "material factor set to " <<avg;
+
+		}
+	}
+
+
+
+	Eigen::VectorXf getActiveMaterialFactors() const
+	{
+		Eigen::VectorXf out;
+		for (Material::Ptr mat: materials_)
+		{
+			if (!mat->isLocked()) // locked materials will not be optimized
+				out.push_back(mat->getFactor());
+		}
+		return out;
+	}
+
+
+	void setMaterialFactors(const Eigen::VectorXf factors)
+	{
+		int counter = 0;
+		for (Material::Ptr mat: materials_)
+		{
+			if(!mat->isLocked()) // only if the material is NON locked
+				mat->setFactor(factors(counter++));
+
+
+		}
+	}
 
 
 	spcSetMacro(FixedMaterialId, fixed_material_id_, size_t)
@@ -72,18 +216,38 @@ public:
 
 
 
+
 	void optimize()
 	{
+		disableMaterialsWithLessThanObservations(3);
+		initMaterialsFactorFromCurrentModel();
+		int outsize = all_keypoints_->getTotalNumberOfObservations();
 
-		int outsize = keypoint_holder_->getTotalNumberOfEntries();
-		my_functor Functor(this, model_->getCoefficients().rows(), outsize);
+		Eigen::VectorXf factors = getActiveMaterialFactors();
+
+		LOG(INFO) << "found " <<factors.rows() << " active materials";
+
+
+		my_functor Functor(this, model_->getCoefficients().rows() + factors.size(), outsize);
 
 		Eigen::NumericalDiff<my_functor> numDiff(Functor);
 		LevenbergMarquardt<Eigen::NumericalDiff<my_functor>, float> lm(numDiff);
 
+		lm.parameters.maxfev = 400000;
+
 		LOG(INFO) << "lev marq initialized";
 
 		Eigen::VectorXf coeffs = model_->getCoefficients();
+
+
+		LOG(INFO) << "init coeffs " << coeffs.transpose();
+		LOG(INFO) << "init factors " << factors.transpose();
+
+		coeffs.conservativeResize(coeffs.rows() + factors.rows());
+		coeffs.tail(factors.rows()) = factors;
+
+		//		return;
+
 		LOG(INFO) << "starting minimization";
 		int info = lm.minimize(coeffs);
 
@@ -101,15 +265,24 @@ protected:
 
 		int operator()(const VectorXf &x, VectorXf &fvec) const
 		{
-//			LOG(INFO)<< "CALLED functor, new pars: " << x.transpose();
+			//			LOG(INFO)<< "CALLED functor, new pars: " << x.transpose();
 
-			calibrator_->getModel()->setCoefficients(x);
+			int n_rbf_coeffs = calibrator_->getModel()->getCoefficients().rows();
+			Eigen::VectorXf rbf_coeffs = x.head(n_rbf_coeffs);
+			Eigen::VectorXf mat_factors = x.tail(x.rows() - n_rbf_coeffs);
 
-			calibrator_->updateSecondary();
 
-			fvec = calibrator_->getResiduals();
+			LOG(INFO) << "rbf-coeffs " << rbf_coeffs.rows();
 
-			LOG(INFO)<< "CALLED functor, residuals: " << fvec.sum();
+			calibrator_->getModel()->setCoefficients(rbf_coeffs);
+
+			calibrator_->setMaterialFactors(mat_factors);
+
+			fvec = calibrator_->getSquaredResiduals();
+
+//						LOG(INFO) << "current pars: " << x.transpose();
+
+			LOG(INFO)<< "CALLED functor, residuals: " << sqrt(fvec.sum() / fvec.size());
 
 			return 0;
 		}
@@ -118,96 +291,51 @@ protected:
 		IntensityCalibratorRBFNonLinear * calibrator_;
 	};
 
-	void updateSecondary()
+	void disableMaterialsWithLessThanObservations(int n_obs)
 	{
-		// update the corrected intensity for each observation.
-		for (Observation::Ptr obs: keypoint_holder_->getAllObservations())
-			obs->intensity_corrected = getCorrectiedIntensity(obs);
-
-
-		// updating the material_factor for each material and keypoint
-		Eigen::VectorXi materials = keypoint_holder_->getDefinedMaterials();
-
-		for (int i = 0; i < materials.rows(); ++i)
+		for (Material::Ptr mat: materials_)
 		{
-			int mat_id = materials(i);
+			if (mat->getTotalNumberOfObservations() < n_obs)
+				mat->lock();
+		}
+	}
 
-			float mat_factor = spcNANMacro;
 
-			if (mat_id == -1) // these are uncategorized materials
+
+
+	Eigen::VectorXf getSquaredResiduals() const
+	{
+		Eigen::VectorXf out;
+
+
+
+		for (Material::Ptr material: materials_)
+		{
+
+			if (material->isLocked())
 			{
-				CalibrationDataHolder::Ptr kpoints = keypoint_holder_->getKeypointsOnMaterial(-1);
-				for (CalibrationKeyPoint::Ptr kpoint: kpoints->getData())
+				for (Observation::Ptr ob: material->getAllObservations())
 				{
-					float avg = 0;
-					for (Observation::Ptr ob: kpoint->per_cloud_data)
-						avg += ob->intensity_corrected;
-
-					avg /= kpoint->per_cloud_data.size();
-
-					kpoint->intensity_expected = avg;
+					out.push_back(0);
 				}
 			}
-
 			else
 			{
-				if (mat_id == fixed_material_id_)
+				for (Observation::Ptr ob: material->getAllObservations())
 				{
-					mat_factor =  value_for_fixed_material_;
-				}
 
-				else
-				{
-					std::vector<Observation::Ptr> obs = keypoint_holder_->getKeypointsOnMaterial(mat_id)->getAllObservations();
-					mat_factor = 0;
+					float predicted = model_->operator ()(ob->getAsEigenPoint()) * material->getFactor();
 
-					for (Observation::Ptr ob: obs)
-						mat_factor += ob->intensity_corrected;
+					if (!std::isfinite(predicted))
+					{
+						LOG(WARNING) << "predicted not finite!";
+					}
 
-					mat_factor /= obs.size();
-				}
+					float diff  = predicted - ob->intensity; // predicted - observed
 
-
-				CalibrationDataHolder::Ptr kpoints = keypoint_holder_->getKeypointsOnMaterial(mat_id);
-				for (CalibrationKeyPoint::Ptr kpoint: kpoints->getData())
-				{
-					kpoint->intensity_expected = mat_factor;
+					out.push_back(diff * diff);
 				}
 			}
-
-
-		}
-
-
-
-	}
-
-	//! comptue the corrected intensity for the given observation
-	float getCorrectiedIntensity(Observation::Ptr ob) const
-	{
-		bool also_angle = false;
-		if (model_->getDimensionality() == 2)
-			also_angle = true;
-
-		Eigen::VectorXf p = ob->getAsEigenPoint(also_angle);
-
-		float corrected = ob->intensity / model_->operator ()(p);
-
-		if (ob->getParent()->material_id != -1)
-			LOG(INFO) << "o: " << ob->intensity << " m: " << model_->operator ()(p)  <<  " c: " << corrected;
-
-		return corrected;
-	}
-
-	Eigen::VectorXf getResiduals() const
-	{
-		Eigen::VectorXf out(keypoint_holder_->getTotalNumberOfEntries());
-
-		size_t counter = 0;
-		for (Observation::Ptr ob: keypoint_holder_->getAllObservations())
-		{
-			float diff = ob->getParent()->intensity_expected - ob->intensity_corrected;
-			out(counter++) =  diff * diff;
 		}
 
 		return out;
@@ -216,9 +344,19 @@ protected:
 
 	RBFModel<float>::Ptr model_;
 
-	CalibrationDataHolder::Ptr keypoint_holder_;
+	//! each dataholder in the vector will be a single
+	//! material
+	std::vector<Material::Ptr> materials_;
+
+
+	//! here the keypoints are stored un-ordered
+	DataHolder::Ptr all_keypoints_;
+
 
 	size_t fixed_material_id_ = 0;
+
+	Eigen::VectorXf materials_factors_;
+
 
 	float value_for_fixed_material_ = 1;
 };

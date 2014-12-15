@@ -1,4 +1,4 @@
-#include "CalibrationObservation.h"
+#include "Observation.h"
 #include <spc/core/cerea_requested_types.hpp>
 
 calibration::Observation::Observation(CloudDataSourceOnDisk::Ptr ref_cloud, calibration::CalibrationKeyPointPtr parent)

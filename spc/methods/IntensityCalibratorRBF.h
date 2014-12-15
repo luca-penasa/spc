@@ -19,14 +19,14 @@ public:
 
 
 
-    void setCalibrationData(const CalibrationDataHolder::Ptr clouddata)
+	void setCalibrationData(const DataHolder::Ptr clouddata)
     {
         calibration_data_ = clouddata;
     }
 
 
     static  void
-	extractVariablesAsMatrix(CalibrationDataHolder::Ptr holder,
+	extractVariablesAsMatrix(DataHolder::Ptr holder,
 							 Eigen::Matrix<float, -1, -1> &points,
 							 Eigen::Matrix<float, -1, 1> &intensity,
 							 Eigen::Matrix<float, -1, 1> &weights,
@@ -60,7 +60,7 @@ public:
 			//! we got the fields but we also need to get the weights
 			for (CalibrationKeyPointPtr k: holder->getData())
 			{
-				for (Observation::Ptr observation: k->per_cloud_data)
+				for (Observation::Ptr observation: k->observations)
 				{
 					float w = computeWeight(observation);
 					weights(counter++) = w;
@@ -90,7 +90,7 @@ public:
 	//! if also_angle == true also the angle is extracted into the matrix
 	//! points matrix will contain the distance and optionally the angle as a n x 1 (or 2) column vector.
 	//! the intensity will be placed in the intensity column vector
-	extractVariablesAsMatrix(CalibrationKeyPoint::Ptr data,
+	extractVariablesAsMatrix(KeyPoint::Ptr data,
 							 Eigen::Matrix<float, -1, -1> &points,
 							 Eigen::Matrix<float, -1, 1> &intensity,
 							 Eigen::Matrix<float, -1, 1> &weights,
@@ -98,17 +98,17 @@ public:
 							 bool extract_weights
 							 )
     {
-        points.resize(data->getNumberOfEntries(), 1);
-        intensity.resize(data->getNumberOfEntries());
+		points.resize(data->getNumberOfObservations(), 1);
+		intensity.resize(data->getNumberOfObservations());
 
 		if (extract_weights)
-			weights.resize(data->getNumberOfEntries());
+			weights.resize(data->getNumberOfObservations());
 
         if (also_angle)
             points.resize(Eigen::NoChange, 2);
 
         size_t counter = 0;
-		for (Observation::Ptr cdata: data->per_cloud_data)
+		for (Observation::Ptr cdata: data->observations)
         {
             points(counter, 0) = cdata->distance;			
 			intensity(counter) = cdata->intensity;
@@ -127,23 +127,23 @@ public:
     int calibrate()
     {
 
-        calibration_data_->ereaseInvalidPerCloudEntries(use_angle);
+		calibration_data_->ereaseInvalidObservations(use_angle);
 
         calibration_data_ = calibration_data_->getValidKeypoints();
 
-        LOG(INFO) << "data has " << calibration_data_->getTotalNumberOfEntries() << " valid entries after cleaning";
+		LOG(INFO) << "data has " << calibration_data_->getTotalNumberOfObservations() << " valid entries after cleaning";
 
-        Eigen::VectorXi materials_ids = calibration_data_->getDefinedMaterials();
+		Eigen::VectorXi materials_ids = calibration_data_->getUniqueMaterials();
         LOG(INFO) << "materials (ids) found in file: " << materials_ids;
         for (int i = 0; i < materials_ids.rows(); ++i)
         {
             int mat_id = materials_ids(i);
-            LOG(INFO) << "mat id " << mat_id << " has " << calibration_data_->getKeypointsOnMaterial(mat_id)->getTotalNumberOfEntries() << " valid entries";
+			LOG(INFO) << "mat id " << mat_id << " has " << calibration_data_->getKeypointsOnMaterial(mat_id)->getTotalNumberOfObservations() << " valid entries";
         }
 
-        calibration::CalibrationDataHolder::Ptr init_data = calibration_data_->getKeypointsOnMaterial(init_set_material_id);
+		calibration::DataHolder::Ptr init_data = calibration_data_->getKeypointsOnMaterial(init_set_material_id);
 
-        LOG(INFO) << "Using " << init_data->getTotalNumberOfEntries() << " datapoints for initializing the problem";
+		LOG(INFO) << "Using " << init_data->getTotalNumberOfObservations() << " datapoints for initializing the problem";
 
 
         Eigen::Matrix<float, -1, -1> points;
@@ -240,15 +240,15 @@ public:
 
         if (append_undef_material_constraints)
         {
-            CalibrationDataHolder::Ptr other = calibration_data_->getKeypointsOnMaterial(-1);
+			DataHolder::Ptr other = calibration_data_->getKeypointsOnMaterial(-1);
             LOG(INFO) << "adding constraints for keypoints on unprecised materials";
-            LOG(INFO) << "found " <<other->getTotalNumberOfEntries() << " entries";
+			LOG(INFO) << "found " <<other->getTotalNumberOfObservations() << " entries";
 
 
             size_t  counter = 0;
-            for(CalibrationKeyPoint::Ptr kp: other->getData())
+			for(KeyPoint::Ptr kp: other->getData())
             {
-                if (kp->getNumberOfEntries() <=1)
+				if (kp->getNumberOfObservations() <=1)
                     continue;
 
                 else
@@ -320,7 +320,7 @@ protected:
     //! we keep the calibration data in its cloud representation cause its easier to
     //! use and more portable (and a cloud representation can be easily created from
     //! the CalibrationDataHolder, but not vice-versa for now)
-    CalibrationDataHolder::Ptr calibration_data_;
+	DataHolder::Ptr calibration_data_;
 
 
     bool use_angle = true;

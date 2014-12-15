@@ -2,20 +2,20 @@
 #ifndef CALIBRATION_KEYPOINT_H
 #define CALIBRATION_KEYPOINT_H
 #include <spc/elements/ElementBase.h>
-#include <spc/elements/calibration/CalibrationObservation.h>
+#include <spc/elements/calibration/Observation.h>
 #include <spc/elements/Plane.h>
 namespace spc
 {
 namespace calibration
 {
 
-class CalibrationKeyPoint: public std::enable_shared_from_this<CalibrationKeyPoint>
+class KeyPoint: public std::enable_shared_from_this<KeyPoint>
 {
 public:
-    spcTypedefSharedPtrs(CalibrationKeyPoint)
+	spcTypedefSharedPtrs(KeyPoint)
 
     //! just for cereal to not complain
-    CalibrationKeyPoint()
+	KeyPoint()
     {
         lambdas.fill(spcNANMacro);
         material_id = std::numeric_limits<int>::quiet_NaN();
@@ -23,34 +23,34 @@ public:
         //! \todo add nan init for other members
     }
 
-    CalibrationKeyPoint(const CalibrationKeyPoint & other)
+	KeyPoint(const KeyPoint & other)
     {
 
     }
 
-    CalibrationKeyPoint(const Eigen::Vector3f &pos, const size_t mat_id);
+	KeyPoint(const Eigen::Vector3f &pos, const size_t mat_id);
 
-    void removeInvalidEntries(const bool &consider_angle)
+	void removeInvalidObservations(const bool &consider_angle)
     {
 
 		std::vector<Observation::Ptr> good ;
-		for (Observation::Ptr d: per_cloud_data)
+		for (Observation::Ptr d: observations)
         {
             if (d->isValid(consider_angle))
                 good.push_back(d);
         }
 
-        per_cloud_data = good;
+		observations = good;
 
 
     }
 
-    size_t getNumberOfEntries() const
+	size_t getNumberOfObservations() const
     {
-        return per_cloud_data.size();
+		return observations.size();
     }
 
-	Observation::Ptr newPerCloudData(CloudDataSourceOnDisk::Ptr cloud);
+	Observation::Ptr newObservationOnCloud(CloudDataSourceOnDisk::Ptr cloud);
 
     Plane fitting_plane;
 
@@ -60,7 +60,7 @@ public:
     Eigen::Vector3f lambdas;
 	int material_id; //! < a material id of -1 will be considered as unknwon material
 
-	std::vector<Observation::Ptr> per_cloud_data;
+	std::vector<Observation::Ptr> observations;
 
     NewSpcPointCloud cumulative_set;
 
@@ -77,7 +77,7 @@ private:
            CEREAL_NVP(post_position),
            CEREAL_NVP(eigen_ratio),
            CEREAL_NVP(lambdas),
-           CEREAL_NVP(per_cloud_data),
+		   CEREAL_NVP(observations),
            CEREAL_NVP(cumulative_set),
            CEREAL_NVP(material_id));
     }

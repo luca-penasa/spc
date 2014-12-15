@@ -231,8 +231,15 @@ public:
 
     }
 
+
+	void resetCoefficients(const T & value)
+	{
+		coeffs_.fill(value);
+	}
+
     void setCoefficients(const VectorT & coeffs)
     {
+//		CHECK(coeffs.rows() == coeffs_.rows()) << "Wrong coefficients dimension";
         coeffs_ = coeffs;
     }
 

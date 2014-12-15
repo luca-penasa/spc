@@ -1,6 +1,6 @@
 #ifndef CALIBRATIONDATAHOLDER_H
 #define CALIBRATIONDATAHOLDER_H
-#include <spc/elements/calibration/CalibrationKeypoint.h>
+#include <spc/elements/calibration/KeyPoint.h>
 #include <spc/elements/NewSpcPointCloud.h>
 
 namespace spc
@@ -8,21 +8,26 @@ namespace spc
 namespace calibration {
 
 
-class CalibrationDataHolder: public ElementBase
+class DataHolder: public ElementBase
 {
 public:
 
-    SPC_ELEMENT(CalibrationDataHolder)
+	SPC_ELEMENT(DataHolder)
     EXPOSE_TYPE
 
-    CalibrationDataHolder();
+	DataHolder();
+
+	DataHolder(const DataHolder & other)
+	{
+		keypoints_ = other.keypoints_;
+	}
 
 	std::vector<Observation::Ptr> getAllObservations() const
 	{
 		std::vector<Observation::Ptr> out ;
 		for (CalibrationKeyPointPtr kpoint: getData())
 		{
-			for (Observation::Ptr pcd: kpoint->per_cloud_data)
+			for (Observation::Ptr pcd: kpoint->observations)
 			{
 				out.push_back(pcd);
 			}
@@ -33,14 +38,14 @@ public:
 	}
 
 
-    CalibrationKeyPoint::Ptr newKeypoint(const Eigen::Vector3f &pos, size_t material_id)
+	KeyPoint::Ptr newKeypoint(const Eigen::Vector3f &pos, size_t material_id)
     {
-        CalibrationKeyPoint::Ptr kp(new CalibrationKeyPoint(pos, material_id));
+		KeyPoint::Ptr kp(new KeyPoint(pos, material_id));
         keypoints_.push_back(kp);
         return kp;
     }
 
-    void appendKeypoint(CalibrationKeyPoint::Ptr kpoint)
+	void appendKeypoint(KeyPoint::Ptr kpoint)
     {
         keypoints_.push_back(kpoint);
     }
@@ -66,44 +71,42 @@ public:
 
     }
 
-    size_t getTotalNumberOfEntries() const
+	size_t getTotalNumberOfObservations() const
     {
         size_t total_number=0;
-        for (calibration::CalibrationKeyPoint::Ptr keypoint: getData())
-        {
-                total_number += keypoint->per_cloud_data.size();
-        }
+		for (KeyPoint::Ptr keypoint: getData())
+				total_number += keypoint->observations.size();
 
         return total_number;
     }
 
 
 
-    void ereaseInvalidPerCloudEntries(const bool consider_angle)
+	void ereaseInvalidObservations(const bool consider_angle)
     {
-        for (CalibrationKeyPoint::Ptr kp: keypoints_)
-            kp->removeInvalidEntries(consider_angle);
+		for (KeyPoint::Ptr kp: keypoints_)
+			kp->removeInvalidObservations(consider_angle);
     }
 
     //! returns a cleaned version of the CalibrationDataHolder
     //! no data copies are actually made. so only the pointers are copied into the new
     //! holder
-    CalibrationDataHolder::Ptr getValidKeypoints() const
+	DataHolder::Ptr getValidKeypoints() const
     {
-        CalibrationDataHolder::Ptr out(new CalibrationDataHolder());
-        for (CalibrationKeyPoint::Ptr kp: keypoints_)
+		DataHolder::Ptr out(new DataHolder());
+		for (KeyPoint::Ptr kp: keypoints_)
         {
-            if (kp->getNumberOfEntries() > 0)
+			if (kp->getNumberOfObservations() > 0)
                 out->appendKeypoint(kp);
         }
 
         return out;
     }
 
-    CalibrationDataHolder::Ptr getKeypointsOnMaterial(const size_t mat_id) const
+	DataHolder::Ptr getKeypointsOnMaterial(const size_t mat_id) const
     {
-        CalibrationDataHolder::Ptr out(new CalibrationDataHolder());
-        for (CalibrationKeyPoint::Ptr kp: keypoints_)
+		DataHolder::Ptr out(new DataHolder());
+		for (KeyPoint::Ptr kp: keypoints_)
         {
            if (kp->material_id == mat_id)
                out->appendKeypoint(kp);
@@ -113,10 +116,10 @@ public:
 
     //! this will report a vector of the ids of the materialis into the dataset
 	//! notice that it will ALSO report uncategorized materials
-    Eigen::VectorXi getDefinedMaterials() const
+	Eigen::VectorXi getUniqueMaterials() const
     {
         Eigen::VectorXi out;
-        for (calibration::CalibrationKeyPoint::Ptr keypoint: keypoints_)
+		for (calibration::KeyPoint::Ptr keypoint: keypoints_)
         {
            out.push_back( keypoint->material_id );
         }
@@ -128,12 +131,12 @@ public:
 
 
 
-    std::vector<CalibrationKeyPoint::Ptr> getData() const
+	std::vector<KeyPoint::Ptr> getData() const
     {
         return keypoints_;
     }
 
-    std::vector<CalibrationKeyPoint::Ptr> &getData()
+	std::vector<KeyPoint::Ptr> &getData()
     {
         return keypoints_;
     }
@@ -142,9 +145,9 @@ public:
     {
         std::vector<CloudDataSourceOnDisk::Ptr> sources;
 
-        for (CalibrationKeyPoint::Ptr kpoint : keypoints_)
+		for (KeyPoint::Ptr kpoint : keypoints_)
         {
-			for (Observation::Ptr per_cloud: kpoint->per_cloud_data)
+			for (Observation::Ptr per_cloud: kpoint->observations)
             {
                 CloudDataSourceOnDisk::Ptr cloud = per_cloud->cloud;
 
@@ -161,7 +164,7 @@ public:
 
     NewSpcPointCloud::Ptr asPointCloud() const;
 protected:
-    std::vector<CalibrationKeyPoint::Ptr> keypoints_;
+	std::vector<KeyPoint::Ptr> keypoints_;
 
 private:
     friend class cereal::access;

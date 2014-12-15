@@ -8,8 +8,8 @@ namespace spc
 namespace calibration
 {
 
-class CalibrationKeyPoint;
-typedef spcSharedPtrMacro<CalibrationKeyPoint> CalibrationKeyPointPtr;
+class KeyPoint;
+typedef spcSharedPtrMacro<KeyPoint> CalibrationKeyPointPtr;
 
 class Observation: public std::enable_shared_from_this<Observation>
 {

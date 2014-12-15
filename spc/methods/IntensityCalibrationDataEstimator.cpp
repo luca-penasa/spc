@@ -20,7 +20,7 @@
 #include <boost/tuple/tuple.hpp>
 
 
-#include <spc/elements/calibration/CalibrationKeypoint.h>
+#include <spc/elements/calibration/KeyPoint.h>
 namespace spc
 {
 namespace calibration
@@ -29,7 +29,7 @@ CalibrationDataEstimator::CalibrationDataEstimator()
     : normal_estimation_search_radius_(0.1),
       intensity_estimation_spatial_sigma_(0.1),
       kernel_(new GaussianRBF<float>(0.1)),
-      calibration_data_(new calibration::CalibrationDataHolder)
+      calibration_data_(new calibration::DataHolder)
 
 {
 
@@ -65,9 +65,9 @@ int CalibrationDataEstimator::compute()
             return -1;
         }
 
-        for (calibration::CalibrationKeyPoint::Ptr keypoint: calibration_data_->getData())
+        for (calibration::KeyPoint::Ptr keypoint: calibration_data_->getData())
         {
-            calibration::Observation::Ptr data = keypoint->newPerCloudData(source);
+            calibration::Observation::Ptr data = keypoint->newObservationOnCloud(source);
 
             extractDataForKeypointAndCloud(data, cloud);
         }
@@ -188,8 +188,8 @@ void CalibrationDataEstimator::computeDerivedData()
     for (size_t i = 0 ; i <calibration_data_->getData().size(); ++i)
     {
 
-        calibration::CalibrationKeyPoint::Ptr keypoint = calibration_data_->getData().at(i);
-        for (calibration::Observation::Ptr data_holder: keypoint->per_cloud_data)
+        calibration::KeyPoint::Ptr keypoint = calibration_data_->getData().at(i);
+        for (calibration::Observation::Ptr data_holder: keypoint->observations)
         {
             //            DLOG(INFO) << "extract for normas has size " << data_holder->extract_for_normal_.getNumberOfPoints();
             keypoint->cumulative_set.concatenate(data_holder->extract_for_normal_);
@@ -216,7 +216,7 @@ void CalibrationDataEstimator::computeDerivedData()
             keypoint->post_position = newpos;
 
             //! no we can compute distance and angle
-            for (calibration::Observation::Ptr per_cloud: keypoint->per_cloud_data)
+            for (calibration::Observation::Ptr per_cloud: keypoint->observations)
             {
                 Eigen::Vector3f ray = keypoint->post_position - per_cloud->sensor_position;
 

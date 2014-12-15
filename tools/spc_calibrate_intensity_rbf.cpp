@@ -91,7 +91,7 @@ int main (int argc, char ** argv)
 
     CHECK(o != NULL) << "cannot deserialize the file";
 
-    calibration::CalibrationDataHolder::Ptr cal_data = spcDynamicPointerCast<calibration::CalibrationDataHolder> (o);
+	calibration::DataHolder::Ptr cal_data = spcDynamicPointerCast<calibration::DataHolder> (o);
 
 
     LOG(INFO) << "going do perform calibration";
@@ -118,8 +118,16 @@ int main (int argc, char ** argv)
 	CHECK(model != NULL) << "null ptr as model";
 
 
+
+	spc::io::serializeToFile(calibrator.getModel(), FLAGS_out, spc::io::XML);
+
+
+
 	if (FLAGS_nonlin)
 	{
+
+//		model->resetCoefficients(0);
+
 		calibration::IntensityCalibratorRBFNonLinear optimizer;
 		optimizer.setModel(model);
 		optimizer.setCalibrationData(cal_data);
@@ -128,6 +136,12 @@ int main (int argc, char ** argv)
 		optimizer.optimize();
 
 		model = optimizer.getModel();
+
+		std::string nonlinoptname = FLAGS_out + "_nonlin_opt";
+
+		LOG(INFO) << "Saving the model to " << FLAGS_out;
+		spc::io::serializeToFile(calibrator.getModel(), nonlinoptname, spc::io::XML);
+
 	}
 
 
@@ -135,8 +149,6 @@ int main (int argc, char ** argv)
 
 
 
-    LOG(INFO) << "Saving the model to " << FLAGS_out;
-    spc::io::serializeToFile(calibrator.getModel(), FLAGS_out, spc::io::XML);
 
 
     if (FLAGS_sample_model)
