@@ -15,7 +15,7 @@
 #include <spc/io/element_io.h>
 
 
-#include <gflags/gflags.h>
+#include <spc/core/flagging.h>
 #include <spc/core/logging.h>
 
 #include <spc/methods/IntensityCalibratorRBF.h>
