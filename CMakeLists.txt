@@ -163,10 +163,10 @@ find_package(Gflags REQUIRED)
 
 if(GFLAGS_FOUND)
     message("GFLAGS FOUND")
-    message("version: ${GLFAGS_VERSION}")
+
     INCLUDE_DIRECTORIES(${GFLAGS_INCLUDE_DIRS})
 
-    if(GFLAGS_VERSION VERSION_LESS "2.1")
+    if(GFLAGS_NAMESPACE EQUAL "google")
         set(SPC_DEFINITIONS ${SPC_DEFINITIONS} "-DGFLAGS_IN_NS_GOOGLE")
     endif()
 endif()
