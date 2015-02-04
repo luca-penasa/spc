@@ -71,6 +71,8 @@ option(SPC_BUILD_WITH_GPROF "Build with -pg flags for profiling." OFF)
 
 option(SPC_BUILD_TOOLS "Build the tools." ON)
 option(SPC_BUILD_SANDBOX_TOOLS "Build sandbox tools." OFF)
+option(SPC_BUILD_EXAMPLES_TOOLS "Build examples tools." OFF)
+
 
 option(SPC_BUILD_TESTS "Do tests" OFF)
 option(SPC_ENABLE_INSTALL "Enable/Disable the install target" OFF)
@@ -219,6 +221,12 @@ endif()
 #also tools if needed
 if(SPC_BUILD_SANDBOX_TOOLS)
     add_subdirectory(sandbox)
+endif()
+
+
+#also tools if needed
+if(SPC_BUILD_EXAMPLES_TOOLS)
+    add_subdirectory(examples)
 endif()
 
 #also tools if needed

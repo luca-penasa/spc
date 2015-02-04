@@ -32,6 +32,8 @@ DEFINE_bool(undef_mat, true, "Append additional constrains for keypoints seen by
                              "different point of views but of unknown materials. "
                              "Not granted to provide better results. (see also -adds_mat flag)");
 
+DEFINE_double(shift, 0, "An overall shift to be added to the measured intensities before to do anything");
+
 DEFINE_double(undef_mat_w, 1, "Overall weight for the undefined materials. Tweak this to give more or less"
 			  "importance to the observations for which a material was not specified.");
 
@@ -62,7 +64,7 @@ DEFINE_bool(sample_model, true, "sample the calibrated model in a regular grid f
 DEFINE_bool(init_data_correction, true, "sample the calibrated model at the points defined by the material 0. "
                                         "a txt file with the data will be saved");
 
-DEFINE_bool(nonlin, true, "Do an additiona nonlinear optimization step to oeptimize the rbf model against additional constraints");
+DEFINE_bool(nonlin, false, "Do an additiona nonlinear optimization step to oeptimize the rbf model against additional constraints");
 
 int main (int argc, char ** argv)
 {
@@ -108,6 +110,7 @@ int main (int argc, char ** argv)
 	calibrator.setUndefMaterialsWeight(FLAGS_undef_mat_w);
 	calibrator.setPolyOrder(FLAGS_poly_order);
 	calibrator.setInitSetMaterial(FLAGS_init_set);
+	calibrator.setIntensiytShift(FLAGS_shift);
 
     LOG(INFO) << "computing";
 

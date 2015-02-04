@@ -163,6 +163,9 @@ public:
         if (use_angle)
             n_splits.push_back(n_splits_angle_);
 
+		if(intensity_shift != 0)
+			intensities.array() += intensity_shift;
+
 		spc::RBFModelEstimator<float> estimator;
 		estimator.setPoints(points);
 		estimator.setWeights(w);
@@ -217,6 +220,9 @@ public:
 //                LOG(INFO) << points.transpose();
 //                LOG(INFO) << intensities.transpose();
 
+				if(intensity_shift != 0)
+					intensities.array() += intensity_shift;
+
 
                 LOG(INFO) << "Added  " << points.rows() - 1 << " new constraints" ;
 
@@ -225,6 +231,8 @@ public:
 					LOG(INFO) << "Overall weight for additional materials: " << additional_materials_weight;
 					weights.array() *= additional_materials_weight;
 				}
+
+
 
 				estimator.appendEqualityConstrainForPoints(points, intensities, weights);
             }
@@ -256,8 +264,10 @@ public:
                     Eigen::Matrix<float, -1, -1> points;
 					Eigen::Matrix<float, -1, 1> intensities, weights;
 
-					extractVariablesAsMatrix(kp, points, intensities, weights,  use_angle, use_weights);
+					extractVariablesAsMatrix(kp, points, intensities, weights,  use_angle, use_weights);					
 
+					if(intensity_shift != 0)
+						intensities.array() += intensity_shift;
 
 					if (undef_material_weight != 1)
 					{
@@ -304,6 +314,10 @@ public:
     spcSetMacro (Lambda, lambda_, float)
     spcSetMacro (ManualSigma, sigma_, float)
 
+	spcSetMacro (IntensiytShift, intensity_shift, float)
+	spcGetMacro (IntensiytShift, intensity_shift, float)
+
+
     spcSetMacro (InitSetMaterial, init_set_material_id, int)
 
 	spcSetMacro(AdditionalMaterialsWeight, additional_materials_weight, float)
@@ -346,6 +360,10 @@ protected:
     int init_set_material_id = 0;
 
     RBFModel<float>::Ptr model_;
+
+	//! u_shift is summed with the intensity, before modeling. This permits to shift to the positive side
+	//! the intensities of some devices which are not in a positive range.
+	float intensity_shift = 0;
 
 };
 

@@ -18,6 +18,7 @@ DEFINE_string(clouds, "","the clouds to which apply correction, separated by spa
 DEFINE_bool(split_rbf, true, "if true it will output the rbf part splitted from the polynomial part of the model");
 DEFINE_bool(do_correction, true, "save also the corrected observation (the corrected intensity)");
 
+DEFINE_double(shift, 0, "An overall shift to be added to the measured intensities before to do anything");
 
 DEFINE_bool(ascii, false, "save output as ascii file");
 
@@ -87,30 +88,24 @@ int main(int argc, char ** argv)
 
     std::vector<std::string> predictors =  spc::splitStringAtSeparator(FLAGS_predictors, ",");
 
-    for (auto s: predictors)
-    {
-        LOG(INFO) << "Predictor field: " << s;
-    }
+    for (auto s: predictors)   
+        LOG(INFO) << "Predictor field: " << s;    
 
     CHECK (model_dimensions == predictors.size()) << "Model dimensions and user selected predictors fields mismatch";
-
 
     std::vector<std::string> clouds =  spc::splitStringAtSeparator(FLAGS_clouds, " ");
 
     if (clouds.size() == 0) // we use the arguments
     {
-		for (int i = 1 ; i < argc; ++i)
-        {
-            clouds.push_back(argv[i]);
-        }
+		for (int i = 1 ; i < argc; ++i)        
+            clouds.push_back(argv[i]);        
     }
 
 
 
     for (auto s: clouds)
-    {
         LOG(INFO) << "Cloud file: " << s;
-    }
+
 
     CHECK (clouds.size() >= 1) << "please provide at least one cloud to correct";
 
@@ -145,7 +140,8 @@ int main(int argc, char ** argv)
 
         Eigen::Map<Eigen::VectorXf> ob = Eigen::Map<Eigen::VectorXf>(obs.data(), obs.size());
 
-
+		if (FLAGS_shift != 0)
+			ob.array() += FLAGS_shift;
 
         Eigen::MatrixXf result;
         std::vector<std::string> result_names;
