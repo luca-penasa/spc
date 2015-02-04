@@ -75,6 +75,8 @@ int TimeSeriesGenerator::compute()
 
         estimator.getModel()->setPolyOrder(1);
 
+        CHECK(estimator.initProblem() != -1) << "problem initializing the calibration task";
+
         CHECK(estimator.solveProblem()!= -1) << "cannot solve -- see log info please";
 
         LOG(INFO) << "autocalibration computed. Correcting intensities";

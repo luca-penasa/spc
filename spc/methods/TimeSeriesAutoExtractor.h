@@ -112,7 +112,7 @@ protected:
     spc::ElementBase::Ptr root_;
 
     float sampling_step_ = 0.01;
-    float bandwidth_ = 0.04;
+    float bandwidth_ = 0.01;
 
     std::string scalar_field_name_ = "intensity";
 

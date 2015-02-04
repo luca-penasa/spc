@@ -282,7 +282,7 @@ protected:
 
 			fvec = calibrator_->getSquaredResiduals();
 
-			calibrator_->getActiveMaterialFactors()
+            calibrator_->getActiveMaterialFactors();
 //						LOG(INFO) << "current pars: " << x.transpose();
 
 			LOG(INFO)<< "CALLED functor, residuals: " << sqrt(fvec.sum() / fvec.size());
