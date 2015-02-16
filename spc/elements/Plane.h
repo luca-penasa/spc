@@ -92,7 +92,7 @@ public:
     /// distance is signed (+ if in the same half-space of normal_)
     float distanceTo(const Vector3f &point) const
     {
-        return normal_.getUnitNormal().dot(point) + getP();
+		return normal_.getUnitNormal().dot(point) - getP();
     }
 
     /// get the P parameters (distance of the plane from the origin)
