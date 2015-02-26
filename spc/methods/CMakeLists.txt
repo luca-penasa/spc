@@ -1,2 +1,2 @@
-set(additional_libs ceres)
+#set(additional_libs ceres)
 spc_add_library()

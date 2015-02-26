@@ -162,8 +162,8 @@ target_link_libraries(${MY_TOOLS_PREFIX}compute_intensity_calibration ${PCL_LIBR
 
 
 
-FIND_PACKAGE(Ceres REQUIRED)
-INCLUDE_DIRECTORIES(${CERES_INCLUDE_DIRS})
+#FIND_PACKAGE(Ceres REQUIRED)
+#INCLUDE_DIRECTORIES(${CERES_INCLUDE_DIRS})
 
 
 #spc_add_executable(${MY_TOOLS_PREFIX}calibration_testing spc_calibration_testing.cpp)
