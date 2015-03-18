@@ -78,6 +78,7 @@ option(SPC_BUILD_EXAMPLES_TOOLS "Build examples tools." OFF)
 OPTION(SPC_GFLAGS "Enable Google Flags. Needed by the tools" ON)
 option(SPC_BUILD_TESTS "Do tests" OFF)
 option(SPC_ENABLE_INSTALL "Enable/Disable the install target" OFF)
+OPTION(SPC_MINIGLOG "Use a stripped down version of glog." ON)
 
 #option(SPC_GFLAGS_IN_NAMESPACE_GOOGLE "says if gflags is expected to be into the google namespace" OFF)
 
@@ -181,16 +182,44 @@ else(SPC_GFLAGS) # gflags not requested.
 endif(SPC_GFLAGS)
 
 
+message("Minilog flag: " ${SPC_MINILOG})
+
+IF (SPC_MINIGLOG)
+  MESSAGE("-- Compiling minimal glog substitute (the one from ceres-solver).")
+  SET(GLOG_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/miniglog)
+  SET(GLOG_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/miniglog)
+
+  MESSAGE("-- Using minimal glog substitute (include): ${GLOG_INCLUDE_DIRS}")
+
+#    add_library(miniglog STATIC miniglog/glog/logging.cc)
+
+    set(GLOG_LIBRARIES )
+    set(GLOG_LIBRARY )
+
+    MARK_AS_ADVANCED(FORCE GLOG_INCLUDE_DIR
+			 GLOG_LIBRARY)
 
 
 
-find_package(Glog REQUIRED)
+ELSE (SPC_MINIGLOG)
 
-if(GLOG_FOUND) #
+  # Don't search with REQUIRED so that configuration continues if not found and
+  # we can output an error messages explaining MINIGLOG option.
+  FIND_PACKAGE(Glog)
+  IF (GLOG_FOUND)
     message("GLOG FOUND")
-    INCLUDE_DIRECTORIES(${GLOG_INCLUDE_DIRS})
-endif()
+  ELSE (GLOG_FOUND)
+    MESSAGE(FATAL_ERROR "Can't find Google Log. Please set GLOG_INCLUDE_DIR & "
+      "GLOG_LIBRARY or enable MINIGLOG option to use minimal glog "
+      "implementation.")
+  ENDIF (GLOG_FOUND)
 
+ENDIF (SPC_MINIGLOG)
+
+
+
+
+    INCLUDE_DIRECTORIES(${GLOG_INCLUDE_DIRS})
 
 
 
@@ -264,7 +293,7 @@ set (CONF_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}")
 set (CONF_CEREAL_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/submodules/cereal/include")
 set (CONF_LIBRARY_DIRS "${LIBRARY_OUTPUT_PATH}")
 set (CONF_NANOFLANN_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/submodules/nanoflann/include")
-
+set (CONF_MINIGLOG_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/miniglog")
 
 configure_file(SPCConfig.cmake.in "${PROJECT_BINARY_DIR}/SPCConfig.cmake" @ONLY)
 
@@ -277,8 +306,9 @@ if(SPC_ENABLE_INSTALL)
     set (CONF_INCLUDE_DIRS "${SPC_INSTALL_INCLUDE_DIR}")
     set (CONF_CEREAL_INCLUDE_DIRS "${SPC_INSTALL_INCLUDE_DIR}/spc/3rdParty")
     set (CONF_NANOFLANN_INCLUDE_DIRS "${SPC_INSTALL_INCLUDE_DIR}/spc/3rdParty")
-
     set (CONF_LIBRARY_DIRS "${SPC_INSTALL_LIB_DIR}")
+    set (CONF_MINIGLOG_INCLUDE_DIRS "${SPC_INSTALL_INCLUDE_DIR}/spc/3rdParty/miniglog")
+
 
     ## reconfigure the SPCConfig.cmake putting it in a subdirectory of the build tree
     configure_file(SPCConfig.cmake.in "${PROJECT_BINARY_DIR}/${CMAKE_FILES_DIRECTORY}/SPCConfig.cmake" @ONLY)
@@ -292,5 +322,7 @@ if(SPC_ENABLE_INSTALL)
     ## Install the export set for use with the install-tree
     install(EXPORT SPCTargets DESTINATION
                    "${INSTALL_CMAKE_DIR}" COMPONENT dev)
+
+    INSTALL( DIRECTORY miniglog DESTINATION "${SPC_INSTALL_INCLUDE_DIR}/spc/3rdParty" )
 endif()
 

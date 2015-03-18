@@ -23,7 +23,7 @@ void PointCloudPCL::getFieldValue(const IndexT id,
 {
     if (!hasField(fieldname))
     {
-        DLOG_EVERY_N(WARNING, 100  ) <<"Unable to find field: " << fieldname;
+		DLOG(WARNING) <<"Unable to find field: " << fieldname;
         return;
     }
 
@@ -38,7 +38,7 @@ void PointCloudPCL::setFieldValue(const IndexT id, const std::string fieldname, 
     int field_id = pcl::getFieldIndex(*cloud_, fieldname);
 
     if (!hasField(fieldname)) {
-        DLOG_EVERY_N(WARNING, 100)<< "Unable to find field: " << fieldname;
+		DLOG(WARNING) << "Unable to find field: " << fieldname;
         return;
     }
 

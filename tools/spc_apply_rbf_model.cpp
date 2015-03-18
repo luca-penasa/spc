@@ -63,7 +63,7 @@ int main(int argc, char ** argv)
 
 
 
-    FLAGS_logtostderr = 1;
+//    FLAGS_logtostderr = 1;
 
 //    FLAGS_helpmatch = argv[0];
 

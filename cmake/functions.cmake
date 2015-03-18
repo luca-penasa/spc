@@ -48,7 +48,7 @@ endif(SPC_ENABLE_INSTALL)
         file(GLOB HEADERS ${dir}/*.h)
         file(GLOB IMPLS ${dir}/*.hpp)
 
-        message("sources: ${SOURCES}" )
+#        message("sources: ${SOURCES}" )
 
         list(APPEND LIB_SOURCES ${SOURCES})
         list(APPEND LIB_HEADERS ${HEADERS})
@@ -65,6 +65,10 @@ endforeach()
 list(APPEND LIB_SOURCES ${SOURCES})
 list(APPEND LIB_HEADERS ${HEADERS})
 list(APPEND LIB_IMPLS ${IMPLS})
+
+	list(APPEND LIB_SOURCES "${ADDITIONAL_SOURCES}")
+	  message("->>> Additional sources found from within the macro for lib ${libname}:" "${ADDITIONAL_SOURCES}")
+
 
     set(sources ${LIB_SOURCES} ${LIB_HEADERS} ${LIB_IMPLS})
 #${HEADERS} ${IMPLS})

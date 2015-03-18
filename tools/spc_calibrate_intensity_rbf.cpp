@@ -73,7 +73,7 @@ int main (int argc, char ** argv)
     gflags::SetUsageMessage("Compute a rbf model for predicting a given scalar field (e.g. intensity) as function of any other scalar fields."
                             "call as: " + std::string(argv[0]) + " database.spc [or xml/json] [...]");
 
-    FLAGS_logtostderr = 1;
+//    FLAGS_logtostderr = 1;
     gflags::ParseCommandLineFlags(&argc, &argv, true);
 
     if (FLAGS_input_database == "")

@@ -46,7 +46,7 @@ int main (int argc, char ** argv)
 
    gflags::SetUsageMessage("computes a dataset of sampled scalar fields for calibrating the device");
 
-    FLAGS_logtostderr = 1;
+//    FLAGS_logtostderr = 1;
     gflags::ParseCommandLineFlags(&argc, &argv, true);
 
 

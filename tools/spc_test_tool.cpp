@@ -231,8 +231,8 @@ int main(int argc, char ** argv)
     google::InitGoogleLogging(argv[0]);
     //    std::cout << "INIZIO" << std::endl;
 
-    FLAGS_colorlogtostderr=1;
-    FLAGS_logtostderr=1;
+//    FLAGS_colorlogtostderr=1;
+//    FLAGS_logtostderr=1;
 
     //    testAttitudeIO();
 
