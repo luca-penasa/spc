@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 project(spc)
 
+
+INCLUDE(cmake/UpdateCacheVariable.cmake) #courtesy of ceres-solver
+
 set(SPC_DEFINITIONS "") #my definitions
 
 #find_package(Qt5Widgets)
@@ -33,7 +36,7 @@ set(SPC_VERSION ${SPC_MAJOR_VERSION}.${SPC_MINOR_VERSION}.${SPC_PATCH_VERSION})
 
 ########################### COMPILER FLAGS ##################################
 if (WIN32)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}" )
+	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP" )
 else()
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -std=c++0x -Wno-narrowing " )
 endif()
@@ -66,14 +69,13 @@ set(SPC_LIBRARIES CACHE INTERNAL "SPC libs" FORCE) #this will collect all the mo
 
 ############################# OPTIONS ######################################################################
 option(SPC_BUILD_SHARED "Build spc library as a shared lib." ON)
-option(SPC_BUILD_STD_SHARED_PTR "use std::shared_ptr instead of boost one." ON)
 option(SPC_BUILD_WITH_GPROF "Build with -pg flags for profiling." OFF)
 
 option(SPC_BUILD_TOOLS "Build the tools." ON)
 option(SPC_BUILD_SANDBOX_TOOLS "Build sandbox tools." OFF)
 option(SPC_BUILD_EXAMPLES_TOOLS "Build examples tools." OFF)
 
-
+OPTION(SPC_GFLAGS "Enable Google Flags. Needed by the tools" ON)
 option(SPC_BUILD_TESTS "Do tests" OFF)
 option(SPC_ENABLE_INSTALL "Enable/Disable the install target" OFF)
 
@@ -126,15 +128,6 @@ if(SPC_USE_PARALLEL_OPENMP) # a definition if use parallelization where possible
 endif()
 
 
-
-if(SPC_BUILD_STD_SHARED_PTR)
-    add_definitions(-DUSE_STD_SHARED_PTR)
-    set(SPC_DEFINITIONS "${SPC_DEFINITIONS} -DUSE_STD_SHARED_PTR" )
-endif()
-
-#    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -lpthread -lgcc_s" )
-
-
 ############################################################################################################
 
 #########################  PCL! - everybody here will need it ###############################
@@ -159,25 +152,41 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/functions.cmake)
 # include the current source dir
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
+# gflags is optional
+if(SPC_GFLAGS)
+    find_package(Gflags REQUIRED)
+
+    if(GFLAGS_FOUND)
+	message("GFLAGS FOUND")
+
+	INCLUDE_DIRECTORIES(${GFLAGS_INCLUDE_DIRS})
+
+	message("GFLAGS found and it is in namespace: " ${GFLAGS_NAMESPACE})
+
+	if(GFLAGS_NAMESPACE STREQUAL "google")
+	    set(SPC_DEFINITIONS ${SPC_DEFINITIONS} "-DGFLAGS_IN_NS_GOOGLE")
+	endif()
+
+    else(GFLAGS_FOUND)
+	message("GLFAGS requested but not found! Disabling Gflags support")
+	UPDATE_CACHE_VARIABLE(SPC_GFLAGS OFF)
+    endif(GFLAGS_FOUND)
+
+else(SPC_GFLAGS) # gflags not requested.
+    message("GFLAGS not enabled. All executables will be not build")
+    UPDATE_CACHE_VARIABLE(SPC_BUILD_TOOLS OFF)
+    UPDATE_CACHE_VARIABLE(SPC_BUILD_SANDBOX_TOOLS OFF)
+    UPDATE_CACHE_VARIABLE(SPC_BUILD_EXAMPLES_TOOLS OFF)
+    UPDATE_CACHE_VARIABLE(SPC_BUILD_TESTING_TOOLS OFF)
+endif(SPC_GFLAGS)
 
 
-find_package(Gflags REQUIRED)
 
-if(GFLAGS_FOUND)
-    message("GFLAGS FOUND")
 
-    INCLUDE_DIRECTORIES(${GFLAGS_INCLUDE_DIRS})
-
-message ("GFLAGS Is in namespace: " ${GFLAGS_NAMESPACE})
-    if(GFLAGS_NAMESPACE STREQUAL "google")
-        message("set a new precompiler definition for gflags")
-        set(SPC_DEFINITIONS ${SPC_DEFINITIONS} "-DGFLAGS_IN_NS_GOOGLE")
-    endif()
-endif()
 
 find_package(Glog REQUIRED)
 
-if(GLOG_FOUND)
+if(GLOG_FOUND) #
     message("GLOG FOUND")
     INCLUDE_DIRECTORIES(${GLOG_INCLUDE_DIRS})
 endif()
@@ -212,6 +221,8 @@ add_definitions(${SPC_DEFINITIONS})
 
 # the main libraries
 add_subdirectory(spc)
+
+
 
 #also tools if needed
 if(SPC_BUILD_TOOLS)
