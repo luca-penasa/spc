@@ -224,7 +224,7 @@ public:
     void updateSearcher(const std::string & on_field = "position")
     {
         if (searcher_ == NULL)
-            searcher_ = typename SearcherT::Ptr (new SearcherT(this->getFieldByName("position"), 20));
+            searcher_ =  SearcherT::Ptr (new SearcherT(this->getFieldByName("position"), 20));
     }
 
     void resetSearcher()

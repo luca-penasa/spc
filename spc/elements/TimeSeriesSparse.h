@@ -23,8 +23,8 @@ class TimeSeriesSparse : public TimeSeriesBase
 public:
     SPC_ELEMENT(TimeSeriesSparse)
 EXPOSE_TYPE
-    typedef typename TimeSeriesBase::VectorT VectorT;
-    typedef typename TimeSeriesBase::ScalarT ScalarT;
+    typedef  TimeSeriesBase::VectorT VectorT;
+    typedef  TimeSeriesBase::ScalarT ScalarT;
 
 
 public:

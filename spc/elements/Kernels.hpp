@@ -84,7 +84,7 @@ public:
 #ifdef USE_OPENMP
 #pragma omp parallel for
 #endif
-        for (size_t i = 0; i < squared_xs.rows(); ++i)
+        for (int i = 0; i < squared_xs.rows(); ++i)
         {
 
             w(i) = this->eval( squared_xs(i));

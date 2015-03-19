@@ -3,6 +3,8 @@
 #include <spc/elements/Sample.h>
 #include <spc/elements/SamplesDB.h>
 
+#include <numeric> // for std::accumulate on msvc12
+
 namespace spc
 {
 AlignSingleAttitudeStratigraphicModelToSamples::

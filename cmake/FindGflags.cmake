@@ -130,40 +130,8 @@ SET(GFLAGS_FOUND TRUE)
 # Identify what namespace gflags was built with.
 IF (GFLAGS_INCLUDE_DIR)
 # First try the (older) google namespace.
-INCLUDE(CheckCXXSourceCompiles)
-# Setup include path & link library for gflags for CHECK_CXX_SOURCE_COMPILES
-SET(CMAKE_REQUIRED_INCLUDES ${GFLAGS_INCLUDE_DIR})
-SET(CMAKE_REQUIRED_LIBRARIES ${GFLAGS_LIBRARY})
-CHECK_CXX_SOURCE_COMPILES(
-"#include <gflags/gflags.h>
-int main(int argc, char * argv[]) {
-google::ParseCommandLineFlags(&argc, &argv, true);
-return 0;
-}"
-GFLAGS_IN_GOOGLE_NAMESPACE)
-IF (GFLAGS_IN_GOOGLE_NAMESPACE)
-SET(GFLAGS_NAMESPACE google)
-ELSE (GFLAGS_IN_GOOGLE_NAMESPACE)
-# Try (newer) gflags namespace instead.
-#
-# Setup include path & link library for gflags for CHECK_CXX_SOURCE_COMPILES
-SET(CMAKE_REQUIRED_INCLUDES ${GFLAGS_INCLUDE_DIR})
-SET(CMAKE_REQUIRED_LIBRARIES ${GFLAGS_LIBRARY})
-CHECK_CXX_SOURCE_COMPILES(
-"#include <gflags/gflags.h>
-int main(int argc, char * argv[]) {
-gflags::ParseCommandLineFlags(&argc, &argv, true);
-return 0;
-}"
-GFLAGS_IN_GFLAGS_NAMESPACE)
-IF (GFLAGS_IN_GFLAGS_NAMESPACE)
+
 SET(GFLAGS_NAMESPACE gflags)
-ENDIF (GFLAGS_IN_GFLAGS_NAMESPACE)
-ENDIF (GFLAGS_IN_GOOGLE_NAMESPACE)
-IF (NOT GFLAGS_NAMESPACE)
-GFLAGS_REPORT_NOT_FOUND(
-"Failed to determine gflags namespace, it is not google or gflags.")
-ENDIF (NOT GFLAGS_NAMESPACE)
 ENDIF (GFLAGS_INCLUDE_DIR)
 # gflags does not seem to provide any record of the version in its
 # source tree, thus cannot extract version.
