@@ -20,7 +20,7 @@ public:
 
     bool hasParent() const
     {
-        return parent_;
+        return parent_ != NULL;
     }
 
     DtiClassType *getParent() const

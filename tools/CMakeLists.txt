@@ -142,14 +142,14 @@ spc_add_executable(${MY_TOOLS_PREFIX}subset_from_geometry spc_subset_from_geomet
 target_link_libraries(${MY_TOOLS_PREFIX}subset_from_geometry ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 
-spc_add_executable(${MY_TOOLS_PREFIX}get_mean_std_sampling_step spc_get_mean_std_sampling_step.cpp)
-target_link_libraries(${MY_TOOLS_PREFIX}get_mean_std_sampling_step ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
+#spc_add_executable(${MY_TOOLS_PREFIX}get_mean_std_sampling_step spc_get_mean_std_sampling_step.cpp)
+#target_link_libraries(${MY_TOOLS_PREFIX}get_mean_std_sampling_step ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 
 spc_add_executable(${MY_TOOLS_PREFIX}append_orientations_to_pcd spc_append_orientations_to_pcd)
 target_link_libraries(${MY_TOOLS_PREFIX}append_orientations_to_pcd ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
-
+message(" glfags libs::::: " ${GFLAGS_LIBRARIES}})
 spc_add_executable(${MY_TOOLS_PREFIX}compute_calibration_dataset spc_compute_calibration_dataset)
 target_link_libraries(${MY_TOOLS_PREFIX}compute_calibration_dataset ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES} ${GLOG_LIBRARIES} ${GFLAGS_LIBRARIES})
 
