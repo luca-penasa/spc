@@ -230,22 +230,22 @@ getSampleCovMatAndAvg(Eigen::Matrix<Scalar, ColsAtCompileTime, 1> &avg) const
 
 //! compatibility with other vector implementations - std::vector, QVector etc
 
-inline Scalar at(uint i, uint j) const
+inline Scalar at(size_t i, size_t j) const
 {
     return this->operator()(i,j);
 }
 
-inline Scalar& at(uint i, uint j)
+inline Scalar& at(size_t i, size_t j)
 {
     return this->operator()(i,j);
 }
 
-inline Scalar at(uint i) const
+inline Scalar at(size_t i) const
 {
     return this->operator[](i);
 }
 
-inline Scalar& at(uint i)
+inline Scalar& at(size_t i)
 {
     return this->operator[](i);
 

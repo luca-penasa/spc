@@ -121,7 +121,7 @@ int PointCloudHelpers::computeScatteringAngle(PointCloudBase::Ptr cloud, const s
         n.normalize();
 
         float cosTheta = ray.dot(n);
-        float theta = acos(std::min(fabs(cosTheta), 1.0));
+        float theta = acos(std::min(fabs(cosTheta), 1.0f));
 
         theta *= 180.0 / M_PI;
 

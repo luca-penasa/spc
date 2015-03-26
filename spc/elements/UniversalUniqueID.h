@@ -13,7 +13,7 @@ class UniversalUniqueID
 public:
     spcTypedefSharedPtrs(UniversalUniqueID)
 
-    typedef typename boost::uuids::uuid IDType;
+    typedef boost::uuids::uuid IDType;
 
     UniversalUniqueID();
 

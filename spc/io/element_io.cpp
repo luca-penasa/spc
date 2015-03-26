@@ -75,8 +75,8 @@ ISerializable::Ptr deserializeFromFile(const std::string filename)
         return ptr;
     }
 
-    boost::filesystem::path path = (filename);
-    std::string extension = path.extension().c_str();
+    boost::filesystem::path path (filename);
+    std::string extension(path.extension().string());
 
     ARCHIVE_TYPE matched_type;
 

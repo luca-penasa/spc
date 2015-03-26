@@ -29,9 +29,9 @@ class TimeSeriesEquallySpaced : public spc::TimeSeriesBase
 public:
     SPC_ELEMENT(TimeSeriesEquallySpaced)
 EXPOSE_TYPE
-    using typename spc::TimeSeriesBase::VectorT;
+    using  spc::TimeSeriesBase::VectorT;
 
-    using typename spc::TimeSeriesBase::ScalarT;
+    using spc::TimeSeriesBase::ScalarT;
 
     ///
     /// \brief EquallySpacedTimeSeries default constructor

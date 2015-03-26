@@ -66,7 +66,7 @@ void PointCloudBase::addFields(const std::vector<std::string> field_names,
 #ifdef USE_OPENMP
 #pragma omp parallel for
 #endif
-        for (IndexT i = 0 ; i < data.rows(); ++i)
+        for (int i = 0 ; i < data.rows(); ++i)
         {
             this->setFieldValue(i, fname, data( i, field_counter));
         }

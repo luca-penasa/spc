@@ -64,7 +64,7 @@ public:
 
     virtual IndexT getNumberOfPoints() const = 0;
 
-    virtual void resize(IndexT size) = 0;
+    virtual void resize(const IndexT size) = 0;
 
 
     virtual Eigen::Matrix<ScalarT, -1, DIM> asEigenMatrix() const

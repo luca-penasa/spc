@@ -223,7 +223,7 @@ PointCloudBase::Ptr loadPointCloud(const std::string &filename)
 
     boost::filesystem::path path = (filename);
 
-    std::string extension = path.extension().c_str(); // we will use extension for detectin the type of cloud
+    std::string extension = path.extension().string(); // we will use extension for detectin the type of cloud
 
 
     if (   !((extension == ".xml")

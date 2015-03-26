@@ -102,7 +102,7 @@ float CalibrationDataEstimator::getMinimumAngleBetweenVectors(const Eigen::Vecto
     Eigen::Vector3f y = y_ / y_.norm();
 
     float cosTheta = x.dot(y);
-    float theta = acos(std::min(fabs(cosTheta), 1.0));
+    float theta = acos(std::min(fabs(cosTheta),  1.0f));
 
     theta *= 180.0 / M_PI;
 
@@ -185,7 +185,7 @@ void CalibrationDataEstimator::computeDerivedData()
 #ifdef USE_OPENMP
 #pragma omp parallel for
 #endif
-    for (size_t i = 0 ; i <calibration_data_->getData().size(); ++i)
+    for (int i = 0 ; i <calibration_data_->getData().size(); ++i)
     {
 
         calibration::KeyPoint::Ptr keypoint = calibration_data_->getData().at(i);
