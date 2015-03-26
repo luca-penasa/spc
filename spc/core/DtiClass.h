@@ -3,6 +3,7 @@
 #define DTICLASS_H
 
 #include <string>
+#include <spc/core/macros.h>
 //#include <iostream> //for debug
 
 class DtiClassType

@@ -17,7 +17,7 @@ namespace spc
 /// that localize the measure
 /// \note Typical notation for an attitude is 10/245 with 10 dip angle (0-90)
 /// and 245 is azimut from N (0-360) - the dip.
-class Attitude : public Plane
+class SPC_LIB_API  Attitude : public Plane
 {
 public:
     SPC_ELEMENT(Attitude)

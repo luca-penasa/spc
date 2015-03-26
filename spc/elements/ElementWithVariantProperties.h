@@ -5,7 +5,7 @@
 namespace spc
 {
 //! TODO to be modified so it looks like an interface
-class ElementWithVariantProperties
+	class SPC_LIB_API  ElementWithVariantProperties
 {
 public:
     spcTypedefSharedPtrs(ElementWithVariantProperties)

@@ -11,7 +11,7 @@ namespace calibration
 class KeyPoint;
 typedef spcSharedPtrMacro<KeyPoint> CalibrationKeyPointPtr;
 
-class Observation: public std::enable_shared_from_this<Observation>
+class SPC_LIB_API  Observation : public std::enable_shared_from_this<Observation>
 {
 public:
 	spcTypedefSharedPtrs(Observation)

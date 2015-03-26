@@ -14,7 +14,7 @@
 namespace spc
 {
 
-class FieldBase : public ElementBase
+	class SPC_LIB_API  FieldBase : public ElementBase
 {
 public:
     typedef boost::variant

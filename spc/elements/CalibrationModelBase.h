@@ -7,7 +7,7 @@ namespace  spc {
 
 
 
-class CalibrationModelBase
+class SPC_LIB_API  CalibrationModelBase
 {
 public:
     CalibrationModelBase();

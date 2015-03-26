@@ -14,7 +14,7 @@ namespace spc
 /// element
 /// and with length and radius as in parameters
 ///
-class Cylinder : public Point3D
+	class SPC_LIB_API  Cylinder : public Point3D
 {
 public:
     SPC_ELEMENT(Cylinder)

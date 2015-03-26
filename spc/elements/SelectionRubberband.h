@@ -26,7 +26,7 @@ namespace spc
 /// NOTE this class must be splitted in a filter and a serializable object
 /// it is not good that an object does operations on data. Filters do them.
 
-class SelectionRubberband : public ElementBase, public SelectionOfPointsBase
+	class SPC_LIB_API SelectionRubberband : public ElementBase, public SelectionOfPointsBase
 {
 public:
     SPC_ELEMENT(SelectionRubberband)

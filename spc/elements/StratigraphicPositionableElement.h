@@ -9,7 +9,7 @@ namespace spc
 {
 
 
-class StratigraphicPositionableElement: public Point3D
+	class SPC_LIB_API StratigraphicPositionableElement : public Point3D
 {
 public:
 

@@ -160,7 +160,7 @@ protected:
 
 
 
-typedef PointSetBase<float, 3> PointCloudXYZBase;
+typedef SPC_LIB_API  PointSetBase<float, 3> PointCloudXYZBase;
 
 
 }

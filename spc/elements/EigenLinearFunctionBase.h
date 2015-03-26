@@ -9,7 +9,7 @@ namespace spc
 
 //! a polynomial function in n vars from R^n to R
 //!
-class EigenLinearFunctionBase : public EigenFunctionBase
+	class SPC_LIB_API  EigenLinearFunctionBase : public EigenFunctionBase
 {
 public:
     spcTypedefSharedPtrs(EigenLinearFunctionBase)

@@ -19,7 +19,7 @@
 namespace spc
 {
 
-class EigenTable : public ElementBase
+	class SPC_LIB_API  EigenTable : public ElementBase
 {
 public:
     SPC_ELEMENT(EigenTable)

@@ -14,7 +14,7 @@ namespace spc
 {
 
 
-class CloudDataSourceOnDisk: public ElementBase
+class SPC_LIB_API  CloudDataSourceOnDisk : public ElementBase
 {
 public:
 

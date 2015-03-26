@@ -5,7 +5,7 @@ namespace spc
 {
 
 template<class ElementT>
-class SelectionBase
+class SPC_LIB_API SelectionBase
 {
 public:
 

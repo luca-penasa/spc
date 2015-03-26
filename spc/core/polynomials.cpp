@@ -1,6 +1,7 @@
 #include "polynomials.hpp"
 #include <vector>
 #include <iostream>
+#include <spc/core/macros.h>
 namespace spc
 {
 
@@ -15,13 +16,13 @@ template int vander(const std::vector<float> &x, const int &n_cols,
                     Eigen::Matrix
                     <float, Eigen::Dynamic, Eigen::Dynamic> &vandermat);
 
-template <typename ScalarT>
+template SPC_LIB_API 
 void lstsq(const Eigen::Matrix<float, Eigen::Dynamic, Eigen::Dynamic> &A,
            const Eigen::Matrix<float, Eigen::Dynamic, 1> &b,
            Eigen::Matrix<float, Eigen::Dynamic, 1> &x);
 
-template int polyfit(const std::vector<float> &x, const std::vector<float> &y,
-const int &deg, std::vector<float> &poly);
+
+template  int  polyfit(const std::vector<float> &x, const std::vector<float> &y, const int &deg, std::vector<float> &poly);
 
 
 

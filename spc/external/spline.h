@@ -27,12 +27,14 @@
 #include <boost/numeric/ublas/lu.hpp>
 #include <exception>
 
+#include <spc/core/macros.h>
+
 namespace ublas = boost::numeric::ublas;
 namespace magnet
 {
 namespace math
 {
-class Spline : private std::vector<std::pair<double, double>>
+class SPC_LIB_API Spline : private std::vector<std::pair<double, double>>
 {
 public:
     // The boundary conditions available

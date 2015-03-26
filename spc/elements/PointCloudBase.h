@@ -21,7 +21,7 @@ namespace spc
 
 
 
-class PointCloudBase : public ElementBase, public PointCloudXYZBase
+	class SPC_LIB_API  PointCloudBase : public ElementBase, public PointCloudXYZBase
 {
 public:
 

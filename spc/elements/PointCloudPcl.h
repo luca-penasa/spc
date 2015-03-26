@@ -11,7 +11,7 @@ namespace spc
 
 //! In several places here we assume that the fields are FLOATS!
 //! \todo implement a field-type aware class!
-class PointCloudPCL : public PointCloudBaseWithSensor
+	class SPC_LIB_API  PointCloudPCL : public PointCloudBaseWithSensor
 {
 
     using PointCloudBase::IndexT;

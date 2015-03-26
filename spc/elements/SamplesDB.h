@@ -20,7 +20,7 @@
 namespace spc
 {
 
-class SamplesDB: public ElementBase
+	class SPC_LIB_API SamplesDB : public ElementBase
 {
 public:
     SPC_ELEMENT(SamplesDB)

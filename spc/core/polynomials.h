@@ -21,7 +21,7 @@ template <typename ScalarT>
 void pow_vector(const std::vector<ScalarT> &x, const ScalarT &power,
                 std::vector<ScalarT> &out_vector);
 
-template <typename ScalarT>
+template <typename ScalarT> 
 void lstsq(const Eigen::Matrix<ScalarT, Eigen::Dynamic, Eigen::Dynamic> &A,
            const Eigen::Matrix<ScalarT, Eigen::Dynamic, 1> &b,
            Eigen::Matrix<ScalarT, Eigen::Dynamic, 1> &x);

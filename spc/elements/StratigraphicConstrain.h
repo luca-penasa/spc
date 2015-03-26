@@ -13,7 +13,7 @@ namespace spc
 {
 
 
-class StratigraphicConstrain: public ElementBase
+	class SPC_LIB_API StratigraphicConstrain : public ElementBase
 {
 public:
 

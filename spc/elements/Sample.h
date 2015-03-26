@@ -10,7 +10,7 @@
 namespace spc
 {
 
-class Sample : public StratigraphicPositionableElement
+	class SPC_LIB_API Sample : public StratigraphicPositionableElement
 {
 
 public:

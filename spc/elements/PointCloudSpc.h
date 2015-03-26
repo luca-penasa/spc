@@ -9,7 +9,7 @@
 namespace spc
 {
 
-class  PointCloudSpc : public PointCloudBaseWithSensor
+	class SPC_LIB_API   PointCloudSpc : public PointCloudBaseWithSensor
 {
     using PointCloudBaseWithSensor::IndexT;
 public:

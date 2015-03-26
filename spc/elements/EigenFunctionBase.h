@@ -8,7 +8,7 @@
 namespace spc
 {
 
-class EigenFunctionBase : public ElementBase
+	class SPC_LIB_API  EigenFunctionBase : public ElementBase
 {
 public:
     spcTypedefSharedPtrs(EigenFunctionBase)

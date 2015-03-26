@@ -14,7 +14,7 @@ namespace spc
 {
 
 
-class ElementBase : public ISerializable, public ElementWithVariantProperties, public std::enable_shared_from_this<ElementBase>
+	class SPC_LIB_API  ElementBase : public ISerializable, public ElementWithVariantProperties, public std::enable_shared_from_this<ElementBase>
 {
 public:
     spcTypedefSharedPtrs(ElementBase)

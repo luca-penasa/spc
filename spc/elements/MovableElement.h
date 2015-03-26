@@ -18,7 +18,7 @@ namespace spc
 class PointCloudBase;
 
 
-class Point3D : public ElementBase
+class SPC_LIB_API  Point3D : public ElementBase
 {
 public:
     SPC_ELEMENT(Point3D)

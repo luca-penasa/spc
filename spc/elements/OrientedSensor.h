@@ -6,7 +6,7 @@
 namespace spc
 {
 
-class OrientedSensor: public ElementBase
+	class SPC_LIB_API  OrientedSensor : public ElementBase
 {
 public:
 

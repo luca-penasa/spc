@@ -24,7 +24,7 @@ namespace spc
 /// \f]
 /// \ingroup time_series
 ///
-class TimeSeriesEquallySpaced : public spc::TimeSeriesBase
+	class SPC_LIB_API TimeSeriesEquallySpaced : public spc::TimeSeriesBase
 {
 public:
     SPC_ELEMENT(TimeSeriesEquallySpaced)

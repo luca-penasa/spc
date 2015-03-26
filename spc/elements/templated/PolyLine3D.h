@@ -33,8 +33,8 @@ public:
 
 
 
-typedef  PolyLine<float, 3> PolyLine3D;
-typedef PolyLine<float, 2> PolyLine2D;
+typedef SPC_LIB_API  PolyLine<float, 3> PolyLine3D;
+typedef SPC_LIB_API PolyLine<float, 2> PolyLine2D;
 
 
 }

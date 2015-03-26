@@ -9,7 +9,7 @@ namespace spc
 namespace calibration
 {
 
-class KeyPoint: public std::enable_shared_from_this<KeyPoint>
+	class SPC_LIB_API  KeyPoint : public std::enable_shared_from_this<KeyPoint>
 {
 public:
 	spcTypedefSharedPtrs(KeyPoint)

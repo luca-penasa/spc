@@ -18,7 +18,7 @@ namespace spc
 /// They must have the same size!
 /// \ingroup time_series
 ///
-class TimeSeriesSparse : public TimeSeriesBase
+	class SPC_LIB_API TimeSeriesSparse : public TimeSeriesBase
 {
 public:
     SPC_ELEMENT(TimeSeriesSparse)

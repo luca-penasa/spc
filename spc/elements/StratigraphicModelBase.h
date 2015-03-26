@@ -6,7 +6,7 @@
 namespace spc
 {
 
-class StratigraphicModelBase : public VariableScalarFieldBase
+	class SPC_LIB_API StratigraphicModelBase : public VariableScalarFieldBase
 {
 public:
     spcTypedefSharedPtrs(StratigraphicModelBase)

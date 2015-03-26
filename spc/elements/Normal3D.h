@@ -8,7 +8,7 @@
 
 namespace spc
 {
-class Normal3D : public ElementBase
+	class SPC_LIB_API  Normal3D : public ElementBase
 {
 
     SPC_ELEMENT(Normal3D)

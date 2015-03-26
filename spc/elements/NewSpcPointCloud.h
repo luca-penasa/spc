@@ -13,7 +13,7 @@
 namespace spc
 {
 
-class FieldLabel
+	class SPC_LIB_API  FieldLabel
 {
 public:
 
@@ -51,7 +51,7 @@ private:
 
 };
 
-class LabelsContainer
+	class SPC_LIB_API  LabelsContainer
 {
 public:
     bool hasField(const std::string &name) const
@@ -129,7 +129,7 @@ private:
 
 
 
-class NewSpcPointCloud: public ElementBase
+	class SPC_LIB_API  NewSpcPointCloud : public ElementBase
 {
 public:
 

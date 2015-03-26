@@ -12,7 +12,7 @@ namespace spc
 /// model.
 ///
 ///
-class StratigraphicModelSingleAttitude : public StratigraphicModelBase
+	class SPC_LIB_API StratigraphicModelSingleAttitude : public StratigraphicModelBase
 {
 public:
     SPC_ELEMENT(StratigraphicModelSingleAttitude)

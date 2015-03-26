@@ -8,7 +8,7 @@
 namespace spc
 {
 
-class UniversalUniqueID
+	class SPC_LIB_API UniversalUniqueID
 {
 public:
     spcTypedefSharedPtrs(UniversalUniqueID)

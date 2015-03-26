@@ -10,7 +10,7 @@ namespace spc
 {
 
 
-class TimeSeriesBase : public ElementBase
+	class SPC_LIB_API TimeSeriesBase : public ElementBase
 {
 public:
     spcTypedefSharedPtrs(TimeSeriesBase)

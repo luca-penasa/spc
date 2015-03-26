@@ -11,7 +11,7 @@ namespace spc
 class EigenTable;
 typedef spcSharedPtrMacro<EigenTable> EigenTablePtr;
 
-class ISerializable
+class SPC_LIB_API ISerializable
 {
 public:
     spcTypedefSharedPtrs(ISerializable)

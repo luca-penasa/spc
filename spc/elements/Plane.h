@@ -24,7 +24,7 @@ namespace spc
 /// \brief The PlaneModel class is the model of a plane in space
 /// we represent the plane as a normal plus a point in space
 ///
-class Plane : public Point3D
+	class SPC_LIB_API  Plane : public Point3D
 
 {
 public:

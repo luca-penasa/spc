@@ -8,7 +8,7 @@ namespace spc
 namespace calibration {
 
 
-class DataHolder: public ElementBase
+	class SPC_LIB_API  DataHolder : public ElementBase
 {
 public:
 

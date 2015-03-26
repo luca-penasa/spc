@@ -8,7 +8,7 @@ namespace spc
 class ElementBase;
 typedef spcSharedPtrMacro<ElementBase> ElementBasePtr;
 
-class ElementsFactory
+class SPC_LIB_API  ElementsFactory
 {
 public:
     ElementBasePtr create(const std::string name);
