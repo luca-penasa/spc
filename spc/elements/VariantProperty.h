@@ -15,13 +15,12 @@ struct to_string_visitor : boost::static_visitor<>
 
     template <typename T> void operator()(T const &item);
 
+	template <typename T>
+	void operator()(std::vector<T> const v);
+
     void operator()(Eigen::Vector3f const &v);
 
     void operator()(std::string const &s);
-
-    template <typename T>
-    void operator()(std::vector<T> const v);
-
 };
 
 class VariantProperty
