@@ -84,9 +84,9 @@ void computeEigIndices(const pcl::PointCloud<PointInT> &in_cloud,
     if (sum == 0) {
         id_0 = id_1 = id_2 = 0.0;
     } else {
-        id_0 = fabsf(in_cloud[point_id].lam0 / sum);
-        id_1 = fabsf(in_cloud[point_id].lam1 / sum);
-        id_2 = fabsf(in_cloud[point_id].lam2 / sum);
+		id_0 = std::abs(in_cloud[point_id].lam0 / sum);
+		id_1 = std::abs(in_cloud[point_id].lam1 / sum);
+		id_2 = std::abs(in_cloud[point_id].lam2 / sum);
     }
 }
 

@@ -8,7 +8,9 @@ endif()
 
 set(CMAKE_VERBOSE_MAKEFILE OFF)
 
+add_definitions(${SPC_DEFINITIONS})
 
+message("the defs for tools: ${SPC_DEFINITONS}")
 
 #    FIND_PACKAGE( OpenMP REQUIRED)
 #    if(OPENMP_FOUND)

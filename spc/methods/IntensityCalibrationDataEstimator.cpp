@@ -102,7 +102,7 @@ float CalibrationDataEstimator::getMinimumAngleBetweenVectors(const Eigen::Vecto
     Eigen::Vector3f y = y_ / y_.norm();
 
     float cosTheta = x.dot(y);
-    float theta = acos(std::min(fabs(cosTheta),  1.0f));
+	float theta = acos(std::min(std::abs(cosTheta),  1.0f));
 
     theta *= 180.0 / M_PI;
 
