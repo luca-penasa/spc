@@ -18,8 +18,7 @@
 
 #include <cereal/cereal.hpp>
 
-
-
+#include <cereal/access.hpp>
 namespace spc
 {
 
@@ -216,7 +215,23 @@ protected:
 private:
     friend class cereal::access;
 
-    template <class Archive> void save(Archive &ar,std::uint32_t const version) const
+	template <class Archive> void load(Archive &ar)
+	{
+		ar(cereal::base_class<spc::ElementBase>(this),
+		   CEREAL_NVP(max_distance_),
+		   CEREAL_NVP(verts_),
+		   CEREAL_NVP(verts_2d_),
+		   CEREAL_NVP(proj_plane_)
+		);
+
+
+		   this->updateTMatrix();
+
+//		if (version >= 1)
+			ar(CEREAL_NVP(model_));
+	}
+
+	template <class Archive> void  save(Archive &ar) const
     {
         ar(cereal::base_class<spc::ElementBase>(this),
            CEREAL_NVP(max_distance_),
@@ -225,27 +240,13 @@ private:
            CEREAL_NVP(proj_plane_)
            );
 
-        if (version >= 1)
+//        if (version >= 1)
             ar(CEREAL_NVP(model_));
 
 
     }
 
-    template <class Archive> void load(Archive &ar, std::uint32_t const version)
-    {
-        ar(cereal::base_class<spc::ElementBase>(this),
-           CEREAL_NVP(max_distance_),
-           CEREAL_NVP(verts_),
-           CEREAL_NVP(verts_2d_),
-           CEREAL_NVP(proj_plane_)
-        );
 
-
-           this->updateTMatrix();
-
-        if (version >= 1)
-            ar(CEREAL_NVP(model_));
-    }
 
 };
 
@@ -254,16 +255,9 @@ private:
 
 } // end nspace
 
+CEREAL_FORCE_DYNAMIC_INIT(spc)
 
-namespace cereal
-{
-  template <class Archive>
-  struct specialize<Archive, spc::SelectionRubberband, cereal::specialization::member_load_save> {};
-  // cereal no longer has any ambiguity when serializing MyDerived
-}
-
-
-
+CEREAL_SPECIALIZE_FOR_ALL_ARCHIVES( spc::SelectionRubberband, cereal::specialization::member_load_save )
 
 
 #endif // SPCPLANARSELECTION_H
