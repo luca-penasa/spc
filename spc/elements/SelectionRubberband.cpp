@@ -20,13 +20,13 @@ DtiClassType SelectionRubberband::Type ("SelectionRubberband", &ElementBase::Typ
 
 
 //spc::SelectionRubberband test;
-CEREAL_REGISTER_DYNAMIC_INIT(spc)
+//CEREAL_REGISTER_DYNAMIC_INIT(spc)
 
 
 
 
 SPC_CEREAL_REGISTER_TYPE(spc::SelectionRubberband)
 
-//CEREAL_CLASS_VERSION( spc::SelectionRubberband, 1 )
+CEREAL_CLASS_VERSION( spc::SelectionRubberband, 1 )
 
 

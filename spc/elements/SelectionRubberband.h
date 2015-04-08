@@ -215,7 +215,7 @@ protected:
 private:
     friend class cereal::access;
 
-	template <class Archive> void load(Archive &ar)
+	template <class Archive> void load(Archive &ar, std::uint32_t const version )
 	{
 		ar(cereal::base_class<spc::ElementBase>(this),
 		   CEREAL_NVP(max_distance_),
@@ -227,11 +227,11 @@ private:
 
 		   this->updateTMatrix();
 
-//		if (version >= 1)
+		if (version >= 1)
 			ar(CEREAL_NVP(model_));
 	}
 
-	template <class Archive> void  save(Archive &ar) const
+	template <class Archive> void  save(Archive &ar, std::uint32_t const version) const
     {
         ar(cereal::base_class<spc::ElementBase>(this),
            CEREAL_NVP(max_distance_),
@@ -240,7 +240,7 @@ private:
            CEREAL_NVP(proj_plane_)
            );
 
-//        if (version >= 1)
+		if (version >= 1)
             ar(CEREAL_NVP(model_));
 
 
@@ -255,7 +255,7 @@ private:
 
 } // end nspace
 
-CEREAL_FORCE_DYNAMIC_INIT(spc)
+//CEREAL_FORCE_DYNAMIC_INIT(spc)
 
 CEREAL_SPECIALIZE_FOR_ALL_ARCHIVES( spc::SelectionRubberband, cereal::specialization::member_load_save )
 
