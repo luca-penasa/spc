@@ -31,4 +31,4 @@ UniversalUniqueID ElementBase::getUniversalUUID() const
 
 #include <spc/core/spc_cereal.hpp>
 SPC_CEREAL_REGISTER_TYPE(spc::ElementBase)
-//SPC_CEREAL_CLASS_VERSION( spc::ElementBase, 1 );
+//SPC_CEREAL_CLASS_VERSION( spc::ElementBase, 1 )

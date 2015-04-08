@@ -241,7 +241,7 @@ protected:
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar, std::uint32_t const version)
+	template <class Archive> void serialize(Archive &ar, const std::uint32_t version)
     {
         ar(cereal::base_class<ElementWithVariantProperties>(this),
            CEREAL_NVP(modified_), CEREAL_NVP(universal_id_));
