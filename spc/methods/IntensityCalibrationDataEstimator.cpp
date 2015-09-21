@@ -206,13 +206,13 @@ void CalibrationDataEstimator::computeDerivedData()
             keypoint->lambdas = lambdas;
             keypoint->eigen_ratio = lambdas(0) / lambdas.sum();
 
-            //            DLOG(INFO) << "found normal: " << keypoint->fitting_plane.getNormal().transpose() << " with lambdas: " << lambdas.transpose();
+						DLOG(INFO) << "found normal: " << keypoint->fitting_plane.getNormal().transpose() << " with lambdas: " << lambdas.transpose();
 
 
             Eigen::Vector3f centroid = keypoint->cumulative_set.getCentroid();
             //! project the centroid onto the fitting plane to get a better estimate of the position
             Eigen::Vector3f newpos = keypoint->fitting_plane.projectPointOnPlane(centroid);
-            //            LOG(INFO) << "new pos is " << newpos.transpose() << " original was " <<keypoint->original_position.transpose();
+						LOG(INFO) << "new pos is " << newpos.transpose() << " original was " <<keypoint->original_position.transpose() << " c: " << centroid.transpose();
             keypoint->post_position = newpos;
 
             //! no we can compute distance and angle

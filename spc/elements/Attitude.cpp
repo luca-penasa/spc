@@ -95,11 +95,11 @@ float Attitude::getDip() const
 
 std::string Attitude::getDipAndDipAngleAsString() const
 {
-    char d = 0xb0;
+//    char d = 0xb0;
     //    std::string degree = d;
     std::stringstream s;
-    s << std::fixed << std::setprecision(2) << getDipAngle() << d << "/"
-      << getDip() << d << "N";
+	s << std::fixed << std::setprecision(2) << getDipAngle() <<"°" << "/"
+	  << getDip() << "°" << "N";
     return s.str();
 }
 

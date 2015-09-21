@@ -14,10 +14,11 @@ class KeyPoint: public std::enable_shared_from_this<KeyPoint>
 public:
 	spcTypedefSharedPtrs(KeyPoint)
 
-    //! just for cereal to not complain
 	KeyPoint()
     {
         lambdas.fill(spcNANMacro);
+		original_position.fill(spcNANMacro);
+		post_position.fill(spcNANMacro);
         material_id = std::numeric_limits<int>::quiet_NaN();
 
         //! \todo add nan init for other members
@@ -59,6 +60,10 @@ public:
     float eigen_ratio;
     Eigen::Vector3f lambdas;
 	int material_id; //! < a material id of -1 will be considered as unknwon material
+
+	// these two are indexes derived from the eigenvalu
+	float s1 = spcNANMacro;
+	float s2 = spcNANMacro;
 
 	std::vector<Observation::Ptr> observations;
 
