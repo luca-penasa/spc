@@ -85,7 +85,7 @@ public:
 
     Vector3f projectPointOnPlane(const Vector3f &point)
     {
-            return point - getNormal() * distanceTo(point);
+			return point - (point  - getPosition()).dot(getUnitNormal()) * getUnitNormal();
     }
 
     /// distance of a point to this plane
