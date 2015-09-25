@@ -76,30 +76,32 @@ public:
         return normal_.getNormal();
     }
 
-    //! this project an
-    Vector3f projectOnPlane(const Vector3f &v) const
+	//! get the component of v on the plane.
+	Vector3f projectVectorOnPlane(const Vector3f &v) const
     {
         Vector3f n = getUnitNormal();
         return v - v.dot(n) * n;
     }
 
+	//! project a point onto the plane
     Vector3f projectPointOnPlane(const Vector3f &point)
     {
-			return point - (point  - getPosition()).dot(getUnitNormal()) * getUnitNormal();
+		Vector3f n = getUnitNormal();
+		return point - (point  - getPosition()).dot(n) * n;
     }
 
     /// distance of a point to this plane
     /// distance is signed (+ if in the same half-space of normal_)
     float distanceTo(const Vector3f &point) const
     {
-		return normal_.getUnitNormal().dot(point) - getP();
+		return getUnitNormal().dot(point) - getP();
     }
 
     /// get the P parameters (distance of the plane from the origin)
     /// in normal hessian form: n.dot(x) = -P with n unit normal vector
     float getP() const
     {
-        return -normal_.getUnitNormal().dot(getPosition());
+		return - getUnitNormal().dot(getPosition());
     }
 
     /// get the matrix that would project a point on a two-d ref system

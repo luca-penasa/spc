@@ -70,9 +70,8 @@ ISerializable::Ptr deserializeFromFile(const std::string filename)
 
     spc::ElementBase::Ptr ptr; // a null pointer
     if (!boost::filesystem::exists(filename)) {
-        pcl::console::print_error("Trying to deserialize a non existent-file. "
-                                  "Null Pointer returned\n ");
-        return ptr;
+		LOG(ERROR) << "Trying to deserialize a non existent-file. Null Pointer returned";
+		return NULL;
     }
 
     boost::filesystem::path path (filename);

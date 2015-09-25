@@ -61,9 +61,11 @@ public:
     Eigen::Vector3f lambdas;
 	int material_id; //! < a material id of -1 will be considered as unknwon material
 
-	// these two are indexes derived from the eigenvalu
+	// these two are indexes derived from the eigenvalues
 	float s1 = spcNANMacro;
 	float s2 = spcNANMacro;
+
+	float center_to_new_center = spcNANMacro;
 
 	std::vector<Observation::Ptr> observations;
 
@@ -74,7 +76,7 @@ public:
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+	template <class Archive> void serialize(Archive &ar, std::uint32_t const version)
     {
         ar(
            CEREAL_NVP(fitting_plane),
@@ -85,13 +87,23 @@ private:
 		   CEREAL_NVP(observations),
            CEREAL_NVP(cumulative_set),
            CEREAL_NVP(material_id));
+
+		if (version >=2)
+		{
+			CEREAL_NVP(s1);
+			CEREAL_NVP(s2);
+			CEREAL_NVP(center_to_new_center);
+		}
     }
 };
 
-
 }//end cal
+
+
+
+
 
 }// end spc
 
-
+CEREAL_CLASS_VERSION( spc::calibration::KeyPoint, 2 )
 #endif

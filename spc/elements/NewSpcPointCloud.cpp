@@ -133,10 +133,10 @@ void NewSpcPointCloud::addNewField(const std::string &name, size_t dim)
 //    DLOG(INFO) << "now dimensions are " << fields_.rows() << " x " << fields_.cols();
 }
 
+
 NewSpcPointCloud::EigenPlaneT NewSpcPointCloud::fitPlane(Vector3f &eigenvalues) const
 {
     Eigen::VectorXf avg;
-
 
     Eigen::Matrix<ScalarT, -1, -1> covmat =this->getFieldByName("position").getSampleCovMatAndAvg(avg);
 

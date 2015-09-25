@@ -115,17 +115,17 @@ void CalibrationDataEstimator::extractDataForKeypointAndCloud(calibration::Obser
     //! extract and save the sensor position
     data_holder->sensor_position = cloud->getSensor()->getPosition().head(3);
 
-    //    DLOG(INFO) <<"sensor position: " << data_holder->sensor_position;
+	DLOG(INFO) <<"sensor position: " << data_holder->sensor_position;
 
     NewSpcPointCloud::SearcherT::Ptr searcher = cloud->getSearcher();
 
-    //    DLOG(INFO) << "going to do matches" << std::endl;
+	DLOG(INFO) << "going to do matches" << std::endl;
     std::vector<std::pair<size_t, float>> matches;
 
     // these points will be used for normal estimation
     searcher->radiusSearch(data_holder->parent_keypoint->original_position, normal_estimation_search_radius_, matches);
 
-    //    DLOG(INFO) << "number of matches " << matches.size();
+	DLOG(INFO) << "number of matches " << matches.size();
 
     std::vector<size_t> ids;
     Eigen::VectorXf sq_distances;
@@ -202,18 +202,27 @@ void CalibrationDataEstimator::computeDerivedData()
             Eigen::Vector3f lambdas;
             NewSpcPointCloud::EigenPlaneT plane = keypoint->cumulative_set.fitPlane(lambdas);
 
+			float lambdas_sum = lambdas.sum();
+
             keypoint->fitting_plane = Plane::fromEigenHyperplane3f(plane);
             keypoint->lambdas = lambdas;
-            keypoint->eigen_ratio = lambdas(0) / lambdas.sum();
+			keypoint->eigen_ratio = lambdas(0) / lambdas_sum;
 
 						DLOG(INFO) << "found normal: " << keypoint->fitting_plane.getNormal().transpose() << " with lambdas: " << lambdas.transpose();
 
+
+			// computing s1 and s2 indexes
+			// lambdas are in increasing order as thy come back from eigen
+			keypoint->s1  = (-4 * lambdas(2) - 2* lambdas(1)) / lambdas_sum + 3;
+			keypoint->s2  = (2  * lambdas(2) + 4* lambdas(1)) / lambdas_sum - 2;
 
             Eigen::Vector3f centroid = keypoint->cumulative_set.getCentroid();
             //! project the centroid onto the fitting plane to get a better estimate of the position
             Eigen::Vector3f newpos = keypoint->fitting_plane.projectPointOnPlane(centroid);
 						LOG(INFO) << "new pos is " << newpos.transpose() << " original was " <<keypoint->original_position.transpose() << " c: " << centroid.transpose();
             keypoint->post_position = newpos;
+
+			keypoint->center_to_new_center = (newpos - keypoint->original_position).norm();
 
             //! no we can compute distance and angle
             for (calibration::Observation::Ptr per_cloud: keypoint->observations)

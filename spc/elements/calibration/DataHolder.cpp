@@ -28,6 +28,8 @@ NewSpcPointCloud::Ptr DataHolder::asPointCloud() const
 
     DLOG(INFO) << "we have a total number of entries: " << total_number;
 
+	out->addNewField("position", 3);
+
     out->addNewField("distance", 1);
     out->addNewField("angle", 1);
     out->addNewField("intensity", 1);
@@ -44,12 +46,20 @@ NewSpcPointCloud::Ptr DataHolder::asPointCloud() const
     out->addNewField("normal", 3);
     out->addNewField("lambdas", 3);
 
-    out->addNewField("position", 3);
+
+	out->addNewField("s1", 1);
+	out->addNewField("s2", 1);
+
+	out->addNewField("center_to_new_center", 1);
+
+
+
 
     out->conservativeResize(total_number);
 
     size_t counter = 0;
     size_t keypoint_id = 0;
+
     for (calibration::KeyPoint::Ptr keypoint: getData())
     {
 		for (calibration::Observation::Ptr data_holder: keypoint->observations)
@@ -67,6 +77,10 @@ NewSpcPointCloud::Ptr DataHolder::asPointCloud() const
             out->getFieldByName("progressive_id")(counter, 0) = (float) counter;
             out->getFieldByName("source_id")(counter, 0) = (float) source_to_id.at(data_holder->cloud);
             out->getFieldByName("material")(counter, 0) = (float) data_holder->parent_keypoint->material_id;
+
+			out->getFieldByName("s1")(counter, 0) = (float) keypoint->s1;
+			out->getFieldByName("s2")(counter, 0) = (float) keypoint->s2;
+			out->getFieldByName("center_to_new_center")(counter, 0) = (float) keypoint->center_to_new_center;
 
             counter++;
         }

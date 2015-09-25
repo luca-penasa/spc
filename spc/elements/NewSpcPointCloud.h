@@ -8,27 +8,23 @@
 
 #include <spc/core/spc_eigen.h>
 
+namespace spc {
 
-
-namespace spc
-{
-
-class FieldLabel
-{
+class FieldLabel {
 public:
-
-    FieldLabel(): field_name_("None"), dimensionality_(0)
+	FieldLabel()
+		: field_name_("None")
+		, dimensionality_(0)
     {
-
     }
 
-    FieldLabel(const std::string & name, const size_t dim)
+	FieldLabel(const std::string& name, const size_t dim)
     {
         field_name_ = name;
         dimensionality_ = dim;
     }
 
-    bool operator== (const FieldLabel &other) const
+	bool operator==(const FieldLabel& other) const
     {
         return (this->field_name_ == other.field_name_) && (this->dimensionality_ == other.dimensionality_);
     }
@@ -39,64 +35,53 @@ public:
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+	template <class Archive>
+	void serialize(Archive& ar)
     {
         ar(CEREAL_NVP(field_name_),
-           CEREAL_NVP(dimensionality_)
-           );
+			CEREAL_NVP(dimensionality_));
     }
-
-
-
-
 };
 
-class LabelsContainer
-{
+class LabelsContainer {
 public:
-    bool hasField(const std::string &name) const
+	bool hasField(const std::string& name) const
     {
-        for (const FieldLabel& label: labels_)
-        {
-            if (label.field_name_ ==name)
+		for (const FieldLabel& label : labels_) {
+			if (label.field_name_ == name)
                 return true;
-
         }
         return false;
     }
 
     FieldLabel getLabelByName(const std::string name) const
     {
-        for (const FieldLabel& label: labels_)
-        {
-            if (label.field_name_ ==name)
+		for (const FieldLabel& label : labels_) {
+			if (label.field_name_ == name)
                 return label;
         }
     }
 
-    bool hasLabel(const FieldLabel & label2) const
+	bool hasLabel(const FieldLabel& label2) const
     {
-        for (const FieldLabel& label: labels_)
-        {
+		for (const FieldLabel& label : labels_) {
             if (label == label2)
                 return true;
-
         }
         return false;
     }
 
-    void push_back(const FieldLabel & lab)
+	void push_back(const FieldLabel& lab)
     {
         labels_.push_back(lab);
     }
-
 
     size_t size() const
     {
         return labels_.size();
     }
 
-    FieldLabel &getLabel(const size_t id)
+	FieldLabel& getLabel(const size_t id)
     {
         return labels_.at(id);
     }
@@ -106,7 +91,7 @@ public:
         return labels_.at(id);
     }
 
-    std::vector<FieldLabel> &getLabels()
+	std::vector<FieldLabel>& getLabels()
     {
         return labels_;
     }
@@ -119,20 +104,17 @@ public:
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+	template <class Archive>
+	void serialize(Archive& ar)
     {
-            ar(CEREAL_NVP(labels_));
+		ar(CEREAL_NVP(labels_));
     }
 
     std::vector<FieldLabel> labels_;
 };
 
-
-
-class NewSpcPointCloud: public ElementBase
-{
+class NewSpcPointCloud : public ElementBase {
 public:
-
     SPC_ELEMENT(NewSpcPointCloud)
     EXPOSE_TYPE
 
@@ -149,68 +131,58 @@ public:
 
     typedef NanoFlannEigenBlockAdaptor<MatrixT> SearcherT;
 
-
-
     NewSpcPointCloud();
 
     //! static from old types
-    static NewSpcPointCloud::Ptr fromPointCloudBase(const spc::PointCloudBase &other);
-
+	static NewSpcPointCloud::Ptr fromPointCloudBase(const spc::PointCloudBase& other);
 
     //! by default it will copy ALL the fields for the requested ids.
     //! it is often better to provide a fields list to copy
-    NewSpcPointCloud fromIds(const std::vector<size_t> &ids, const std::vector<std::string> &fields = {}) const ;
+	NewSpcPointCloud fromIds(const std::vector<size_t>& ids, const std::vector<std::string>& fields = {}) const;
 
     BlockT getData()
     {
         return fields_.block(0, 0, fields_.rows(), fields_.cols());
     }
 
-
-
-    void addNewField(const std::string & name, size_t dim = 1);
+	void addNewField(const std::string& name, size_t dim = 1);
 
     size_t getNumberOfPoints() const
     {
         return fields_.rows();
     }
 
-    BlockT getFieldByName(const std::string &name)
+	BlockT getFieldByName(const std::string& name)
     {
         size_t id = field_to_col_.at(name);
-        size_t dim =  labels_.getLabelByName(name).dimensionality_;
+		size_t dim = labels_.getLabelByName(name).dimensionality_;
         return fields_.block(0, id, getNumberOfPoints(), dim);
     }
 
-    ConstBlockT getFieldByName(const std::string &name) const
+	ConstBlockT getFieldByName(const std::string& name) const
     {
         size_t id = field_to_col_.at(name);
-        size_t dim =  labels_.getLabelByName(name).dimensionality_;
+		size_t dim = labels_.getLabelByName(name).dimensionality_;
         return fields_.block(0, id, getNumberOfPoints(), dim);
     }
 
-    NewSpcPointCloud filterOutNans(const std::vector<std::string> &fields = {"position"}) const
+	NewSpcPointCloud filterOutNans(const std::vector<std::string>& fields = { "position" }) const
     {
         Eigen::Matrix<bool, -1, 1> to_keep(fields_.rows());
         to_keep.fill(true); // none (rows) to remove at beginning
 
-        for (const std::string f: fields)
-        {
+		for (const std::string f : fields) {
             to_keep.array() *= this->getFieldByName(f).finiteness().rowwise().prod().array();
         }
 
         std::vector<size_t> good_ids;
-        for (int id = 0; id < fields_.rows(); ++id )
-        {
-            if (to_keep(id) == true)
-            {
+		for (int id = 0; id < fields_.rows(); ++id) {
+			if (to_keep(id) == true) {
                 good_ids.push_back(id);
             }
         }
 
         return this->fromIds(good_ids);
-
-
     }
 
     void conservativeResize(const size_t n_points)
@@ -220,11 +192,10 @@ public:
         fields_.bottomRows(fields_.rows() - before).fill(spcNANMacro);
     }
 
-
-    void updateSearcher(const std::string & on_field = "position")
+	void updateSearcher(const std::string& on_field = "position")
     {
         if (searcher_ == NULL)
-            searcher_ =  SearcherT::Ptr (new SearcherT(this->getFieldByName("position"), 20));
+			searcher_ = SearcherT::Ptr(new SearcherT(this->getFieldByName("position"), 20));
     }
 
     void resetSearcher()
@@ -237,7 +208,7 @@ public:
         return getFieldByName("position").colwise().sum() / getNumberOfPoints();
     }
 
-    SearcherT::Ptr getSearcher(const std::string & on_field = "position")
+	SearcherT::Ptr getSearcher(const std::string& on_field = "position")
     {
         updateSearcher(on_field);
         return searcher_;
@@ -248,26 +219,29 @@ public:
         return sensor_;
     }
 
-    EigenPlaneT fitPlane(Eigen::Vector3f &eigenvalues) const;
+	//! \note returns eigenvalues in increasing order
+	EigenPlaneT fitPlane(Eigen::Vector3f& eigenvalues) const;
 
-    bool hasField(const std::string &fname) const
+	bool hasField(const std::string& fname) const
     {
         return labels_.hasField(fname);
     }
 
     //! only if all the fields are present in both concatenation will work fine
-    void concatenate (const NewSpcPointCloud &other);
+	void concatenate(const NewSpcPointCloud& other);
 
     virtual bool isAsciiSerializable() const override
     {
         return true;
     }
 
-    virtual int toAsciiStream(std::ostream &stream) const override
+	virtual int toAsciiStream(std::ostream& stream) const override
     {
-        for (const FieldLabel & label: labels_.getLabels())
-        {
-            stream << label.field_name_ << ":" << label.dimensionality_ << " ";
+		for (const FieldLabel& label : labels_.getLabels()) {
+			for (size_t i = 0; i < label.dimensionality_; ++i) {
+				stream << label.field_name_ << ":" << i << " ";
+			}
+			//            stream << label.field_name_ << ":" << label.dimensionality_ ;
         }
         stream << "\n";
         stream << fields_;
@@ -278,17 +252,16 @@ public:
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+	template <class Archive>
+	void serialize(Archive& ar)
     {
-        ar(cereal::base_class<spc::ElementBase> (this),
-           CEREAL_NVP(fields_),
-           CEREAL_NVP(labels_),
-           CEREAL_NVP(field_to_col_),
-//           CEREAL_NVP(searcher_),
-           CEREAL_NVP(sensor_)
-           );
+		ar(cereal::base_class<spc::ElementBase>(this),
+			CEREAL_NVP(fields_),
+			CEREAL_NVP(labels_),
+			CEREAL_NVP(field_to_col_),
+			//           CEREAL_NVP(searcher_),
+			CEREAL_NVP(sensor_));
     }
-
 
 protected:
     MatrixT fields_;
@@ -300,11 +273,7 @@ protected:
     SearcherT::Ptr searcher_;
 
     OrientedSensor::Ptr sensor_;
-
-
-
 };
-
 }
 
 #endif // NEWSPCPOINTCLOUD_H

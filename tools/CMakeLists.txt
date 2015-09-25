@@ -208,3 +208,6 @@ target_link_libraries(spc_quad_example)
 spc_add_executable(${MY_TOOLS_PREFIX}calibrate_intensity_rbf spc_calibrate_intensity_rbf)
 target_link_libraries(${MY_TOOLS_PREFIX}calibrate_intensity_rbf ${SPC_LIBRARIES} spc_methods ${GFLAGS_LIBRARIES})
 
+
+spc_add_executable(${MY_TOOLS_PREFIX}filter_calibration_observations spc_filter_calibration_observations)
+target_link_libraries(${MY_TOOLS_PREFIX}filter_calibration_observations ${SPC_LIBRARIES} ${GFLAGS_LIBRARIES})
