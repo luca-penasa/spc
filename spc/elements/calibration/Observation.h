@@ -68,7 +68,7 @@ public:
     //! consider_angle says if also a finite angle must be present to consider the data "good"
     bool isValid(bool consider_angle) const
     {
-        if (consider_angle = true)
+		if (consider_angle == true)
             return hasValidAngle() && hasValidDistance() && hasValidIntensity();
         else
             return hasValidDistance() && hasValidIntensity();

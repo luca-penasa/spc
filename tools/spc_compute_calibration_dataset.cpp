@@ -51,11 +51,16 @@ int main(int argc, char** argv)
 {
 	google::InitGoogleLogging(argv[0]);
 
+
 	gflags::SetUsageMessage(
 		"computes a dataset of sampled scalar fields for calibrating the device");
 
 	//    FLAGS_logtostderr = 1;
 	gflags::ParseCommandLineFlags(&argc, &argv, true);
+
+
+
+	LOG(INFO) << google::CommandlineFlagsIntoString();
 
 	std::string cwd = spc::getCurrentDirectory();
 

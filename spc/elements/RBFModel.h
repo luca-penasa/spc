@@ -184,12 +184,19 @@ public:
         return scales_;
     }
 
+	T op2(const PointT &p) const
+	{
+		return operator ()(p);
+	}
+
 
     T operator()(const PointT &p) const
     {
         VectorT v = getPredictorVector(p);
         return v.dot(coeffs_);
     }
+
+
 
     void operator() (const PointsT &points, VectorT &values)
     {

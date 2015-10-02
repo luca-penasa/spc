@@ -80,17 +80,14 @@ namespace calibration {
 //				calibration::Observation::Ptr data = keypoint->newObservationOnCloud(source);
 				extractDataForKeypointAndCloud(cdata, cloud);
 
-				if (cdata->isValid(false))
+				// if it has valid intensity data we keep it else it is not useful at all..
+				if (cdata->hasValidIntensity())
+				{
+//					LOG(INFO) << "pushed";
 					keypoint->observations.push_back(cdata);
-				// else the observation will be destroied by the smart pointer system!
-			}
+				}
 
-			// original single-thread version
-			//        for (calibration::KeyPoint::Ptr keypoint: calibration_data_->getData())
-			//        {
-			//            calibration::Observation::Ptr data = keypoint->newObservationOnCloud(source);
-			//			extractDataForKeypointAndCloud(data, cloud);
-			//        }
+			}
 
 			LOG(INFO) << "cloud referenced by a number: " << cloud.use_count();
 
@@ -153,11 +150,8 @@ namespace calibration {
 		// cumulate the cloud. Normal estimation will be performed only at the end
 		data_holder->extract_for_normal_ = extract;
 
-		// NOW INTENSITY STUFF
-		// now repeat the search for the intensity estimation
-
 		std::vector<std::pair<size_t, float> > matches_int;
-		searcher->radiusSearch(data_holder->parent_keypoint->original_position, intensity_estimation_spatial_sigma_ * 4, matches_int);
+		searcher->radiusSearch(data_holder->parent_keypoint->original_position, intensity_estimation_spatial_sigma_ * 3, matches_int);
 
 		DLOG(INFO) << "number of matches for intensity " << matches_int.size();
 

@@ -10,9 +10,13 @@ if(WIN32)
 endif()
 
 option(SPC_MODULE_CERES_CALIBRATION "Build experimental code nonlinear intensity-calibration support" OFF)
-option(SPC_MODULE_EXPERIMENTAL "Build experimental module." ON)
+option(SPC_MODULE_EXPERIMENTAL "Build experimental module." OFF)
 option(SPC_MODULE_MICMAC "Build MICMAC-related code." OFF)
 option(SPC_MODULE_PYTHON_WRAPPINGS "Build python interface for the library. Only some classes have been wrapped!" OFF)
+
+
+option(SPC_MODULE_PYSPC "Build python interface for the library. Only some classes have been wrapped!" OFF)
+
 
 option(SPC_BUILD_TESTS "Do tests" OFF)
 option(SPC_BUILD_DOC "Build SPC doc" OFF)
@@ -45,6 +49,11 @@ endif()
 
 if(SPC_MODULE_PYTHON_WRAPPINGS)
     add_subdirectory(python_interface)
+endif()
+
+
+if(SPC_MODULE_PYSPC)
+    add_subdirectory(pyspc)
 endif()
 
 if(SPC_MODULE_MICMAC)
