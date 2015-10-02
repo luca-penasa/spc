@@ -19,13 +19,14 @@ KeyPoint::KeyPoint(const Vector3f &pos, const size_t mat_id)
 
 }
 
-Observation::Ptr
-KeyPoint::newObservationOnCloud(CloudDataSourceOnDisk::Ptr cloud)
-{
-    Observation::Ptr cdata (new Observation(cloud, shared_from_this()));
-	observations.push_back(cdata);
-    return cdata;
-}
+//Observation::Ptr
+//KeyPoint::newObservationOnCloud(CloudDataSourceOnDisk::Ptr cloud)
+//{
+//    Observation::Ptr cdata (new Observation(cloud, shared_from_this()));
+//	// we want to add data only if valid
+//	//observations.push_back(cdata);
+//    return cdata;
+//}
 
 // it is a root
 

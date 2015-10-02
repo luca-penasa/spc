@@ -44,6 +44,9 @@ DEFINE_bool(
 	regexp, true,
 	"use a regular expression to set in_clouds (found in current directory)");
 
+
+DEFINE_string(intensity_field, "intensity", "the intensity field");
+
 int main(int argc, char** argv)
 {
 	google::InitGoogleLogging(argv[0]);
@@ -86,6 +89,11 @@ int main(int argc, char** argv)
 					  "--in-clouds argument or as standard args";
 	}
 
+
+
+	//! sort the cloud_names
+	std::sort(cloud_names.begin(), cloud_names.end());
+
 	std::vector<CloudDataSourceOnDisk::Ptr> sources;
 	for (std::string name : cloud_names) {
 		CloudDataSourceOnDisk::Ptr s(new CloudDataSourceOnDisk(name));
@@ -99,12 +107,19 @@ int main(int argc, char** argv)
 	spc::calibration::CalibrationDataEstimator calibrator;
 	calibrator.setInputClouds(sources);
 
+	LOG(INFO) << "Using as intensity field: " << FLAGS_intensity_field;
+	calibrator.setIntensityFieldName(FLAGS_intensity_field);
+
 	CloudDataSourceOnDisk keys(FLAGS_core_points_cloud);
 	NewSpcPointCloud::Ptr key_cloud = keys.load2();
 
 	calibrator.setInputKeypoints(key_cloud);
 	calibrator.setNormalEstimationSearchRadius(FLAGS_search_radius);
-	calibrator.compute();
+	if ( calibrator.compute() != 1)
+	{
+		LOG(FATAL) <<  "Some error during computations. Please inspect log.";
+		return -1;
+	}
 
 	calibration::DataHolder::Ptr data = calibrator.getCalibrationDataHolder();
 

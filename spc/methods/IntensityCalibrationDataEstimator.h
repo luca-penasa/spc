@@ -61,6 +61,11 @@ public:
         return calibration_data_;
     }
 
+	spcSetMacro(IntensityFieldName, intensity_field_name_, std::string)
+	spcGetMacro(IntensityFieldName, intensity_field_name_, std::string)
+
+	spcSetMacro(MaterialFieldName, material_field_name_, std::string)
+	spcGetMacro(MaterialFieldName, material_field_name_, std::string)
 
 private:
     /////////////////// STRING STUFF //////////////////////////////

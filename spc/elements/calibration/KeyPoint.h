@@ -51,7 +51,7 @@ public:
 		return observations.size();
     }
 
-	Observation::Ptr newObservationOnCloud(CloudDataSourceOnDisk::Ptr cloud);
+//	Observation::Ptr newObservationOnCloud(CloudDataSourceOnDisk::Ptr cloud);
 
     Plane fitting_plane;
 

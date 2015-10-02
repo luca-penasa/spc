@@ -38,7 +38,7 @@ public:
 	}
 
 
-	KeyPoint::Ptr newKeypoint(const Eigen::Vector3f &pos, size_t material_id)
+	KeyPoint::Ptr newKeypoint(const Eigen::Vector3f &pos, const size_t material_id)
     {
 		KeyPoint::Ptr kp(new KeyPoint(pos, material_id));
         keypoints_.push_back(kp);

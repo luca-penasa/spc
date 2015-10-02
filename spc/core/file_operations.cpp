@@ -53,21 +53,21 @@ std::vector<std::string> spc::list_files(const std::string &dir_name)
 
 std::vector<std::string> spc::list_files_regexp(const std::string &dir, const std::string &regex)
 {
-	LOG(INFO) << "... listing....";
+	DLOG(INFO) << "... listing....";
 
 	auto files = list_files(dir);
 
-	LOG(INFO) << "Found " << files.size() << " in dir";
+	DLOG(INFO) << "Found " << files.size() << " in dir";
 
-	for (auto s: files)
-	{
-		LOG(INFO) << s;
-	}
+//	for (auto s: files)
+//	{
+//		LOG(INFO) << s;
+//	}
 
-	LOG(INFO) << "... going to do regexp filtering....";
+	DLOG(INFO) << "... going to do regexp filtering....";
 	auto out = filter_regex_match(files, regex);
 
-	LOG(INFO) << "Found " << out.size() << " matches";
+	DLOG(INFO) << "Found " << out.size() << " matches";
 
 	return out;
 }

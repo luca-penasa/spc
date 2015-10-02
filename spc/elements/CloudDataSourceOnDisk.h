@@ -46,6 +46,7 @@ public:
         return boost::filesystem::exists(filename_);
     }
 
+
     std::string getExtension() const
     {
         PathT p(filename_);
