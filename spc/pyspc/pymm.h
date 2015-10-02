@@ -29,6 +29,18 @@ void PrintMat(const Eigen::MatrixXf& m);
 
 struct World
 {
+
+void	operator() () const
+{
+
+		LOG(INFO) << "operator";
+}
+
+void operator() (const int i) const
+{
+			LOG(INFO) << "operator II " << i;
+}
+
 	void set(std::string msg) { this->msg = msg; }
 	std::string greet() { return msg; }
 	std::string msg;

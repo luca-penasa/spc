@@ -39,7 +39,7 @@ void TestClass::PrintMat(const Eigen::MatrixXf &m) {
 
 
 
-
+typedef spc::RBFModel<float> RBFModelF;
 
 
 BOOST_PYTHON_MODULE(pyspc)
@@ -49,12 +49,14 @@ BOOST_PYTHON_MODULE(pyspc)
 	SetupEigenConverters();
 
 
-	class_<spc::RBFModel<float>, spc::RBFModel<float>::Ptr >("RBFModel")
-			.def("getCoefficients", &spc::RBFModel<float>::getCoefficients)
-			.def("getDimensionality", &spc::RBFModel<float>::getDimensionality)
-			.def("op2", &spc::RBFModel<float>::op2)
+	class_<RBFModelF,RBFModelF::Ptr>("RBFModel")
+			.def("getCoefficients", &RBFModelF::getCoefficients)
+			.def("getDimensionality", &RBFModelF::getDimensionality)
+//			.def("op2", &spc::RBFModel<float>::op2)
+//			.def("oper", static_cast< float const (RBFModelF::*)(&RBFModelEstimator::PointT ) > ( &RBFModelF::operator() ))
 
-
+//relevant:
+// http://stackoverflow.com/questions/6050996/boost-python-overloaded-functions-with-default-arguments-problem
 //			.def("__call__", &spc::RBFModel<float>::operator() )
 
 			;
@@ -62,6 +64,8 @@ BOOST_PYTHON_MODULE(pyspc)
 	class_<World>("World")
 			.def("greet", &World::greet)
 			.def("set", &World::set)
+			.def("__call__", &World::operator () )
+
 			;
 
 	class_<TestClass>("TestClass")

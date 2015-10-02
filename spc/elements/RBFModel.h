@@ -184,21 +184,18 @@ public:
         return scales_;
     }
 
-	T op2(const PointT &p) const
+
+
+
+	T operator()(const PointT &p) const
 	{
-		return operator ()(p);
+		VectorT v = getPredictorVector(p);
+		return v.dot(coeffs_);
 	}
 
 
-    T operator()(const PointT &p) const
-    {
-        VectorT v = getPredictorVector(p);
-        return v.dot(coeffs_);
-    }
 
-
-
-    void operator() (const PointsT &points, VectorT &values)
+	void operator() (const PointsT &points, VectorT &values) const
     {
         values.resize(points.rows());
 #ifdef USE_OPENMP
@@ -210,7 +207,7 @@ public:
         }
     }
 
-    void splittedEvaluator(const PointsT & points, MatrixT & values)
+	void splittedEvaluator(const PointsT & points, MatrixT & values) const
     {
 
         DLOG(INFO) << "calling splitted evaluator";
