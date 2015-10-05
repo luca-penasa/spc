@@ -21,12 +21,15 @@ template <typename T>
 class RBFBase: public ElementBase
 {
 public:
-   spcTypedefSharedPtrs(RBFBase<T>)
+//	SPC_ELEMENT(RBFBase<T>)
+	spcTypedefSharedPtrs(RBFBase<T>)
 
     RBFBase(): scale_(1)
     {
         updateSecondary();
     }
+
+
 
     /** the scale is acually the scale of the basis fuction
      * bigger scale -> bigger basis function
@@ -42,7 +45,6 @@ public:
         scale_ = other.scale_;
         updateSecondary();
     }
-
 
 
 
@@ -150,9 +152,6 @@ public:
     {
 
     }
-
-
-
 
     /** def const
      **/

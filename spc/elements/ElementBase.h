@@ -58,11 +58,11 @@ public:
         return true;
     }
 
-    virtual ElementBase::Ptr clone() const
-    {
-        DLOG(WARNING) << "called clone in ElementBase class. This method must be re-implemented in derived classes";
-        return ElementBase::Ptr(new ElementBase(*this));
-    }
+	virtual ElementBase::Ptr clone() const = 0;
+//    {
+//        DLOG(WARNING) << "called clone in ElementBase class. This method must be re-implemented in derived classes";
+//		return NULL;
+//    }
 
 //    ElementBase::Ptr clone2() const
 //    {

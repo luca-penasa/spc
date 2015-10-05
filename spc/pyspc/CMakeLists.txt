@@ -1,66 +1,50 @@
+PROJECT(PYSPC)
 
-#link_directories(${CULTURE_3D_BUILD_DIR}/src)
-#include_directories("${CULTURE_3D_SOURCE_DIR}/include")
-#include_directories("${CULTURE_3D_SOURCE_DIR}/src/uti_image/Ann")
-
-#include_directories(${CULTURE_3D_BUILD_DIR}/include)
-
-#find_package(X11)
-
-#SET(CMAKE_BUILD_TYPE "DEBUG")
-
+# macro to add a new pyspc module.
+# each module is named following the SPC solib criteria
+macro(add_pyspc_module name )
+    add_library(${name} SHARED ${name}.cpp ${name}.h)
+    set_target_properties(${name} PROPERTIES SUFFIX ${MODULE_SUFFIX} PREFIX "" LIBRARY_OUTPUT_DIRECTORY ${MODULES_OUTPUT_DIR})
+    target_link_libraries(${name} ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} boost_python  boost_numpy ${SPC_LIBRARIES} io)
+endmacro()
 
 
-#find_package(PythonLibs 2.7 REQUIRED)
-#include_directories(${PYTHON_INCLUDE_DIRS})
-#include_directories(${CMAKE_SOURCE_DIR}/external/Boost.NumPy)
-
-
-#FIND_PACKAGE(Boost 1.45.0)
-#IF(Boost_FOUND)
-#  INCLUDE_DIRECTORIES("${Boost_INCLUDE_DIRS}")
-#  SET(Boost_USE_STATIC_LIBS OFF)
-#  SET(Boost_USE_MULTITHREADED ON)
-#  SET(Boost_USE_STATIC_RUNTIME OFF)
-#  FIND_PACKAGE(Boost 1.45.0 COMPONENTS python)
-
-##ELSEIF(NOT Boost_FOUND)
-##  MESSAGE(FATAL_ERROR "Unable to find correct Boost version. Did you set BOOST_ROOT?")
-#ENDIF()
-
+# find numpy
 find_package(NumPy REQUIRED)
 
-include_directories(${NUMPY_INCLUDE_DIRS})
 
-FIND_PACKAGE(PythonInterp)
-FIND_PACKAGE(PythonLibs)
-FIND_PACKAGE(Boost  1.56.0 COMPONENTS python system)
+# find python libs, interpreter and boost python (system is needed)
+# version is just to have an idea with the versions I am working with
+# while deveolping this package
+FIND_PACKAGE(PythonInterp 2.7 REQUIRED)
+FIND_PACKAGE(PythonLibs 2.7 REQUIRED)
+FIND_PACKAGE(Boost 1.50.0 REQUIRED  COMPONENTS python system)
 
-
-message("PYTHON ${PYTHON_INCLUDE_DIRS}")
-ENABLE_TESTING()
-INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${PYTHON_INCLUDE_DIRS})
+#  set includes and solib dirs
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${PYTHON_INCLUDE_DIRS} ${NUMPY_INCLUDE_DIRS})
 LINK_LIBRARIES(${Boost_LIBRARIES} ${PYTHON_LIBRARIES}) # Deprecated but so convenient!
 
+# some variables
+set(MODULES_OUTPUT_DIR "${CMAKE_BINARY_DIR}/pyspc/spc")
+set(MODULE_SUFFIX ".so")
 
-message("BOOST LIB ${Boost_LIBRARIES}")
-message("PYTHON LIB ${PYTHON_LIBRARIES}")
+# we add the first io module by hand
+add_library(io SHARED io.cpp io.h  eigen_numpy.h  eigen_numpy.cpp)
+set_target_properties(io PROPERTIES SUFFIX  ${MODULE_SUFFIX} PREFIX "" LIBRARY_OUTPUT_DIRECTORY ${MODULES_OUTPUT_DIR})
+target_link_libraries(io ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} boost_python  boost_numpy ${SPC_LIBRARIES} )
 
+# then elements
+add_pyspc_module(elements)
 
-PYTHON_ADD_MODULE(pyspc pymm.cpp pymm.h  eigen_numpy.h  eigen_numpy.cc)
-
-#include_directories()
-
-#spc_add_library()
-#set(additional_libs ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} boost_numpy spc_elements)
-
-#add_library(pyspc SHARED pymm.cpp pymm.h)
-target_link_libraries(pyspc ${Boost_LIBRARIES}  boost_numpy ${SPC_LIBRARIES})
-#spc_install_target_library_libs(pyspc)
-
+# methods
+add_pyspc_module(methods)
 
 
 
-
-
-
+########## copy init file to build dir #########################################################
+set(PYSPC_INIT_FILE "${CMAKE_CURRENT_SOURCE_DIR}/__init__.py")
+add_custom_command( TARGET io
+		    POST_BUILD
+		    COMMAND ${CMAKE_COMMAND}
+			    -E copy_if_different ${PYSPC_INIT_FILE}  ${MODULES_OUTPUT_DIR})
+#################################################################################################
