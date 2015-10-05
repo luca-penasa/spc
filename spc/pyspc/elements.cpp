@@ -7,14 +7,14 @@
 
 #include <boost/python/manage_new_object.hpp>
 #include <boost/python/return_value_policy.hpp>
+#include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+#include <boost/python.hpp>
 
 
 namespace spc
 {
 
-#include <boost/python.hpp>
 using namespace boost::python;
-
 
 
 
@@ -23,10 +23,22 @@ typedef spc::RBFModel<float> RBFModelF;
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(op, RBFModelF::operator(), 1, 1)
 
 
+template<typename T>
+void wrap_std_vector(const std::string name)
+{
+	typedef std::vector <T> VT;
+	class_< VT>(name.c_str())
+			.def(vector_indexing_suite<VT >())
+			;
+}
+
 BOOST_PYTHON_MODULE(elements)
 {
 	implicitly_convertible<RBFModelF::Ptr,ISerializable::Ptr>();
+	implicitly_convertible<RBFModelF::Ptr,ElementBase::Ptr>();
 	implicitly_convertible<ElementBase::Ptr,ISerializable::Ptr>();
+
+	wrap_std_vector<ElementBase::Ptr> ("VectorOfElementBasePtr");
 
 	class_<ISerializable, ISerializable::Ptr, boost::noncopyable>("ISerializable", no_init)
 			.def("isSerializable", &ISerializable::isSerializable)
