@@ -9,6 +9,8 @@
 
 #SET(CMAKE_BUILD_TYPE "DEBUG")
 
+
+
 #find_package(PythonLibs 2.7 REQUIRED)
 #include_directories(${PYTHON_INCLUDE_DIRS})
 #include_directories(${CMAKE_SOURCE_DIR}/external/Boost.NumPy)
@@ -22,23 +24,32 @@
 #  SET(Boost_USE_STATIC_RUNTIME OFF)
 #  FIND_PACKAGE(Boost 1.45.0 COMPONENTS python)
 
-#ELSEIF(NOT Boost_FOUND)
-#  MESSAGE(FATAL_ERROR "Unable to find correct Boost version. Did you set BOOST_ROOT?")
+##ELSEIF(NOT Boost_FOUND)
+##  MESSAGE(FATAL_ERROR "Unable to find correct Boost version. Did you set BOOST_ROOT?")
 #ENDIF()
+
+find_package(NumPy REQUIRED)
+
+include_directories(${NUMPY_INCLUDE_DIRS})
 
 FIND_PACKAGE(PythonInterp)
 FIND_PACKAGE(PythonLibs)
-FIND_PACKAGE(Boost COMPONENTS python)
+FIND_PACKAGE(Boost  1.56.0 COMPONENTS python system)
 
 
-
+message("PYTHON ${PYTHON_INCLUDE_DIRS}")
 ENABLE_TESTING()
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${PYTHON_INCLUDE_DIRS})
 LINK_LIBRARIES(${Boost_LIBRARIES} ${PYTHON_LIBRARIES}) # Deprecated but so convenient!
 
+
+message("BOOST LIB ${Boost_LIBRARIES}")
+message("PYTHON LIB ${PYTHON_LIBRARIES}")
+
+
 PYTHON_ADD_MODULE(pyspc pymm.cpp pymm.h  eigen_numpy.h  eigen_numpy.cc)
 
-include_directories()
+#include_directories()
 
 #spc_add_library()
 #set(additional_libs ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} boost_numpy spc_elements)

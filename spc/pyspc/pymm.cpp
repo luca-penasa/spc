@@ -2,6 +2,8 @@
 
 #include "eigen_numpy.h"
 
+#include <spc/io/element_io.h>
+
 //typedef spc::RBFModel<float>::Ptr ModelPtrT ;
 // Tag the OpenSceneGraph ref_ptr type as a smart pointer.
 //namespace boost {
@@ -9,6 +11,10 @@
 //	template <class T> struct pointee< spcSharedPtrMacro<T> >
 //	{ typedef T type; };
 //  }}
+
+
+#include <boost/python/manage_new_object.hpp>
+#include <boost/python/return_value_policy.hpp>
 
 
 namespace spc
@@ -42,29 +48,79 @@ void TestClass::PrintMat(const Eigen::MatrixXf &m) {
 typedef spc::RBFModel<float> RBFModelF;
 
 
+int pass_ptr(ISerializable::Ptr const & ptr)
+{
+    std::cout << ptr << std::endl;
+}
+
+RBFModelF::Ptr getPtr()
+{
+    return RBFModelF::Ptr(new RBFModelF);
+}
+
+
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(op, RBFModelF::operator(), 1, 1)
+
+
+
 BOOST_PYTHON_MODULE(pyspc)
 {
+
+    def("pass_ptr", &pass_ptr);
+    def("getPtr", &getPtr);
+
 
 	boost::numpy::initialize();
 	SetupEigenConverters();
 
+    enum_<spc::io::ARCHIVE_TYPE>("ARCHIVE_TYPE")
+        .value("XML", spc::io::XML)
+        .value("SPC", spc::io::SPC)
+            .value("JSON", spc::io::JSON)
+            .value("ASCII", spc::io::ASCII)
 
-	class_<RBFModelF,RBFModelF::Ptr>("RBFModel")
+        ;
+
+    def("serializeToFile", &spc::io::serializeToFile);
+    def("deserializeFromFile", &spc::io::deserializeFromFile);
+
+
+
+
+
+    class_<ISerializable, ISerializable::Ptr, boost::noncopyable>("ISerializable", no_init)
+            .def("isSerializable", &ISerializable::isSerializable)
+            .def("isAsciiSerializable", &ISerializable::isAsciiSerializable);
+            ;
+
+
+    class_<ElementBase, ElementBase::Ptr, boost::noncopyable, bases<ISerializable> >("ElementBase", no_init)
+            .def("getPtr", &ElementBase::getPtr)
+            .def("clone", &ElementBase::clone)
+            .def("clone2", &ElementBase::clone2)
+
+            .def("getChilds", &ElementBase::getChilds)
+            .def("addChild", &ElementBase::addChild)
+            .def("getElementName", &ElementBase::getElementName)
+            .def("setElementName", &ElementBase::setElementName)
+            .def("removeChild", &ElementBase::removeChild)
+            .def("setParent", &ElementBase::getParent)
+            ;
+
+
+
+
+    class_<RBFModelF,RBFModelF::Ptr, bases<ElementBase> , boost::noncopyable>("RBFModel")
 			.def("getCoefficients", &RBFModelF::getCoefficients)
 			.def("getDimensionality", &RBFModelF::getDimensionality)
-//			.def("op2", &spc::RBFModel<float>::op2)
-//			.def("oper", static_cast< float const (RBFModelF::*)(&RBFModelEstimator::PointT ) > ( &RBFModelF::operator() ))
-
-//relevant:
-// http://stackoverflow.com/questions/6050996/boost-python-overloaded-functions-with-default-arguments-problem
-//			.def("__call__", &spc::RBFModel<float>::operator() )
+            .def("__call__",  static_cast<float (RBFModelF::*)(const RBFModelF::PointT &) const >  (&RBFModelF::operator() ), op() )
 
 			;
 
 	class_<World>("World")
 			.def("greet", &World::greet)
 			.def("set", &World::set)
-			.def("__call__", &World::operator () )
+//			.def("__call__", &World::operator () )
 
 			;
 
@@ -96,6 +152,11 @@ BOOST_PYTHON_MODULE(pyspc)
 
 
 	def("PrintMat", PrintMat);
+
+implicitly_convertible<RBFModelF::Ptr,ISerializable::Ptr>();
+//        register_ptr_to_python< ElementBase::Ptr >();
+//        register_ptr_to_python< ISerializable::Ptr >();
+//        register_ptr_to_python< RBFModelF::Ptr >();
 }
 
 } // end nspace

@@ -5,6 +5,9 @@
 
 #include <spc/elements/calibration/DataHolder.h>
 
+
+
+
 DEFINE_string(in, "", "input calibration data to be filtered");
 
 DEFINE_string(out, "calibration_data_filtered.spc",
@@ -56,9 +59,9 @@ int main(int argc, char** argv)
 
 	gflags::ParseCommandLineFlags(&argc, &argv, true);
 
-	FLAGS_logtostderr = 1;
+//	FLAGS_logtostderr = 1;
 
-	FLAGS_colorlogtostderr = 1;
+//	FLAGS_colorlogtostderr = 1;
 
 	spc::calibration::FilterCalibrationObservations filter;
 	if (filter.loadData(FLAGS_in) == -1)

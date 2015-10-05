@@ -3,6 +3,9 @@
 #include <glog/logging.h>
 #include <numpy/arrayobject.h>
 
+
+//#include <site-packages/numpy/core/include/numpy/arrayobject.h>
+
 #include <spc/methods/RBFModelEstimator.h>
 
 namespace bp = boost::python;

@@ -64,6 +64,13 @@ public:
         return ElementBase::Ptr(new ElementBase(*this));
     }
 
+//    ElementBase::Ptr clone2() const
+//    {
+//        return ElementBase::Ptr(new ElementBase(*this));
+
+//    }
+
+
 
 
 
