@@ -231,7 +231,7 @@ public:
 	void concatenate(const NewSpcPointCloud& other);
 
     virtual bool isAsciiSerializable() const override
-    {
+	{
         return true;
     }
 

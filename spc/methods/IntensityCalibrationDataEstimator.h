@@ -22,7 +22,7 @@ public:
 
     void setInputClouds(std::vector<CloudDataSourceOnDisk::Ptr> cloud_names);
 
-    void setInputKeypoints(NewSpcPointCloud::ConstPtr kpoints);
+	void setInputKeypoints(const NewSpcPointCloud::Ptr kpoints);
 
     void setNormalEstimationSearchRadius(const float rad);
 

@@ -45,7 +45,7 @@ public:
         return kp;
     }
 
-	void appendKeypoint(KeyPoint::Ptr kpoint)
+	void appendKeypoint(const KeyPoint::Ptr kpoint)
     {
         keypoints_.push_back(kpoint);
     }
@@ -53,7 +53,7 @@ public:
 	//! this will create an empty keypoint for each point in pointset
 	//! if the pointset contains the scalar field specified with material_field_name
 	//! the material information will be copied in the newly created keypoints.
-    void initFromCloud(const NewSpcPointCloud::ConstPtr pointset, const std::string material_field_name)
+	void initFromCloud(const NewSpcPointCloud::Ptr pointset, const std::string &material_field_name)
     {
         if (!pointset->hasField(material_field_name))
         {

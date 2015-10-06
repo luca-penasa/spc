@@ -36,7 +36,7 @@ namespace calibration {
 		input_clouds_ondisk_ = cloud_names;
 	}
 
-	void CalibrationDataEstimator::setInputKeypoints(NewSpcPointCloud::ConstPtr kpoints)
+	void CalibrationDataEstimator::setInputKeypoints(const NewSpcPointCloud::Ptr kpoints)
     {
 		calibration_data_->initFromCloud(kpoints, material_field_name_);
 	}

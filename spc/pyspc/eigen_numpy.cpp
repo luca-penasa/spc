@@ -317,4 +317,10 @@ void SetupEigenConverters()
 	MAT_CONV(1, X, float);
 	MAT_CONV(3, 4, float);
 	MAT_CONV(2, X, float);
+
+//	BLOCK_CONV(X, X, X, X, float);
+//	Eigen::Block<Eigen::Matrix<float, -1, -1, 0, -1, -1>, -1, -1, false>
+
+
+
 }

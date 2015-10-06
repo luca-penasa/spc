@@ -1,6 +1,6 @@
 #include "io.h"
 
-#include "eigen_numpy.h"
+//#include "eigen_numpy.h"
 
 #include <spc/io/element_io.h>
 
@@ -20,7 +20,7 @@ using namespace boost::python;
 BOOST_PYTHON_MODULE(io)
 {
 	boost::numpy::initialize();
-	SetupEigenConverters();
+//	SetupEigenConverters();
 
     enum_<spc::io::ARCHIVE_TYPE>("ARCHIVE_TYPE")
         .value("XML", spc::io::XML)

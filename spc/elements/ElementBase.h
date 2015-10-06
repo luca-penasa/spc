@@ -223,7 +223,7 @@ public:
         child->setParent(NULL);
     }
 
-    void setParent(ElementBase::Ptr parent)
+	void setParent(const ElementBase::Ptr parent)
     {
         parent_ = parent;
     }

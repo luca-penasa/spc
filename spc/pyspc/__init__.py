@@ -1,2 +1,2 @@
-__all__ = ['io', 'elements', 'methods']
-import io, elements, methods
+__all__ = ['io', 'elements', 'methods', 'minieigen']
+import io, elements, methods, minieigen

@@ -4,3 +4,6 @@
 [submodule "submodules/nanoflann"]
 	path = submodules/nanoflann
 	url = git@github.com:jlblancoc/nanoflann.git
+[submodule "spc/pyspc/minieigen"]
+	path = spc/pyspc/minieigen
+	url = git@github.com:eudoxos/minieigen.git
