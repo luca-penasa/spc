@@ -9,11 +9,11 @@
 // experimental DTICLASS macro runtyme type exposer
 #define EXPOSE_TYPE                                                            \
     static DtiClassType Type;                                                  \
-    virtual DtiClassType *getType() const                                      \
+    virtual DtiClassType *getType() const                                    \
     {                                                                          \
         return &Type;                                                          \
     }                                                                          \
-    virtual bool isA(const DtiClassType *type) const                           \
+    virtual bool isA(const DtiClassType *type) const                       \
     {                                                                          \
         return this->getType()->isA(type);                                     \
     }

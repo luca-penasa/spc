@@ -18,10 +18,10 @@ LIST(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 option(SPC_BUILD_WITH_CLANG "Build spc library using clang isntead of gcc." OFF)
 if(SPC_BUILD_WITH_CLANG)
 
-find_package(Clang)
+#find_package(Clang)
     message("Using Clang as compiler! This may not work properly")
-    set(CMAKE_C_COMPILER "clang-3.4")
-    set(CMAKE_CXX_COMPILER "clang++-3.4")
+    set(CMAKE_C_COMPILER "clang")
+    set(CMAKE_CXX_COMPILER "clang++")
 endif()
 
 #set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -313,7 +313,7 @@ if(SPC_ENABLE_INSTALL)
     ## reconfigure the SPCConfig.cmake putting it in a subdirectory of the build tree
     configure_file(SPCConfig.cmake.in "${PROJECT_BINARY_DIR}/${CMAKE_FILES_DIRECTORY}/SPCConfig.cmake" @ONLY)
 
-    
+
     # Install the FooBarConfig.cmake and FooBarConfigVersion.cmake in the install tree
     install(FILES "${PROJECT_BINARY_DIR}/${CMAKE_FILES_DIRECTORY}/SPCConfig.cmake"
                   "${PROJECT_BINARY_DIR}/SPCConfigVersion.cmake"

@@ -14,9 +14,9 @@ using Eigen::Matrix;
 //namespace gflags = google;
 
 
-#ifdef GFLAGS_IN_NS_GOOGLE
-namespace gflags = google;
-#endif
+//#ifdef GFLAGS_IN_NS_GOOGLE
+//namespace gflags = google;
+//#endif
 
 DEFINE_string(out, "rbf_model", "Out Filename.");
 

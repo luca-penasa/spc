@@ -1,4 +1,4 @@
-PROJECT(PYSPC)
+#PROJECT(PYSPC)
 
 # macro to add a new pyspc module.
 # each module is named following the SPC solib criteria

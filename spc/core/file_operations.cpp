@@ -46,8 +46,9 @@ std::vector<std::string> spc::list_files(const std::string &dir_name)
 			list.push_back(ent->d_name);
 		}
 		closedir (dir);
-		return list;
 	}
+
+    return list;
 }
 
 
