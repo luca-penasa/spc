@@ -5,7 +5,7 @@
 macro(add_pyspc_module name )
     add_library(${name} SHARED ${name}.cpp ${name}.h)
     set_target_properties(${name} PROPERTIES SUFFIX ${MODULE_SUFFIX} PREFIX "" LIBRARY_OUTPUT_DIRECTORY ${MODULES_OUTPUT_DIR})
-    target_link_libraries(${name} ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} boost_python  boost_numpy ${SPC_LIBRARIES} io minieigen)
+    target_link_libraries(${name} ${Boost_LIBRARIES} ${PYTHON_LIBRARIES}  boost_numpy ${SPC_LIBRARIES} io minieigen)
 endmacro()
 
 
@@ -65,7 +65,7 @@ set_target_properties(minieigen PROPERTIES  COMPILE_DEFINITIONS  "EIGEN_DONT_ALI
 					    SUFFIX  ${MODULE_SUFFIX}
 					    PREFIX "")
 
-target_link_libraries(minieigen boost_python)
+#target_link_libraries(minieigen boost_python)
 
 
 
@@ -74,7 +74,7 @@ add_library(io SHARED io.cpp io.h  eigen_numpy.h  eigen_numpy.cpp)
 set_target_properties(io PROPERTIES SUFFIX  ${MODULE_SUFFIX}
 				    PREFIX ""
 				    LIBRARY_OUTPUT_DIRECTORY ${MODULES_OUTPUT_DIR})
-target_link_libraries(io ${Boost_LIBRARIES} ${PYTHON_LIBRARIES} boost_python  boost_numpy ${SPC_LIBRARIES} minieigen)
+target_link_libraries(io ${Boost_LIBRARIES} ${PYTHON_LIBRARIES}  boost_numpy ${SPC_LIBRARIES} minieigen)
 
 # then elements
 add_pyspc_module(elements)
