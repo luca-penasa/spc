@@ -25,7 +25,7 @@ int main(int argc, char ** argv)
 //    FLAGS_colorlogtostderr=1;
 //    FLAGS_logtostderr=1;
 
-    gflags::ParseCommandLineFlags(&argc, &argv, true);
+    google::ParseCommandLineFlags(&argc, &argv, true);
 
     spc::ISerializable::Ptr ser =  spc::io::deserializeFromFile(FLAGS_selection);
 

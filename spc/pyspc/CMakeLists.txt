@@ -12,6 +12,11 @@ endmacro()
 # find numpy
 find_package(NumPy REQUIRED)
 
+# these are additional include dirs for finding boost.numpt
+set (BOOST_NUMPY_INCLUDE_PATH )
+
+include_directories("/home/luca/apps/include")
+
 include_directories("indexing_suite_v2")
 # find python libs, interpreter and boost python (system is needed)
 # version is just to have an idea with the versions I am working with
@@ -19,6 +24,8 @@ include_directories("indexing_suite_v2")
 FIND_PACKAGE(PythonInterp 2.7 REQUIRED)
 FIND_PACKAGE(PythonLibs 2.7 REQUIRED)
 FIND_PACKAGE(Boost 1.50.0 REQUIRED  COMPONENTS python system)
+
+add_definitions(${Boost_DEFINITIONS})
 
 #  set includes and solib dirs
 INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIRS} ${PYTHON_INCLUDE_DIRS} ${NUMPY_INCLUDE_DIRS})

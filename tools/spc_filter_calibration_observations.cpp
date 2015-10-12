@@ -55,9 +55,9 @@ int main(int argc, char** argv)
 {
 	google::InitGoogleLogging(argv[0]);
 
-	gflags::SetUsageMessage("Filter the observations for calibration");
+	google::SetUsageMessage("Filter the observations for calibration");
 
-	gflags::ParseCommandLineFlags(&argc, &argv, true);
+	google::ParseCommandLineFlags(&argc, &argv, true);
 
 //	FLAGS_logtostderr = 1;
 

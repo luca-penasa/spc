@@ -23,7 +23,7 @@ int main(int argc, char ** argv)
 
 //    FLAGS_logtostderr = 1;
 
-    gflags::ParseCommandLineFlags(&argc, &argv, true);
+    google::ParseCommandLineFlags(&argc, &argv, true);
 
     CHECK_GT(FLAGS_max_distance, 0.0);
 

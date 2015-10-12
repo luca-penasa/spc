@@ -1,7 +1,9 @@
 #ifndef PYSPC_IO_H
 #define PYSPC_IO_H
-#include <boost/python.hpp>
-#include <boost/numpy.hpp>
+
+#include "eigen_numpy.h"
+
+
 
 
 

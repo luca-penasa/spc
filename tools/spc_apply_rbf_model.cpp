@@ -57,7 +57,7 @@ int main(int argc, char ** argv)
 {
 
     google::InitGoogleLogging(argv[0]);
-    gflags::SetUsageMessage("Calibrate the intensity field of input cloud using the RBF model provided");
+    google::SetUsageMessage("Calibrate the intensity field of input cloud using the RBF model provided");
 
     LOG(INFO) << spc::fs::Path(argv[0]).stem();
 
@@ -67,7 +67,7 @@ int main(int argc, char ** argv)
 
 //    FLAGS_helpmatch = argv[0];
 
-    gflags::ParseCommandLineFlags(&argc, &argv, true);
+    google::ParseCommandLineFlags(&argc, &argv, true);
 
     // load the modes and chek if its ok
     spc::ISerializable::Ptr obj = spc::io::deserializeFromFile(FLAGS_model);

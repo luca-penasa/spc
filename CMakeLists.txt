@@ -17,11 +17,30 @@ LIST(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 option(SPC_BUILD_WITH_CLANG "Build spc library using clang isntead of gcc." OFF)
 if(SPC_BUILD_WITH_CLANG)
+    # try to find clang executable!
+    find_program(CLANG_CPP_EXECUTABLE
+      NAMES clang++-3.7 clang++-3.6 clang++
+      PATHS ENV)
 
-#find_package(Clang)
-    message("Using Clang as compiler! This may not work properly")
-    set(CMAKE_C_COMPILER "clang")
-    set(CMAKE_CXX_COMPILER "clang++")
+
+    find_program(CLANG_EXECUTABLE
+      NAMES clang-3.7 clang-3.6 clang
+      PATHS ENV)
+
+    message("CLANG_CPP ${CLANG_CPP_EXECUTABLE}")
+    message("CLANG ${CLANG_EXECUTABLE}")
+
+    if(CLANG_CPP_EXECUTABLE)
+	  message("clang C++ and C compilers found : ${CLANG_CPP_EXECUTABLE}")
+	  set(CMAKE_C_COMPILER ${CLANG_EXECUTABLE})
+	  set(CMAKE_CXX_COMPILER ${CLANG_CPP_EXECUTABLE})
+    else()
+	  message("In else")
+	  message(FATAL_ERROR "Can't found program: clang and clang++")
+    endif()
+
+    message(WARNING "Using Clang as compiler! This may not work properly")
+
 endif()
 
 #set(CMAKE_EXPORT_COMPILE_COMMANDS ON)

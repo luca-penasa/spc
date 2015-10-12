@@ -22,7 +22,7 @@ int main(int argc, char ** argv)
 //    FLAGS_logtostderr = 1;
 
 
-    gflags::ParseCommandLineFlags(&argc, &argv, true);
+	google::ParseCommandLineFlags(&argc, &argv, true);
 
 
     if(FLAGS_clouds =="")
