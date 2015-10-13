@@ -25,8 +25,8 @@ public:
         sensor_orientation_ = other.sensor_orientation_;
     }
 
-    OrientedSensor(Eigen::Vector4f sensor_position,
-                   Eigen::Quaternionf sensor_orientation )
+    OrientedSensor(const Eigen::Vector4f & sensor_position,
+                   const Eigen::Quaternionf & sensor_orientation )
     {
         sensor_position_ = sensor_position;
         sensor_orientation_ = sensor_orientation;

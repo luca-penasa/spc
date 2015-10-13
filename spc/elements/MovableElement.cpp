@@ -36,7 +36,7 @@ void Point3D::getPosition(float &x, float &y, float &z) const
     z = position_(2);
 }
 
-void Point3D::setPositionH(const Eigen::Vector4f position)
+void Point3D::setPositionH(const Vector4f &position)
 {
     position_ = position;
     position_(3) = 1; // be sure the last element is one

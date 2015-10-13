@@ -87,7 +87,10 @@ set(SPC_LIBRARIES CACHE INTERNAL "SPC libs" FORCE) #this will collect all the mo
 ############################################################################################################
 
 ############################# OPTIONS ######################################################################
-option(SPC_BUILD_SHARED "Build spc library as a shared lib." ON)
+#if (UNIX)
+    option(SPC_BUILD_SHARED "Build spc library as a shared lib." ON)
+#endif()
+
 option(SPC_BUILD_WITH_GPROF "Build with -pg flags for profiling." OFF)
 
 option(SPC_BUILD_TOOLS "Build the tools." ON)

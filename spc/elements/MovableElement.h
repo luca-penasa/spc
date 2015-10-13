@@ -59,7 +59,7 @@ public:
 
     void setPosition(const Eigen::Vector3f position);
 
-    void setPositionH(const Eigen::Vector4f position);
+    void setPositionH(const Eigen::Vector4f & position);
 
     //! this is deprecated. We are rying to move to the PoinCloudBase interface for cloud operations
 //    void positionFromCentroid(pcl::PointCloud<pcl::PointXYZ> &cloud);

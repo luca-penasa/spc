@@ -20,7 +20,7 @@ Attitude::Attitude(const Vector3f &direction, const Vector3f &position)
        normal_.flipNormal();
 }
 
-Attitude::Attitude(const float dipAngle, const float dip, Vector3f position)
+Attitude::Attitude(const float dipAngle, const float dip, const Vector3f position)
 {
 
     if ((dipAngle <= 0.0) | (dipAngle >= 90))

@@ -39,7 +39,7 @@ public:
     /// \param dipAngle formed with the orizontal plane
     ///
     Attitude(const float dipAngle, const float dip,
-             Vector3f position = Vector3f::Zero());
+             const Vector3f position = Vector3f::Zero());
 
     // copy const
     Attitude(const Attitude &att) : Plane(att)
