@@ -33,7 +33,7 @@ public:
     ////////////////////////// MANDATORY METHODS
     //////////////////////////////////////////////////
     //!
-    //! \brief getStratigraphicPosition get the modeled stratigraphic position
+	//! \brief getScalarFieldValue( get the modeled stratigraphic position
     //! for a point in 3d
     //! \param point is the 3d point
     //! \return the stratigraphic position of that point
@@ -41,7 +41,7 @@ public:
     virtual float getScalarFieldValue(const Vector3f &point) const = 0;
 
     //!
-    //! \brief getStratigraphicNormal get the normal for a given point in 3d
+	//! \brief getScalarFieldGradient get the normal for a given point in 3d
     //! \param point isthe 3d point
     //! \return the normal for that point
     //!

@@ -18,7 +18,7 @@ option(SPC_MODULE_PYTHON_WRAPPINGS "Build python interface for the library. Only
 option(SPC_MODULE_PYSPC "Build python interface for the library. Only some classes have been wrapped!" OFF)
 
 
-option(SPC_BUILD_TESTS "Do tests" OFF)
+#option(SPC_BUILD_TESTS "Do tests" OFF)
 option(SPC_BUILD_DOC "Build SPC doc" OFF)
 
 option(SPC_BUILD_WRAPPINGS "Use swigs to generate wrappings for some methods" OFF)
@@ -66,9 +66,9 @@ endif()
 
 
 
-if(SPC_BUILD_TESTS)
-    add_subdirectory(tests)
-endif()
+#if(SPC_BUILD_TESTS)
+#    add_subdirectory(tests)
+#endif()
 
 if(SPC_BUILD_DOC)
     add_subdirectory(doc)

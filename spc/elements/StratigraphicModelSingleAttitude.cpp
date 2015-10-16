@@ -5,7 +5,7 @@ DtiClassType StratigraphicModelSingleAttitude::Type ("StratigraphicModelSingleAt
 
 float StratigraphicModelSingleAttitude::getScalarFieldValue(const Vector3f &point) const
 {
-    return attitude_.distanceTo(point) + getStratigraphicShift();
+	return attitude_.distanceTo(point) + getStratigraphicShift();
 }
 
 Vector3f StratigraphicModelSingleAttitude::getScalarFieldGradient(const Vector3f

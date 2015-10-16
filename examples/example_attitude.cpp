@@ -10,10 +10,35 @@ int main( int argc, char ** argv)
 {
 	// we use google logging for flexible logs
 	google::InitGoogleLogging(argv[0]);
-	google::LogToStderr(); // force to log to stderr
+//	google::LogToStderr(); // force to log to stderr
+
+//	FLAGS_logtostderr = true;
 
 	// create (a pointer to) an attiude $140N/40$, centerd in origin we use smart pointers to help manage memory in a good way
 	Attitude::Ptr attitude (new Attitude(40, 140, {0,0,0}));
+
+	Attitude::Ptr attitude2 (new Attitude);
+
+	attitude2->setPosition(Vector3f{-12,0,2});
+	attitude2->setNormal({0,0,1});
+
+	Point3D p (Vector3f{0,0,1});
+
+	float d = attitude2->distanceTo(p.getPosition());
+
+
+	LOG(INFO) << "d: " << d;
+
+
+
+	StratigraphicModelSingleAttitude model(attitude2);
+
+
+	float d2 = model.getScalarFieldValue(p.getPosition());
+
+	LOG(INFO) << "d2: " << d2;
+
+
 
 	// print out the dip and the dip-angle
 	LOG(INFO) << "dip: " << attitude->getDip() << " dip angle: " << attitude->getDipAngle();
@@ -28,6 +53,8 @@ int main( int argc, char ** argv)
 	Eigen::Vector3f new_position;
 	new_position << 1.2, 10.22, 4.2;
 	attitude->setPosition(new_position);
+
+
 
 	// and the position will be
 	LOG(INFO) << "position after moving: " << attitude->getPosition().transpose();

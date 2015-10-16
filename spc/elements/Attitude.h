@@ -10,13 +10,17 @@
 #include <fstream>
 namespace spc
 {
-///
-/// \brief an spcAttitude is a more sophisticated way to rapresent a plane in
-/// space
-/// It is actually the same thing of a Plane object with a position in space
-/// that localize the measure
-/// \note Typical notation for an attitude is 10/245 with 10 dip angle (0-90)
-/// and 245 is azimut from N (0-360) - the dip.
+
+/** \class Attitude
+ * \brief an spcAttitude is a geological way to rapresent a plane in
+ * space
+ *  It is actually the same thing of a Plane object with a position in space
+ *  that localize the measure
+ *  \note Typical notation for an attitude is 10/245 with 10 dip angle (0-90)
+ *  and 245 is azimut from N (0-360) - the dip.
+ *  \note the North direction corresponds witht Y axis, so that E is X and Z is the
+ *  vertical height (elevation).
+ **/
 class Attitude : public Plane
 {
 public:
@@ -35,8 +39,8 @@ public:
 
     ///
     /// \brief spcAttitude constructor (geologic-aware)
-    /// \param dip is the azimutal angle of dip direction with the north [0-360]
     /// \param dipAngle formed with the orizontal plane
+    /// \param dip is the azimutal angle of dip direction with the north [0-360]
     ///
     Attitude(const float dipAngle, const float dip,
              const Vector3f position = Vector3f::Zero());

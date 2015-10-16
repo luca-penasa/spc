@@ -48,7 +48,7 @@ void Point3D::setPosition(const Point3D &el)
     setPosition(el.getPosition());
 }
 
-void Point3D::setPosition(const Eigen::Vector3f position)
+void Point3D::setPosition(const Eigen::Vector3f & position)
 {
     position_.head(3) = position;
 }

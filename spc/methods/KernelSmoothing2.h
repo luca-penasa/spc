@@ -44,12 +44,14 @@ public:
     void setKernel(const typename RBFKernelFactory<ScalarT>::RBF_FUNCTION ker)
     {
         kernel_ = RBFKernelFactory<ScalarT>::create(ker);
+		updateSearchSupport();
     }
 
     //! is the bandwith of the estimator
     void setKernelSigma(const ScalarT sigma)
     {
         kernel_->setScale(sigma);
+		updateSearchSupport();
     }
 
     typename RBFBase<ScalarT>::Ptr getKernel() const
@@ -104,15 +106,7 @@ protected:
             return -1;
         }
 
-
-        // extract the support region
-
-        if (kernel_->isCompact())
-            search_support_ = kernel_->getSupport();
-        else
-            search_support_ = kernel_->getScale() * noncompact_support_multiplier_;
-
-        search_support_squared_ = search_support_ * search_support_;
+		updateSearchSupport();
 
         index_ = NanoFlannIndexT::Ptr (new NanoFlannIndexT(points_, 10));
 
@@ -121,6 +115,18 @@ protected:
         else
             return -1; // just to be sure
     }
+
+	void updateSearchSupport()
+	{
+		// extract the support region
+
+		if (kernel_->isCompact())
+			search_support_ = kernel_->getSupport();
+		else
+			search_support_ = kernel_->getScale() * noncompact_support_multiplier_;
+
+		search_support_squared_ = search_support_ * search_support_;
+	}
 
 
 

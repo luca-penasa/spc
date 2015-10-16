@@ -348,3 +348,7 @@ if(SPC_ENABLE_INSTALL)
     INSTALL( DIRECTORY miniglog DESTINATION "${SPC_INSTALL_INCLUDE_DIR}/spc/3rdParty" )
 endif()
 
+if(SPC_BUILD_TESTS)
+#    add_subdirectory(submodules/googletest/googletest)
+    add_subdirectory(tests)
+endif()

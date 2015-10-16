@@ -33,6 +33,7 @@ BOOST_PYTHON_MODULE(io)
     def("serializeToFile", &spc::io::serializeToFile);
     def("deserializeFromFile", &spc::io::deserializeFromFile);
 
+	def("getV", &spc::getV);
 
 }
 

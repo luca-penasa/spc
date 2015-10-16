@@ -43,7 +43,7 @@ set (minieigen_sources
 			"${MINIEGEN_DIR}/expose-converters.cpp"
 			"${MINIEGEN_DIR}/expose-matrices.cpp"
 			"${MINIEGEN_DIR}/expose-quaternion.cpp"
-			"${MINIEGEN_DIR}/expose-vectors.cpp"
+			"${MINIEGEN_DIR}/expose-vectors.cpp"			
 			"${MINIEGEN_DIR}/double-conversion/bignum.cc"
 			"${MINIEGEN_DIR}/double-conversion/bignum-dtoa.cc"
 			"${MINIEGEN_DIR}/double-conversion/cached-powers.cc"

@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <sstream>
 
 namespace spc
 {
@@ -28,6 +29,17 @@ std::string addSubscript(const std::string &file_name, const std::string &text);
 
 
 std::vector<std::string> splitStringAtSeparator(const std::string &line, const std::string &separator = " ");
+
+
+//template <typename T>
+//  std::string numberToString ( T Number )
+//  {
+
+//	  return std::to_string(Number)
+////	 std::ostringstream ss;
+////	 ss << Number;
+////	 return ss.str();
+//  }
 
 } // end namespace
 #endif

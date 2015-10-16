@@ -24,15 +24,16 @@ Attitude::Attitude(const float dipAngle, const float dip, const Vector3f positio
 {
 
     if ((dipAngle <= 0.0) | (dipAngle >= 90))
-        std::cout << "WARN: dipAngle out of bounds. Are you sure?" << std::endl;
+        LOG(WARNING) << "dipAngle out of bounds. Are you sure" << std::endl;
 
     Vector3f n = Vector3f::UnitZ(); // is a vertical vector
-    AngleAxis<float> rot_y(dipAngle / 180 * M_PI, Vector3f::UnitY());
+    // we rotate a vertical vector on the two axis, of the given angles
+    AngleAxis<float> rot_x(dipAngle / 180 * M_PI, -Vector3f::UnitX());
     AngleAxis<float> rot_z(dip / 180 * M_PI, -Vector3f::UnitZ());
 
-    Vector3f out_n = rot_z * rot_y * n;
+    Vector3f out_n = rot_z * rot_x * n;
 
-    this->setNormal(out_n);
+    this->setNormal(out_n.normalized());
     this->setPosition(position);
 }
 

@@ -119,8 +119,8 @@ BOOST_PYTHON_MODULE(elements)
 //	wrap_std_map<std::string, size_t> ("StdMapStringToSize");
 
 	class_<NewSpcPointCloud, NewSpcPointCloud::Ptr, bases<ElementBase>> ("NewSpcPointCloud")
-			.def("getData", &NewSpcPointCloud::getData)
-			.def("getNumberOfPoints", &NewSpcPointCloud::getNumberOfPoints)
+			.def("getData",  &NewSpcPointCloud::getData)
+			.def("getNumberOfPoints",  &NewSpcPointCloud::getNumberOfPoints)
 			.def("addNewField", &NewSpcPointCloud::addNewField)
 			.def("getFieldByName", static_cast<NewSpcPointCloud::BlockT (NewSpcPointCloud::*)(const std::string &)  >  (&NewSpcPointCloud::getFieldByName ), getFieldByName())
 //			.def("getFieldByName", static_cast<NewSpcPointCloud::ConstBlockT (NewSpcPointCloud::*)(const std::string &) const >  (&NewSpcPointCloud::getFieldByName ), getFieldByName())

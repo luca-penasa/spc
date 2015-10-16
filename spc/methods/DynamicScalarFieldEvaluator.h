@@ -60,6 +60,8 @@ public:
             int id = indices_.at(i);
             Eigen::Vector3f point = in_cloud_->getPoint(id);
             float val = model_->getScalarFieldValue(point);
+
+//		LOG(INFO) << "point " << point << " value " << val;
             output_(i) = val;
         }
 

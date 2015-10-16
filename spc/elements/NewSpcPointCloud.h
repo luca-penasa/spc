@@ -118,7 +118,7 @@ public:
     SPC_ELEMENT(NewSpcPointCloud)
     EXPOSE_TYPE
 
-    typedef float ScalarT;
+	typedef float ScalarT; // using float, useful if we templatize the class
     //! \todo we should move to a rowmajor format for the matrix.
     //! but we must also take care of the correspondent serialization function for cereal.
     //! that will create bad stuff on reloading. (I verified this!!!)
@@ -144,6 +144,11 @@ public:
     {
         return fields_.block(0, 0, fields_.rows(), fields_.cols());
     }
+
+//	MatrixT getData() const
+//	{
+//		return this->getData();
+//	}
 
 	void addNewField(const std::string& name, size_t dim = 1);
 

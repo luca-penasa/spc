@@ -20,6 +20,15 @@ namespace spc
 {
 
 
+Eigen::VectorXf getV()
+{
+	Eigen::VectorXf out(4);
+
+	out << 1,2,3,4;
+
+	return out;
+}
+
 
 class Base
 {

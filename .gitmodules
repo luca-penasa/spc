@@ -7,3 +7,6 @@
 [submodule "spc/pyspc/minieigen"]
 	path = spc/pyspc/minieigen
 	url = git@github.com:eudoxos/minieigen.git
+[submodule "submodules/googletest"]
+	path = submodules/googletest
+	url = git@github.com:google/googletest.git

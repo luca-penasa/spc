@@ -57,7 +57,7 @@ public:
 
     void setPosition(const Point3D &el);
 
-    void setPosition(const Eigen::Vector3f position);
+	void setPosition(const Eigen::Vector3f &position);
 
     void setPositionH(const Eigen::Vector4f & position);
 
