@@ -2,9 +2,6 @@
 #define POINT3D_H
 
 #include <spc/elements/ElementBase.h>
-#include <pcl/point_cloud.h>
-#include <pcl/point_types.h>
-
 #include <spc/elements/templated/PointSetBase.h>
 
 

@@ -4,7 +4,7 @@
 #include <spc/elements/ElementBase.h>
 #include <spc/elements/PointCloudBase.h>
 #include <spc/elements/Plane.h>
-#include <pcl/io/pcd_io.h> //for debug only
+//#include <pcl/io/pcd_io.h> //for debug only
 #include <spc/elements/PointCloudPcl.h>
 #include <spc/elements/SelectionBase.h>
 #include <boost/foreach.hpp>

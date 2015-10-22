@@ -1,5 +1,5 @@
 #include "svmlib_helper.h"
-#include <pcl/pcl_macros.h>
+//#include <pcl/pcl_macros.h>
 
 namespace spc
 {
@@ -27,7 +27,7 @@ void writeToSVMlibFile(const std::vector
             for (int n = 0; n < n_multi; ++n) // for each component of a field
             {
                 float value = fields.at(f).at(n).at(i);
-                if (pcl_isnan(value)) {
+                if (std::isnan(value)) {
                     complete_field_id++;
                     continue;
                 }

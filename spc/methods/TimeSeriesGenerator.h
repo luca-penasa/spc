@@ -125,8 +125,7 @@ public:
     inline OutSeriesPtrT getOutputSeries() const
     {
         if (!out_series_)
-            pcl::console::print_error(
-                "out series is void. Null pointer returned!");
+            LOG(WARNING) << "out series is void. Null pointer returned!";
 
         return out_series_;
     }

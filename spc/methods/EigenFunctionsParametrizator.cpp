@@ -5,14 +5,14 @@
 int spc::EigenFunctionsParametrizator::compute()
 {
     if (function_->getInputSize() != vars_.cols()) {
-        pcl::console::print_error(
-                    "Wrong dimension of independent variables\n");
+        LOG(ERROR) <<
+                    "Wrong dimension of independent variables";
         return -1;
     }
 
     if (vars_.rows() != b_.size()) {
-        pcl::console::print_error("Dependent and independent variables "
-                                  "must have the same numbe of elements\n");
+        LOG(ERROR) << "Dependent and independent variables "
+                                  "must have the same numbe of elements";
         return -1;
     }
 
@@ -42,9 +42,9 @@ int spc::EigenFunctionsParametrizator::compute()
 
     } else {
         // we must go non-linear. Still not implemented
-        pcl::console::print_error("Your are trying to parametrize a "
+        LOG(ERROR) << "Your are trying to parametrize a "
                                   "nonlinear function.\n Nonlinear solver "
-                                  "is not implemented yet\n");
+                                  "is not implemented yet\n";
         return -1;
     }
 }

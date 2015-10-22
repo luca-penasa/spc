@@ -1,5 +1,6 @@
 #include "TransferFieldNN.h"
 namespace spc {
+#ifdef SPC_WITH_PCL
 
 int PointCloudHelpers::transferNormals(PointCloudBase::Ptr from, PointCloudBase::Ptr to, const float &max_distance)
 {
@@ -169,7 +170,7 @@ int PointCloudHelpers::computeDistanceFromSensor(PointCloudBase::Ptr cloud, std:
 
 }
 
-
+#endif
 
 
 }

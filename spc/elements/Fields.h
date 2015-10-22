@@ -7,7 +7,7 @@
 #include <map>
 #include <boost/variant.hpp>
 #include <spc/core/spc_eigen.h>
-#include <pcl/console/print.h>
+//#include <pcl/console/print.h>
 #include <spc/elements/ElementBase.h>
 #include <cereal/types/map.hpp>
 
@@ -97,8 +97,7 @@ public:
     virtual bool set(const size_t idx, const VariantT &data)
     {
         if (data.type() != typeid(T)) {
-            pcl::console::print_warn(
-                "Wrong data type assignement in ScalarField\n");
+            LOG(WARNING) <<"Wrong data type assignement in ScalarField";
             return false;
         } else
             data_.at(idx) = boost::get<T>(data);
@@ -292,14 +291,14 @@ public:
             FieldBase::Ptr new_field
                 = newField(field_name, FieldBase::info_to_id_[&val.type()]);
             if (!new_field)
-                pcl::console::print_error(
-                    "Autocreation of field inpossible. "
-                    "The requested field type cannot be created\n");
+                LOG(WARNING) <<
+                    "Autocreation of field inpossible. " <<
+                     "The requested field type cannot be created";
             new_field->resize(getNumberOfRows());
             new_field->set(idx, val);
 
-            pcl::console::print_warn("Autocreation of field %s done.\n",
-                                     field_name.c_str());
+            LOG(WARNING) << "Autocreation of field %s done " <<
+                                     field_name;
         }
     }
 
@@ -307,7 +306,7 @@ public:
     {
         if (hasField(field_name))
             return fields_.at(field_name);
-        return NULL;
+        return nullptr;
     }
 
     FieldBase::Ptr newField(const std::string name,

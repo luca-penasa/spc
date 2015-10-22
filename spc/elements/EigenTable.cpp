@@ -47,9 +47,10 @@ EigenTable::getWithStrippedNANs(const std::vector
 
     newtable->resize(counter);
 
-    pcl::console::print_info("Stripped %i nans from table\n",
+    LOG(INFO) << "Stripped  " <<
                              this->getNumberOfRows()
-                             - newtable->getNumberOfRows());
+                             - newtable->getNumberOfRows() <<
+                 "  nans from table";
 
     return newtable;
 }
@@ -57,9 +58,9 @@ EigenTable::getWithStrippedNANs(const std::vector
 void EigenTable::addNewComponent(const std::string &name, size_t dimensionality)
 {
     if (names_to_col_.find(name) != names_to_col_.end())
-        pcl::console::print_error("A column with this name (%s) yet exists. "
-                                  "Cannot create a new one.\n",
-                                  name.c_str());
+        LOG(ERROR) << "A column with this name " << name << " yet exists. "
+                                  <<"Cannot create a new one. ";
+
     else {
 
         size_t next_id
@@ -159,9 +160,8 @@ EigenTable::column(const std::string &col_name)
 {
     size_t id = getColumnId(col_name);
     if (id == -1)
-        pcl::console::print_error(
-            "Cannot find such a column (%s). Is it the name set and right?\n",
-            col_name.c_str());
+        LOG(ERROR) <<
+            "Cannot find such a column" << col_name <<" Is it the name set and right?";
     else
         return column(id);
 

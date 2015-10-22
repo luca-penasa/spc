@@ -7,7 +7,7 @@
 //#include <spc/elements/PointCloudBase.h>
 #include <spc/elements/PointCloudPcl.h>
 #include <spc/elements/NewSpcPointCloud.h>
-#include <pcl/io/pcd_io.h>
+//#include <pcl/io/pcd_io.h>
 #include <spc/io/io_helper.h>
 
 namespace spc
@@ -25,13 +25,7 @@ public:
 
     CloudDataSourceOnDisk(const std::string &fname)
     {
-        if (PathT(fname).extension() != ".pcd")
-        {
-            LOG(ERROR) << "You created a cloudOnDisk ref to a non pcd file.";
-        }
-
         filename_ = fname;
-
         setElementName(fname);
     }
 
@@ -63,12 +57,6 @@ public:
         if (!exists())
         {
             LOG(ERROR) << "Data source does not exists. maybe you moved it?  Please relocate also the reference here.";
-            return NULL;
-        }
-
-        if (getExtension() != ".pcd")
-        {
-            LOG(ERROR) << "We are pointing to a non .pcd file!";
             return NULL;
         }
 

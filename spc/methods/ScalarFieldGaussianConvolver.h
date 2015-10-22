@@ -3,6 +3,8 @@
 
 #include <spc/elements/PointCloudBase.h>
 
+#ifdef SPC_WITH_PCL
+
 #include <pcl/filters/filter.h>
 #include <pcl/search/search.h>
 
@@ -246,3 +248,4 @@ protected:
 } // end nspace
 
 #endif // CLOUD_GAUSSIAN_CONVOLVER_H
+#endif

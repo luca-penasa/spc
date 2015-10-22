@@ -2,7 +2,7 @@
 //#include <spc/io/pointcloud2_reader.h>
 //#include <spc/methods/KernelSmoothing.h>
 #include <spc/elements/TimeSeriesSparse.h>
-#include <pcl/console/print.h>
+//#include <pcl/console/print.h>
 #include <spc/methods/KernelSmoothing2.h>
 
 #include <spc/methods/RBFModelEstimator.h>

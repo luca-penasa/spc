@@ -1,6 +1,8 @@
 #ifndef SPC_POINT_TYPES_H
 #define SPC_POINT_TYPES_H
 
+#ifdef SPC_WITH_PCL
+
 #include <pcl/point_types.h>
 
 struct PointD // point strucure with just a distance value
@@ -45,3 +47,6 @@ POINT_CLOUD_REGISTER_POINT_STRUCT(
     (float, distance, distance)(float, intensity, intensity))
 
 #endif // SPC_POINT_TYPES_H
+
+
+#endif //SPC_WITH_PCL

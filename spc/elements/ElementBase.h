@@ -83,6 +83,11 @@ public:
         return name_;
     }
 
+    std::string getClassNameFromDtiClass() const
+    {
+        return this->getType()->getClassName();
+    }
+
     void setElementName(const std::string &name)
     {
         name_ = name;

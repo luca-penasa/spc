@@ -1,7 +1,7 @@
 #include <spc/elements/MovableElement.h>
 
 #include <spc/io/eigen_serialization.hpp>
-#include <pcl/common/centroid.h>
+//#include <pcl/common/centroid.h>
 #include <spc/elements/PointCloudBase.h>
 
 namespace spc

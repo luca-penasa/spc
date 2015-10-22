@@ -54,7 +54,7 @@ int serializeToString(const ISerializable::Ptr element, std::string &string,
 ISerializable::Ptr deserializeFromString(std::string &string,
                                          const ARCHIVE_TYPE &type = SPC);
 
-static std::vector<int> parseLoadableFiles(int argc, char **argv);
+//static std::vector<int> parseLoadableFiles(int argc, char **argv);
 
 
 

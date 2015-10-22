@@ -1,5 +1,8 @@
 #include "io_helper.h"
+
+#ifdef SPC_WITH_PCL
 #include <pcl/io/pcd_io.h>
+#endif
 
 #include <spc/core/common.h>
 
@@ -7,14 +10,19 @@
 #include <spc/elements/PointCloudSpc.h>
 #include <spc/elements/PointCloudPcl.h>
 
+
+#ifdef SPC_WITH_PCL
 using namespace pcl::console;
 using namespace pcl;
+#endif
 
 namespace spc
 {
 
 namespace io
 {
+#ifdef SPC_WITH_PCL
+
 int loadCSVFile(const std::string &in_filename, pcl::PCLPointCloud2 &output,
                 const int x_id, const int y_id, const int z_id, const int i_id,
                 const int k, const std::string s)
@@ -113,6 +121,9 @@ int loadCSVFile(const std::string &in_filename, pcl::PCLPointCloud2 &output,
     return 1;
 }
 
+#endif // SPC_WITH_PCL
+
+
 int loadCSVTimeSeries(const std::string in_filename,
                       const std::string separator,
                       std::vector<std::vector<float>> &tseries)
@@ -121,7 +132,7 @@ int loadCSVTimeSeries(const std::string in_filename,
     // open file
     std::ifstream in(in_filename.c_str());
     if (!in.is_open()) {
-        print_error("Error loading file\n");
+        LOG(ERROR) << "Error loading file";
         return -1;
     }
 
@@ -173,7 +184,7 @@ int saveAsCSV(const std::string &filename, const std::string &separator,
 
             T value = columns.at(c).at(i);
 
-            if (pcl_isnan(value))
+            if (std::isnan(value))
                 stream << "nan";
             else
                 stream << value;
@@ -196,12 +207,17 @@ int saveAsCSV(const std::string &filename, const std::string &separator,
     return 1;
 }
 
+
+#ifdef SPC_WITH_PCL
 int savePCDBinaryCompressed(const std::string &filename,
                             const pcl::PCLPointCloud2 &cloud)
 {
     pcl::PCDWriter w;
     return w.writeBinaryCompressed(filename, cloud);
 }
+
+#endif // SPC_WITH_PCL
+
 
 template int saveAsCSV(const std::string &filename,
 const std::string &separator,
@@ -229,7 +245,10 @@ PointCloudBase::Ptr loadPointCloud(const std::string &filename)
     if (   !((extension == ".xml")
              || (extension == ".json")
              || (extension == ".spc")
-             || (extension == ".pcd")))
+         #ifdef SPC_WITH_PCL
+             || (extension == ".pcd")
+        #endif
+           ))
     {
         DLOG(WARNING) << "Extension not recognized. cannot load. Null pointer returned.";
         return NULL;
@@ -279,6 +298,7 @@ PointCloudBase::Ptr loadPointCloud(const std::string &filename)
         // if we are here without returning anything
         return NULL;
     }
+#ifdef SPC_WITH_PCL
 
     else //// PCD FILES
     {
@@ -307,10 +327,12 @@ PointCloudBase::Ptr loadPointCloud(const std::string &filename)
             return out;
         }
     }
-
+#endif
     return NULL; // this is just to be sure we return a null in case we are here (we should not) for some strange reason
 }
 
+
+#ifdef SPC_WITH_PCL
 int savePointCloudAsPCDBinaryCompressed(PointCloudBase &cloud, const std::string &filename)
 {
     pcl::PCLPointCloud2::Ptr ptr = cloud.asPCLData();
@@ -319,9 +341,8 @@ int savePointCloudAsPCDBinaryCompressed(PointCloudBase &cloud, const std::string
 
     pcl::PCDWriter w;
     return w.writeBinaryCompressed(filename, *ptr, sensor.getPosition(), sensor.getOrientation());
-
-
 }
+#endif
 
 }//end io nspace
 } // end nspace

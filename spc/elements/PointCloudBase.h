@@ -2,17 +2,18 @@
 #define GENERIC_CLOUD_H
 
 #include <spc/elements/ElementBase.h>
+
+#ifdef SPC_WITH_PCL
 #include <pcl/point_cloud.h>
 #include <pcl/point_types.h>
 #include <pcl/io/io.h>
+#include <pcl/search/impl/flann_search.hpp>
+#endif
+
 
 #include <spc/core/common.h>
-#include <pcl/search/impl/flann_search.hpp>
 #include <boost/make_shared.hpp>
-
 #include <spc/elements/OrientedSensor.h>
-
-
 #include <spc/elements/templated/PointSet.h>
 
 
@@ -36,19 +37,23 @@ public:
 
     PointCloudBase(const PointCloudBase &other): ElementBase(other), PointCloudXYZBase(other)
     {
+#ifdef SPC_WITH_PCL
+
         searcher_ = other.searcher_;
         xyz_representation_ = other.xyz_representation_;
+#endif
     }
 
     ~PointCloudBase()
     {
 
     }
+#ifdef SPC_WITH_PCL
 
     virtual int getNearestPointID(const PointT query,
                                   float &sq_distance);
 
-
+#endif
     //! sensor info access
     virtual OrientedSensor getSensor() const  = 0;
 
@@ -85,6 +90,7 @@ public:
         setFieldValue(id, "normal_z", z);
     }
 
+#ifdef SPC_WITH_PCL
     virtual pcl::PointCloud<pcl::PointXYZ>::Ptr getAsPclXyz()
     {
         if (!xyz_representation_)
@@ -92,7 +98,7 @@ public:
 
         return xyz_representation_;
     }
-
+#endif
     PointSet<> extractAsPointSet(const std::vector<size_t> &ids = std::vector<size_t>()) const
     {
         PointSet<> out;
@@ -148,6 +154,7 @@ public:
         return out;
     }
 
+#ifdef SPC_WITH_PCL
     void updateFlannSearcher();
 
     virtual void updateXYZRepresentation();
@@ -159,6 +166,7 @@ public:
 
         return searcher_;
     }
+#endif
 
     virtual void getFieldValue(const IndexT id, const std::string fieldname,
                                float &val) const = 0;
@@ -194,11 +202,13 @@ public:
 
     virtual bool getField(const std::string fieldname, Eigen::VectorXf &vector);
 
+#ifdef SPC_WITH_PCL
+
     pcl::PointCloud<pcl::PointXYZ>
     applyTransform(const Eigen::Transform
                    <float, 3, Eigen::Affine, Eigen::AutoAlign> &T);
 
-
+#endif
     virtual void addPoint(const PointT &p) override
     {
         IndexT id = this->getNumberOfPoints();
@@ -211,17 +221,19 @@ public:
         this->setPoint(id,  p(0), p(1), p(2));
     }
 
-
+#ifdef SPC_WITH_PCL
     virtual pcl::PCLPointCloud2Ptr asPCLData() const ;
+#endif
 
     //! reurns true if ALL the fields exists
     bool hasFields(const std::vector<std::string> &field_names) const;
 
 protected:
+#ifdef SPC_WITH_PCL
     pcl::search::FlannSearch<pcl::PointXYZ>::Ptr searcher_;
 
     pcl::PointCloud<pcl::PointXYZ>::Ptr xyz_representation_;
-
+#endif
 
 
 

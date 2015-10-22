@@ -20,13 +20,13 @@ public:
         std::cout << "here" << std::endl;
 
         if (!data_) {
-            pcl::console::print_error("No dataset as input.\n");
+            LOG(ERROR) << "No dataset as input.\n";
             return good_ids;
         }
 
         size_t n_rows = data_->getNumberOfRows();
 
-        std::cout << "here" << std::endl;
+//        std::cout << "here" << std::endl;
         Eigen::VectorXf n_neighbors = data_->column("n_neighbors");
 
         for (size_t i = 0; i < n_rows; ++i) {

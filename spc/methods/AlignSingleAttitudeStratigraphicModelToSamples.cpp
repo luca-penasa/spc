@@ -48,8 +48,8 @@ int AlignSingleAttitudeStratigraphicModelToSamples::compute()
 
     if (residuals_.empty())
     {
-        pcl::console::print_error("Cannot find any sample with the requested "
-                                  "field\n Cannot compute.");
+        LOG(INFO) <<"Cannot find any sample with the requested "
+                                  "field\n Cannot compute.";
         return -1;
     }
 

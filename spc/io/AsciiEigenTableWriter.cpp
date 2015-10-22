@@ -1,6 +1,6 @@
 #include "AsciiEigenTableWriter.h"
 
-#include <pcl/console/print.h>
+//#include <pcl/console/print.h>
 #include <vector>
 #include <boost/algorithm/string.hpp>
 
@@ -15,8 +15,8 @@ namespace io
 void AsciiEigenTableWriter::setInput(const EigenTable::Ptr object)
 {
     if (!object->isAsciiSerializable()) {
-        pcl::console::print_error(
-                    "Cannot export selected object to ascii\n");
+        LOG(ERROR) <<
+                    "Cannot export selected object to ascii";
         return;
     }
 
@@ -80,7 +80,7 @@ void AsciiEigenTableWriter::write()
 {
 
     if (filename_.empty()) {
-        pcl::console::print_error("empty path and filename\n");
+        LOG(ERROR) << "empty path and filename";
         return;
     }
 

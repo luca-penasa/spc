@@ -4,6 +4,7 @@
 #  SPC_LIBRARIES    - libraries to link against
 #  SPC_DEFINITIONS  - the definitions used to compile SPC/PCL
 #  CEREAL_IS_INTERNAL  - if spc was compiled with an "internal version" of cereal or, if FALSE was a system-wide
+#  SPC_WITH_PCL - if spc was compiled with PCL
 
 set(SPC_INCLUDE_DIRS "@CONF_INCLUDE_DIRS@")
 set(SPC_LIBRARY_DIRS "@CONF_LIBRARY_DIRS@")
@@ -13,6 +14,8 @@ set(SPC_DEFINITIONS "@SPC_DEFINITIONS@")
 set(SPC_MINIGLOG "@SPC_MINIGLOG@")
 
 set(CEREAL_IS_INTERNAL @CEREAL_IS_INTERNAL@)
+
+set(SPC_WITH_PCL @SPC_WITH_PCL@)
 
 get_filename_component(SPC_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
 include("${SPC_CMAKE_DIR}/SPCTargets.cmake")
@@ -34,16 +37,33 @@ if (SPC_MINIGLOG)
     set(SPC_INCLUDE_DIRS "${SPC_INCLUDE_DIRS}" "@CONF_MINIGLOG_INCLUDE_DIRS@")
 endif()
 
+if (SPC_WITH_PCL)
+    # we find pcl for you
+    find_package(PCL 1.7 REQUIRED)
+    include_directories(${PCL_INCLUDE_DIRS})
+    message("${PCL_INCLUDE_DIRS}")
+    link_directories(${PCL_LIBRARY_DIRS})
+    add_definitions(${PCL_DEFINITIONS})
 
-# we find pcl for you
-find_package(PCL 1.7 REQUIRED)
-include_directories(${PCL_INCLUDE_DIRS})
-message("${PCL_INCLUDE_DIRS}")
-link_directories(${PCL_LIBRARY_DIRS})
-add_definitions(${PCL_DEFINITIONS})
+    list(APPEND SPC_INCLUDE_DIRS ${PCL_INCLUDE_DIRS})
+    list(APPEND SPC_LIBRARY_DIRS ${PCL_LIBRARY_DIRS})
+    list(APPEND SPC_LIBRARIES ${PCL_LIBRARIES})
+    list(APPEND SPC_DEFINITIONS ${PCL_DEFINITIONS})
+
+else() # need to find boost and eigen by itself
+    find_package(Eigen3 REQUIRED)
+    include_directories(${EIGEN3_INCLUDE_DIR})
+
+    if(WIN32)
+        # also boost! please use static libs as def on win so that we dont have to move boost libs along with the app
+        set(Boost_USE_STATIC_LIBS   ON)
+    endif()
+
+    set(Boost_USE_MULTITHREADED ON)
+    find_package(Boost COMPONENTS filesystem system REQUIRED)
+    include_directories(${Boost_INCLUDE_DIRS})
+endif()
 
 
-list(APPEND SPC_INCLUDE_DIRS ${PCL_INCLUDE_DIRS})
-list(APPEND SPC_LIBRARY_DIRS ${PCL_LIBRARY_DIRS})
-list(APPEND SPC_LIBRARIES ${PCL_LIBRARIES})
-list(APPEND SPC_DEFINITIONS ${PCL_DEFINITIONS})
+
+

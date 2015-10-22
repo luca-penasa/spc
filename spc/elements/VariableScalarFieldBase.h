@@ -3,8 +3,8 @@
 #define DYNAMIC_SCALAR_FIELD_GENERATOR_H
 
 #include <spc/core/spc_eigen.h>
-#include <pcl/point_cloud.h>
-#include <pcl/point_types.h>
+//#include <pcl/point_cloud.h>
+//#include <pcl/point_types.h>
 
 #include <spc/elements/PointCloudBase.h>
 #include <spc/elements/ElementBase.h>

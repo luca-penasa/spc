@@ -1,6 +1,8 @@
 #ifndef ESTIMATE_AVERAGE_SAMPLING_STEP_H
 #define ESTIMATE_AVERAGE_SAMPLING_STEP_H
 
+#ifdef SPC_WITH_PCL
+
 #include <spc/elements/PointCloudBase.h>
 #include <pcl/filters/filter.h>
 #include <pcl/search/search.h>
@@ -127,3 +129,4 @@ protected:
 } // end nspace
 
 #endif // CLOUD_GAUSSIAN_CONVOLVER_H
+#endif

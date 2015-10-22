@@ -1,7 +1,7 @@
 #ifndef NORMAL3D_H
 #define NORMAL3D_H
 #include <spc/elements/ElementBase.h>
-#include <pcl/features/normal_3d.h>
+//#include <pcl/features/normal_3d.h>
 #include <cereal/types/polymorphic.hpp>
 
 #include <spc/elements/PointCloudBase.h>

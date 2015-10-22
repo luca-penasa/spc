@@ -13,7 +13,7 @@ ElementBasePtr ElementsFactory::create(const std::string name)
         ptr = ElementBasePtr(new spc::Attitude);
 
     else
-        pcl::console::print_error("Requested object not found in factory\n");
+        LOG(INFO) << "Requested object not found in factory";
     return ptr;
 }
 

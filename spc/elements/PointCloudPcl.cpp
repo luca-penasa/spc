@@ -1,3 +1,6 @@
+#ifdef SPC_WITH_PCL
+
+
 #include "PointCloudPcl.h"
 #include <boost/make_shared.hpp>
 #include <boost/algorithm/string/classification.hpp>
@@ -111,3 +114,5 @@ void PointCloudPCL::addField(const std::string &name)
 
 
 }
+
+#endif // SPC_WITH_PCL

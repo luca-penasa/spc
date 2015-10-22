@@ -73,6 +73,12 @@ list(APPEND LIB_IMPLS ${IMPLS})
     set(sources ${LIB_SOURCES} ${LIB_HEADERS} ${LIB_IMPLS})
 #${HEADERS} ${IMPLS})
     set(libs ${SPC_LIBRARIES} ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES} ${PCL_FILTERS_LIBRARIES} ${GLOG_LIBRARIES} ${PCL_FEATURES_LIBRARIES} ${additional_libs})
+
+if(NOT SPC_WITH_PCL)
+    message("Appending: ${Boost_LIBRARIES}" )
+    list(APPEND libs ${Boost_LIBRARIES})
+endif()
+
     spc_compile_and_link(spc_${libname} "${sources}" "${libs}")
     set_target_properties(spc_${libname} PROPERTIES PUBLIC_HEADER "${HEADERS};${IMPLS}")
 

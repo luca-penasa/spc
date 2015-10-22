@@ -2,7 +2,7 @@
 #define INTERPOLATOR_BASE_H
 
 #include <spc/elements/TimeSeriesBase.h>
-#include <pcl/console/print.h>
+//#include <pcl/console/print.h>
 #include <boost/foreach.hpp>
 namespace spc {
 
@@ -28,7 +28,7 @@ public:
     virtual void setInputSeries(TimeSeriesBase::ConstPtr input)
     {
         if (!input) {
-            pcl::console::print_error("[ERROR] You are setting a null pointer");
+            LOG(ERROR) <<"[ERROR] You are setting a null pointer";
             return;
         }
         input_ = input;

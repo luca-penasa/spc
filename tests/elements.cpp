@@ -35,4 +35,17 @@ TEST(Attitude, NegativeEqualPositiveDips)
     spc::Attitude att2(45, -315);
 
     ASSERT_TRUE(att1.getNormal().isApprox(att2.getNormal(), GTEST_PREC));
+
+}
+
+
+TEST(ElementBase,  DtiClass_system)
+{
+    spc::Attitude::Ptr a(new spc::Attitude);
+    spc::ElementBase::Ptr el_ptr;
+    el_ptr = a;
+
+    EXPECT_TRUE(el_ptr->isA(&spc::Attitude::Type));
+
+    EXPECT_EQ(a->getType()->getClassName(), el_ptr->getType()->getClassName());
 }

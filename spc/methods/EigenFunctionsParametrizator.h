@@ -3,7 +3,7 @@
 
 #include <spc/elements/EigenFunctionBase.h>
 #include <spc/elements/EigenLinearFunctionBase.h>
-#include <pcl/console/print.h>
+//#include <pcl/console/print.h>
 
 namespace spc
 {

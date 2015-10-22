@@ -1,3 +1,4 @@
+#ifdef SPC_WITH_PCL
 
 #include "pcl_helper.h"
 
@@ -154,3 +155,4 @@ readCompleteFieldToVector(const pcl::PCLPointCloud2 &cloud, const std::string &f
 
 
 
+#endif

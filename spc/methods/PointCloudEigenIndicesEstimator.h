@@ -1,6 +1,10 @@
 #ifndef SPC_COMPUTE_EIGEN_INDICES_H
 #define SPC_COMPUTE_EIGEN_INDICES_H
 
+#include <spc/core/spc_eigen.h>
+
+#ifdef SPC_WITH_PCL
+
 #include <pcl/features/feature.h>
 #include <pcl/point_cloud.h>
 
@@ -35,7 +39,6 @@ struct PointEigIndices
 POINT_CLOUD_REGISTER_POINT_STRUCT(PointEigIndices,
                                   (float, id0, id0)(float, id1, id1)(float, id2,
                                                                      id2))
-
 namespace spc
 {
 
@@ -54,6 +57,8 @@ inline void
                               float &nx, float &ny, float &nz, float &lam0,
                               float &lam1, float &lam2);
 
+
+
 template <typename PointInT>
 ///
 /// \brief computePointNormal
@@ -70,6 +75,8 @@ void computePointNormal(const pcl::PointCloud<PointInT> &cloud,
                         const std::vector<int> &indices, float &nx, float &ny,
                         float &nz, float &lam0, float &lam1, float &lam2);
 
+
+
 template <typename PointT>
 ///
 /// \brief flipNormal
@@ -83,6 +90,8 @@ template <typename PointT>
 ///
 void flipNormal(const PointT &point, float vp_x, float vp_y, float vp_z,
                 float &nx, float &ny, float &nz);
+
+
 
 template <typename PointT>
 ///
@@ -132,6 +141,9 @@ int computeNormalsAndEigenvalues(const typename pcl::PointCloud<PointInT>::Ptr
                                  &in_cloud,
                                  const float &radius, const int &n_threads,
                                  pcl::PointCloud<PointOutT> &out_cloud);
+
+
 }
 
+#endif
 #endif // COMPUTEEIGENINDICES_H

@@ -3,6 +3,7 @@
 
 #include <spc/core/macros.h>
 
+#ifdef SPC_WITH_PCL
 
 #ifdef PCL_VER_LESS_1_7
 #include <sensor_msgs/PointCloud2.h>
@@ -20,6 +21,9 @@ typedef std_msgs::Header PCLHeader;
 #else
 #include <pcl/PCLPointCloud2.h>
 #endif
+
+#endif //SPC_WITH_PCL
+
 
 #if defined(_WIN32)
 

@@ -9,11 +9,12 @@ namespace spc
 class PointCloudHelpers
 {
 public:
+#ifdef SPC_WITH_PCL
 
     static int transferNormals(PointCloudBase::Ptr from,
                                 PointCloudBase::Ptr to,
                                 const float &max_distance = 0.1);
-
+#endif
     static int computeScatteringAngle(PointCloudBase::Ptr cloud,
                                       const std::string angle_fieldname = "angle");
 

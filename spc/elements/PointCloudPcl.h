@@ -6,6 +6,9 @@
 #include <spc/elements/point_types.h>
 #include <spc/elements/templated/PointSetBase.h>
 
+#ifdef SPC_WITH_PCL
+
+
 namespace spc
 {
 
@@ -101,3 +104,4 @@ protected:
 
 
 #endif
+#endif //#ifdef SPC_WITH_PCL

@@ -1,4 +1,8 @@
+#ifdef SPC_WITH_PCL
+
 #include <spc/methods/PointCloudEigenIndicesEstimator.h>
+
+
 namespace spc
 {
 
@@ -51,6 +55,8 @@ void computePointNormal(const pcl::PointCloud<PointInT> &cloud,
     // Get the plane normal and surface curvature
     solvePlaneParametersEigen(covariance_matrix, nx, ny, nz, lam0, lam1, lam2);
 }
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 template <typename PointT>
 void flipNormal(const PointT &point, float vp_x, float vp_y, float vp_z,
@@ -213,3 +219,4 @@ template void computePointNormal(const pcl::PointCloud<pcl::PointXYZI> &cloud,
                                  float &lam2);
 
 } // end nspace
+#endif

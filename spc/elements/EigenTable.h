@@ -4,7 +4,7 @@
 #include <spc/core/spc_eigen.h>
 #include <map>
 
-#include <pcl/console/print.h>
+//#include <pcl/console/print.h>
 #include <spc/elements/ElementBase.h>
 #include <spc/io/eigen_serialization.hpp>
 

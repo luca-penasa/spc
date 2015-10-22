@@ -14,6 +14,9 @@ SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 
 LIST(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
+if(UNIX)
+    add_definitions(-fPIC)
+endif()
 
 option(SPC_BUILD_WITH_CLANG "Build spc library using clang isntead of gcc." OFF)
 if(SPC_BUILD_WITH_CLANG)
@@ -60,6 +63,11 @@ else()
         set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -std=c++0x -Wno-narrowing " )
 endif()
 
+
+if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+  add_definitions("-DBOOST_DISABLE_ASSERTS -DEIGEN_NO_DEBUG")
+endif()
+
 add_subdirectory(submodules)
 
 
@@ -101,6 +109,9 @@ OPTION(SPC_GFLAGS "Enable Google Flags. Needed by the tools" ON)
 option(SPC_BUILD_TESTS "Do tests" OFF)
 option(SPC_ENABLE_INSTALL "Enable/Disable the install target" OFF)
 OPTION(SPC_MINIGLOG "Use a stripped down version of glog." ON)
+
+option(SPC_WITH_PCL "Compile SPC lib with PCL support - Many more dependencies" OFF)
+
 
 #option(SPC_GFLAGS_IN_NAMESPACE_GOOGLE "says if gflags is expected to be into the google namespace" OFF)
 
@@ -154,18 +165,39 @@ endif()
 ############################################################################################################
 
 #########################  PCL! - everybody here will need it ###############################
-find_package(PCL 1.7 REQUIRED)
-include_directories(${PCL_INCLUDE_DIRS})
-message("${PCL_INCLUDE_DIRS}")
-link_directories(${PCL_LIBRARY_DIRS})
-add_definitions(${PCL_DEFINITIONS})
+if (SPC_WITH_PCL)
+    find_package(PCL 1.7 REQUIRED)
+    include_directories(${PCL_INCLUDE_DIRS})
+    message("${PCL_INCLUDE_DIRS}")
+    link_directories(${PCL_LIBRARY_DIRS})
+    add_definitions(${PCL_DEFINITIONS})
 
 
-message("TESTING PCL !")
-#define the PCL_VER_1_6_OR_OLDER preprocessor to compile qPCL with older versions of PCL
-if( PCL_VERSION VERSION_LESS  1.7 ) # VERSION_GREATER Works just like "greater or equal"
-		message("You are using PCL 1.6 - the 1.7 is out !")
-		set(SPC_DEFINITIONS ${SPC_DEFINITIONS} "-DPCL_VER_LESS_1_7")
+    message("TESTING PCL !")
+    #define the PCL_VER_1_6_OR_OLDER preprocessor to compile qPCL with older versions of PCL
+    if( PCL_VERSION VERSION_LESS  1.7 ) # VERSION_GREATER Works just like "greater or equal"
+        message("You are using PCL 1.6 - the 1.7 is out !")
+        set(SPC_DEFINITIONS ${SPC_DEFINITIONS} "-DPCL_VER_LESS_1_7 -DSPC_WITH_PCL")
+    endif()
+
+    list(APPEND SPC_DEFINITIONS -DSPC_WITH_PCL)
+else()
+    message(WARNING "Not compiling with PCL")
+    # we need to find some requirements by hand
+    find_package(Eigen3 REQUIRED)
+    include_directories(${EIGEN3_INCLUDE_DIR})
+
+
+
+    if(WIN32)
+        # also boost! please use static libs as def on win so that we dont have to move boost libs along with the app
+        set(Boost_USE_STATIC_LIBS   ON)
+    endif()
+
+    set(Boost_USE_MULTITHREADED ON)
+    find_package(Boost COMPONENTS filesystem system REQUIRED)
+    include_directories(${Boost_INCLUDE_DIRS})
+    list(APPEND SPC_DEFINITIONS ${Boost_DEFINITIONS} ${EIGEN3_DEFINITIONS})
 endif()
 ##################################################################################################
 

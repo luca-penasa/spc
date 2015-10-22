@@ -6,10 +6,14 @@
 
 #include <spc/core/common.h>
 
+#ifdef SPC_WITH_PCL
+
 #include <pcl/io/io.h>
 
 namespace spc
 {
+
+
 
 
 ////////////////////////// ALSO THESE THINGS ARE ~DEPRECATED
@@ -31,6 +35,6 @@ fromStdVectorToSensor(const std::vector<std::vector<float> > & std_field, const 
 
 }//end nspace
 
-
+#endif
 #endif // SPC_PCL_HELPER_H
 

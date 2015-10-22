@@ -1,7 +1,7 @@
 #include <spc/methods/IntensityCalibrationDataEstimator.h>
-#include <pcl/filters/bilateral.h>
+//#include <pcl/filters/bilateral.h>
 
-#include <pcl/surface/mls.h>
+//#include <pcl/surface/mls.h>
 
 #include <boost/accumulators/accumulators.hpp>
 #include <boost/accumulators/statistics/stats.hpp>

@@ -1,7 +1,7 @@
 #include "element_io.h"
 
 #include <cereal/types/polymorphic.hpp>
-#include <pcl/console/print.h>
+//#include <pcl/console/print.h>
 
 //#include <cereal/archives/xml.hpp>
 //#include <cereal/archives/binary.hpp>
@@ -13,7 +13,7 @@
 #include <spc/io/eigen_serialization.hpp>
 #include <spc/io/cereal_types.hpp>
 
-#include <pcl/console/parse.h>
+//#include <pcl/console/parse.h>
 #include <spc/elements/ElementBase.h>
 #include <fstream>
 
@@ -81,8 +81,7 @@ ISerializable::Ptr deserializeFromFile(const std::string filename)
 
     if (!((extension == ".xml") || (extension == ".json")
           || (extension == ".spc"))) {
-        pcl::console::print_error(
-                    "Extension not supported. Returned null pointer.\n");
+        LOG(ERROR) <<"Extension not supported. Returned null pointer";
         return ptr;
     }
 
@@ -194,24 +193,24 @@ ISerializable::Ptr deserializeFromString(std::string &string,
     return deserializeFromStream(sstream, type);
 }
 
-std::vector<int> parseLoadableFiles(int argc, char **argv)
-{
-    std::vector<int> spc_ids;
-    spc_ids = pcl::console::parse_file_extension_argument(argc, argv, "spc");
+//std::vector<int> parseLoadableFiles(int argc, char **argv)
+//{
+//    std::vector<int> spc_ids;
+//    spc_ids = pcl::console::parse_file_extension_argument(argc, argv, "spc");
 
-    std::vector<int> xml_ids;
-    xml_ids = pcl::console::parse_file_extension_argument(argc, argv, "xml");
+//    std::vector<int> xml_ids;
+//    xml_ids = pcl::console::parse_file_extension_argument(argc, argv, "xml");
 
-    std::vector<int> json_ids;
-    json_ids = pcl::console::parse_file_extension_argument(argc, argv, "json");
+//    std::vector<int> json_ids;
+//    json_ids = pcl::console::parse_file_extension_argument(argc, argv, "json");
 
 
 
-    spc_ids.insert( spc_ids.end(), xml_ids.begin(), xml_ids.end() );
-    spc_ids.insert( spc_ids.end(), json_ids.begin(), json_ids.end() );
+//    spc_ids.insert( spc_ids.end(), xml_ids.begin(), xml_ids.end() );
+//    spc_ids.insert( spc_ids.end(), json_ids.begin(), json_ids.end() );
 
-    return spc_ids;
-}
+//    return spc_ids;
+//}
 
 
 

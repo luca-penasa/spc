@@ -11,6 +11,7 @@ PointCloudBase::PointCloudBase()
 {
 
 }
+#ifdef SPC_WITH_PCL
 
 int PointCloudBase::getNearestPointID(const PointCloudBase::PointT query, float &sq_distance)
 {
@@ -22,7 +23,6 @@ int PointCloudBase::getNearestPointID(const PointCloudBase::PointT query, float 
     sq_distance = sq_dists.at(0);
     return ids.at(0);
 }
-
 void PointCloudBase::updateFlannSearcher()
 {
     DLOG(INFO)  << "updating flann index";
@@ -51,7 +51,7 @@ void PointCloudBase::updateXYZRepresentation()
     DLOG(INFO) << "updating XYZ representation of cloud. Done ";
 
 }
-
+#endif
 void PointCloudBase::addFields(const std::vector<std::string> field_names,
                                const Eigen::MatrixXf &data)
 {
@@ -80,12 +80,11 @@ void PointCloudBase::addFields(const std::vector<std::string> field_names,
 std::vector<float> PointCloudBase::getField(const std::string fieldname)
 {
 
-    PCL_DEBUG("Asked for field %s\n", fieldname.c_str());
+    DLOG(INFO) << "Asked for field "<< fieldname;
     std::vector<float> out;
 
     if (!hasField(fieldname)) {
-        pcl::console::print_warn(
-                    "[Error in point cloud] asked for field %s", fieldname.c_str());
+        LOG(WARNING) << "[Error in point cloud] asked for field " << fieldname;
         return out;
     }
 
@@ -120,6 +119,9 @@ Eigen::Vector3f PointCloudBase::getNormal(const IndexT id) const
     getNormal(id, x, y, z);
     return Eigen::Vector3f(x, y, z);
 }
+
+
+#ifdef SPC_WITH_PCL
 
 pcl::PointCloud<pcl::PointXYZ>
 PointCloudBase::applyTransform(const Eigen::Transform
@@ -200,6 +202,7 @@ pcl::PCLPointCloud2Ptr PointCloudBase::asPCLData() const
 
     return cloud;
 }
+#endif
 
 bool PointCloudBase::hasFields(const std::vector<std::string> &field_names) const
 {
@@ -216,8 +219,7 @@ std::vector<float> PointCloudBase::getField(const std::string fieldname,
     std::vector<float> out;
 
     if (!hasField(fieldname)) {
-        pcl::console::print_warn("[Error in generic_cloud] asked for field %s",
-                                 fieldname.c_str());
+        LOG(WARNING) << "[Error in generic_cloud] asked for field " << fieldname;
         return out;
     }
 
@@ -234,8 +236,7 @@ std::vector<float> PointCloudBase::getField(const std::string fieldname,
 void PointCloudBase::getField(const std::string fieldname, const std::vector<IndexT> indices, Eigen::VectorXf &out)
 {
     if (!hasField(fieldname)) {
-        pcl::console::print_warn("[Error in generic_cloud] asked for field %s",
-                                 fieldname.c_str());
+        LOG(WARNING) <<"[Error in generic_cloud] asked for field "<< fieldname;
         return ;
     }
 
