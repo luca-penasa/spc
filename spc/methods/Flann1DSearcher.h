@@ -1,5 +1,7 @@
 #ifndef SPC_FLANN1DSEARCHER_H
 #define SPC_FLANN1DSEARCHER_H
+#ifdef SPC_WITH_PCL
+
 
 #include <flann/flann.hpp>
 #include <spc/core/macros.h>
@@ -27,3 +29,6 @@ protected:
 } // end nspace
 
 #endif // SPC_FLANN1DSEARCHER_H
+
+
+#endif

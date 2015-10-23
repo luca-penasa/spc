@@ -95,14 +95,15 @@ set(SPC_LIBRARIES CACHE INTERNAL "SPC libs" FORCE) #this will collect all the mo
 ############################################################################################################
 
 ############################# OPTIONS ######################################################################
-#if (UNIX)
+if (UNIX)
     option(SPC_BUILD_SHARED "Build spc library as a shared lib." ON)
-#endif()
+endif()
 
 option(SPC_BUILD_WITH_GPROF "Build with -pg flags for profiling." OFF)
 
-option(SPC_BUILD_TOOLS "Build the tools." ON)
-option(SPC_BUILD_SANDBOX_TOOLS "Build sandbox tools." OFF)
+
+
+#option(SPC_BUILD_SANDBOX_TOOLS "Build sandbox tools." OFF)
 option(SPC_BUILD_EXAMPLES_TOOLS "Build examples tools." OFF)
 
 OPTION(SPC_GFLAGS "Enable Google Flags. Needed by the tools" ON)
@@ -112,6 +113,9 @@ OPTION(SPC_MINIGLOG "Use a stripped down version of glog." ON)
 
 option(SPC_WITH_PCL "Compile SPC lib with PCL support - Many more dependencies" OFF)
 
+if (SPC_WITH_PCL)
+	option(SPC_BUILD_TOOLS "Build the tools." ON)
+endif()
 
 #option(SPC_GFLAGS_IN_NAMESPACE_GOOGLE "says if gflags is expected to be into the google namespace" OFF)
 

@@ -1,3 +1,5 @@
+#ifdef SPC_WITH_PCL
+
 #include "Flann1DSearcher.h"
 #include <flann/flann.hpp>
 
@@ -19,3 +21,5 @@ Flann1DSearcher<ScalarT>::Flann1DSearcher(std::vector<ScalarT> v)
 template class Flann1DSearcher<float>;
 template class Flann1DSearcher<double>;
 }
+
+#endif
