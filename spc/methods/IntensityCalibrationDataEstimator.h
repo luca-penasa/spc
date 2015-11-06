@@ -67,6 +67,13 @@ public:
 	spcSetMacro(MaterialFieldName, material_field_name_, std::string)
 	spcGetMacro(MaterialFieldName, material_field_name_, std::string)
 
+
+    spcSetMacro(NNeighbors, n_neighbors_, size_t)
+    spcGetMacro(NNeighbors, n_neighbors_, size_t)
+
+    spcSetMacro(UseNNeighbors, use_n_neighbors_, bool)
+    spcGetMacro(UseNNeighbors, use_n_neighbors_, bool)
+
 private:
     /////////////////// STRING STUFF //////////////////////////////
     //! list of pcd files to use for calibration
@@ -90,6 +97,10 @@ private:
     size_t min_number_of_points_for_normal_estimation_ = 10;
 
     size_t min_number_of_points_for_intensity_estimation_ = 20;
+
+    size_t n_neighbors_ = 20;
+
+    bool use_n_neighbors_ = false;
 };
 }
 }
