@@ -28,7 +28,9 @@ NewSpcPointCloud::Ptr DataHolder::asPointCloud() const
 
     DLOG(INFO) << "we have a total number of entries: " << total_number;
 
-	out->addNewField("position", 3);
+    out->addNewField("post_position", 3);
+    out->addNewField("original_position", 3);
+
 
     out->addNewField("distance", 1);
     out->addNewField("angle", 1);
@@ -67,7 +69,8 @@ NewSpcPointCloud::Ptr DataHolder::asPointCloud() const
             out->getFieldByName("n_neighbors")(counter, 0) = data_holder->n_neighbors_intensity;
             out->getFieldByName("normal").row(counter) = keypoint->fitting_plane.getNormal();
             out->getFieldByName("lambdas").row(counter ) = keypoint->lambdas;
-            out->getFieldByName("position").row(counter ) = keypoint->post_position;
+            out->getFieldByName("post_position").row(counter ) = keypoint->post_position;
+            out->getFieldByName("original_position").row(counter ) = keypoint->original_position;
             out->getFieldByName("intensity")(counter, 0) = data_holder->intensity;
             out->getFieldByName("intensity_std")(counter, 0) = data_holder->intensity_std;
             out->getFieldByName("eigen_ratio")(counter, 0) = keypoint->eigen_ratio;

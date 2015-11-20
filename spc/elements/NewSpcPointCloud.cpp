@@ -133,6 +133,25 @@ void NewSpcPointCloud::addNewField(const std::string &name, size_t dim)
 //    DLOG(INFO) << "now dimensions are " << fields_.rows() << " x " << fields_.cols();
 }
 
+NewSpcPointCloud NewSpcPointCloud::filterOutNans(const std::vector<std::string> &fields) const
+{
+    Eigen::Matrix<bool, -1, 1> to_keep(fields_.rows());
+    to_keep.fill(true); // none (rows) to remove at beginning
+
+    for (const std::string f : fields) {
+        to_keep.array() *= this->getFieldByName(f).finiteness().rowwise().prod().array();
+    }
+
+    std::vector<size_t> good_ids;
+    for (int id = 0; id < fields_.rows(); ++id) {
+        if (to_keep(id) == true) {
+            good_ids.push_back(id);
+        }
+    }
+
+    return this->fromIds(good_ids);
+}
+
 
 NewSpcPointCloud::EigenPlaneT NewSpcPointCloud::fitPlane(Vector3f &eigenvalues) const
 {

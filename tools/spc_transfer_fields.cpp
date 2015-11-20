@@ -7,7 +7,7 @@
 #include <spc/elements/PointCloudPcl.h>
 
 #include <spc/io/io_helper.h>
-#include <spc/core/filesystem.h>
+//#include <spc/core/filesystem.h>
 
 
 DEFINE_string(from, "", "cloud from which to tranfer th fields");
@@ -71,7 +71,7 @@ int main(int argc, char ** argv)
         spc::PointCloudHelpers::transferFieldsNN(from_cloud, cloud, FLAGS_max_distance, fields);
 
 
-        std::string newname  = spc::fs::appendPostfix(name, FLAGS_postfix, "_").string();
+        std::string newname  = spc::concatenateFilenameWithSeparator(name, FLAGS_postfix, "_");
 
         LOG(INFO) << "saving as "<< newname;
 

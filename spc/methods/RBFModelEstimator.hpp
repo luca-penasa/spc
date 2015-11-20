@@ -92,8 +92,10 @@ namespace spc
 		if (input_points.size() == 0)
 			input_points = points_;
 
-		CHECK(input_points.size() != 0) << "set the points before calling this method";
-		CHECK(n_nodes.rows() == input_points.cols()) << "dimensions and number of splits does not match";
+        if(input_points.size() == 0)
+            LOG(ERROR) << "set the points before calling this method";
+        if(n_nodes.rows() != input_points.cols())
+            LOG(ERROR) << "dimensions and number of splits does not match";
 
 		DLOG(INFO) << "autosetting nodes";
 
@@ -121,17 +123,24 @@ namespace spc
 
 	}
 
+    template <typename T>
+    void RBFModelEstimator<T>::setNodes(const Eigen::MatrixXf &nodes)
+    {
+
+        //! we are not checking things here \todo do a better check!
+        model_->setNodes(nodes);
+    }
+
 
 	template <typename T>
-    void RBFModelEstimator<T>::autosetScales(const size_t fixed_dimension,  PointsT input_points)
+    void RBFModelEstimator<T>::autosetScales(const int fixed_dimension,  PointsT input_points)
 	{
-
 		if (input_points.size() == 0)
 			input_points = points_;
 
 
-		CHECK(input_points.size() != 0) << "set the input points before to call this method";
-		CHECK(fixed_dimension <= input_points.cols()) << "you have to set a fixed dimension index lower or equal than the dimensions";
+        if(input_points.size() == 0) LOG(ERROR) << "set the input points before to call this method";
+        if(fixed_dimension > input_points.cols()) LOG(ERROR) << "you have to set a fixed dimension index lower or equal than the dimensions";
 
 		DLOG(INFO) << "autodefining scales";
 
@@ -163,7 +172,11 @@ namespace spc
 	template <typename T>
 	void RBFModelEstimator<T>::autosetSigma()
 	{
-		CHECK(model_->getNodes().size() != 0) << "nodes must be set before calling this function";
+        if (model_->getNodes().size() == 0)
+        {
+            LOG(ERROR) << "nodes must be set before calling this function";
+        }
+
 		VectorT nn_distances(model_->getNodes().rows()); // nearest neighbor distance for each node
 
 		for (int i = 0; i < model_->getNodes().rows(); ++i)
@@ -185,7 +198,7 @@ namespace spc
 
 
 
-		DLOG(INFO) << "nearest neighbor distances " << nn_distances.T();
+        DLOG(INFO) << "nearest neighbor distances " << nn_distances.T();
 	}
 
 	template<typename T>
@@ -235,10 +248,6 @@ namespace spc
 			return -1;
 		}
 
-
-
-
-
 		// b_ MUST have same to A_.rows();
 		b_.resize(n_rows);
 
@@ -246,9 +255,7 @@ namespace spc
 		A_.fill(0);
 		b_.fill(0);
 
-
 		DLOG(INFO) << "Going to populate A";
-
 
 		// fill b vector with the values. the remaining part will be zeros...
 		b_.head(values_.rows()) = values_;

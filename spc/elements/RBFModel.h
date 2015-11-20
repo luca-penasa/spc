@@ -98,10 +98,10 @@ public:
 		kernel_->setScale(sigma);
 	}
 
-	T getSigma () const
-	{
-		return kernel_->getSigma();
-	}
+    T getSigma () const
+    {
+        return kernel_->getScale(); // we called it scale in the kernel class
+    }
 
 
 	void setKernel(typename RBFKernelFactory<T>::RBF_FUNCTION kernel, const T scale = T(1))
@@ -115,6 +115,11 @@ public:
 		poly_order_ = order;
 		updateNPolyTerms();
 	}
+
+    size_t getPolyOrder() const
+    {
+        return poly_order_;
+    }
 
 	VectorT getSqDistanceFromNodes(const PointT &point) const
 	{

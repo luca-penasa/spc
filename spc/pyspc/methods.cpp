@@ -28,9 +28,15 @@ BOOST_PYTHON_MODULE(methods)
 			.def("setPoints", &RBFModelEstimatorF::setPoints)
 			.def("getPoints", &RBFModelEstimatorF::getPoints)
 			.def("setInputValues", &RBFModelEstimatorF::setInputValues)
+            .def("getInputValues", &RBFModelEstimatorF::getInputValues)
+            .
+            def("autosetScales", &RBFModelEstimatorF::autosetScales)
+
 			.def("autosetSigma", &RBFModelEstimatorF::autosetSigma)
 			.def("autosetNodes", &RBFModelEstimatorF::autosetNodes)
-			.def("autosetScales", &RBFModelEstimatorF::autosetScales)
+            .def("setNodes", &RBFModelEstimatorF::setNodes)
+
+
 			.def("setLambda", &RBFModelEstimatorF::setLambda)
 			.def("getLambda", &RBFModelEstimatorF::getLambda)
 			.def("getNumberOfPoints", &RBFModelEstimatorF::getNumberOfPoints)

@@ -32,6 +32,14 @@ BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(op, RBFModelF::operator(), 1, 1)
 BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(getFieldByName, NewSpcPointCloud::getFieldByName, 1, 1)
 
 
+void test_function(const std::vector <std::string> &in)
+{
+    for (auto i : in)
+    {
+        LOG(INFO) << i;
+    }
+}
+
 template<typename T>
 void wrap_std_vector(const std::string name)
 {
@@ -40,6 +48,8 @@ void wrap_std_vector(const std::string name)
 			.def(indexing::container_suite<VT >())
 			;
 }
+
+
 
 
 template<typename T1, typename T2>
@@ -62,6 +72,15 @@ BOOST_PYTHON_MODULE(elements)
 	wrap_std_vector<CloudDataSourceOnDisk::Ptr> ("VectorOfloudDataSourceOnDiskPtr");
 
 
+    def("testFunction", &test_function);
+
+//    class_<std::vector<std::string, std::allocator<std::string> > > ("VectorOfStrings2")
+//            .def(indexing::container_suite< std::vector<std::string, std::allocator<std::string> > >())
+//            ;
+
+    wrap_std_vector<std::string> ("VectorOfStrings");
+
+
 	class_<ISerializable, ISerializable::Ptr, boost::noncopyable>("ISerializable", no_init)
 			.def("isSerializable", &ISerializable::isSerializable)
 			.def("isAsciiSerializable", &ISerializable::isAsciiSerializable);
@@ -80,10 +99,21 @@ BOOST_PYTHON_MODULE(elements)
 
 	class_<RBFModelF,RBFModelF::Ptr, bases<ElementBase>>("RBFModel")
 			.def("getCoefficients", &RBFModelF::getCoefficients)
+            .def("getSigma", &RBFModelF::getSigma)
+            .def("setSigma", &RBFModelF::setSigma)
+            .def("getNumberOfNodes", &RBFModelF::getNumberOfNodes)
+            .def("getNodes", &RBFModelF::getNodes)
+
+            .def("getNumberOfpolynomialTerms", &RBFModelF::getNumberOfpolynomialTerms)
+            .def("setPolyOrder", &RBFModelF::setPolyOrder)
+            .def("getPolyOrder", &RBFModelF::getPolyOrder)
+
 			.def("getDimensionality", &RBFModelF::getDimensionality)
-			.def("__call__",  static_cast<float (RBFModelF::*)(const RBFModelF::PointT &) const >  (&RBFModelF::operator() ), op() )
-			.def("clone", &RBFModelF::clone)
-			.def("__call__",  static_cast<float (RBFModelF::*)(const RBFModelF::PointT &) const >  (&RBFModelF::operator() ), op() )
+//			.def("__call__",  static_cast<float (RBFModelF::*)(const RBFModelF::PointT &) const >  (&RBFModelF::operator() ), op() )
+            .def("clone", &RBFModelF::clone)
+//			.def("__call__",  static_cast<float (RBFModelF::*)(const RBFModelF::PointT &) const >  (&RBFModelF::operator() ), op() )
+            .def("__call__", &RBFModelF::eval)
+
 			;
 
 	implicitly_convertible<DataHolder::Ptr,ISerializable::Ptr>();
@@ -112,11 +142,27 @@ BOOST_PYTHON_MODULE(elements)
 			.def("getExtension", &CloudDataSourceOnDisk::getExtension)
 			.def("getFilename", &CloudDataSourceOnDisk::getFilename)
 			.def("setFilename", &CloudDataSourceOnDisk::setFilename)
-			.def("load", &CloudDataSourceOnDisk::load)
+//			.def("load", &CloudDataSourceOnDisk::load)
 			.def("load2", &CloudDataSourceOnDisk::load2)
 			;
 
 //	wrap_std_map<std::string, size_t> ("StdMapStringToSize");
+
+    class_<FieldLabel> ("FieldLabel")
+            .def_readwrite("field_name", &FieldLabel::field_name_)
+            .def_readwrite("dimensionality", &FieldLabel::dimensionality_)
+            ;
+
+
+    class_<LabelsContainer> ("LabelsContainer")
+            .def("hasField", &LabelsContainer::hasField)
+            .def("getLabelByName", &LabelsContainer::getLabelByName)
+            .def("hasLabel", &LabelsContainer::hasLabel)
+            .def("push_back", &LabelsContainer::push_back)
+            .def("size", &LabelsContainer::size)
+//            .def("getLabel", &LabelsContainer::getLabel)
+//            .def("getLabels", &LabelsContainer::getLabels)
+            ;
 
 	class_<NewSpcPointCloud, NewSpcPointCloud::Ptr, bases<ElementBase>> ("NewSpcPointCloud")
 			.def("getData",  &NewSpcPointCloud::getData)
@@ -126,8 +172,20 @@ BOOST_PYTHON_MODULE(elements)
 //			.def("getFieldByName", static_cast<NewSpcPointCloud::ConstBlockT (NewSpcPointCloud::*)(const std::string &) const >  (&NewSpcPointCloud::getFieldByName ), getFieldByName())
 			.def("getCentroid", &NewSpcPointCloud::getCentroid)
 			.def("hasField", &NewSpcPointCloud::hasField)
+            .def("filterOutNans", &NewSpcPointCloud::filterOutNans)
+            .def("conservativeResize", &NewSpcPointCloud::conservativeResize)
+            .def("getSearcher", &NewSpcPointCloud::getSearcher)
+            .def("updateSearcher", &NewSpcPointCloud::updateSearcher)
+            .def("resetSearcher", &NewSpcPointCloud::resetSearcher)
+            .def("__getitem__", &NewSpcPointCloud::getFieldAsMatrixByName)
+
+            .def("getSensor", &NewSpcPointCloud::getSensor)
+
+
+
+
 //			.def_read("fields", &NewSpcPointCloud::fields_)
-//			.def_read("fields", &NewSpcPointCloud::labels_)
+            .def("getLabels", &NewSpcPointCloud::getLabels)
 //			.def_read("fields", &NewSpcPointCloud::field_to_col_)
 			;
 
@@ -163,7 +221,7 @@ BOOST_PYTHON_MODULE(elements)
 			.def_readwrite("intensity", &Observation::intensity)
 			.def_readwrite("intensity_std", &Observation::intensity_std)
 			.def_readwrite("intensity_corrected", &Observation::intensity_corrected)
-			.def_readwrite("sensor_position", &Observation::sensor_position)
+//			.def_readwrite("sensor_position", &Observation::sensor_position)
 			.def_readwrite("extract_for_normal", &Observation::extract_for_normal_)
 
 

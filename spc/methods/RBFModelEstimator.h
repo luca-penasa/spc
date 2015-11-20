@@ -45,6 +45,11 @@ public:
         values_ = values;
     }
 
+    VectorT getInputValues() const
+    {
+        return values_;
+    }
+
 	void setWeights(const VectorT &weights)
     {
         weights_ = weights;
@@ -87,7 +92,11 @@ public:
      */
 	void autosetNodes(const Eigen::VectorXi &n_nodes, PointsT input_points = PointsT());
 
-	void autosetScales(const size_t fixed_dimension = 0, PointsT input_points = PointsT());
+
+    void setNodes(const Eigen::MatrixXf & nodes);
+
+
+    void autosetScales(const int fixed_dimension = 0, PointsT input_points = PointsT());
 
     /**
      * @brief autosetSigma sets the sigma value of the kernel (the kernel size)

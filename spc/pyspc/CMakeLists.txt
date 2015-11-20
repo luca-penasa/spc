@@ -15,6 +15,10 @@ find_package(NumPy REQUIRED)
 # these are additional include dirs for finding boost.numpt
 set (BOOST_NUMPY_INCLUDE_PATH )
 
+set(BOOST_NUMPY_LIB_PATH "/home/luca/apps/lib" )
+link_directories(${BOOST_NUMPY_LIB_PATH})
+
+
 include_directories("/home/luca/apps/include")
 
 include_directories("indexing_suite_v2")

@@ -3,7 +3,7 @@
 #include <pcl/io/pcd_io.h>
 #include <pcl/point_types.h>
 #include <fstream>
-#include <spc/core/strings.h>
+#include <spc/core/file_operations.h>
 #include <pcl/console/parse.h>
 
 

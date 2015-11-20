@@ -7,7 +7,9 @@
 #include <spc/io/io_helper.h>
 
 #include <spc/elements/RBFModel.h>
-#include <spc/core/filesystem.h>
+
+#include <pcl/io/pcd_io.h>
+
 
 using namespace spc;
 DEFINE_string(predictors, "distance,angle", "The field name of the distance field");
@@ -59,7 +61,7 @@ int main(int argc, char ** argv)
     google::InitGoogleLogging(argv[0]);
     google::SetUsageMessage("Calibrate the intensity field of input cloud using the RBF model provided");
 
-    LOG(INFO) << spc::fs::Path(argv[0]).stem();
+//    LOG(INFO) << spc::fs::Path(argv[0]).stem();
 
 
 

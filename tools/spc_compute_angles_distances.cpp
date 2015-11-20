@@ -8,7 +8,7 @@
 #include <spc/elements/PointCloudPcl.h>
 
 #include <spc/io/io_helper.h>
-#include <spc/core/filesystem.h>
+//#include <spc/core/filesystem.h>
 
 
 DEFINE_string(clouds, "", "a space separated list of clouds for which to compute scattering angles and sensor distance");
@@ -51,7 +51,7 @@ int main(int argc, char ** argv)
 
         spc::PointCloudHelpers::computeDistanceFromSensor(cloud);
 
-        std::string newname  = spc::fs::appendPostfix(name, FLAGS_postfix, "_").string();
+        std::string newname  = spc::concatenateFilenameWithSeparator(name, FLAGS_postfix);
 
         LOG(INFO) << "saving as "<< newname;
 

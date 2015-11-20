@@ -87,7 +87,7 @@ public:
 
 	float intensity_corrected = spcNANMacro; // we don't save this value											 // when serializing
 
-    Eigen::Vector3f sensor_position;
+//    Eigen::Vector3f sensor_position;
 
     NewSpcPointCloud extract_for_normal_;
 
@@ -103,7 +103,7 @@ private:
            CEREAL_NVP(angle),
            CEREAL_NVP(intensity),
            CEREAL_NVP(intensity_std),
-           CEREAL_NVP(sensor_position),
+//           CEREAL_NVP(sensor_position),
            CEREAL_NVP(extract_for_normal_)
            );
     }

@@ -151,7 +151,7 @@ target_link_libraries(${MY_TOOLS_PREFIX}subset_from_geometry ${PCL_LIBRARIES} ${
 spc_add_executable(${MY_TOOLS_PREFIX}append_orientations_to_pcd spc_append_orientations_to_pcd)
 target_link_libraries(${MY_TOOLS_PREFIX}append_orientations_to_pcd ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
-message(" glfags libs::::: " ${GFLAGS_LIBRARIES}})
+#message(" glfags libs::::: " ${GFLAGS_LIBRARIES}})
 spc_add_executable(${MY_TOOLS_PREFIX}compute_calibration_dataset spc_compute_calibration_dataset)
 target_link_libraries(${MY_TOOLS_PREFIX}compute_calibration_dataset ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES} ${GLOG_LIBRARIES} ${GFLAGS_LIBRARIES})
 
@@ -159,6 +159,11 @@ target_link_libraries(${MY_TOOLS_PREFIX}compute_calibration_dataset ${PCL_LIBRAR
 
 spc_add_executable(${MY_TOOLS_PREFIX}compute_intensity_calibration spc_compute_intensity_calibration.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}compute_intensity_calibration ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
+
+
+
+#spc_add_executable(${MY_TOOLS_PREFIX}test_fields spc_test_fields.cpp)
+#target_link_libraries(${MY_TOOLS_PREFIX}test_fields ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 
 

@@ -12,6 +12,9 @@
 #include <spc/core/flagging.h>
 
 #include <spc/elements/PointCloudPcl.h>
+
+#include <pcl/io/pcd_io.h>
+
 DEFINE_string(selection, "", "the spc file containing a selection");
 DEFINE_string(cloud, "", "the point cloud file to select from");
 

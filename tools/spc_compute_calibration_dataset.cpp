@@ -29,14 +29,29 @@ DEFINE_string(core_points_cloud, "", "file containing the core points");
 
 DEFINE_string(out, "calibration_data", "out file without extension");
 
-DEFINE_double(search_radius, 0.1,
-	"the search radius to use when normals are estimated directly");
+DEFINE_bool(knn_intensity, true, "Whether or not to use knn search for intensity estimation - otherwise radius search will be used");
+DEFINE_bool(knn_normal, true, "Whether or not to knn radius search for intensity estimation - otherwise radius search will be used");
 
-DEFINE_double(gaussian_sigma, 0.1,
-	"the spatial sigma for intensity sampling with gaussian");
+DEFINE_int32(nn_intensity, 10, "Number of Nearest neighbors to be used when knn_intensity is true");
+DEFINE_int32(nn_normal, 10, "Number of Nearest neighbors to be used when knn_normal is true");
 
-DEFINE_bool(export_as_cloud, true, "save the points as a cloud also");
 
+DEFINE_int32(min_nn_intensity, 10, "Minimum number of nearest neighbors necessary to consider an intensity estimation good");
+DEFINE_int32(min_nn_normal, 10, "Minimum number of nearest neighbors necessary to consider a normal estimation good");
+
+DEFINE_double(radius_intensity, 0.1, "Search radius to be used when knn_intensity is false");
+DEFINE_double(radius_normal, 0.1, "Search radius to be used when knn_normal is false");
+
+
+DEFINE_double(gaussian_sigma, 0,
+    "the spatial sigma for intensity sampling with gaussian - 0 for disabling intensity weighting by gaussian");
+
+
+DEFINE_double(max_admissible_distance, 0.4,
+    "the max admissible nighbor distance when usin knn serch instead of radius search");
+
+//DEFINE_bool(export_as_cloud, true, "save the points as a cloud also");
+DEFINE_bool (disable_spc_save, false, "disable saving as spc binary file");
 DEFINE_bool(export_as_ascii, true,
 	"save the data as pure ascii, e.g. for inspection");
 
@@ -44,8 +59,13 @@ DEFINE_bool(
 	regexp, true,
 	"use a regular expression to set in_clouds (found in current directory)");
 
+DEFINE_bool(
+    filter_nans, true,
+    "filter nans values before saving as ascii file");
+
 
 DEFINE_string(intensity_field, "intensity", "the intensity field");
+
 
 int main(int argc, char** argv)
 {
@@ -56,11 +76,15 @@ int main(int argc, char** argv)
 		"computes a dataset of sampled scalar fields for calibrating the device");
 
 	//    FLAGS_logtostderr = 1;
-	google::ParseCommandLineFlags(&argc, &argv, true);
+    google::ParseCommandLineFlags(&argc, &argv, true);
 
 
 
-	LOG(INFO) << google::CommandlineFlagsIntoString();
+
+//	LOG(INFO) << google::CommandlineFlagsIntoString();
+
+
+//    log_args();
 
 	std::string cwd = spc::getCurrentDirectory();
 
@@ -109,32 +133,79 @@ int main(int argc, char** argv)
 		LOG(INFO) << "Required cloud " << s;
 	}
 
-	spc::calibration::CalibrationDataEstimator calibrator;
-	calibrator.setInputClouds(sources);
+    spc::calibration::CalibrationDataEstimator estimator;
+    estimator.setInputClouds(sources);
 
 	LOG(INFO) << "Using as intensity field: " << FLAGS_intensity_field;
-	calibrator.setIntensityFieldName(FLAGS_intensity_field);
+    estimator.setIntensityFieldName(FLAGS_intensity_field);
 
 	CloudDataSourceOnDisk keys(FLAGS_core_points_cloud);
 	NewSpcPointCloud::Ptr key_cloud = keys.load2();
 
-	calibrator.setInputKeypoints(key_cloud);
-	calibrator.setNormalEstimationSearchRadius(FLAGS_search_radius);
-	if ( calibrator.compute() != 1)
+    estimator.setInputKeypoints(key_cloud);
+
+    if (FLAGS_knn_intensity)
+        estimator.getIntensitySearchParameters().setKNNSearch(FLAGS_nn_intensity);
+    else
+        estimator.getIntensitySearchParameters().setRadiusSearch(FLAGS_radius_intensity);
+
+    if (FLAGS_knn_normal)
+        estimator.getNormalSearchParameters().setKNNSearch(FLAGS_nn_normal);
+    else
+        estimator.getNormalSearchParameters().setRadiusSearch(FLAGS_radius_normal);
+
+
+    estimator.setMinNumberOfPointsIntensity(FLAGS_min_nn_intensity);
+    estimator.setMinNumberOfPointsNormal(FLAGS_min_nn_normal);
+
+    estimator.setMaxAdmissibleKNNDistance(FLAGS_max_admissible_distance);
+
+    if (FLAGS_gaussian_sigma > 0)
+    {
+        estimator.setGaussianWeighting(true);
+        estimator.setIntensityGaussianSpatialSigma(FLAGS_gaussian_sigma);
+
+        LOG(INFO) <<"Enabling gaussian filtering of intensity data";
+    }
+
+
+    else
+    {
+        estimator.setGaussianWeighting(false);
+        LOG(INFO) <<"Disabling gaussian filtering of intensity data";
+    }
+
+
+    if ( estimator.compute() != 1)
 	{
 		LOG(FATAL) <<  "Some error during computations. Please inspect log.";
 		return -1;
 	}
 
-	calibration::DataHolder::Ptr data = calibrator.getCalibrationDataHolder();
+    calibration::DataHolder::Ptr data = estimator.getCalibrationDataHolder();
 
-	LOG(INFO) << "saving to file as spc";
+    if (FLAGS_filter_nans) // this should led to a smaller database o be saved
+        data->ereaseInvalidObservations(true);
 
-	spc::io::serializeToFile(data, FLAGS_out, spc::io::SPC);
+
+
+    if(!FLAGS_disable_spc_save)
+    {
+        LOG(INFO) << "saving to file as spc";
+
+        spc::io::serializeToFile(data, FLAGS_out, spc::io::SPC, true, google::CommandlineFlagsIntoString());
+    }
+
 
 	NewSpcPointCloud::Ptr outcloud(new NewSpcPointCloud);
 
-	*outcloud = data->asPointCloud()->filterOutNans({ "intensity", "distance" });
+//    if (FLAGS_filter_nans)
+//        *outcloud = data->asPointCloud()->filterOutNans({ "intensity", "distance" });
+//    else
+    outcloud = data->asPointCloud();
+
+
+//
 
 	//    if (FLAGS_export_as_cloud)
 	//    {
@@ -146,7 +217,7 @@ int main(int argc, char** argv)
 
 	if (FLAGS_export_as_ascii) {
 		std::string cloud_name = FLAGS_out + "_cloud";
-		spc::io::serializeToFile(outcloud, cloud_name, spc::io::ASCII);
+        spc::io::serializeToFile(outcloud, cloud_name, spc::io::ASCII,true, google::CommandlineFlagsIntoString());
 	}
 
 	LOG(INFO) << "saved";

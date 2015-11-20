@@ -8,27 +8,26 @@
 namespace spc
 {
 
-/** \brief Remove extension from string representing a file name.
- * \param[in] file_name string filename
- * \return the filename without extension
+
+
+
+
+/**
+ * @brief splitStringAtSeparator use boost::tokenizer to split a string in a vector of string
+ * @param line the string to split
+ * @param separator the splitted version of the original line
+ * @return
  */
-std::string stripExtension(const std::string &file_name);
-
-/** \brief Get the part before "_" of a string.
- * \param[in] file_name string filename
- * \return the filename the _* part
- */
-std::string getBaseFileName(const std::string &file_name);
-
-/** \brief Add a string to a string , separating the two with a _
- * \param[in] file_name string filename
- * \param[in] text string to be added after a "_"
- * \return the filename as filename_text
- */
-std::string addSubscript(const std::string &file_name, const std::string &text);
-
-
 std::vector<std::string> splitStringAtSeparator(const std::string &line, const std::string &separator = " ");
+
+
+/**
+ * @brief splitLines split a multiline string in lines components
+ * @param muliline_text
+ * @return the vector of string, one line per element
+ */
+std::vector<std::string> splitLines(const std::string & muliline_text);
+
 
 
 //template <typename T>

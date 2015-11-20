@@ -5,5 +5,5 @@ calibration::Observation::Observation(CloudDataSourceOnDisk::Ptr ref_cloud, cali
 {
     parent_keypoint = parent;
     cloud = ref_cloud;
-    sensor_position.fill(spcNANMacro);
+//    sensor_position.fill(spcNANMacro);
 }

@@ -48,10 +48,10 @@ public:
     ///! set the stratigraphic model to use for interpretation
     /// you can set a field with setXFieldName if if the stratigraphic positions
     /// were pre-computed
-    void setStratigraphicModel(VariableScalarFieldBase::Ptr model)
-    {
-        model_ = model;
-    }
+    ///
+    ///
+    spcSetObjectMacro(StratigraphicModel, model_, VariableScalarFieldBase)
+
 
     ///
     /// \brief setInputCloud the input cloud
