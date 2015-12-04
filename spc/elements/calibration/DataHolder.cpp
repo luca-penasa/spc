@@ -94,6 +94,30 @@ NewSpcPointCloud::Ptr DataHolder::asPointCloud() const
     return out;
 }
 
+void spc::calibration::DataHolder::updateCloudIDsInObservations()
+{
+
+    DLOG(INFO) << "Updating cloud ids in observations";
+    std::list<CloudDataSourceOnDisk::Ptr> clouds;
+    for (Observation::Ptr ob: this->getAllObservations())
+        clouds.push_back(ob->getCloud());
+
+    clouds.sort();
+    clouds.unique();
+
+    LOG(INFO) << "Found " << clouds.size() << " unique clouds";
+
+    std::map<CloudDataSourceOnDisk::Ptr, size_t> to_ids;
+
+    size_t id = 0;
+    for (CloudDataSourceOnDisk::Ptr c: clouds)
+        to_ids[c] = id++;
+
+#pragma parallel for private(to_ids)
+    for (Observation::Ptr ob: this->getAllObservations())
+        ob->cloud_id = to_ids[ob->getCloud()];
+}
+
 }
 }
 #include <spc/core/spc_cereal.hpp>

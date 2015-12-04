@@ -6,6 +6,8 @@
 #include <spc/ceres_calibration/Observations.h>
 #include <spc/ceres_calibration/HelperMethods.h>
 
+#include <spc/elements/calibration/DataHolder.h>
+
 namespace spc
 {
 
@@ -19,41 +21,46 @@ public:
     {
         ISerializable::Ptr o =  spc::io::deserializeFromFile(fname);
 
-        table_ = spcDynamicPointerCast<EigenTable> (o);
+        data_ = spcDynamicPointerCast<calibration::DataHolder> (o);
+        data_->updateCloudIDsInObservations();
 
-        table_ = table_->getWithStrippedNANs({"distance", "intensity", "angle", "intensity_std"});
+        obs_ = data_->getAllObservations();
 
-        // add a constant to intensities
-//        table_->mat().col(table_->getColumnId("intensity")) =  table_->mat().col(table_->getColumnId("intensity")).array() + 10000;
+//        table_ = table_->getWithStrippedNANs({"distance", "intensity", "angle", "intensity_std"});
 
-        std::cout << "Following columns found:\n" << std::endl;
-        for (int i = 0; i < table_->getNumberOfColumns(); ++i)
-        {
-            std::cout << table_->getColumnName(i) << std::endl;
-        }
+//        // add a constant to intensities
+////        table_->mat().col(table_->getColumnId("intensity")) =  table_->mat().col(table_->getColumnId("intensity")).array() + 10000;
 
-        obs_ = table2observations(*table_);
+//        std::cout << "Following columns found:\n" << std::endl;
+//        for (int i = 0; i < table_->getNumberOfColumns(); ++i)
+//        {
+//            std::cout << table_->getColumnName(i) << std::endl;
+//        }
 
-        d_ = table_->mat().col(table_->getColumnId("distance"));
-        a_ = table_->mat().col(table_->getColumnId("angle"));
-        i_ = table_->mat().col(table_->getColumnId("intensity"));
+//        obs_ = table2observations(*table_);
+
+//        d_ = table_->mat().col(table_->getColumnId("distance"));
+//        a_ = table_->mat().col(table_->getColumnId("angle"));
+//        i_ = table_->mat().col(table_->getColumnId("intensity"));
 
 
 
-        cloud_ids_ = table_->mat().col(table_->getColumnId("cloud_id")).cast<int>();
-        unique_ids_ = unique(cloud_ids_);
+//        cloud_ids_ = table_->mat().col(table_->getColumnId("cloud_id")).cast<int>();
+//        unique_ids_ = unique(cloud_ids_);
     }
 
 
-    EigenTable::Ptr table_;
+//    EigenTable::Ptr table_;
+
+    calibration::DataHolder::Ptr data_;
 
     Eigen::VectorXf d_;
     Eigen::VectorXf a_;
     Eigen::VectorXf i_;
     Eigen::VectorXi cloud_ids_;
-    Eigen::VectorXi unique_ids_;
+//    Eigen::VectorXi unique_ids_;
 
-    std::vector<Observation> obs_;
+    std::vector<calibration::Observation::Ptr> obs_;
 
 };
 

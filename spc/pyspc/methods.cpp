@@ -17,11 +17,11 @@ using namespace boost::python;
 
 
 
-
 BOOST_PYTHON_MODULE(methods)
 
 {
 	typedef RBFModelEstimator<float> RBFModelEstimatorF;
+
 
 
 	class_<RBFModelEstimatorF>("RBFModelEstimator")
@@ -29,8 +29,8 @@ BOOST_PYTHON_MODULE(methods)
 			.def("getPoints", &RBFModelEstimatorF::getPoints)
 			.def("setInputValues", &RBFModelEstimatorF::setInputValues)
             .def("getInputValues", &RBFModelEstimatorF::getInputValues)
-            .
-            def("autosetScales", &RBFModelEstimatorF::autosetScales)
+
+            .def("autosetScales", &RBFModelEstimatorF::autosetScales)
 
 			.def("autosetSigma", &RBFModelEstimatorF::autosetSigma)
 			.def("autosetNodes", &RBFModelEstimatorF::autosetNodes)

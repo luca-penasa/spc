@@ -231,7 +231,7 @@ void CalibrationDataEstimator::extractDataForKeypointAndCloud(calibration::Obser
     if (gaussian_weighting_ == true) // d gaussian weighting
     {
         Eigen::Map<Eigen::VectorXf> asmap(dists_sq_int.data(), dists_sq_int.size(), 1);
-        Eigen::VectorXf weights = kernel_->eval(asmap);
+        Eigen::VectorXf weights = kernel_->eval_squared(asmap);
 
 
         avg_intensity = ints.cwiseProduct(weights).sum() / weights.sum();
@@ -250,6 +250,10 @@ void CalibrationDataEstimator::extractDataForKeypointAndCloud(calibration::Obser
 
     // add these infos in the observation!
     data_holder->intensity = avg_intensity;
+
+//    if (std_intensity == 0)
+//        std_intensity = spcNANMacro;
+
     data_holder->intensity_std = std_intensity;
     data_holder->n_neighbors_intensity = ints.rows();
 

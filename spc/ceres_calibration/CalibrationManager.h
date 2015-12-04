@@ -22,7 +22,7 @@ namespace spc
 class CalibratorManager
 {
 public:
-    CalibratorManager(char ** argv);
+    CalibratorManager();
 
     void setSolverOptions();
 

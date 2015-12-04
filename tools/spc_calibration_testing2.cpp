@@ -10,23 +10,25 @@
 
 //#include <spc/calibration/CalibrationFactors.h>
 
-#include <spc/methods/strings.h>
+#include <spc/core/strings.h>
 
 
-#include <spc/calibration/CalibrationManager.h>
+#include <spc/ceres_calibration/CalibrationManager.h>
 
-#include <spc/calibration/LinearCalibrator.h>
+#include <spc/ceres_calibration/LinearCalibrator.h>
 
 #include <spc/methods/RBFModelEstimator.hpp>
 
-#include <gflags/gflags.h>
-#include <glog/logging.h>
+#include <spc/core/flagging.h>
+
+//#include <gflags/gflags.h>
+//#include <glog/logging.h>
 
 using namespace spc;
 using Eigen::Matrix;
 
 
-DEFINE_bool(linear, true, "linear way");
+//DEFINE_bool(linear, true, "linear way");
 
 
 DEFINE_string(out, "model.xml", "Out Filename.");
@@ -52,9 +54,10 @@ int main (int argc, char ** argv)
 {
     google::InitGoogleLogging(argv[0]);
 
-    FLAGS_logtostderr = 1;
+//    google::FLAGS_logtostderr = 1;
 
     google::ParseCommandLineFlags(&argc, &argv, true);
+
 
 
 
@@ -64,119 +67,27 @@ int main (int argc, char ** argv)
 
     LOG(INFO) << "working on file " << datadb;
 
-    if (!FLAGS_linear)
+
+    CalibratorManager man;
+    man.readFile(datadb);
+    man.setSolverOptions();
+
+    man.setUpProblem();
+
+    std::cout << "n pars blocks " << man.getNumberOfParameterBlocks() << std::endl;
+
+    for (int i =0 ; i < man.getNumberOfParameterBlocks(); ++i)
     {
-        CalibratorManager man(argv);
-        man.readFile(datadb);
-        man.setSolverOptions();
-
-        man.setUpProblem();
-
-        std::cout << "n pars blocks " << man.getNumberOfParameterBlocks() << std::endl;
-
-        for (int i =0 ; i < man.getNumberOfParameterBlocks(); ++i)
-        {
-            std::cout << "par block " << i << " has size " << man.getSizeOfParameterBlock(i) << std::endl;
-        }
-
-
-        man.solve();
-        man.printFullReport();
-        man.printAllParameters();
-
-        man.savePrediction("/home/luca/test.txt");
-
+        std::cout << "par block " << i << " has size " << man.getSizeOfParameterBlock(i) << std::endl;
     }
 
 
-    else
-    {
+    man.solve();
+    man.printFullReport();
+    man.printAllParameters();
 
-        LOG(INFO) << "calibrating a linear model";
-
-        ISerializable::Ptr o =  spc::io::deserializeFromFile(datadb);
-
-        CHECK(o != NULL) << "cannot deserialize the file";
-
-        EigenTable::Ptr table_ = spcDynamicPointerCast<EigenTable> (o);
-
-        table_ = table_->getWithStrippedNANs({FLAGS_distance_field_name,
-                                              FLAGS_angle_field_name,
-                                              FLAGS_intensity_field_name,
-                                              FLAGS_intensity_std_field_name});
+    man.savePrediction("/home/luca/test.txt");
 
 
-
-        Eigen::VectorXf d = table_->column(FLAGS_distance_field_name);
-        Eigen::VectorXf i = table_->column(FLAGS_intensity_field_name);
-        Eigen::VectorXf a = table_->column(FLAGS_angle_field_name);
-
-
-
-        CHECK(d.size() != 0 ) << "looks like your data is empty or not properly loaded";
-
-        Eigen::Matrix<float, -1, -1> points;
-
-
-        if (FLAGS_only_distance)
-        {
-            points.resize(d.rows(), 1);
-            points.col(0) = d;
-        }
-        else
-        {
-            points.resize(d.rows(), 2);
-            points.col(0) = d;
-            points.col(1) = a;
-        }
-
-
-
-        spc::RBFModelEstimator<float> estimator;
-        estimator.setPoints(points);
-        estimator.setLambda(FLAGS_lambda);
-
-        estimator.setInputValues(i);
-
-        estimator.getModel()->setPolyOrder(FLAGS_poly_order);
-        estimator.getModel()->setSigma(FLAGS_sigma);
-
-
-        CHECK(estimator.solveProblem()!= -1) << "cannot solve -- see log info please";
-
-
-//        LinearCalibrator calibrator(datadb);
-
-
-//        std::string outfname = "/home/luca/test_linear.txt";
-
-//        SampledData * data_ptr = &calibrator.getData();
-
-//        Eigen::VectorXf pred = calibrator.getPredictionForInput();
-
-//        EigenTable::Ptr out (new EigenTable);
-//        out->addNewComponent("distance", 1);
-//        out->addNewComponent("angle", 1);
-//        out->addNewComponent("intensity", 1);
-//        out->addNewComponent("pred_intensity", 1);
-
-
-
-
-//        out->resize(data_ptr->i_.size());
-
-//        out->column("distance") = data_ptr->d_;
-//        out->column("angle") = data_ptr->a_;
-//        out->column("intensity") = data_ptr->i_.cast<float>();
-//        out->column("pred_intensity") = pred.cast<float>();
-
-
-//        spc::io::AsciiEigenTableWriter w;
-//        w.setInput(out);
-//        w.setOutputFilename(outfname);
-//        w.setWriteHeaders(true);
-//        w.write();
-
-    }
     return 1;
 }

@@ -63,7 +63,7 @@ void wrap_std_map(const std::string name)
 
 BOOST_PYTHON_MODULE(elements)
 {
-	implicitly_convertible<RBFModelF::Ptr,ISerializable::Ptr>();
+    implicitly_convertible<RBFModelF::Ptr,ISerializable::Ptr>();
 	implicitly_convertible<RBFModelF::Ptr,ElementBase::Ptr>();
 	implicitly_convertible<ElementBase::Ptr,ISerializable::Ptr>();
 
@@ -97,6 +97,31 @@ BOOST_PYTHON_MODULE(elements)
 			.def("setParent", &ElementBase::getParent)
 			;
 
+    enum_<RBFKernelFactory<float>::RBF_FUNCTION>("RBF_FUNCTION")
+            .value("RBF_GAUSSIAN", RBFKernelFactory<float>::RBF_GAUSSIAN)
+            .value("RBF_GAUSSIAN_APPROX", RBFKernelFactory<float>::RBF_GAUSSIAN_APPROX)
+            .value("RBF_MULTIQUADRIC", RBFKernelFactory<float>::RBF_MULTIQUADRIC)
+            .value("RBF_EPANECHNIKOV", RBFKernelFactory<float>::RBF_EPANECHNIKOV)
+            .value("RBF_POLYHARMONIC_1", RBFKernelFactory<float>::RBF_POLYHARMONIC_1)
+            .value("RBF_POLYHARMONIC_2", RBFKernelFactory<float>::RBF_POLYHARMONIC_2)
+            .value("RBF_POLYHARMONIC_3", RBFKernelFactory<float>::RBF_POLYHARMONIC_3)
+            .value("RBF_POLYHARMONIC_4", RBFKernelFactory<float>::RBF_POLYHARMONIC_4)
+            .value("RBF_POLYHARMONIC_5", RBFKernelFactory<float>::RBF_POLYHARMONIC_5)
+            .value("RBF_POLYHARMONIC_6", RBFKernelFactory<float>::RBF_POLYHARMONIC_6)
+
+
+            ;
+
+
+
+    class_<RBFKernelFactory<float> > ("RBFModelFactoryF")
+            .def("create", &RBFKernelFactory<float>::create)
+            .staticmethod("create")
+            ;
+
+
+    class_<RBFBase<float>, RBFBase<float>::Ptr, bases<ElementBase>,  boost::noncopyable> ("RBFBaseF", no_init);
+
 	class_<RBFModelF,RBFModelF::Ptr, bases<ElementBase>>("RBFModel")
 			.def("getCoefficients", &RBFModelF::getCoefficients)
             .def("getSigma", &RBFModelF::getSigma)
@@ -107,6 +132,8 @@ BOOST_PYTHON_MODULE(elements)
             .def("getNumberOfpolynomialTerms", &RBFModelF::getNumberOfpolynomialTerms)
             .def("setPolyOrder", &RBFModelF::setPolyOrder)
             .def("getPolyOrder", &RBFModelF::getPolyOrder)
+            .def("getKernel", &RBFModelF::getKernel)
+            .def("setKernel", &RBFModelF::setKernel)
 
 			.def("getDimensionality", &RBFModelF::getDimensionality)
 //			.def("__call__",  static_cast<float (RBFModelF::*)(const RBFModelF::PointT &) const >  (&RBFModelF::operator() ), op() )

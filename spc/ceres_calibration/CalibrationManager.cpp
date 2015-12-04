@@ -3,9 +3,9 @@
 namespace spc
 {
 
-CalibratorManager::CalibratorManager(char **argv)
+CalibratorManager::CalibratorManager()
 {
-    google::InitGoogleLogging(argv[0]);
+//    google::InitGoogleLogging(argv[0]);
 }
 
 void CalibratorManager::setSolverOptions()
@@ -64,7 +64,7 @@ void CalibratorManager::savePrediction(const std::string outfname) const
 
     for (int j = 0; j < samples_.obs_.size(); ++j)
     {
-        predicted(j) = predict_intensities(samples_.obs_.at(j), *this->getPredictorBlock(), &this->getPredictorBlock()->getMyActiveParameters()[0]);
+        predicted(j) = predict_intensities(*samples_.obs_.at(j), *this->getPredictorBlock(), &this->getPredictorBlock()->getMyActiveParameters()[0]);
     }
 
     EigenTable::Ptr out (new EigenTable);

@@ -33,7 +33,7 @@ public:
 
     {
 
-		model_->setKernel(RBFKernelFactory<T>::RBF_GAUSSIAN_APPROX);
+        model_->setKernel(RBFKernelFactory<T>::RBF_GAUSSIAN);
     }
 
 	spcSetMacro(Points, points_, PointsT)

@@ -37,6 +37,8 @@ public:
 
 	}
 
+    void updateCloudIDsInObservations();
+
 
 	KeyPoint::Ptr newKeypoint(const Eigen::Vector3f &pos, const size_t material_id)
     {

@@ -6,19 +6,21 @@
 
 #include <Eigen/Eigen>
 
-#include <spc/ceres_calibration/Observations.h>
+//#include <spc/ceres_calibration/calibration::Observations.h>
 #include <spc/ceres_calibration/BasicResidualBlock.h>
 
 //#include <spc/ceres_calibration/IntensityModelFixedPars.h>
 
 #include <spc/ceres_calibration/ParametersBlock.h>
 
+#include <spc/elements/calibration/Observation.h>
+
 namespace spc {
 using Eigen::Matrix;
 
 
 template <typename T>
-T per_cloud_multiplier(const Observation &ob, const BasicResidualBlock & res_block,  T const * const * parameters)
+T per_cloud_multiplier(const calibration::Observation &ob, const BasicResidualBlock & res_block,  T const * const * parameters)
 {
     Eigen::Matrix<T, -1, -1> cloud_multipliers =  res_block.remapFromPointerAndName(parameters, "cloud_multipliers");
 
@@ -32,7 +34,7 @@ T per_cloud_multiplier(const Observation &ob, const BasicResidualBlock & res_blo
 }
 
 template <typename T>
-T angle_law(const Observation &ob, const BasicResidualBlock & res_block,  T const * const * parameters)
+T angle_law(const calibration::Observation &ob, const BasicResidualBlock & res_block,  T const * const * parameters)
 {
     T p =  res_block.remapFromPointerAndName(parameters, "angle_cos_proportion")(0);
 
@@ -45,7 +47,7 @@ T angle_law(const Observation &ob, const BasicResidualBlock & res_block,  T cons
 }
 
 template<typename T>
-T distance_law(const Observation &ob, const BasicResidualBlock & res_block,  T const * const * parameters)
+T distance_law(const calibration::Observation &ob, const BasicResidualBlock & res_block,  T const * const * parameters)
 {
     T exponential = res_block.remapFromPointerAndName(parameters, "distance_exponential")(0);
 
@@ -55,13 +57,13 @@ T distance_law(const Observation &ob, const BasicResidualBlock & res_block,  T c
 }
 
 template <typename T>
-T overall_multiplier(const Observation &ob, const BasicResidualBlock & res_block,  T const * const * parameters)
+T overall_multiplier(const calibration::Observation &ob, const BasicResidualBlock & res_block,  T const * const * parameters)
 {
     return res_block.remapFromPointerAndName(parameters, "overall_multiplier" ) (0);
 }
 
 template <typename T>
-T overall_shift(const Observation &ob, const BasicResidualBlock & res_block,  T const * const * parameters)
+T overall_shift(const calibration::Observation &ob, const BasicResidualBlock & res_block,  T const * const * parameters)
 {
     return res_block.remapFromPointerAndName(parameters, "overall_shift" ) (0);
 }
@@ -88,7 +90,7 @@ T compute_rbf(const Matrix<T, -1, 1> &coefficients,
 }
 
 template <typename T>
-T predict_intensities(const Observation &ob, const BasicResidualBlock & res_block,  T const * const * parameters)
+T predict_intensities(const calibration::Observation &ob, const BasicResidualBlock & res_block,  T const * const * parameters)
 {
 
 //    Eigen::Matrix<T, -1, -1> c_dist =  res_block.remapFromPointerAndName(parameters, "coeff_distance");

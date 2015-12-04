@@ -85,7 +85,11 @@ public:
     float intensity= spcNANMacro;
     float intensity_std= spcNANMacro;
 
-	float intensity_corrected = spcNANMacro; // we don't save this value											 // when serializing
+    float intensity_corrected = spcNANMacro; // we don't save this value
+
+    size_t cloud_id = spcNANMacro;  // we do not save this,
+                                    // but the data holder can promply recompute it
+    // when serializing
 
 //    Eigen::Vector3f sensor_position;
 

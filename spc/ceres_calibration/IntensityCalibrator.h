@@ -71,7 +71,7 @@ public:
 
         in_cloud_->getField(intensity_fname, intensity_);
 
-        fields_.resize(in_cloud_->size(), field_names_.size());
+        fields_.resize(in_cloud_->getNumberOfPoints(), field_names_.size());
 
         // read the actual fields from the cloud
         counter = 0;
@@ -93,8 +93,8 @@ public:
         if (!initFields())
             return false;
 
-        predicted_.resize(in_cloud_->size());
-        corrected_.resize(in_cloud_->size());
+        predicted_.resize(in_cloud_->getNumberOfPoints());
+        corrected_.resize(in_cloud_->getNumberOfPoints());
 
         for (int i = 0 ; i < fields_.rows(); ++i)
         {

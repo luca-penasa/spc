@@ -27,21 +27,7 @@ public:
 	typedef Eigen::Matrix<T, -1, -1> MatrixT;
 
 
-//	RBFModel(const RBFModel<T> & other): ElementBase(other)
-//	{
-//		nodes_ =other.nodes_;
-//		coeffs_ = other.coeffs_;
-//		kernel_ = other.kernel_->clone();
-//		poly_order_ = other.poly_order_;
-//		n_polys_ = other.n_polys_;
-//		dim_ = other.dim_;
-//		scales_ = other.scales_;
-//	}
-
-
-
-
-	RBFModel(): kernel_(new GaussianApproxRBF<T>(1.0))
+    RBFModel(): kernel_(new PolyharmonicRBF<T>(3))
 	{
 
 	}
@@ -64,7 +50,6 @@ public:
 		if (hasScales())
 		{
 			// scale the nodes
-
 			PointsT scaled_nodes = nodes.cwiseProduct(scales_.transpose().replicate(nodes.rows(), 1));
 			nodes_ = scaled_nodes;
 		}
@@ -106,8 +91,14 @@ public:
 
 	void setKernel(typename RBFKernelFactory<T>::RBF_FUNCTION kernel, const T scale = T(1))
 	{
-		kernel_ =RBFKernelFactory<T>::create(kernel, scale);
+        kernel_ = RBFKernelFactory<T>::create(kernel, scale);
 	}
+
+    typename RBFBase<T>::Ptr  getKernel() const
+    {
+        DCHECK(kernel_ != nullptr); // security check
+        return kernel_;
+    }
 
 	void setPolyOrder(const size_t & order)
 	{
@@ -139,7 +130,7 @@ public:
 	{
 		VectorT w = getSqDistanceFromNodes(point);
 		for (int i = 0; i < w.rows(); ++i)
-			w(i) = kernel_->eval(w(i));
+            w(i) = kernel_->eval_squared(w(i));
 
 		return w;
 	}
@@ -172,7 +163,7 @@ public:
 
 		if (out.finiteness().count() != out.size())
 		{
-			LOG(FATAL) << "error of finiteness: " << out.transpose();
+            LOG(ERROR) << "error of finiteness: " << out.transpose();
 		}
 
 		return out;

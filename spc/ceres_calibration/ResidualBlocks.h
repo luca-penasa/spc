@@ -4,6 +4,9 @@
 //#include <spc/ceres_calibration/BasicResidualBlock.h>
 //#include <spc/ceres_calibration/Observations.h>
 #include <spc/ceres_calibration/ModelingFunctions.h>
+
+
+#include <spc/elements/calibration/Observation.h>
 namespace spc
 {
 
@@ -85,11 +88,11 @@ class IntensityModelingFunctorMultiResiduals: public BasicResidualBlock
 public:
     typedef ceres::DynamicAutoDiffCostFunction< IntensityModelingFunctorMultiResiduals, 4> mycostT;
 
-    IntensityModelingFunctorMultiResiduals(std::vector<spc::Observation> &ob)
+    IntensityModelingFunctorMultiResiduals(std::vector<calibration::Observation::Ptr> ob)
 
 
     {
-        observations_ = &ob;
+        observations_ = ob;
 
         cost_  =new mycostT ( this );
 
@@ -100,7 +103,7 @@ public:
             if (block->isEnabled())
                 cost_->AddParameterBlock(block->getBlockSize());
 
-        cost_->SetNumResiduals(observations_->size());
+        cost_->SetNumResiduals(observations_.size());
 
 
 
@@ -113,12 +116,12 @@ public:
     {
 
         size_t i = 0;
-        for (const Observation & ob : *observations_)
+        for (const calibration::Observation::Ptr ob : observations_)
         {
-            if (ob.distance >=40)
+            if (ob->distance >=40)
             {
-            T prediction = predict_intensities(ob, *this, parameters);
-            residual[i++] = T(ob.intensity) - prediction;
+                T prediction = predict_intensities(*ob, *this, parameters);
+                residual[i++] = T(ob->intensity) - prediction;
             }
             else
             {
@@ -130,7 +133,7 @@ public:
     }
 
 private:
-    std::vector<spc::Observation> * observations_;
+    std::vector<calibration::Observation::Ptr>  observations_;
 
 
     // BasicResidualBlock interface

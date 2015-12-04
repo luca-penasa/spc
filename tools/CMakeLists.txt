@@ -169,15 +169,18 @@ target_link_libraries(${MY_TOOLS_PREFIX}compute_intensity_calibration ${PCL_LIBR
 
 
 
-#FIND_PACKAGE(Ceres REQUIRED)
-#INCLUDE_DIRECTORIES(${CERES_INCLUDE_DIRS})
 
+if(SPC_MODULE_CERES_CALIBRATION)
 
-#spc_add_executable(${MY_TOOLS_PREFIX}calibration_testing spc_calibration_testing.cpp)
-#target_link_libraries(${MY_TOOLS_PREFIX}calibration_testing ${SPC_LIBRARIES}  ${CERES_LIBRARIES})
+    FIND_PACKAGE(Ceres REQUIRED)
+    INCLUDE_DIRECTORIES(${CERES_INCLUDE_DIRS})
 
-#spc_add_executable(${MY_TOOLS_PREFIX}calibration_testing2 spc_calibration_testing2.cpp)
-#target_link_libraries(${MY_TOOLS_PREFIX}calibration_testing2 ${SPC_LIBRARIES}  ${CERES_LIBRARIES} ${GFLAGS_LIBRARIES})
+    spc_add_executable(${MY_TOOLS_PREFIX}calibration_testing spc_calibration_testing.cpp)
+    target_link_libraries(${MY_TOOLS_PREFIX}calibration_testing ${SPC_LIBRARIES}  ${CERES_LIBRARIES})
+
+    spc_add_executable(${MY_TOOLS_PREFIX}calibration_testing2 spc_calibration_testing2.cpp)
+    target_link_libraries(${MY_TOOLS_PREFIX}calibration_testing2 ${SPC_LIBRARIES}  ${CERES_LIBRARIES} ${GFLAGS_LIBRARIES})
+endif()
 
 
 spc_add_executable(${MY_TOOLS_PREFIX}calibrate_rbf spc_calibrate_rbf)

@@ -96,8 +96,17 @@ public:
     virtual BBT getBB() const
     {
           BBT out;
-          out.min_ = this->asEigenMatrix().colwise().minCoeff();
-          out.max_ = this->asEigenMatrix().colwise().maxCoeff();
+          if (this->getNumberOfPoints() >= 1)
+          {
+              out.min_ = this->asEigenMatrix().colwise().minCoeff();
+              out.max_ = this->asEigenMatrix().colwise().maxCoeff();
+          }
+
+          else
+          {
+              out.min_.fill(std::numeric_limits<ScalarT>::quiet_NaN());
+              out.max_.fill(std::numeric_limits<ScalarT>::quiet_NaN());
+          }
           return out;
     }
 

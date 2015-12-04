@@ -7,6 +7,9 @@
 namespace spc {
 
 
+
+
+
 /** most rbf functinos use a kernel radius parameter controlling the size
  * this parameter is often used squared so we keep it (also) squared.
  * for kernel not using it just leave it uninitialized using the def-constructor of the
@@ -23,6 +26,8 @@ class RBFBase: public ElementBase
 public:
 //	SPC_ELEMENT(RBFBase<T>)
 	spcTypedefSharedPtrs(RBFBase<T>)
+
+    EXPOSE_TYPE
 
     RBFBase(): scale_(1)
     {
@@ -75,10 +80,10 @@ public:
     /** argument is squared!
      * in fact most rbf use a squared distance measure in the formula
      **/
-    virtual T eval(const T& squared_x) const = 0;
+    virtual T eval_squared(const T& squared_x) const = 0;
 
 
-    virtual Eigen::Matrix<T, -1, 1> eval(const Eigen::Matrix<T, -1, 1> &squared_xs) const
+    virtual Eigen::Matrix<T, -1, 1> eval_squared(const Eigen::Matrix<T, -1, 1> &squared_xs) const
     {
         Eigen::Matrix<T, -1, 1> w;
         w.resize(squared_xs.rows());
@@ -89,7 +94,7 @@ public:
         for (int i = 0; i < squared_xs.rows(); ++i)
         {
 
-            w(i) = this->eval( squared_xs(i));
+            w(i) = this->eval_squared( squared_xs(i));
         }
 
         return w;
@@ -135,12 +140,17 @@ private:
 
 
 
+
+
+
 template <typename T>
 class GaussianRBF: public RBFBase<T>
 {
 public:
 
     SPC_ELEMENT(GaussianRBF)
+    EXPOSE_TYPE
+
     using RBFBase<T>::scale_squared_inv_neg_;
 
 
@@ -158,7 +168,7 @@ public:
     GaussianRBF(): RBFBase<T>() {}
 
     // BasicKernel interface
-    virtual inline T eval(const T &squared_x) const
+    virtual inline T eval_squared(const T &squared_x) const
     {
         return exp(squared_x * 0.5* scale_squared_inv_neg_);
     }
@@ -183,6 +193,8 @@ public:
 
     SPC_ELEMENT(GaussianApproxRBF)
 
+    EXPOSE_TYPE
+
     using RBFBase<T>::scale_squared_inv_neg_;
 
     /** in the case of Gaussian the scale correspond to the sigma
@@ -202,7 +214,7 @@ public:
     GaussianApproxRBF(): RBFBase<T>() {}
 
     // BasicKernel interface
-    virtual inline T eval(const T &squared_x) const
+    virtual inline T eval_squared(const T &squared_x) const
     {
         return fastexp(squared_x * 0.5 * scale_squared_inv_neg_);
     }
@@ -228,7 +240,7 @@ class EpanechnikovRBF: public RBFBase<T>
 public:
 
     SPC_ELEMENT(EpanechnikovRBF)
-
+EXPOSE_TYPE
     using RBFBase<T>::scale_squared_inv_;
     using RBFBase<T>::scale_;
 
@@ -247,7 +259,7 @@ public:
     EpanechnikovRBF(): RBFBase<T>() {}
 
     // BasicKernel interface
-    virtual inline T eval(const T &squared_x) const
+    virtual inline T eval_squared(const T &squared_x) const
     {
         if ((squared_x * scale_squared_inv_) >= 1)
             return 0;
@@ -279,7 +291,9 @@ template <typename T>
 class MultiquadricRBF: public RBFBase<T>
 {
 public:
+EXPOSE_TYPE
 
+SPC_ELEMENT(MultiquadricRBF)
     using RBFBase<T>::scale_squared_inv_;
 
     /** in the case of Gaussian the scale correspond to the sigma
@@ -295,14 +309,14 @@ public:
      }
 
 
-     virtual ElementBase::Ptr clone() const override
-     {
-         return ElementBase::Ptr(new MultiquadricRBF(*this));
-     }
+//     virtual ElementBase::Ptr clone() const override
+//     {
+//         return ElementBase::Ptr(new MultiquadricRBF(*this));
+//     }
 
 
     // BasicKernel interface
-    virtual inline T eval(const T &squared_x) const
+    virtual inline T eval_squared(const T &squared_x) const
     {
         return sqrt(1+ squared_x * scale_squared_inv_);
     }
@@ -320,7 +334,69 @@ private:
 
 
 
+template <typename T>
+class PolyharmonicRBF: public RBFBase<T>
+{
+public:
 
+    EXPOSE_TYPE
+
+    SPC_ELEMENT(PolyharmonicRBF)
+
+     PolyharmonicRBF(const size_t k = 1): RBFBase<T>(), k_(k) {}
+
+
+     PolyharmonicRBF(const PolyharmonicRBF & other): RBFBase<T> (other)
+     {
+        k_ = other.k_;
+     }
+
+
+//     virtual ElementBase::Ptr clone() const override
+//     {
+//         return ElementBase::Ptr(new PolyharmonicRBF(*this));
+//     }
+
+
+
+     /**
+     * @brief eval_squared
+     * @param squared_x
+     * @return
+     * implemented this way for now, we must seek for faster ways to do this,
+     * maybe k could be a template arg
+     */
+    virtual inline T eval_squared(const T &squared_x) const override
+    {
+
+//         LOG(INFO) << "in dist: " << std::sqrt(squared_x);
+        if (k_ % 2 == 0)
+        {
+            T val = std::sqrt(squared_x);
+            return std::pow(val, k_) * std::log(val);
+        }
+
+        else // its odd
+        {
+            T val = std::sqrt(squared_x);
+            return std::pow(val, k_);
+        }
+    }
+
+
+private:
+    friend class cereal::access;
+
+    template <class Archive> void serialize(Archive &ar)
+    {
+        ar(cereal::base_class<RBFBase<T> >(this),
+           CEREAL_NVP(k_));
+
+    }
+
+    size_t k_;
+
+};
 
 
 

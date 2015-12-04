@@ -9,7 +9,16 @@ template<typename ScalarT>
 class RBFKernelFactory
 {
 public:
-    enum RBF_FUNCTION {RBF_GAUSSIAN, RBF_GAUSSIAN_APPROX, RBF_MULTIQUADRIC, RBF_EPANECHNIKOV};
+    enum RBF_FUNCTION {RBF_GAUSSIAN,
+                       RBF_GAUSSIAN_APPROX,
+                       RBF_MULTIQUADRIC,
+                       RBF_EPANECHNIKOV,
+                      RBF_POLYHARMONIC_1,
+                      RBF_POLYHARMONIC_2,
+                      RBF_POLYHARMONIC_3,
+                      RBF_POLYHARMONIC_4,
+                      RBF_POLYHARMONIC_5,
+                      RBF_POLYHARMONIC_6};
 
     static
     typename RBFBase<ScalarT>::Ptr create(const RBF_FUNCTION &kernel,
@@ -26,6 +35,24 @@ public:
 
         else if (kernel == RBF_EPANECHNIKOV)
             return typename RBFBase<ScalarT>::Ptr(new EpanechnikovRBF<ScalarT>(scale));
+
+        else if (kernel == RBF_POLYHARMONIC_1)
+            return typename RBFBase<ScalarT>::Ptr(new PolyharmonicRBF<ScalarT>(1));
+
+        else if (kernel == RBF_POLYHARMONIC_2)
+            return typename RBFBase<ScalarT>::Ptr(new PolyharmonicRBF<ScalarT>(2));
+
+        else if (kernel == RBF_POLYHARMONIC_3)
+            return typename RBFBase<ScalarT>::Ptr(new PolyharmonicRBF<ScalarT>(3));
+
+        else if (kernel == RBF_POLYHARMONIC_4)
+            return typename RBFBase<ScalarT>::Ptr(new PolyharmonicRBF<ScalarT>(4));
+
+        else if (kernel == RBF_POLYHARMONIC_5)
+            return typename RBFBase<ScalarT>::Ptr(new PolyharmonicRBF<ScalarT>(5));
+
+        else if (kernel == RBF_POLYHARMONIC_6)
+            return typename RBFBase<ScalarT>::Ptr(new PolyharmonicRBF<ScalarT>(6));
 
         else
         {

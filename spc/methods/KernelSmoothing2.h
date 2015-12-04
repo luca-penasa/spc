@@ -149,7 +149,7 @@ protected:
         ScalarT val = 0;
         for (MatchT &m: matches)
         {
-            m.second = kernel_->eval(m.second);
+            m.second = kernel_->eval_squared(m.second);
             sum += m.second;
             val += values_(m.first) * m.second;
         }

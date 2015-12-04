@@ -210,6 +210,9 @@ namespace spc
 			return -1;
 		}
 
+
+        LOG(INFO) << "Using kernel: " << model_->getKernel()->getType()->getClassName();
+
 		//////////// checks are ok... go ahead!
 		DLOG(INFO) << "Checks passed!";
 
