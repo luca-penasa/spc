@@ -33,18 +33,33 @@ BOOST_PYTHON_MODULE(ceres_calibration)
 
     def("test", &test);
 
+//    def("predict_intensity" )
+
+
+    def("near_distance_effect", &near_distance_effect_);
+
+    def("predict_intensity_no_angle", &predict_intensity_no_angle_);
 
 
     class_<SimpleCalibration> ("SimpleCalibrator")
             .def ("initProblem", &SimpleCalibration::initProblem)
             .def ("solve", &SimpleCalibration::solve)
 
-            .def ("testSet", &SimpleCalibration::testSet)
+            .def("predict_no_angle", &SimpleCalibration::predict_no_angle)
+//            .def ("testSet", &SimpleCalibration::testSet)
+
+            .def("setNearDistanceLowerBounds", &SimpleCalibration::setNearDistanceLowerBounds)
+            .def("setNearDistanceUpperBounds", &SimpleCalibration::setNearDistanceUpperBounds)
 
 
             .def ("setNearDistancePars", &SimpleCalibration::setNearDistancePars)
+            .def ("getNearDistancePars", &SimpleCalibration::getNearDistancePars)
+
             .def ("setMaterialPars", &SimpleCalibration::setMaterialPars)
+            .def ("getMaterialPars", &SimpleCalibration::getMaterialPars)
+
             .def ("setRoughnessPars", &SimpleCalibration::setRoughnessPars)
+            .def ("getRoughnessPars", &SimpleCalibration::getRoughnessPars)
 
             .def ("setR", &SimpleCalibration::setR)
             .def ("setI", &SimpleCalibration::setI)

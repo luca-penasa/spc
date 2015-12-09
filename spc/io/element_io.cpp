@@ -11,7 +11,7 @@
 #include <cereal/types/vector.hpp>
 #include <spc/io/eigen_serialization.hpp>
 #include <spc/io/cereal_types.hpp>
-#include <spc/core/file_operations.h>e
+#include <spc/core/file_operations.h>
 
 #include <spc/core/timing.h>
 //#include <pcl/console/parse.h>
