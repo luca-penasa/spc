@@ -45,9 +45,9 @@ public:
 		is_locked_ = true;
 	}
 
-	bool unlock()
+    void unlock()
 	{
-		is_locked_ = false;
+		is_locked_ = false;        
 	}
 
 	spcGetMacro(Factor, factor_, float)
@@ -165,7 +165,7 @@ public:
 			for (Observation::Ptr ob: mat->getAllObservations())
 			{
 				float prediction = model_->operator ()(ob->getAsEigenPoint());
-				if (!std::isfinite(prediction) | prediction == 0)
+                if (!std::isfinite(prediction) | (prediction == 0))
 				{
 					prediction = 1;
 				}

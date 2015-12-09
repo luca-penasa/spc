@@ -96,7 +96,7 @@ EXPOSE_TYPE
     /// \brief getX
     /// \return a vector of the x positions
     ///
-    virtual VectorT getX() const;
+    virtual VectorT getX() const override;
 
 
     template<class VEC>
@@ -119,7 +119,7 @@ EXPOSE_TYPE
     /// If longer it will be truncated
     /// \param size_ number of samples
     ///
-    void resize(size_t size_)
+    virtual void resize(size_t size_ )  override
     {
         this->y_.resize(size_);
     }
@@ -142,12 +142,12 @@ EXPOSE_TYPE
         x_start = start;
     }
 
-    virtual ScalarT getMinX() const
+    virtual ScalarT getMinX() const override
     {
         return x_start;
     }
 
-    virtual ScalarT getMaxX() const
+    virtual ScalarT getMaxX() const override
     {
         return x_start + x_step * this->getNumberOfSamples();
     }

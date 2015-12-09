@@ -18,7 +18,7 @@ class ElementBase : public ISerializable, public ElementWithVariantProperties, p
 {
 public:
     spcTypedefSharedPtrs(ElementBase)
-    EXPOSE_TYPE
+    EXPOSE_TYPE_BASE
     ElementBase()
     {
     }

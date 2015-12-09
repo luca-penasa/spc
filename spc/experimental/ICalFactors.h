@@ -15,7 +15,7 @@ class CorrectionFactorBase
 {
 public:
     spcTypedefSharedPtrs(CorrectionFactorBase)
-    EXPOSE_TYPE
+    EXPOSE_TYPE_BASE
     //! we pass a CalibrationSamplesDB because some factors may require to know
     //! some stuff before everything
     //! see for example CorrectionFactorCloudDependentMultiplier

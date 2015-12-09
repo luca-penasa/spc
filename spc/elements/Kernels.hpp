@@ -168,7 +168,7 @@ public:
     GaussianRBF(): RBFBase<T>() {}
 
     // BasicKernel interface
-    virtual inline T eval_squared(const T &squared_x) const
+    virtual inline T eval_squared(const T &squared_x) const override
     {
         return exp(squared_x * 0.5* scale_squared_inv_neg_);
     }
@@ -214,7 +214,7 @@ public:
     GaussianApproxRBF(): RBFBase<T>() {}
 
     // BasicKernel interface
-    virtual inline T eval_squared(const T &squared_x) const
+    virtual inline T eval_squared(const T &squared_x) const override
     {
         return fastexp(squared_x * 0.5 * scale_squared_inv_neg_);
     }
@@ -259,7 +259,7 @@ EXPOSE_TYPE
     EpanechnikovRBF(): RBFBase<T>() {}
 
     // BasicKernel interface
-    virtual inline T eval_squared(const T &squared_x) const
+    virtual inline T eval_squared(const T &squared_x) const override
     {
         if ((squared_x * scale_squared_inv_) >= 1)
             return 0;
@@ -267,7 +267,7 @@ EXPOSE_TYPE
             return ratio_ - ratio_ * squared_x * scale_squared_inv_;
     }
 
-    virtual T getSupport() const
+    virtual T getSupport() const override
     {
         return scale_; // that is the support for this kernel (1 * scale_)
     }
@@ -316,7 +316,7 @@ SPC_ELEMENT(MultiquadricRBF)
 
 
     // BasicKernel interface
-    virtual inline T eval_squared(const T &squared_x) const
+    virtual inline T eval_squared(const T &squared_x) const override
     {
         return sqrt(1+ squared_x * scale_squared_inv_);
     }

@@ -61,6 +61,8 @@ public:
         }
 
         percentage_inside_ = (float) inside_points_.size() / (float) in_set_->getNumberOfPoints() * 100.0f;
+
+        return 1;
     }
 
     std::vector<IdT> getInsideIds() const

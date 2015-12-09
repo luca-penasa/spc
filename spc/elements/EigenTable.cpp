@@ -180,6 +180,8 @@ std::string EigenTable::getColumnName(const size_t &id) const
 {
     if (cols_to_name_.find(id) != cols_to_name_.end())
         return cols_to_name_.at(id);
+    else
+        return "";
 }
 
 std::vector<std::string> EigenTable::getScalarColumnsNames() const

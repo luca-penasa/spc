@@ -42,7 +42,7 @@ public:
     virtual Eigen::VectorXf getRowOfObservationsMatrix(const Eigen::VectorXf &v)
         = 0;
 
-    virtual Eigen::VectorXf operator()(const Eigen::VectorXf &v)
+    virtual Eigen::VectorXf operator()(const Eigen::VectorXf &v) override
     {
         assert(v.size() == getInputSize());
 

@@ -179,15 +179,15 @@ public:
     virtual void addFields(const std::vector<std::string> field_names,
                            const Eigen::MatrixXf &data);
 
-    virtual size_t getNumberOfPoints() const = 0;
+    virtual size_t getNumberOfPoints() const override = 0 ;
 
     virtual bool hasField(const std::string fieldname) const = 0;
 
     virtual std::vector<std::string> getFieldNames() const = 0;
 
-    virtual void resize(const IndexT s) = 0;
+    virtual void resize(const IndexT s) override = 0;
 
-    virtual PointT getPoint(const IndexT id) const;
+    virtual PointT getPoint(const IndexT id)  const override;
 
     virtual Eigen::Vector3f getNormal(const IndexT id) const;
 
@@ -255,12 +255,12 @@ public:
         sensor_ = spcDynamicPointerCast<OrientedSensor>(other.sensor_->clone());
     }
 
-    virtual OrientedSensor getSensor() const
+    virtual OrientedSensor getSensor() const override
     {
         return *sensor_;
     }
 
-    virtual void setSensor(const OrientedSensor &sensor) const
+    virtual void setSensor(const OrientedSensor &sensor) const override
     {
         *sensor_ = sensor;
     }

@@ -111,7 +111,7 @@ public:
         return mat_.row(id);
     }
 
-    virtual bool isAsciiSerializable() const
+    virtual bool isAsciiSerializable() const override
     {
         return true;
     }

@@ -16,7 +16,7 @@ class VariantPropertiesRecord
 {
 public:
     spcTypedefSharedPtrs(VariantPropertiesRecord)
-    EXPOSE_TYPE
+    EXPOSE_TYPE_BASE
     typedef std::pair<std::string, VariantProperty> pairT;
     typedef std::unordered_map<std::string, VariantProperty> mapT;
 

@@ -47,9 +47,9 @@ EXPOSE_TYPE
     }
 
     /// inherited from StratigraphicModelBase
-    virtual float getScalarFieldValue(const Vector3f &point) const;
+    virtual float getScalarFieldValue(const Vector3f &point) const override;
 
-    virtual Vector3f getScalarFieldGradient(const Vector3f &point) const;
+    virtual Vector3f getScalarFieldGradient(const Vector3f &point) const override;
 
     Vector3f getPointAtStratigraphicPosition(float sp) const
     {

@@ -137,14 +137,14 @@ private:
 
     // ISerializable interface
 public:
-    virtual bool isAsciiSerializable() const
+    virtual bool isAsciiSerializable() const override
     {
         return true;
     }
 
     // ISerializable interface
 public:
-    virtual EigenTable::Ptr asEigenTable() const;
+    virtual EigenTable::Ptr asEigenTable() const override;
 };
 
 

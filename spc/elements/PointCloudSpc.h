@@ -27,29 +27,29 @@ public:
 public:
 
     virtual void getFieldValue(const IndexT id, const std::string fieldname,
-                               float &val) const
+                               float &val) const override
     {
         val = fields_manager_->atScalar(fieldname, id);
     }
 
     virtual void setFieldValue(const IndexT id, const std::string fieldname,
-                               const float &val)
+                               const float &val) override
     {
        fields_manager_->atScalar(fieldname, id) = val;
     }
 
-    virtual IndexT getNumberOfPoints() const
+    virtual IndexT getNumberOfPoints() const override
     {
         return fields_manager_->getNumberOfRows();
     }
 
-    virtual bool hasField(const std::string fieldname) const
+    virtual bool hasField(const std::string fieldname) const override
     {
         int id = fields_manager_->getColumnId(fieldname);
         return (id >= 0);
     }
 
-    virtual void resize(const IndexT s)
+    virtual void resize(const IndexT s) override
     {
         fields_manager_->resize(s);
     }
@@ -71,7 +71,7 @@ private:
 
     // PointCloudBase interface
 public:
-    virtual std::vector<std::string> getFieldNames() const
+    virtual std::vector<std::string> getFieldNames() const override
     {
         return fields_manager_->getScalarColumnsNames();
     }

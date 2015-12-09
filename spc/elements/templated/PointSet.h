@@ -67,7 +67,7 @@ public:
         data_.row(id) = p;
     }
 
-    virtual void resize(const IndexT size)
+    virtual void resize(const IndexT size) override
     {
         data_.conservativeResize(size, DIM);
     }

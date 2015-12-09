@@ -1,5 +1,5 @@
 #include <spc/methods/InterpolatorNearestNeighbor.h>
-
+#include <cmath>
 namespace spc
 {
 InterpolatorNN::InterpolatorNN()
@@ -31,7 +31,7 @@ int InterpolatorNN::getNearestID(const float &value)
     float old_diff = std::numeric_limits<float>::infinity();
     for (int i = 0; i < n_in_; ++i) {
         float this_x = x_[i];
-        float diff = abs(value - this_x);
+        float diff = std::abs(value - this_x);
 
         if (old_diff > diff) {
 

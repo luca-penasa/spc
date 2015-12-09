@@ -60,6 +60,7 @@ public:
             if (label.field_name_ == name)
                 return label;
         }
+        return FieldLabel(); // a none field label
     }
 
     bool hasLabel(const FieldLabel& label2) const

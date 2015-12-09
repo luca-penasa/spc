@@ -56,7 +56,7 @@ public:
     /// \return the vector of x positions
     /// reimplemented from base class
     ///
-    VectorT getX() const
+    virtual VectorT getX() const override
     {
         return x_;
     }
@@ -94,21 +94,21 @@ public:
     /// \param size_ number of samples
     /// reimplemented from base class
     ///
-    void resize(size_t size_);
+    virtual void resize(size_t size_) override;
 
     ///
     /// \brief getMinX get min value of x
     /// \return the minimum value o the x vector
     /// reimplemented from base class nan if void
     ///
-    virtual ScalarT getMinX() const;
+    virtual ScalarT getMinX() const override;
 
     ///
     /// \brief getMaxX get max value of x
     /// \return the maximum value o the x vector
     /// reimplemented from base class nan if void
     ///
-    virtual ScalarT getMaxX() const; 
+    virtual ScalarT getMaxX() const override;
 
 protected:
     ///

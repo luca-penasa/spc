@@ -144,7 +144,7 @@ public:
     SPC_ELEMENT(FieldFloat)
     EXPOSE_TYPE
 
-    virtual bool isScalarField() const
+    virtual bool isScalarField() const override
     {
         return true;
     }
@@ -156,7 +156,7 @@ public:
     SPC_ELEMENT(FieldInt)
     EXPOSE_TYPE
 
-    virtual bool isScalarField() const
+    virtual bool isScalarField() const override
     {
         return true;
     }
@@ -175,7 +175,7 @@ public:
     SPC_ELEMENT(FieldVector3f)
     EXPOSE_TYPE
 
-    virtual bool isVector3Field() const
+    virtual bool isVector3Field() const override
     {
         return true;
     }
@@ -373,7 +373,7 @@ private:
 
     // ISerializable interface
 public:
-    virtual bool isAsciiSerializable() const
+    virtual bool isAsciiSerializable() const override
     {
         return true;
     }

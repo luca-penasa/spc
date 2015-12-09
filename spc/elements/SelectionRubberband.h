@@ -78,7 +78,7 @@ public:
         updatePolyVertices();
     }
 
-    virtual bool contains(const Vector3f &obj) const
+    virtual bool contains(const Vector3f &obj) const override
     {
 
         if (proj_plane_.distanceTo(obj) > max_distance_)
