@@ -11,9 +11,12 @@ namespace spc
 {
 
 
-//! filter a list of strin by matching regex
-std::vector<std::string> filter_regex_match(const std::vector<std::string> & in_list ,const  std::string & reg_string);
+//! filter a list of strings by matching regex
+std::vector<std::string> filter_filenames_regex(const std::vector<std::string> & in_list ,const  std::string & reg_string);
 
+
+
+//void test_regexp(const std::string & pattern);
 
 }// end nspace
 #endif // REGEX_H

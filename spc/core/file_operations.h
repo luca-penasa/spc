@@ -56,7 +56,7 @@ bool fileExists(const std::string &fname);
  * @note not sure what it would happen if the dir does not exists. Probably just an empty vector
  * @note taken from https://gist.github.com/vivithemage/9517678
  */
-std::vector<std::string> list_files(const std::string &dir_name);
+std::vector<std::string> list_files(const std::string &dir_name, const bool fullpath = true);
 
 
 /**
@@ -64,6 +64,7 @@ std::vector<std::string> list_files(const std::string &dir_name);
  * @param dir the path
  * @param regex a string representing the regexp to be used for filtering
  * @return a list of matching files in the directory
+ * \note regex is applied on filename only ! not on the full (relative or absolute) path of the file
  */
 std::vector<std::string> list_files_regexp(const std::string  &dir, const std::string &regex);
 

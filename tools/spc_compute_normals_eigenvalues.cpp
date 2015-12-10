@@ -114,7 +114,7 @@ int main (int argc, char ** argv)
    pcl::PCLPointCloud2 out_indices_sensor;
     pcl::toPCLPointCloud2(indices_cloud, out_indices_sensor);
 
-    if (find_switch(argc, argv, "-c") == -1)
+    if (!find_switch(argc, argv, "-c") )
     {
         if (find_switch(argc, argv, "-a"))
             savePCDFile(out_cloud_name, out_indices_sensor);

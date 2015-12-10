@@ -77,7 +77,7 @@ std::string getCurrentDirectory()
     return s_cwd;
 }
 
-std::vector<std::string> list_files(const std::string& dir_name)
+std::vector<std::string> list_files(const std::string& dir_name, const bool fullpath/*= false*/)
 {
     std::vector<std::string> list;
 
@@ -93,10 +93,18 @@ std::vector<std::string> list_files(const std::string& dir_name)
         if (boost::filesystem::is_regular_file(itr->path())) {
             // assign current file name to current_file and echo it out to the
             // console.
-            std::string current_file = itr->path().string();
+            std::string current_file;
+            if (fullpath)
+                current_file = itr->path().string();
+            else
+                current_file = itr->path().filename().string();
+
             list.push_back(current_file);
         }
     }
+
+
+
 
     return list;
 }
@@ -104,21 +112,8 @@ std::vector<std::string> list_files(const std::string& dir_name)
 std::vector<std::string> list_files_regexp(const std::string& dir,
     const std::string& regex)
 {
-    DLOG(INFO) << "... listing....";
-
     auto files = list_files(dir);
-
-    DLOG(INFO) << "Found " << files.size() << " in dir";
-
-    //	for (auto s: files)
-    //	{
-    //		LOG(INFO) << s;
-    //	}
-
-    DLOG(INFO) << "... going to do regexp filtering....";
-    auto out = filter_regex_match(files, regex);
-
-    DLOG(INFO) << "Regex here: found " << out.size() << " matches";
+    auto out = filter_filenames_regex(files, regex);
 
     return out;
 }

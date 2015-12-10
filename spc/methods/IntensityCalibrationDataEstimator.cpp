@@ -226,6 +226,8 @@ void CalibrationDataEstimator::extractDataForKeypointAndCloud(calibration::Obser
 
     Eigen::VectorXf ints = intensities.getFieldByName(intensity_field_name_);
 
+//    LOG(INFO) << ints;
+
     float avg_intensity, std_intensity;
 
     if (gaussian_weighting_ == true) // d gaussian weighting
@@ -241,15 +243,22 @@ void CalibrationDataEstimator::extractDataForKeypointAndCloud(calibration::Obser
     }
     else // pure average intensity
     {
-        avg_intensity = ints.sum() / ints.rows() - 1;
+        avg_intensity = ints.sum() / ints.rows() ;
+
+//        LOG(INFO) << ints;
+//        LOG(INFO) << avg_intensity;
         Eigen::VectorXf diff = ints.array() - avg_intensity;
         diff = diff.cwiseProduct(diff); // squared
-        std_intensity  = sqrt(diff.sum() / diff.rows() - 1 );
+        std_intensity  = sqrt(diff.sum() / diff.rows() );
+
+        LOG(INFO) << "std " << std_intensity;
     }
 
 
     // add these infos in the observation!
     data_holder->intensity = avg_intensity;
+
+    LOG(INFO) <<"avg intensity " << data_holder->intensity;
 
 //    if (std_intensity == 0)
 //        std_intensity = spcNANMacro;

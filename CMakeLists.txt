@@ -44,6 +44,8 @@ if(SPC_BUILD_WITH_CLANG)
 
     message(WARNING "Using Clang as compiler! This may not work properly")
 
+
+    add_definitions(-DLIBCXX_CXX_ABI=libstdc++)
 endif()
 
 #set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
