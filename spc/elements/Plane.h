@@ -112,7 +112,7 @@ public:
     Transform<float, 3, Affine, AutoAlign> get2DArbitraryRefSystem() const;
 
 protected:
-    Normal3D normal_;
+    Vector3D normal_;
 
 private:
     friend class cereal::access;

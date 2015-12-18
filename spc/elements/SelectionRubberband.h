@@ -113,7 +113,7 @@ protected:
         proj_plane_.positionFromCentroid(verts_);
 
         DLOG(INFO) << "Centroid is " << proj_plane_.getPosition().transpose();
-        Normal3D n;
+        Vector3D n;
         n.normalFromBestFit(verts_);
         proj_plane_.setNormal(n.getNormal());
         LOG(INFO) << "Prjection plane normal " <<  n.getNormal().transpose();

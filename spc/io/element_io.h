@@ -7,18 +7,38 @@
 //#include <spc/elements/MovableElement.h>
 #include <boost/filesystem.hpp>
 
+//#include <boost/bimap.hpp>
+
 namespace spc {
 
 namespace io {
 
-    enum ARCHIVE_TYPE {
-        XML,
-        JSON,
-        SPC,
-        ASCII
-    }; // spc is cereal-binary
+enum ARCHIVE_TYPE {
+    XML,
+    JSON,
+    SPC,
+    ASCII
+}; // spc is cereal-binary
 
-    /**
+
+
+std::string type_to_extension (const ARCHIVE_TYPE &type);
+
+
+ARCHIVE_TYPE extension_to_type(const std::string & extension);
+
+
+
+//   static std::vector< boost::bimap<ARCHIVE_TYPE, std::string>::value_type > archiveExtensionsVector = {{XML, ".xml"},
+//                                                                                                           {JSON, ".json"},
+//                                                                                                           {SPC, ".spc"},
+//                                                                                                           {ASCII, ".txt"}};
+//    //! we keep this in a bimap so we can access the other side
+//    static boost::bimap<ARCHIVE_TYPE, std::string> archiveExtensionsBimap (archiveExtensionsVector.begin(), archiveExtensionsVector.end());
+
+
+
+/**
      * @brief serializeToFile
      * @param element
      * @param filename
@@ -29,33 +49,33 @@ namespace io {
      * Note the filename must be with no extension. Extension is automatically
  * appended depending on the type
      */
-    int serializeToFile(const ISerializable::Ptr element, std::string filename,
-        const ARCHIVE_TYPE& type = SPC, const bool timestamp_file = false,
-        const std::string& sidefile_string = std::string());
+int serializeToFile(const ISerializable::Ptr element, std::string filename,
+                    const ARCHIVE_TYPE& type = SPC, const bool timestamp_file = false,
+                    const std::string& sidefile_string = std::string());
 
-    /**
+/**
      * @brief deserializeFromFile get a filename and gives back an
      * scpSerializableObject::Ptr
      * @param filename with extension, we will guess the right archive from that
      * @return
      */
-    ISerializable::Ptr deserializeFromFile(const std::string filename);
+ISerializable::Ptr deserializeFromFile(const std::string filename);
 
-    int serializeToStream(const ISerializable::Ptr element, std::ostream& stream,
-        const ARCHIVE_TYPE& type = SPC);
+int serializeToStream(const ISerializable::Ptr element, std::ostream& stream,
+                      const ARCHIVE_TYPE& type = SPC);
 
-    ISerializable::Ptr deserializeFromStream(std::istream& stream,
-        const ARCHIVE_TYPE& type = SPC);
+ISerializable::Ptr deserializeFromStream(std::istream& stream,
+                                         const ARCHIVE_TYPE& type = SPC);
 
-    int serializeToString(const ISerializable::Ptr element, std::string& string,
-        const ARCHIVE_TYPE& type = SPC);
+int serializeToString(const ISerializable::Ptr element, std::string& string,
+                      const ARCHIVE_TYPE& type = SPC);
 
-    ISerializable::Ptr deserializeFromString(std::string& string,
-        const ARCHIVE_TYPE& type = SPC);
+ISerializable::Ptr deserializeFromString(std::string& string,
+                                         const ARCHIVE_TYPE& type = SPC);
 
-    //static std::vector<int> parseLoadableFiles(int argc, char **argv);
+//static std::vector<int> parseLoadableFiles(int argc, char **argv);
 
-    //void testXMLMatrixWrite();
+//void testXMLMatrixWrite();
 } // end io namespace
 
 } // end nspace

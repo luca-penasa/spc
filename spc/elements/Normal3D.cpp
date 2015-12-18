@@ -4,38 +4,38 @@
 namespace spc
 {
 
-DtiClassType Normal3D::Type ("Normal3D", &ElementBase::Type);
+DtiClassType Vector3D::Type ("Vector3D", &ElementBase::Type);
 
 
-Normal3D::Normal3D()
+Vector3D::Vector3D()
 {
     normal_.fill(spcNANMacro);
 }
 
-void Normal3D::normalize()
+void Vector3D::normalize()
 {
     normal_.normalize();
 }
 
-Eigen::Vector3f Normal3D::getUnitNormal() const
+Eigen::Vector3f Vector3D::getUnitNormal() const
 {
     Eigen::Vector3f unit = normal_;
     unit.normalize();
     return unit;
 }
 
-void Normal3D::flipNormal()
+void Vector3D::flipNormal()
 {
     normal_ = -normal_;
 }
 
-void Normal3D::setUnitAxis(const int ax_id)
+void Vector3D::setUnitAxis(const int ax_id)
 {
     normal_.setZero();
     normal_(ax_id) = 1.0;
 }
 
-void Normal3D::normalFromBestFit(const PointCloudXYZBase &cloud)
+void Vector3D::normalFromBestFit(const PointCloudXYZBase &cloud)
 {
     DLOG(INFO) << "setting normal from best fit of plane.";
 
@@ -52,4 +52,4 @@ void Normal3D::normalFromBestFit(const PointCloudXYZBase &cloud)
 } // end nspace
 
 #include <spc/core/spc_cereal.hpp>
-SPC_CEREAL_REGISTER_TYPE(spc::Normal3D);
+SPC_CEREAL_REGISTER_TYPE(spc::Vector3D);

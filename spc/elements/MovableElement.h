@@ -4,7 +4,7 @@
 #include <spc/elements/ElementBase.h>
 #include <spc/elements/templated/PointSetBase.h>
 
-
+#include <spc/elements/GeometricElement3DBase.h>
 
 
 namespace spc
@@ -15,7 +15,7 @@ namespace spc
 class PointCloudBase;
 
 
-class Point3D : public ElementBase
+class Point3D : public GeometricElement3DBase
 {
 public:
     SPC_ELEMENT(Point3D)
@@ -26,7 +26,7 @@ public:
 
     Point3D(const Eigen::Vector3f point);
 
-    Point3D(const Point3D &other): ElementBase(other)
+    Point3D(const Point3D &other): GeometricElement3DBase(other)
     {
         this->position_ = other.position_;
     }
@@ -71,10 +71,15 @@ private:
 
     template <class Archive> void serialize(Archive &ar)
     {
-        ar(cereal::base_class<ElementBase>(this), CEREAL_NVP(position_));
+            LOG(INFO) << "here 0";
+            ar(cereal::base_class<ElementBase>(this), CEREAL_NVP(position_));
     }
 };
 
+
 } // end nspace
+
+//CEREAL_CLASS_VERSION(spc::Point3D, 2)
+
 
 #endif // END SAFEGFUARD

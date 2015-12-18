@@ -23,10 +23,7 @@ public:
     {
     }
 
-    Ptr getPtr()
-    {
-           return shared_from_this();
-    }
+    Ptr getPtr();
 
     ElementBase (const ElementBase& other): ElementWithVariantProperties(other)
     {
@@ -94,11 +91,7 @@ public:
     }
 
     //!\todo this could go in a separated interface
-    void addChild(ElementBase::Ptr child)
-    {
-        child->setParent(this->getPtr());
-        childs_.push_back(child);
-    }
+    void addChild(ElementBase::Ptr child);
 
     std::vector<ElementBase::Ptr> getChilds() const
     {
@@ -165,23 +158,7 @@ public:
     }
 
 
-    std::vector<ElementBase::Ptr> findElementsInParents(const DtiClassType * dti) const
-    {
-        std::vector<ElementBase::Ptr> out;
-       spc::ElementBase::Ptr current_parent = this->getParent();
-
-        while (current_parent != NULL)
-        {
-            if (current_parent->isA(dti))
-            {
-                out.push_back(current_parent);
-            }
-
-            current_parent = current_parent->getParent();
-        }
-
-        return out;
-    }
+    std::vector<ElementBase::Ptr> findElementsInParents(const DtiClassType * dti) const;
 
 
     template <class T>
@@ -220,18 +197,9 @@ public:
     }
 
 
-    void removeChild(ElementBase::Ptr child)
-    {
-        childs_.erase(std::remove(childs_.begin(), childs_.end(), child), childs_.end());
+    void removeChild(ElementBase::Ptr child);
 
-        // we are not parent of this child anymore
-        child->setParent(NULL);
-    }
-
-	void setParent(const ElementBase::Ptr parent)
-    {
-        parent_ = parent;
-    }
+    void setParent(const ElementBase::Ptr parent);
 
     ElementBase::Ptr getParent() const
     {

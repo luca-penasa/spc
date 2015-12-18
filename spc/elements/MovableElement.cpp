@@ -8,7 +8,7 @@ namespace spc
 {
 
 
-DtiClassType Point3D::Type ("Point3D", &ElementBase::Type);
+DtiClassType Point3D::Type ("Point3D", &GeometricElement3DBase::Type);
 
 Point3D::Point3D()
 {

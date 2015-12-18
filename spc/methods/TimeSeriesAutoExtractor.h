@@ -16,6 +16,8 @@ public:
     void setRoot(spc::ElementBase::Ptr root)
     {
         root_ = root;
+
+        LOG(INFO) << "Root object " << root->getElementName();
     }
 
     // shortcut to extract ts
@@ -78,6 +80,9 @@ public:
 
         clouds_ = root_->findElementsThatAre<spc::CloudDataSourceOnDisk>(&spc::CloudDataSourceOnDisk::Type);
 
+
+        LOG(INFO) <<  "We got  "<< clouds_.size() < " clouds on disk.";
+
         size_t counter = 0;
         for (spc::CloudDataSourceOnDisk::Ptr cloud : clouds_) {
 
@@ -98,6 +103,28 @@ public:
 
         }
 
+        LOG(INFO) <<  "We got  "<< clouds_in_memory_.size() << " clouds yet in memory.";
+
+        counter = 0;
+        for (PointCloudBase::Ptr cloud : clouds_in_memory_) {
+
+            std::vector<spc::SelectionRubberband::Ptr> selections = cloud->findElementsThatAre<spc::SelectionRubberband>(&spc::SelectionRubberband::Type);
+
+            LOG(INFO) << "Found " << selections.size() << " selections.";
+            if (selections.size() == 0) {
+                LOG(WARNING) << "no selection for cloud " << cloud->getElementName();
+                continue;
+            }
+
+            extractPerSelectionTimeSeries(cloud, selections);
+
+        }
+
+    }
+
+    void setAdditionalCloudsInMemory(const std::vector<spc::PointCloudBase::Ptr> &clouds)
+    {
+        clouds_in_memory_ = clouds;
     }
 
 protected:

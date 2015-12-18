@@ -9,7 +9,7 @@ class DtiClassType
 {
 public:
 
-    DtiClassType(std::string name,  DtiClassType * parent = 0);
+    DtiClassType(std::string name,  DtiClassType * parent);
 
     virtual ~DtiClassType();
 

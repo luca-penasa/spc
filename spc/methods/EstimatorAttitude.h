@@ -231,7 +231,7 @@ protected:
             if (cloud->getNumberOfPoints() < 3)
                 continue;
             else {
-                Normal3D n;
+                Vector3D n;
                 n.normalFromBestFit(*cloud);
                 normals.push_back(n.getUnitNormal());
             }

@@ -21,3 +21,8 @@ spc_add_executable(example_time_series_generator example_time_series_generator.c
 target_link_libraries(example_time_series_generator ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 
+
+
+spc_add_executable(tmp tmp.cpp)
+target_link_libraries(tmp ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
+

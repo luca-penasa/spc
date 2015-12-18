@@ -7,7 +7,7 @@ DtiClassType Cylinder::Type ("Cylinder", &Point3D::Type);
 
 spc::Cylinder::Cylinder(const Eigen::Vector3f dir)
 {
-    direction_ = Normal3D(dir);
+    direction_ = Vector3D(dir);
 }
 
 void spc::Cylinder::getPointToCylinderDistances(const Eigen::Vector3f point,

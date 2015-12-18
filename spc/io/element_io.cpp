@@ -21,10 +21,16 @@
 namespace spc {
 namespace io {
 
-    int serializeToFile(const ISerializable::Ptr element, std::string filename,
-        const ARCHIVE_TYPE& type,
-        const bool timestamp_file /*= false*/,
-        const std::string& sidefile_string /*= std::string()*/)
+
+
+
+
+
+    int serializeToFile(const ISerializable::Ptr element,
+                        std::string filename,
+                        const ARCHIVE_TYPE& type,
+                        const bool timestamp_file /*= false*/,
+                        const std::string& sidefile_string /*= std::string()*/)
     {
         CHECK(element != NULL) << "Cannot serialize element. ptr is null";
 
@@ -35,17 +41,7 @@ namespace io {
 
         std::string extension; // we could put them in a map maybe
 
-        if (type == XML)
-            extension = ".xml";
-
-        else if (type == JSON)
-            extension = ".json";
-
-        else if (type == SPC)
-            extension = ".spc";
-
-        else if (type == ASCII)
-            extension = ".txt";
+        extension = type_to_extension(type);
 
         // strip any possible existent extension
         filename = spc::stripExtension(filename);
@@ -109,12 +105,7 @@ namespace io {
             return ptr;
         }
 
-        if (extension == ".xml")
-            matched_type = XML;
-        else if (extension == ".json")
-            matched_type = JSON;
-        else if (extension == ".spc")
-            matched_type = SPC;
+        matched_type = extension_to_type(extension);
 
         std::ifstream is(filename); // open filename
 
@@ -209,6 +200,31 @@ namespace io {
         sstream.write(string.data(), string.size());
         return deserializeFromStream(sstream, type);
     }
+
+    std::string type_to_extension(const ARCHIVE_TYPE &type)
+    {
+        if (type == XML)
+            return ".xml";
+        else if (type == JSON)
+            return ".json";
+        else if (type == SPC)
+            return ".spc";
+        else if (type == ASCII)
+            return ".txt";
+    }
+
+    ARCHIVE_TYPE extension_to_type(const std::string &extension)
+    {
+        if ((extension == ".xml" ) | (extension == "xml"))
+            return XML;
+        else if ((extension == ".json" ) | (extension == "json"))
+            return JSON;
+        else if ((extension == ".spc" ) | (extension == "spc"))
+            return SPC;
+        else if ((extension == ".ascii" ) | (extension == "ascii"))
+            return ASCII;
+    }
+
 
     //std::vector<int> parseLoadableFiles(int argc, char **argv)
     //{

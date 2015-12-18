@@ -36,12 +36,12 @@ EXPOSE_TYPE
 
 
 
-    Normal3D getDirection() const
+    Vector3D getDirection() const
     {
         return direction_;
     }
 
-    void setDirection(Normal3D dir)
+    void setDirection(Vector3D dir)
     {
         direction_ = dir;
     }
@@ -72,7 +72,7 @@ EXPOSE_TYPE
     std::vector<int> getIndicesInside(PointCloudBase::ConstPtr cloud);
 
 private:
-    Normal3D direction_;
+    Vector3D direction_;
 
     float length_;
 

@@ -8,25 +8,25 @@
 
 namespace spc
 {
-class Normal3D : public ElementBase
+class Vector3D : public ElementBase
 {
 
-    SPC_ELEMENT(Normal3D)
+    SPC_ELEMENT(Vector3D)
     EXPOSE_TYPE
 public:
-    Normal3D();
+    Vector3D();
 
-    Normal3D(float x, float y, float z)
+    Vector3D(float x, float y, float z)
     {
         normal_ = Eigen::Vector3f(x, y, z);
     }
 
-    Normal3D(const Eigen::Vector3f v)
+    Vector3D(const Eigen::Vector3f v)
     {
         normal_ = v;
     }
 
-    Normal3D(const Normal3D & other): ElementBase(other)
+    Vector3D(const Vector3D & other): ElementBase(other)
     {
         normal_ = other.normal_;
     }
@@ -44,7 +44,7 @@ public:
         normal_ = n;
     }
 
-    void setNormal(const Normal3D n)
+    void setNormal(const Vector3D n)
     {
         *this = n;
     }
