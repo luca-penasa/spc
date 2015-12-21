@@ -11,6 +11,11 @@
 
 #include <spc/elements/calibration/DataHolder.h>
 #include <spc/elements/calibration/KeyPoint.h>
+#include <spc/elements/calibration/Observation.h>
+
+#include <spc/elements/CloudDataSourceOnDisk.h>
+
+
 
 
 

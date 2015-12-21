@@ -157,8 +157,8 @@ target_link_libraries(${MY_TOOLS_PREFIX}compute_calibration_dataset ${PCL_LIBRAR
 
 
 
-spc_add_executable(${MY_TOOLS_PREFIX}compute_intensity_calibration spc_compute_intensity_calibration.cpp)
-target_link_libraries(${MY_TOOLS_PREFIX}compute_intensity_calibration ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
+#spc_add_executable(${MY_TOOLS_PREFIX}compute_intensity_calibration spc_compute_intensity_calibration.cpp)
+#target_link_libraries(${MY_TOOLS_PREFIX}compute_intensity_calibration ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
 
 
@@ -175,16 +175,16 @@ if(SPC_MODULE_CERES_CALIBRATION)
     FIND_PACKAGE(Ceres REQUIRED)
     INCLUDE_DIRECTORIES(${CERES_INCLUDE_DIRS})
 
-    spc_add_executable(${MY_TOOLS_PREFIX}calibration_testing spc_calibration_testing.cpp)
-    target_link_libraries(${MY_TOOLS_PREFIX}calibration_testing ${SPC_LIBRARIES}  ${CERES_LIBRARIES})
+#    spc_add_executable(${MY_TOOLS_PREFIX}calibration_testing spc_calibration_testing.cpp)
+#    target_link_libraries(${MY_TOOLS_PREFIX}calibration_testing ${SPC_LIBRARIES}  ${CERES_LIBRARIES})
 
-    spc_add_executable(${MY_TOOLS_PREFIX}calibration_testing2 spc_calibration_testing2.cpp)
-    target_link_libraries(${MY_TOOLS_PREFIX}calibration_testing2 ${SPC_LIBRARIES}  ${CERES_LIBRARIES} ${GFLAGS_LIBRARIES})
+#    spc_add_executable(${MY_TOOLS_PREFIX}calibration_testing2 spc_calibration_testing2.cpp)
+#    target_link_libraries(${MY_TOOLS_PREFIX}calibration_testing2 ${SPC_LIBRARIES}  ${CERES_LIBRARIES} ${GFLAGS_LIBRARIES})
 endif()
 
 
-spc_add_executable(${MY_TOOLS_PREFIX}calibrate_rbf spc_calibrate_rbf)
-target_link_libraries(${MY_TOOLS_PREFIX}calibrate_rbf ${SPC_LIBRARIES} spc_methods ${GFLAGS_LIBRARIES})
+#spc_add_executable(${MY_TOOLS_PREFIX}calibrate_rbf spc_calibrate_rbf)
+#target_link_libraries(${MY_TOOLS_PREFIX}calibrate_rbf ${SPC_LIBRARIES} spc_methods ${GFLAGS_LIBRARIES})
 
 
 spc_add_executable(${MY_TOOLS_PREFIX}xml2spc spc_xml2spc.cpp)

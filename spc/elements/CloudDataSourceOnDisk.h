@@ -2,23 +2,21 @@
 #define CLOUDDATASOURCEONDISK_H
 
 #include <spc/elements/ElementBase.h>
-#include <boost/filesystem.hpp>
 
-//#include <spc/elements/PointCloudBase.h>
-#include <spc/elements/PointCloudPcl.h>
-#include <spc/elements/NewSpcPointCloud.h>
-//#include <pcl/io/pcd_io.h>
-#include <spc/io/io_helper.h>
+
+
 
 namespace spc
 {
+
+spcFwdDeclSharedPtr(PointCloudBase)
+spcFwdDeclSharedPtr(NewSpcPointCloud)
 
 
 class CloudDataSourceOnDisk: public ElementBase
 {
 public:
 
-    typedef boost::filesystem::path PathT;
 
     SPC_ELEMENT(CloudDataSourceOnDisk)
     EXPOSE_TYPE
@@ -35,39 +33,18 @@ public:
 
     }
 
-    bool exists() const
-    {
-        return boost::filesystem::exists(filename_);
-    }
+    bool exists() const;
 
 
-    std::string getExtension() const
-    {
-        PathT p(filename_);
-        return p.extension().string();
-    }
+    std::string getExtension() const;
 
 
     spcSetMacro(Filename, filename_, std::string)
     spcGetMacro(Filename, filename_, std::string)
 
-    PointCloudBase::Ptr load() const
-    {
+    PointCloudBasePtr load() const;
 
-        if (!exists())
-        {
-            LOG(ERROR) << "Data source does not exists. maybe you moved it?  Please relocate also the reference here.";
-            return NULL;
-        }
-
-        return io::loadPointCloud(filename_);
-    }
-
-    NewSpcPointCloud::Ptr load2() const
-    {
-        NewSpcPointCloud::Ptr out = NewSpcPointCloud::fromPointCloudBase(*io::loadPointCloud(filename_));
-        return out;
-    }
+    NewSpcPointCloudPtr load2() const;
 
 protected:
     std::string filename_;

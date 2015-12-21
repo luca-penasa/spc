@@ -3,7 +3,7 @@
 #include <spc/methods/RBFModelEstimator.hpp>
 
 #include <spc/io/element_io.h>
-#include <spc/elements/EigenTable.h>
+//#include <spc/elements/EigenTable.h>
 
 #include <spc/core/flagging.h>
 #include <spc/core/logging.h>

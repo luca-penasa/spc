@@ -1,20 +1,12 @@
 #ifndef SPC_PLANE_MODEL_H
 #define SPC_PLANE_MODEL_H
 
-#include <spc/elements/ElementBase.h>
+//#include <spc/elements/ElementBase.h>
 #include <spc/elements/MovableElement.h>
 #include <spc/elements/Normal3D.h>
 #include <spc/core/spc_eigen.h>
 
-//#include <Eigen/Geometry>
 
-//#include <boost/serialization/base_object.hpp>
-
-#include <cereal/cereal.hpp>
-
-#include <cereal/types/polymorphic.hpp>
-
-#include <spc/io/eigen_serialization.hpp>
 
 using namespace Eigen;
 namespace spc

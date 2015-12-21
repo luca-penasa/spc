@@ -1,15 +1,23 @@
+#pragma once
 #ifndef PERCLOUDDATA_H
 #define PERCLOUDDATA_H
 
-#include <spc/elements/ElementBase.h>
-#include <spc/elements/CloudDataSourceOnDisk.h>
+
+#include <spc/elements/NewSpcPointCloud.h>
+
+
 namespace spc
 {
+spcFwdDeclSharedPtr(CloudDataSourceOnDisk)
+
 namespace calibration
 {
 
-class KeyPoint;
-typedef spcSharedPtrMacro<KeyPoint> CalibrationKeyPointPtr;
+//class KeyPoint;
+//typedef spcSharedPtrMacro<KeyPoint> CalibrationKeyPointPtr;
+
+spcFwdDeclSharedPtr(KeyPoint);
+//spcFwdDeclSharedPtr(KeyPoint);
 
 class Observation: public std::enable_shared_from_this<Observation>
 {
@@ -22,13 +30,13 @@ public:
 
     }
 
-	Observation(CloudDataSourceOnDisk::Ptr ref_cloud, CalibrationKeyPointPtr parent);
-    CalibrationKeyPointPtr getParent() const
+    Observation(CloudDataSourceOnDiskPtr ref_cloud,KeyPointPtr parent);
+    KeyPointPtr getParent() const
     {
         return parent_keypoint;
     }
 
-    CloudDataSourceOnDisk::Ptr getCloud() const
+    CloudDataSourceOnDiskPtr getCloud() const
     {
         return cloud;
     }
@@ -75,9 +83,9 @@ public:
     }
 
     //////////////////////// THE DATA
-    CloudDataSourceOnDisk::Ptr cloud;
+    CloudDataSourceOnDiskPtr cloud;
 
-    CalibrationKeyPointPtr parent_keypoint;
+    KeyPointPtr parent_keypoint;
 
     size_t n_neighbors_intensity = 0;
     float distance = spcNANMacro;
@@ -93,7 +101,7 @@ public:
 
 //    Eigen::Vector3f sensor_position;
 
-    NewSpcPointCloud extract_for_normal_;
+    spc::NewSpcPointCloud extract_for_normal_;
 
 private:
     friend class cereal::access;

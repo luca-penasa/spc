@@ -3,11 +3,22 @@
 
 #include <spc/elements/CloudDataSourceOnDisk.h>
 
-#include <spc/elements/calibration/DataHolder.h>
+//#include <spc/elements/calibration/DataHolder.h>
 #include <spc/elements/Kernels.hpp>
 
+#include <map>
+
+
 namespace spc {
+
+spcFwdDeclSharedPtr(NewSpcPointCloud)
+
 namespace calibration {
+
+
+    spcFwdDeclSharedPtr(Observation)
+            spcFwdDeclSharedPtr(DataHolder)
+
 
 template <typename ScalarT>
 struct CalibrationSearchParameters {
@@ -96,7 +107,7 @@ public:
 
     void setInputClouds(std::vector<CloudDataSourceOnDisk::Ptr> cloud_names);
 
-    void setInputKeypoints(const NewSpcPointCloud::Ptr kpoints);
+    void setInputKeypoints(const NewSpcPointCloudPtr kpoints);
 
     void setIntensityGaussianSpatialSigma(const float rad)
     {
@@ -109,8 +120,8 @@ public:
         material_field_name_ = material_fname;
     }
 
-    void extractDataForKeypointAndCloud(calibration::Observation::Ptr data_holder,
-                                        NewSpcPointCloud::Ptr cloud);
+    void extractDataForKeypointAndCloud(calibration::ObservationPtr data_holder,
+                                        NewSpcPointCloudPtr cloud);
 
     void computeDerivedData();
 
@@ -119,7 +130,7 @@ public:
     static float getMinimumAngleBetweenVectors(const Eigen::Vector3f x_,
                                                const Eigen::Vector3f y_);
 
-    calibration::DataHolder::Ptr getCalibrationDataHolder() const
+    DataHolderPtr getCalibrationDataHolder() const
     {
         return calibration_data_;
     }
@@ -159,7 +170,7 @@ public:
 
     float intensity_estimation_spatial_sigma_ = 0.1;
 
-    calibration::DataHolder::Ptr calibration_data_;
+    DataHolderPtr calibration_data_;
 
     RBFBase<float>::Ptr kernel_;
 

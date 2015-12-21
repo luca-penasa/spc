@@ -1,4 +1,6 @@
 #include "NewSpcPointCloud.h"
+#include <spc/elements/OrientedSensor.h>
+
 
 namespace spc
 {

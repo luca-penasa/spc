@@ -3,8 +3,10 @@
 
 
 #include <spc/elements/ElementBase.h>
-#include <cereal/types/vector.hpp>
-#include <spc/elements/EigenTable.h>
+//#include <cereal/types/vector.hpp>
+
+
+//#include <spc/elements/EigenTable.h>
 
 namespace spc
 {
@@ -143,8 +145,12 @@ public:
     }
 
     // ISerializable interface
+//public:
+//    virtual EigenTable::Ptr asEigenTable() const override;
+
+    // ISerializable interface
 public:
-    virtual EigenTable::Ptr asEigenTable() const override;
+    virtual int toAsciiStream(std::ostream &stream) const override;
 };
 
 

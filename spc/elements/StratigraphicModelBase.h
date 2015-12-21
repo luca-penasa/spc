@@ -45,7 +45,7 @@ public:
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+    template <class Archive> void serialize(Archive &ar, std::uint32_t const version)
     {
         ar(cereal::base_class<spc::VariableScalarFieldBase>(this),
            CEREAL_NVP(stratigraphic_shift_));
@@ -54,6 +54,8 @@ private:
 protected:
     float stratigraphic_shift_ = 0.0f;
 };
-
 } // end nspace
+
+CEREAL_CLASS_VERSION(spc::StratigraphicModelBase, 1)
+
 #endif // STRATIGRAPHICMODELBASE_H

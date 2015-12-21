@@ -17,20 +17,17 @@
 //#include <pcl/console/parse.h>
 #include <spc/elements/ElementBase.h>
 #include <fstream>
+#include <spc/core/strings.h>
 
 namespace spc {
 namespace io {
 
+int serializeToFile(const ISerializable::Ptr element, std::string filename,
+                    const ARCHIVE_TYPE& type /*= SPC*/, const bool timestamp_file /*= false*/,
+                    const std::string& sidefile_string /*= std::string()*/,
+                    const int progressive_number /*= -1*/,
+                    const size_t number_of_digits /*= 3*/ )
 
-
-
-
-
-    int serializeToFile(const ISerializable::Ptr element,
-                        std::string filename,
-                        const ARCHIVE_TYPE& type,
-                        const bool timestamp_file /*= false*/,
-                        const std::string& sidefile_string /*= std::string()*/)
     {
         CHECK(element != NULL) << "Cannot serialize element. ptr is null";
 
@@ -45,6 +42,11 @@ namespace io {
 
         // strip any possible existent extension
         filename = spc::stripExtension(filename);
+
+        if (progressive_number >= 0) {
+            std::string progressiven = spc::fixedLength(progressive_number, number_of_digits);
+            filename = spc::concatenateFilenameWithSeparator(filename, progressiven);
+        }
 
         // add the new one
         filename += extension;
@@ -83,6 +85,19 @@ namespace io {
         LOG(INFO) << "File Saved to: " << filename;
 
         return 1;
+    }
+
+    int serializeToFile(const std::vector<ISerializable::Ptr> elements,
+        std::string filename,
+        const ARCHIVE_TYPE& type,
+        const bool timestamp_file,
+        const std::string& sidefile_string,
+        const size_t number_of_digits)
+    {
+        size_t number = 0;
+        for (ISerializable::Ptr el : elements) {
+            serializeToFile(el, filename, type, timestamp_file, sidefile_string, number++, number_of_digits);
+        }
     }
 
     ISerializable::Ptr deserializeFromFile(const std::string filename)
@@ -201,7 +216,7 @@ namespace io {
         return deserializeFromStream(sstream, type);
     }
 
-    std::string type_to_extension(const ARCHIVE_TYPE &type)
+    std::string type_to_extension(const ARCHIVE_TYPE& type)
     {
         if (type == XML)
             return ".xml";
@@ -213,18 +228,17 @@ namespace io {
             return ".txt";
     }
 
-    ARCHIVE_TYPE extension_to_type(const std::string &extension)
+    ARCHIVE_TYPE extension_to_type(const std::string& extension)
     {
-        if ((extension == ".xml" ) | (extension == "xml"))
+        if ((extension == ".xml") | (extension == "xml"))
             return XML;
-        else if ((extension == ".json" ) | (extension == "json"))
+        else if ((extension == ".json") | (extension == "json"))
             return JSON;
-        else if ((extension == ".spc" ) | (extension == "spc"))
+        else if ((extension == ".spc") | (extension == "spc"))
             return SPC;
-        else if ((extension == ".ascii" ) | (extension == "ascii"))
+        else if ((extension == ".txt") | (extension == "txt"))
             return ASCII;
     }
-
 
     //std::vector<int> parseLoadableFiles(int argc, char **argv)
     //{

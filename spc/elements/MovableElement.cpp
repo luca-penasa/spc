@@ -1,8 +1,12 @@
-#include <spc/elements/MovableElement.h>
+//#include <spc/elements/MovableElement.h>
 
-#include <spc/io/eigen_serialization.hpp>
+//#include <spc/io/eigen_serialization.hpp>
 //#include <pcl/common/centroid.h>
-#include <spc/elements/PointCloudBase.h>
+#include <spc/elements/templated/PointSetBase.h>
+
+#include "MovableElement.h"
+
+//#include <spc/elements/PointCloudBase.h>
 
 namespace spc
 {

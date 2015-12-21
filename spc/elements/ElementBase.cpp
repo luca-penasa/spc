@@ -4,6 +4,9 @@
 //#include <pcl/console/print.h>
 #include <spc/elements/UniversalUniqueID.h>
 #include <spc/elements/SerializableInterface.h>
+
+#include <stack>
+
 namespace spc
 {
 
@@ -19,19 +22,8 @@ ElementBase::Ptr ElementBase::getPtr()
     catch (std::exception& e)
     {
        LOG(ERROR) << "shared_from_this raised exception, meybe you are calling getPtr() from the object constructor? exception was " << e.what() ;
+       return nullptr;
     }
-}
-
-void ElementBase::update()
-{
-    // do stuff in subclasses
-    LOG(INFO) << "Called update in base method, update() not implemented";
-    modified_ = false;
-}
-
-UniversalUniqueID ElementBase::getUniversalUUID() const
-{
-    return universal_id_;
 }
 
 void ElementBase::addChild(ElementBase::Ptr child)
@@ -52,6 +44,46 @@ void ElementBase::addChild(ElementBase::Ptr child)
     childs_.push_back(child);
 
     LOG(INFO) << "added element " << child;
+}
+
+std::vector<ElementBase::Ptr> ElementBase::findElementsThatAre(const DtiClassType *dti)
+{
+    std::vector<ElementBase::Ptr> out;
+
+    std::stack<ElementBase::Ptr> tocheck;
+    tocheck.push(this->getPtr());
+
+    while (!tocheck.empty())
+    {
+        ElementBase::Ptr thisel = tocheck.top();
+        tocheck.pop();
+
+        if (thisel->isA(dti))
+        {
+            out.push_back(thisel);
+        }
+
+        for (spc::ElementBase::Ptr child: thisel->getChilds())
+        {
+            tocheck.push(child);
+        }
+
+    }
+
+    return out;
+}
+
+std::vector<ElementBase::Ptr> ElementBase::getChildsThatAre(const DtiClassType *dti) const
+{
+
+    std::vector<ElementBase::Ptr> out;
+    for (ElementBase::Ptr obj: getChilds())
+    {
+        if (obj->isA(dti))
+            out.push_back(obj);
+    }
+
+    return out;
 }
 
 void ElementBase::removeChild(ElementBase::Ptr child)
@@ -99,4 +131,3 @@ std::vector<ElementBase::Ptr> ElementBase::findElementsInParents(const DtiClassT
 
 #include <spc/core/spc_cereal.hpp>
 SPC_CEREAL_REGISTER_TYPE(spc::ElementBase)
-//SPC_CEREAL_CLASS_VERSION( spc::ElementBase, 1 )

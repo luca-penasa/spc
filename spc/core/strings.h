@@ -29,16 +29,11 @@ std::vector<std::string> splitStringAtSeparator(const std::string &line, const s
 std::vector<std::string> splitLines(const std::string & muliline_text);
 
 
+/** from here
+ * http://stackoverflow.com/questions/11521183/return-fixed-length-stdstring-from-integer-value
+ **/
+std::string fixedLength(const int i, const int length);
 
-//template <typename T>
-//  std::string numberToString ( T Number )
-//  {
-
-//	  return std::to_string(Number)
-////	 std::ostringstream ss;
-////	 ss << Number;
-////	 return ss.str();
-//  }
 
 } // end namespace
 #endif

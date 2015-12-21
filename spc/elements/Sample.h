@@ -3,9 +3,9 @@
 #define SAMPLE_H
 
 #include <spc/elements/StratigraphicPositionableElement.h>
-#include <spc/elements/VariantPropertiesRecord.h>
+//#include <spc/elements/VariantPropertiesRecord.h>
 #include <spc/core/macros.h>
-#include <spc/elements/ElementWithVariantProperties.h>
+//#include <spc/elements/ElementWithVariantProperties.h>
 
 namespace spc
 {

@@ -3,33 +3,37 @@
 #define SPC_OBJECT_H
 #include <spc/core/spc_eigen.h>
 #include <spc/core/macros.h>
-//#include <cereal/cereal.hpp>
-#include <spc/elements/UniversalUniqueID.h>
 #include <spc/elements/SerializableInterface.h>
-#include <spc/elements/ElementWithVariantProperties.h>
-#include <stack>
 #include <spc/core/logging.h>
+#include <cereal/cereal.hpp>
+
+
 
 namespace spc
 {
 
 
-class ElementBase : public ISerializable, public ElementWithVariantProperties, public std::enable_shared_from_this<ElementBase>
+class ElementBase : public ISerializable,
+        public std::enable_shared_from_this<ElementBase>
 {
 public:
     spcTypedefSharedPtrs(ElementBase)
     EXPOSE_TYPE_BASE
+
+
+
+
     ElementBase()
     {
     }
 
+
+
     Ptr getPtr();
 
-    ElementBase (const ElementBase& other): ElementWithVariantProperties(other)
+    ElementBase (const ElementBase& other)
     {
-        // for now we copy alse the uuid
-        this->universal_id_ = other.getUniversalUUID();
-        this->modified_ = other.modified_;
+
     }
 
     virtual ~ElementBase()
@@ -37,43 +41,7 @@ public:
 
     }
 
-    //! a generic call to a virtual update() method
-    //! some elements may depend upon other elements
-    //! if this is reimplemented we have a way to actually update internals stuff
-
-    virtual void update();
-
-    virtual void modified()
-    {
-        this->modified_ = true;
-    }
-
-    /// this should also be present in the interface for elements with variant
-    /// properties
-    virtual bool hasVariantProperties() const
-    {
-        return true;
-    }
-
 	virtual ElementBase::Ptr clone() const = 0;
-//    {
-//        DLOG(WARNING) << "called clone in ElementBase class. This method must be re-implemented in derived classes";
-//		return NULL;
-//    }
-
-//    ElementBase::Ptr clone2() const
-//    {
-//        return ElementBase::Ptr(new ElementBase(*this));
-
-//    }
-
-
-
-
-
-
-
-    virtual UniversalUniqueID getUniversalUUID() const;
 
     std::string getElementName() const
     {
@@ -99,18 +67,7 @@ public:
     }
 
     //! only at the first level
-    std::vector<ElementBase::Ptr> getChildsThatAre(const DtiClassType * dti) const
-    {
-
-        std::vector<ElementBase::Ptr> out;
-        for (ElementBase::Ptr obj: getChilds())
-        {
-            if (obj->isA(dti))
-                out.push_back(obj);
-        }
-
-        return out;
-    }
+    std::vector<ElementBase::Ptr> getChildsThatAre(const DtiClassType * dti) const;
 
     template<class Type>
     std::vector<typename Type::Ptr> getChildsThatAre(const DtiClassType * dti) const
@@ -126,36 +83,10 @@ public:
         }
 
         return out;
-
     }
 
 
-    std::vector<ElementBase::Ptr> findElementsThatAre(const DtiClassType * dti)
-    {
-        std::vector<ElementBase::Ptr> out;
-
-        std::stack<ElementBase::Ptr> tocheck;
-        tocheck.push(this->getPtr());
-
-        while (!tocheck.empty())
-        {
-            ElementBase::Ptr thisel = tocheck.top();
-            tocheck.pop();
-
-            if (thisel->isA(dti))
-            {
-                out.push_back(thisel);
-            }
-
-            for (spc::ElementBase::Ptr child: thisel->getChilds())
-            {
-                tocheck.push(child);
-            }
-
-        }
-
-        return out;
-    }
+    std::vector<ElementBase::Ptr> findElementsThatAre(const DtiClassType * dti);
 
 
     std::vector<ElementBase::Ptr> findElementsInParents(const DtiClassType * dti) const;
@@ -208,10 +139,6 @@ public:
 
 
 protected:
-    bool modified_;
-    UniversalUniqueID universal_id_;
-
-
     std::string name_;
 
     std::vector<ElementBase::Ptr> childs_;
@@ -223,14 +150,9 @@ private:
 
 	template <class Archive> void serialize(Archive &ar, const std::uint32_t version)
     {
-        ar(cereal::base_class<ElementWithVariantProperties>(this),
-           CEREAL_NVP(modified_), CEREAL_NVP(universal_id_));
-
-           ar(CEREAL_NVP(name_));
-           ar(CEREAL_NVP(childs_));
-           //we do not save the parent!
-
-
+        ar(CEREAL_NVP(name_),
+           CEREAL_NVP(childs_)
+           );
     }
 
     // SerializableInterface interface
@@ -244,19 +166,14 @@ public:
         return false;
     }
 
-    // ElementWithVariantProperties interface
-public:
-    virtual bool hasVariantProperties()
-    {
-        return true;
-    }
+
 };
 
 
 
-
-
-
 } // end nspace
+
+CEREAL_CLASS_VERSION(spc::ElementBase, 1)
+
 
 #endif // ELEMENT_BASE_H

@@ -8,7 +8,7 @@
 #include <spc/methods/PointCloudEigenIndicesEstimator.h>
 #include <spc/io/io_helper.h>
 #include <spc/methods/IntensityCalibrationDataEstimator.h>
-#include <spc/methods/IntensityCalibrationDataFilter.h>
+//#include <spc/methods/IntensityCalibrationDataFilter.h>
 
 #include <boost/spirit/home/support/detail/hold_any.hpp>
 
@@ -19,6 +19,11 @@
 #include <spc/core/logging.h>
 
 #include <spc/methods/IntensityCalibratorRBF.h>
+
+#include <spc/elements/calibration/DataHolder.h>
+
+#include <spc/elements/NewSpcPointCloud.h>
+
 using namespace std;
 using namespace pcl;
 using namespace pcl::console;

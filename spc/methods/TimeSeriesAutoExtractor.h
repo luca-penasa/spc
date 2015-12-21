@@ -81,7 +81,7 @@ public:
         clouds_ = root_->findElementsThatAre<spc::CloudDataSourceOnDisk>(&spc::CloudDataSourceOnDisk::Type);
 
 
-        LOG(INFO) <<  "We got  "<< clouds_.size() < " clouds on disk.";
+        LOG(INFO) <<  "We got  "<< clouds_.size() << " clouds on disk.";
 
         size_t counter = 0;
         for (spc::CloudDataSourceOnDisk::Ptr cloud : clouds_) {

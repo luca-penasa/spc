@@ -31,7 +31,7 @@ int main( int argc, char ** argv)
 
 
 
-	StratigraphicModelSingleAttitude model(attitude2);
+    StratigraphicModelSingleAttitude model(*attitude2);
 
 
 	float d2 = model.getScalarFieldValue(p.getPosition());

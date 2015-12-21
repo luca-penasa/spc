@@ -1,5 +1,6 @@
 #include "KeyPoint.h"
 #include <spc/core/cerea_requested_types.hpp>
+#include <spc/elements/calibration/Observation.h>
 
 namespace spc
 {
@@ -16,6 +17,21 @@ KeyPoint::KeyPoint(const Vector3f &pos, const size_t mat_id)
     lambdas.fill(spcNANMacro);
 
     material_id = mat_id;
+
+}
+
+void KeyPoint::removeInvalidObservations(const bool &consider_angle)
+{
+
+    std::vector<Observation::Ptr> good ;
+    for (Observation::Ptr d: observations)
+    {
+        if (d->isValid(consider_angle))
+            good.push_back(d);
+    }
+
+    observations = good;
+
 
 }
 

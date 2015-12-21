@@ -8,6 +8,8 @@
 
 #include <spc/elements/PointCloudBase.h>
 #include <spc/elements/ElementBase.h>
+
+#include <spc/elements/GeometricElement3DBase.h>
 namespace spc
 {
 
@@ -20,7 +22,7 @@ using namespace Eigen;
 /// stratigraphic position
 /// and a stratigraphic normal in the 3D space
 ///!
-class VariableScalarFieldBase : public ElementBase
+class VariableScalarFieldBase : public GeometricElement3DBase
 {
 public:
     spcTypedefSharedPtrs(VariableScalarFieldBase)
@@ -71,11 +73,13 @@ public:
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+    template <class Archive> void serialize(Archive &ar,  std::uint32_t const version)
     {
-        ar(cereal::base_class<spc::ElementBase>(this));
+        ar(cereal::base_class<spc::GeometricElement3DBase>(this));
     }
 };
 }
+
+CEREAL_CLASS_VERSION(spc::VariableScalarFieldBase, 1)
 
 #endif // STRATIGRAPHIC_MODEL_BASE_H

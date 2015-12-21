@@ -12,7 +12,7 @@ DtiClassType Attitude::Type ("Attitude", &Plane::Type);
 
 Attitude::Attitude()
 {
-    DLOG(INFO) << "called spc::Attitude def const";
+
 }
 
 Attitude::Attitude(const Vector3f &direction, const Vector3f &position)

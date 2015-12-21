@@ -2,12 +2,17 @@
 #ifndef CALIBRATION_KEYPOINT_H
 #define CALIBRATION_KEYPOINT_H
 #include <spc/elements/ElementBase.h>
-#include <spc/elements/calibration/Observation.h>
+//#include <spc/elements/calibration/Observation.h>
+
 #include <spc/elements/Plane.h>
+#include <spc/elements/NewSpcPointCloud.h>
 namespace spc
 {
 namespace calibration
 {
+
+
+spcFwdDeclSharedPtr(Observation)
 
 class KeyPoint: public std::enable_shared_from_this<KeyPoint>
 {
@@ -31,20 +36,7 @@ public:
 
 	KeyPoint(const Eigen::Vector3f &pos, const size_t mat_id);
 
-	void removeInvalidObservations(const bool &consider_angle)
-    {
-
-		std::vector<Observation::Ptr> good ;
-		for (Observation::Ptr d: observations)
-        {
-            if (d->isValid(consider_angle))
-                good.push_back(d);
-        }
-
-		observations = good;
-
-
-    }
+    void removeInvalidObservations(const bool &consider_angle);
 
 	size_t getNumberOfObservations() const
     {
@@ -67,9 +59,9 @@ public:
 
 	float center_to_new_center = spcNANMacro;
 
-	std::vector<Observation::Ptr> observations;
+    std::vector<ObservationPtr> observations;
 
-    NewSpcPointCloud cumulative_set;
+    spc::NewSpcPointCloud cumulative_set;
 
 	float intensity_expected = spcNANMacro;
 

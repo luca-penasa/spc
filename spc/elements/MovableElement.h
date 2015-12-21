@@ -1,11 +1,12 @@
 #ifndef POINT3D_H
 #define POINT3D_H
 
-#include <spc/elements/ElementBase.h>
-#include <spc/elements/templated/PointSetBase.h>
+//#include <spc/elements/ElementBase.h>
+//#include <spc/elements/templated/PointSetBase.h>
 
 #include <spc/elements/GeometricElement3DBase.h>
 
+class PointCloudXYZBase;
 
 namespace spc
 {
@@ -50,6 +51,7 @@ public:
 
 
 
+
     void getPosition(float &x, float &y, float &z) const;
 
     void setPosition(const Point3D &el);
@@ -63,23 +65,31 @@ public:
 
     void positionFromCentroid(const PointCloudXYZBase &cloud);
 
+//    void positionFromCentroid(const PointCloudXYZBase &cloud);
+
 protected:
     Eigen::Vector4f position_; /**< we keep position in Homogeneous coords, it will be easier to apply transforms*/
 
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+    template <class Archive> void serialize(Archive &ar, std::uint32_t const version)
     {
-            LOG(INFO) << "here 0";
             ar(cereal::base_class<ElementBase>(this), CEREAL_NVP(position_));
+    }
+
+    // GeometricElement3DBase interface
+public:
+    virtual void applyTransform(const TransformT &transform) override
+    {
+        position_ = transform * position_;
     }
 };
 
 
 } // end nspace
 
-//CEREAL_CLASS_VERSION(spc::Point3D, 2)
+CEREAL_CLASS_VERSION(spc::Point3D, 1)
 
 
 #endif // END SAFEGFUARD

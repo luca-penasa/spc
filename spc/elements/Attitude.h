@@ -96,7 +96,7 @@ private:
 };
 
 /// print out as stream
-std::ostream &operator<<(std::ostream &os, const Attitude &obj);
+//std::ostream &operator<<(std::ostream &os, const Attitude &obj);
 
 } // end nspace
 

@@ -18,17 +18,17 @@
 #include <spc/io/io_helper.h>
 
 
-#include <spc/methods/EigenFunctionsParametrizator.h>
+//#include <spc/methods/EigenFunctionsParametrizator.h>
 #include <spc/methods/IntensityCalibrationDataEstimator.h>
-#include <spc/methods/IntensityCalibrationDataFilter.h>
+//#include <spc/methods/IntensityCalibrationDataFilter.h>
 
 #include <boost/spirit/home/support/detail/hold_any.hpp>
-#include <spc/experimental/IntensityCalibration.h>
-#include <spc/experimental/ICalModelFactors.h>
+//#include <spc/experimental/IntensityCalibration.h>
+//#include <spc/experimental/ICalModelFactors.h>
 #include <spc/io/element_io.h>
 
 
-#include <spc/experimental//ICalPHFunction.h>
+//#include <spc/experimental/ICalPHFunction.h>
 using namespace std;
 using namespace pcl;
 using namespace pcl::console;

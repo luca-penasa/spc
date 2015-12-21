@@ -13,7 +13,8 @@
 
 #define spcFwdDeclSharedPtr(name)                                              \
     class name;                                                                \
-    typedef spcSharedPtrMacro<name> name##Ptr;
+    typedef spcSharedPtrMacro<name> name##Ptr;                                  \
+    typedef spcSharedPtrMacro<const name> name##ConstPtr;
 
 // how to make one
 #define spcMakeSharedPtrMacro std::make_shared
@@ -22,6 +23,9 @@
 #define spcTypedefSharedPtrs(classname)                                        \
     typedef spcSharedPtrMacro<classname> Ptr;                                  \
     typedef spcSharedPtrMacro<const classname> ConstPtr;
+
+
+
 
 
 #endif // MACROS_PTR_H

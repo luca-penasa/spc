@@ -16,14 +16,28 @@ public:
     spcTypedefSharedPtrs(GeometricElement3DBase)
     EXPOSE_TYPE_BASE
 
+    typedef Eigen::Affine3f TransformT;
 
-    GeometricElement3DBase();
+    GeometricElement3DBase()
+    {
+//        transform_ = TransformT::Identity();
+    }
 
     // copy const
     GeometricElement3DBase(const GeometricElement3DBase & other): ElementBase(other)
     {
-
+//        transform_ = TransformT::Identity();
     }
+
+//    void setTransform(const TransformT  &transform)
+//    {
+////        transform_ = transform;
+//    }
+
+    virtual void applyTransform(const TransformT  &transform) = 0;
+
+
+
 
 
 private:
@@ -33,6 +47,11 @@ private:
     {
         ar(cereal::base_class<ElementBase>(this)); // nothing for now
     }
+
+//protected:
+//    TransformT transform_;
+
+
 };
 
 

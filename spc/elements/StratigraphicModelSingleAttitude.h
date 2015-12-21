@@ -1,8 +1,11 @@
 #ifndef SINGLE_PLANE_NORMAL_MODEL_H
 #define SINGLE_PLANE_NORMAL_MODEL_H
 
-#include <spc/elements/Attitude.h>
 #include <spc/elements/StratigraphicModelBase.h>
+#include <spc/elements/Attitude.h>
+
+
+
 
 namespace spc
 {
@@ -16,30 +19,17 @@ class StratigraphicModelSingleAttitude : public StratigraphicModelBase
 {
 public:
     SPC_ELEMENT(StratigraphicModelSingleAttitude)
-EXPOSE_TYPE
+    EXPOSE_TYPE
     /// def const
-    StratigraphicModelSingleAttitude()
-    {
-    }
+    StratigraphicModelSingleAttitude();
 
     /// copy const
-    StratigraphicModelSingleAttitude(const StratigraphicModelSingleAttitude &model): StratigraphicModelBase(model)
-    {
-        attitude_ = model.attitude_;
-    }
+    StratigraphicModelSingleAttitude(const StratigraphicModelSingleAttitude &model);
 
     /// copy from an attitude
-    StratigraphicModelSingleAttitude(const Attitude &attitude)
-    {
+    StratigraphicModelSingleAttitude(const Attitude &attitude);
 
-        attitude_ = attitude;
-    }
-
-    StratigraphicModelSingleAttitude(const Attitude::Ptr attitude)
-    {
-
-        attitude_ = *attitude;
-    }
+    //    StratigraphicModelSingleAttitude(const Attitude::Ptr attitude);
 
     float predictStratigraphicPosition(const Eigen::Vector3f & point) const override
     {
@@ -51,49 +41,38 @@ EXPOSE_TYPE
 
     virtual Vector3f getScalarFieldGradient(const Vector3f &point) const override;
 
-    Vector3f getPointAtStratigraphicPosition(float sp) const
-    {
-        return attitude_.getPosition() + attitude_.getUnitNormal()
-                                         * (sp - getStratigraphicShift());
-    }
+    Vector3f getPointAtStratigraphicPosition(float sp) const;
 
 
 
 
-    void setAttitude(const Attitude &attitude)
-    {
-        attitude_ = attitude;
-    }
 
-    Attitude getAttitude() const
-    {
-        return attitude_;
-    }
+    Attitude getAttitude() const;
 
-    void setNormal(Vector3f n)
-    {
-        attitude_.setNormal(n);
-    }
+    void setNormal(Vector3f n);
 
-    Vector3f getNormal() const
-    {
-        return attitude_.getNormal();
-    }
+    Vector3f getNormal() const;
 
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+    template <class Archive> void serialize(Archive &ar, std::uint32_t const version)
     {
         ar(cereal::base_class<spc::StratigraphicModelBase>(this),
-           attitude_);
+           *attitude_);
     }
 
 protected:
 
-    Attitude attitude_;
+    Attitude * attitude_;
+
+    // GeometricElement3DBase interface
+public:
+    virtual void applyTransform(const TransformT &transform) override;
 };
 
 } // end nspace
+
+CEREAL_CLASS_VERSION(spc::StratigraphicModelSingleAttitude, 1)
 
 #endif // SINGLE_PLANE_NORMAL_MODEL_H

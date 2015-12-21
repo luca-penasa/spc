@@ -13,22 +13,36 @@ void TimeSeriesBase::fill(const TimeSeriesBase::ScalarT value_)
     y_.fill(value_);
 }
 
-EigenTable::Ptr TimeSeriesBase::asEigenTable() const
+int TimeSeriesBase::toAsciiStream(std::ostream &stream) const
 {
-    EigenTable::Ptr t(new EigenTable);
+    stream << "x y" << std::endl;
 
-    VectorT x = this->getX();
-    VectorT y = this->getY();
+    Eigen::Matrix<float, -1, 2> mat;
 
-    t->resize(x.size());
-    t->addNewComponent("x");
-    t->addNewComponent("y");
+    mat.resize(this->getNumberOfSamples(), Eigen::NoChange);
+    mat.col(0) << this->getX();
+    mat.col(1) << this->getY();
 
-    t->column("x") = x;
-    t->column("y") = y;
+    stream << mat;
 
-    return t;
 }
+
+//EigenTable::Ptr TimeSeriesBase::asEigenTable() const
+//{
+//    EigenTable::Ptr t(new EigenTable);
+
+//    VectorT x = this->getX();
+//    VectorT y = this->getY();
+
+//    t->resize(x.size());
+//    t->addNewComponent("x");
+//    t->addNewComponent("y");
+
+//    t->column("x") = x;
+//    t->column("y") = y;
+
+//    return t;
+//}
 
 
 }

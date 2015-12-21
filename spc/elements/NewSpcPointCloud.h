@@ -1,14 +1,16 @@
+#pragma once
 #ifndef NEWSPCPOINTCLOUD_H
 #define NEWSPCPOINTCLOUD_H
 #include <spc/elements/ElementBase.h>
 #include <map>
 #include <spc/elements/PointCloudBase.h>
 
-#include <spc/elements/OrientedSensor.h>
 
 #include <spc/core/spc_eigen.h>
 
 namespace spc {
+
+spcFwdDeclSharedPtr(OrientedSensor)
 
 class FieldLabel {
 public:
@@ -266,7 +268,7 @@ protected:
 
     SearcherT::Ptr searcher_;
 
-    OrientedSensor::Ptr sensor_;
+    OrientedSensorPtr sensor_;
 };
 }
 

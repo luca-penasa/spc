@@ -7,7 +7,7 @@
 #include <spc/core/common.h>
 
 #include <spc/io/element_io.h>
-#include <spc/elements/PointCloudSpc.h>
+//#include <spc/elements/PointCloudSpc.h>
 #include <spc/elements/PointCloudPcl.h>
 
 
@@ -269,34 +269,6 @@ PointCloudBase::Ptr loadPointCloud(const std::string &filename)
             return NULL;
         }
 
-        // try to see if it is a PointCloudSPC
-        PointCloudSpc::Ptr cloud_spc = spcDynamicPointerCast<PointCloudSpc>(obj);
-
-        if (!cloud_spc)
-        {
-            DLOG(WARNING) << "File does not contain a PointCloudSPC!";
-        }
-        else // if is good
-        {
-            DLOG(WARNING) << "File contains a PointCloudSPC!";
-            return cloud_spc;
-        }
-
-        // maybe it contains an EigenTable from which a PointCloudSpc can be created
-        EigenTable::Ptr table = spcDynamicPointerCast<EigenTable> (obj);
-
-        if (!table)
-        {
-            DLOG(WARNING) << "File does not contain an EigenTable!";
-        }
-        else // if is good
-        {
-            DLOG(WARNING) << "File contains an EigenTable!";
-
-            return PointCloudSpc::Ptr (new PointCloudSpc (table));
-        }
-        // if we are here without returning anything
-        return NULL;
     }
 #ifdef SPC_WITH_PCL
 

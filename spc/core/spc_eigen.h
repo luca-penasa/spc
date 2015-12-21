@@ -9,7 +9,10 @@
 
 #include <Eigen/Dense>
 
+namespace spc
+{
 
+}
 
 
 #endif

@@ -27,17 +27,6 @@ std::string type_to_extension (const ARCHIVE_TYPE &type);
 
 ARCHIVE_TYPE extension_to_type(const std::string & extension);
 
-
-
-//   static std::vector< boost::bimap<ARCHIVE_TYPE, std::string>::value_type > archiveExtensionsVector = {{XML, ".xml"},
-//                                                                                                           {JSON, ".json"},
-//                                                                                                           {SPC, ".spc"},
-//                                                                                                           {ASCII, ".txt"}};
-//    //! we keep this in a bimap so we can access the other side
-//    static boost::bimap<ARCHIVE_TYPE, std::string> archiveExtensionsBimap (archiveExtensionsVector.begin(), archiveExtensionsVector.end());
-
-
-
 /**
      * @brief serializeToFile
      * @param element
@@ -51,7 +40,16 @@ ARCHIVE_TYPE extension_to_type(const std::string & extension);
      */
 int serializeToFile(const ISerializable::Ptr element, std::string filename,
                     const ARCHIVE_TYPE& type = SPC, const bool timestamp_file = false,
-                    const std::string& sidefile_string = std::string());
+                    const std::string& sidefile_string = std::string(),
+                    const int progressive_number = -1,
+                    const size_t number_of_digits = 3 );
+
+
+// same but for many objects, integer postfix added tot he name
+int serializeToFile(const std::vector<ISerializable::Ptr> elements, std::string filename,
+                    const ARCHIVE_TYPE& type = SPC, const bool timestamp_file = false,
+                    const std::string& sidefile_string = std::string(),
+                    const size_t number_of_digits = 3);
 
 /**
      * @brief deserializeFromFile get a filename and gives back an

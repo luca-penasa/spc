@@ -6,9 +6,11 @@
 
 #include <spc/elements/PointCloudBase.h>
 
+#include <spc/elements/GeometricElement3DBase.h>
+
 namespace spc
 {
-class Vector3D : public ElementBase
+class Vector3D : public GeometricElement3DBase
 {
 
     SPC_ELEMENT(Vector3D)
@@ -26,7 +28,7 @@ public:
         normal_ = v;
     }
 
-    Vector3D(const Vector3D & other): ElementBase(other)
+    Vector3D(const Vector3D & other): GeometricElement3DBase(other)
     {
         normal_ = other.normal_;
     }
@@ -73,7 +75,14 @@ private:
 
     template <class Archive> void serialize(Archive &ar)
     {
-        ar(cereal::base_class<ElementBase>(this), CEREAL_NVP(normal_));
+        ar(cereal::base_class<GeometricElement3DBase>(this), CEREAL_NVP(normal_));
+    }
+
+    // GeometricElement3DBase interface
+public:
+    virtual void applyTransform(const TransformT &transform) override
+    {
+        normal_= transform.linear() * normal_; // no scaling or shearing
     }
 };
 

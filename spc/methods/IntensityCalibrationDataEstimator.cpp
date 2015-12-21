@@ -18,6 +18,10 @@
 #include <boost/tuple/tuple.hpp>
 
 #include <spc/elements/calibration/KeyPoint.h>
+#include <spc/elements/calibration/Observation.h>
+#include <spc/elements/calibration/DataHolder.h>
+
+
 
 namespace spc {
 namespace calibration {
