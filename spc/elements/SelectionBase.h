@@ -1,27 +1,25 @@
+#pragma once
 #ifndef SELECTIONBASE_H
 #define SELECTIONBASE_H
 #include <spc/core/spc_eigen.h>
-namespace spc
-{
+namespace spc {
 
-template<class ElementT>
-class SelectionBase
-{
+template <class ElementT>
+class SelectionBase {
 public:
-
     typedef SelectionBase<ElementT> self_t;
 
     spcTypedefSharedPtrs(self_t)
 
-    SelectionBase()
-    {}
+        SelectionBase()
+    {
+    }
 
-    virtual bool contains(const ElementT &obj) const = 0;
+    virtual bool contains(const ElementT& obj) const = 0;
 };
-
 
 typedef SelectionBase<Eigen::Vector3f> SelectionOfPointsBase;
 
-}//end nspace
+} //end nspace
 
 #endif // SELECTIONBASE_H

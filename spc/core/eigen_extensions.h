@@ -1,3 +1,4 @@
+#pragma once
 #ifndef EIGEN_EXTENSIONS_H
 #define EIGEN_EXTENSIONS_H
 

@@ -108,6 +108,8 @@ option(SPC_BUILD_WITH_GPROF "Build with -pg flags for profiling." OFF)
 #option(SPC_BUILD_SANDBOX_TOOLS "Build sandbox tools." OFF)
 option(SPC_BUILD_EXAMPLES_TOOLS "Build examples tools." OFF)
 
+option(SPC_USE_IWYU "Use include-what-you-use to notify about unused includes" OFF)
+
 OPTION(SPC_GFLAGS "Enable Google Flags. Needed by the tools" ON)
 option(SPC_BUILD_TESTS "Do tests" OFF)
 option(SPC_ENABLE_INSTALL "Enable/Disable the install target" OFF)
@@ -390,3 +392,12 @@ if(SPC_BUILD_TESTS)
 #    add_subdirectory(submodules/googletest/googletest)
     add_subdirectory(tests)
 endif()
+
+
+    find_program(iwyu_path NAMES include-what-you-use iwyu)
+    if(NOT iwyu_path)
+      message(FATAL_ERROR "Could not find the program include-what-you-use")
+    endif()
+
+
+

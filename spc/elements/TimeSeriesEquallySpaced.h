@@ -1,3 +1,4 @@
+#pragma once
 #ifndef SPC_EQUALLY_SPACED_TIME_SERIES_H
 #define SPC_EQUALLY_SPACED_TIME_SERIES_H
 
@@ -155,7 +156,7 @@ EXPOSE_TYPE
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+    template <class Archive> void serialize(Archive &ar, const std::uint32_t version)
     {
         ar(cereal::base_class<spc::TimeSeriesBase>(this), CEREAL_NVP(x_start),
            CEREAL_NVP(x_step));

@@ -1,3 +1,4 @@
+#pragma once
 #ifndef SPC_STRINGS_H
 #define SPC_STRINGS_H
 

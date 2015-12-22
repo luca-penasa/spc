@@ -6,6 +6,8 @@
 #include <spc/elements/calibration/KeyPoint.h>
 #include <spc/elements/calibration/Observation.h>
 #include <spc/elements/CloudDataSourceOnDisk.h>
+#include <spc/elements/OrientedSensor.h>
+
 namespace spc
 {
 namespace calibration

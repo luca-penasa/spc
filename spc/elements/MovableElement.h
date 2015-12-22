@@ -1,8 +1,6 @@
+#pragma once
 #ifndef POINT3D_H
 #define POINT3D_H
-
-//#include <spc/elements/ElementBase.h>
-//#include <spc/elements/templated/PointSetBase.h>
 
 #include <spc/elements/GeometricElement3DBase.h>
 

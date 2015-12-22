@@ -1,3 +1,4 @@
+#pragma once
 #ifndef SPC_MACROS_H
 #define SPC_MACROS_H
 

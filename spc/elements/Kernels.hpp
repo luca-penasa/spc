@@ -1,3 +1,4 @@
+#pragma once
 #ifndef KERNELS_HPP
 #define KERNELS_HPP
 
@@ -127,7 +128,7 @@ protected:
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+    template <class Archive> void serialize(Archive &ar, const std::uint32_t version)
     {
         ar(cereal::base_class<ElementBase>(this),
            CEREAL_NVP(scale_),
@@ -179,7 +180,7 @@ public:
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+    template <class Archive> void serialize(Archive &ar, const std::uint32_t version)
     {
         ar(cereal::base_class<RBFBase<T> >(this));
     }
@@ -223,7 +224,7 @@ public:
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+    template <class Archive> void serialize(Archive &ar, const std::uint32_t version)
     {
         ar(cereal::base_class<RBFBase<T> >(this));
     }
@@ -276,7 +277,7 @@ EXPOSE_TYPE
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+    template <class Archive> void serialize(Archive &ar, const std::uint32_t version)
     {
         ar(cereal::base_class<RBFBase<T> >(this));
     }
@@ -325,7 +326,7 @@ SPC_ELEMENT(MultiquadricRBF)
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+    template <class Archive> void serialize(Archive &ar, const std::uint32_t version)
     {
         ar(cereal::base_class<RBFBase<T> >(this));
     }
@@ -387,7 +388,7 @@ public:
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+    template <class Archive> void serialize(Archive &ar, const std::uint32_t version)
     {
         ar(cereal::base_class<RBFBase<T> >(this),
            CEREAL_NVP(k_));

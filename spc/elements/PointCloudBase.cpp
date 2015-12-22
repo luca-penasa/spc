@@ -1,19 +1,21 @@
-#include <spc/elements/PointCloudBase.h>
+#include <spc/elements/PointCloudBaseWithSensor.h>
 
-namespace spc
-{
+//#include <spc/core/common.h>
+//#include <boost/make_shared.hpp>
+#include <spc/elements/OrientedSensor.h>
+//#include <spc/elements/templated/PointSet.h>
+
+namespace spc {
 
 DtiClassType PointCloudBase::Type = DtiClassType("PointCloudBase", &ElementBase::Type);
 DtiClassType PointCloudBaseWithSensor::Type = DtiClassType("PointCloudBaseWithSensor", &PointCloudBase::Type);
 
-
 PointCloudBase::PointCloudBase()
 {
-
 }
 #ifdef SPC_WITH_PCL
 
-int PointCloudBase::getNearestPointID(const PointCloudBase::PointT query, float &sq_distance)
+int PointCloudBase::getNearestPointID(const PointCloudBase::PointT query, float& sq_distance)
 {
     std::vector<float> sq_dists;
     std::vector<int> ids;
@@ -25,62 +27,55 @@ int PointCloudBase::getNearestPointID(const PointCloudBase::PointT query, float 
 }
 void PointCloudBase::updateFlannSearcher()
 {
-    DLOG(INFO)  << "updating flann index";
-    pcl::search::FlannSearch
-                <pcl::PointXYZ>::Ptr s (new pcl::search::FlannSearch<pcl::PointXYZ>);
+    DLOG(INFO) << "updating flann index";
+    pcl::search::FlannSearch<pcl::PointXYZ>::Ptr s(new pcl::search::FlannSearch<pcl::PointXYZ>);
 
     s->setInputCloud(getAsPclXyz());
-    DLOG(INFO)  << "updating flann index. Done";
-
+    DLOG(INFO) << "updating flann index. Done";
 
     searcher_ = s;
 }
 
 void PointCloudBase::updateXYZRepresentation()
 {
-    DLOG(INFO) << "updating XYZ representation of cloud ";      
+    DLOG(INFO) << "updating XYZ representation of cloud ";
 
     DLOG(INFO) << "got as pcl data ";
 
-     pcl::PCLPointCloud2Ptr c = this->asPCLData();
+    pcl::PCLPointCloud2Ptr c = this->asPCLData();
 
-     pcl::PointCloud<pcl::PointXYZ>::Ptr c2(new  pcl::PointCloud<pcl::PointXYZ>);
-     pcl::fromPCLPointCloud2(*c, *c2);
+    pcl::PointCloud<pcl::PointXYZ>::Ptr c2(new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::fromPCLPointCloud2(*c, *c2);
 
     xyz_representation_ = c2;
     DLOG(INFO) << "updating XYZ representation of cloud. Done ";
-
 }
 #endif
 void PointCloudBase::addFields(const std::vector<std::string> field_names,
-                               const Eigen::MatrixXf &data)
+    const Eigen::MatrixXf& data)
 {
     CHECK(field_names.size() == data.cols()) << "the field names and the column of data must be equal";
-    CHECK (this->getNumberOfPoints() == data.rows()) << "the number of rows of data must be equal to the size of the cloud";
+    CHECK(this->getNumberOfPoints() == data.rows()) << "the number of rows of data must be equal to the size of the cloud";
 
     IndexT field_counter = 0;
-    for (std::string fname: field_names)
-    {
+    for (std::string fname : field_names) {
         this->addField(fname);
 
 #ifdef USE_OPENMP
 #pragma omp parallel for
 #endif
-        for (int i = 0 ; i < data.rows(); ++i)
-        {
-            this->setFieldValue(i, fname, data( i, field_counter));
+        for (int i = 0; i < data.rows(); ++i) {
+            this->setFieldValue(i, fname, data(i, field_counter));
         }
         DLOG(INFO) << "field " << fname << " added";
         field_counter++;
     }
-
-
 }
 
 std::vector<float> PointCloudBase::getField(const std::string fieldname)
 {
 
-    DLOG(INFO) << "Asked for field "<< fieldname;
+    DLOG(INFO) << "Asked for field " << fieldname;
     std::vector<float> out;
 
     if (!hasField(fieldname)) {
@@ -97,7 +92,7 @@ std::vector<float> PointCloudBase::getField(const std::string fieldname)
     return out;
 }
 
-bool PointCloudBase::getField(const std::string fieldname, Eigen::VectorXf &vector)
+bool PointCloudBase::getField(const std::string fieldname, Eigen::VectorXf& vector)
 {
     std::vector<float> stdvect = this->getField(fieldname);
     vector = Eigen::Map<Eigen::VectorXf>(stdvect.data(), stdvect.size());
@@ -120,12 +115,10 @@ Eigen::Vector3f PointCloudBase::getNormal(const IndexT id) const
     return Eigen::Vector3f(x, y, z);
 }
 
-
 #ifdef SPC_WITH_PCL
 
 pcl::PointCloud<pcl::PointXYZ>
-PointCloudBase::applyTransform(const Eigen::Transform
-                               <float, 3, Eigen::Affine, Eigen::AutoAlign> &T)
+PointCloudBase::applyTransform(const Eigen::Transform<float, 3, Eigen::Affine, Eigen::AutoAlign>& T)
 {
 
     DLOG(INFO) << "applying transformation";
@@ -150,13 +143,13 @@ pcl::PCLPointCloud2Ptr PointCloudBase::asPCLData() const
     IndexT n_fields = field_names.size();
     IndexT n_points = this->getNumberOfPoints();
 
-    pcl::PCLPointCloud2::Ptr cloud (new pcl::PCLPointCloud2);
+    pcl::PCLPointCloud2::Ptr cloud(new pcl::PCLPointCloud2);
 
     cloud->width = 1;
     cloud->height = this->getNumberOfPoints();
 
-    cloud->point_step =sizeof(float) * n_fields;
-    cloud->row_step =sizeof(float) * n_fields;
+    cloud->point_step = sizeof(float) * n_fields;
+    cloud->row_step = sizeof(float) * n_fields;
 
     IndexT total_size = sizeof(float) * n_points * n_fields;
     cloud->data.resize(total_size);
@@ -164,10 +157,8 @@ pcl::PCLPointCloud2Ptr PointCloudBase::asPCLData() const
     // set up fields
     std::vector<pcl::PCLPointField> fields;
 
-
     int counter = 0;
-    for (std::string fname: field_names)
-    {
+    for (std::string fname : field_names) {
         pcl::PCLPointField field;
         field.name = fname;
         field.offset = counter++ * sizeof(float);
@@ -177,7 +168,6 @@ pcl::PCLPointCloud2Ptr PointCloudBase::asPCLData() const
         fields.push_back(field);
     }
 
-
     DLOG(INFO) << "going to do hard conversion of cloud \n"
                   "This means no better method was found \n"
                   "Please reimplement this method in derived point cloud classes";
@@ -185,17 +175,13 @@ pcl::PCLPointCloud2Ptr PointCloudBase::asPCLData() const
 #ifdef USE_OPENMP
 #pragma omp parallel for private(value)
 #endif
-    for (int j = 0;  j < n_points; ++j)
-    {
-        for (int i = 0; i < n_fields; ++i)
-        {
+    for (int j = 0; j < n_points; ++j) {
+        for (int i = 0; i < n_fields; ++i) {
             std::string fname = field_names.at(i);
             this->getFieldValue(j, fname, value);
-            memcpy(&cloud->data[0] + sizeof(float) *n_fields * j + i * sizeof(float),  &value, sizeof(float));
+            memcpy(&cloud->data[0] + sizeof(float) * n_fields * j + i * sizeof(float), &value, sizeof(float));
         }
-
     }
-
 
     cloud->fields = fields;
     DLOG(INFO) << "Done";
@@ -204,9 +190,9 @@ pcl::PCLPointCloud2Ptr PointCloudBase::asPCLData() const
 }
 #endif
 
-bool PointCloudBase::hasFields(const std::vector<std::string> &field_names) const
+bool PointCloudBase::hasFields(const std::vector<std::string>& field_names) const
 {
-    for (auto s: field_names)
+    for (auto s : field_names)
         if (!hasField(s))
             return false;
 
@@ -214,7 +200,7 @@ bool PointCloudBase::hasFields(const std::vector<std::string> &field_names) cons
 }
 
 std::vector<float> PointCloudBase::getField(const std::string fieldname,
-                                                 std::vector<IndexT> indices)
+    std::vector<IndexT> indices)
 {
     std::vector<float> out;
 
@@ -224,8 +210,7 @@ std::vector<float> PointCloudBase::getField(const std::string fieldname,
     }
 
     float val;
-    for(int i: indices)
-    {
+    for (int i : indices) {
         getFieldValue(i, fieldname, val);
         out.push_back(val);
     }
@@ -233,25 +218,20 @@ std::vector<float> PointCloudBase::getField(const std::string fieldname,
     return out;
 }
 
-void PointCloudBase::getField(const std::string fieldname, const std::vector<IndexT> indices, Eigen::VectorXf &out)
+void PointCloudBase::getField(const std::string fieldname, const std::vector<IndexT> indices, Eigen::VectorXf& out)
 {
     if (!hasField(fieldname)) {
-        LOG(WARNING) <<"[Error in generic_cloud] asked for field "<< fieldname;
-        return ;
+        LOG(WARNING) << "[Error in generic_cloud] asked for field " << fieldname;
+        return;
     }
 
     out.resize(indices.size());
 
-
     float val;
-    for (int i = 0 ; i < indices.size(); ++i)
-    {
+    for (int i = 0; i < indices.size(); ++i) {
         getFieldValue(indices.at(i), fieldname, val);
         out(i) = val;
     }
-
 }
-
-
 
 } // end nspace

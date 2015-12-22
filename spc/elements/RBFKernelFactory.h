@@ -1,3 +1,4 @@
+#pragma once
 #ifndef RBFKERNELFACTORY_H
 #define RBFKERNELFACTORY_H
 #include <spc/elements/Kernels.hpp>

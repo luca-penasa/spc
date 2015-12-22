@@ -1,17 +1,13 @@
+#pragma once
 #ifndef NORMAL3D_H
 #define NORMAL3D_H
-#include <spc/elements/ElementBase.h>
-//#include <pcl/features/normal_3d.h>
-#include <cereal/types/polymorphic.hpp>
-
-#include <spc/elements/PointCloudBase.h>
 
 #include <spc/elements/GeometricElement3DBase.h>
+#include <spc/elements/PointCloudBase.h>
 
-namespace spc
-{
-class Vector3D : public GeometricElement3DBase
-{
+namespace spc {
+//class PointCloudXYZBase;
+class Vector3D : public GeometricElement3DBase {
 
     SPC_ELEMENT(Vector3D)
     EXPOSE_TYPE
@@ -28,15 +24,14 @@ public:
         normal_ = v;
     }
 
-    Vector3D(const Vector3D & other): GeometricElement3DBase(other)
+    Vector3D(const Vector3D& other)
+        : GeometricElement3DBase(other)
     {
         normal_ = other.normal_;
     }
 
-
-
     /// this project a given 3d point onto the normal
-    Eigen::Vector3f projectPoint(const Eigen::Vector3f &point) const
+    Eigen::Vector3f projectPoint(const Eigen::Vector3f& point) const
     {
         return (this->getUnitNormal() * this->getUnitNormal().dot(point));
     }
@@ -65,7 +60,7 @@ public:
 
     void setUnitAxis(const int ax_id = 2);
 
-    void normalFromBestFit(const PointCloudXYZBase &cloud);
+    void normalFromBestFit(const PointCloudXYZBase& cloud);
 
 protected:
     Eigen::Vector3f normal_;
@@ -73,16 +68,17 @@ protected:
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+    template <class Archive>
+    void serialize(Archive& ar, const std::uint32_t version)
     {
         ar(cereal::base_class<GeometricElement3DBase>(this), CEREAL_NVP(normal_));
     }
 
     // GeometricElement3DBase interface
 public:
-    virtual void applyTransform(const TransformT &transform) override
+    virtual void applyTransform(const TransformT& transform) override
     {
-        normal_= transform.linear() * normal_; // no scaling or shearing
+        normal_ = transform.linear() * normal_; // no scaling or shearing
     }
 };
 

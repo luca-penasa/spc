@@ -1,3 +1,4 @@
+#pragma once
 #ifndef STRATIGRAPHICPOSITIONABLEELEMENT_H
 #define STRATIGRAPHICPOSITIONABLEELEMENT_H
 
@@ -115,7 +116,7 @@ private:
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+    template <class Archive> void serialize(Archive &ar, const std::uint32_t version)
     {
         ar(cereal::base_class<Point3D>(this),
            CEREAL_NVP(stratigraphic_position_),

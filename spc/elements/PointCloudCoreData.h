@@ -1,3 +1,4 @@
+
 #pragma once
 
 #ifndef SPC_POINTCLOUDCOREDATA_H

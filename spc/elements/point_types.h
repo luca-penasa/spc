@@ -1,3 +1,4 @@
+#pragma once
 #ifndef SPC_POINT_TYPES_H
 #define SPC_POINT_TYPES_H
 

@@ -1,4 +1,4 @@
-
+#pragma once
 //! yes we add iterators! straight from mrpt project
 typedef Scalar* iterator;
 typedef const Scalar* const_iterator;

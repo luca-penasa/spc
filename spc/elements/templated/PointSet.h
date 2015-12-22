@@ -1,3 +1,4 @@
+#pragma once
 #ifndef POINTSET_H
 #define POINTSET_H
 
@@ -102,7 +103,7 @@ public:
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+    template <class Archive> void serialize(Archive &ar, const std::uint32_t version)
     {
         ar(data_);
     }

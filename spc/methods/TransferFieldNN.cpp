@@ -1,4 +1,5 @@
 #include "TransferFieldNN.h"
+#include <spc/elements/OrientedSensor.h>
 namespace spc {
 #ifdef SPC_WITH_PCL
 

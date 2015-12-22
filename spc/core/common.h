@@ -1,3 +1,4 @@
+#pragma once
 #ifndef SPC_COMMON_H
 #define SPC_COMMON_H
 

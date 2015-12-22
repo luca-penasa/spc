@@ -1,3 +1,4 @@
+#pragma once
 #ifndef SPC_FILE_OPERATIONS_H
 #define SPC_FILE_OPERATIONS_H
 

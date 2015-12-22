@@ -1,27 +1,20 @@
+#pragma once
 #ifndef CLOUDDATASOURCEONDISK_H
 #define CLOUDDATASOURCEONDISK_H
 
 #include <spc/elements/ElementBase.h>
 
-
-
-
-namespace spc
-{
+namespace spc {
 
 spcFwdDeclSharedPtr(PointCloudBase)
-spcFwdDeclSharedPtr(NewSpcPointCloud)
+    spcFwdDeclSharedPtr(NewSpcPointCloud)
 
-
-class CloudDataSourceOnDisk: public ElementBase
-{
+        class CloudDataSourceOnDisk : public ElementBase {
 public:
-
-
     SPC_ELEMENT(CloudDataSourceOnDisk)
     EXPOSE_TYPE
 
-    CloudDataSourceOnDisk(const std::string &fname)
+    CloudDataSourceOnDisk(const std::string& fname)
     {
         filename_ = fname;
         setElementName(fname);
@@ -30,19 +23,16 @@ public:
     //def const
     CloudDataSourceOnDisk()
     {
-
     }
 
     bool exists() const;
 
-
     std::string getExtension() const;
 
-
     spcSetMacro(Filename, filename_, std::string)
-    spcGetMacro(Filename, filename_, std::string)
+        spcGetMacro(Filename, filename_, std::string)
 
-    PointCloudBasePtr load() const;
+            PointCloudBasePtr load() const;
 
     NewSpcPointCloudPtr load2() const;
 
@@ -52,14 +42,13 @@ protected:
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+    template <class Archive>
+    void serialize(Archive& ar, const std::uint32_t version)
     {
         ar(cereal::base_class<spc::ElementBase>(this), CEREAL_NVP(filename_));
     }
-
-
 };
 
-}// end nspace
+} // end nspace
 
 #endif // CLOUDDATASOURCEONDISK_H

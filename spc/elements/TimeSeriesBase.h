@@ -1,3 +1,4 @@
+#pragma once
 #ifndef SPC_BASE_TIME_SERIES_H
 #define SPC_BASE_TIME_SERIES_H
 
@@ -130,7 +131,7 @@ protected:
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+    template <class Archive> void serialize(Archive &ar, const std::uint32_t version)
     {
         ar(cereal::base_class<spc::ElementBase>(this), CEREAL_NVP(y_));
     }

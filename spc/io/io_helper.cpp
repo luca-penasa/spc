@@ -9,7 +9,7 @@
 #include <spc/io/element_io.h>
 //#include <spc/elements/PointCloudSpc.h>
 #include <spc/elements/PointCloudPcl.h>
-
+#include <spc/elements/OrientedSensor.h>
 
 #ifdef SPC_WITH_PCL
 using namespace pcl::console;

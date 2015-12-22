@@ -1,3 +1,4 @@
+#pragma once
 #ifndef SPC_EIGEN__H
 #define SPC_EIGEN__H
 

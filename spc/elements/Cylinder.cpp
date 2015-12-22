@@ -1,4 +1,5 @@
 #include "Cylinder.h"
+#include <spc/elements/PointCloudBase.h>
 
 namespace spc
 {

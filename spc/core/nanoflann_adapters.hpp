@@ -1,3 +1,4 @@
+#pragma once
 #ifndef NANOFLANN_ADAPTERS_HPP
 #define NANOFLANN_ADAPTERS_HPP
 

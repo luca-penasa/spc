@@ -1,15 +1,10 @@
+#pragma once
 #ifndef ORIENTATION_H
 #define ORIENTATION_H
 
-
 #include <spc/elements/Plane.h>
-#include <iostream>
 
-#include <spc/elements/MovableElement.h>
-
-#include <fstream>
-namespace spc
-{
+namespace spc {
 
 /** \class Attitude
  * \brief an spcAttitude is a geological way to rapresent a plane in
@@ -21,8 +16,7 @@ namespace spc
  *  \note the North direction corresponds witht Y axis, so that E is X and Z is the
  *  vertical height (elevation).
  **/
-class Attitude : public Plane
-{
+class Attitude : public Plane {
 public:
     SPC_ELEMENT(Attitude)
     EXPOSE_TYPE
@@ -35,7 +29,7 @@ public:
     /// \param direction is the normal of the plane
     /// \param position is the position in space for this attitude measure
     ///
-    Attitude(const Vector3f &direction, const Vector3f &position);
+    Attitude(const Vector3f& direction, const Vector3f& position);
 
     ///
     /// \brief spcAttitude constructor (geologic-aware)
@@ -43,14 +37,13 @@ public:
     /// \param dip is the azimutal angle of dip direction with the north [0-360]
     ///
     Attitude(const float dipAngle, const float dip,
-             const Vector3f position = Vector3f::Zero());
+        const Vector3f position = Vector3f::Zero());
 
     // copy const
-    Attitude(const Attitude &att) : Plane(att)
+    Attitude(const Attitude& att)
+        : Plane(att)
     {
     }
-
-
 
     //////////////////////////////////////
     //// GEOLOGICAL AWARE GETTERS ////////
@@ -89,7 +82,8 @@ public:
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+    template <class Archive>
+    void serialize(Archive& ar, const std::uint32_t version)
     {
         ar(cereal::base_class<spc::Plane>(this));
     }
@@ -99,6 +93,5 @@ private:
 //std::ostream &operator<<(std::ostream &os, const Attitude &obj);
 
 } // end nspace
-
 
 #endif // ORIENTATION_H

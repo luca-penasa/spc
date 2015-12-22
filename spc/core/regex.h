@@ -1,3 +1,4 @@
+#pragma once
 #ifndef SPC_REGEX_H
 #define SPC_REGEX_H
 

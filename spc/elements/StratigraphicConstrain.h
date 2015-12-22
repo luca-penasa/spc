@@ -1,3 +1,4 @@
+#pragma once
 #ifndef STRATIGRAPHICLINK_H
 #define STRATIGRAPHICLINK_H
 

@@ -1,4 +1,4 @@
-
+#pragma once
 #ifndef CALIBRATION_KEYPOINT_H
 #define CALIBRATION_KEYPOINT_H
 #include <spc/elements/ElementBase.h>

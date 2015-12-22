@@ -1,25 +1,23 @@
-#include <spc/elements/Attitude.h>
+#include "Attitude.h"
 #include <math.h>
 //#include <Eigen/Geometry>
 #include <sstream>
 #include <string>
 
 #include <iomanip>
-namespace spc
-{
+namespace spc {
 
-DtiClassType Attitude::Type ("Attitude", &Plane::Type);
+DtiClassType Attitude::Type("Attitude", &Plane::Type);
 
 Attitude::Attitude()
 {
-
 }
 
-Attitude::Attitude(const Vector3f &direction, const Vector3f &position)
+Attitude::Attitude(const Vector3f& direction, const Vector3f& position)
     : Plane(direction, position)
 {
-   if (getNormal()(2) < 0)
-       normal_.flipNormal();
+    if (getNormal()(2) < 0)
+        normal_.flipNormal();
 }
 
 Attitude::Attitude(const float dipAngle, const float dip, const Vector3f position)
@@ -72,7 +70,7 @@ Vector3f Attitude::getDipVector() const
 float Attitude::getDipAngle() const
 {
     float angle = acos(getDipVector().dot(getDipDirectionVector())) * 180.0
-                  / M_PI;
+        / M_PI;
 
     if (angle > 90)
         angle -= 90.0;
@@ -98,18 +96,17 @@ float Attitude::getDip() const
 
 std::string Attitude::getDipAndDipAngleAsString() const
 {
-//    char d = 0xb0;
+    //    char d = 0xb0;
     //    std::string degree = d;
     std::stringstream s;
-	s << std::fixed << std::setprecision(2) << getDipAngle() <<"°" << "/"
-	  << getDip() << "°" << "N";
+    s << std::fixed << std::setprecision(2) << getDipAngle() << "°"
+      << "/"
+      << getDip() << "°"
+      << "N";
     return s.str();
 }
 
-
-
 } // end nspace
-
 
 #include <spc/core/spc_cereal.hpp>
 SPC_CEREAL_REGISTER_TYPE(spc::Attitude)

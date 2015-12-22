@@ -2,14 +2,13 @@
 //#include <pcl/console/print.h>
 #include <spc/core/logging.h>
 
-namespace spc
-{
+namespace spc {
 
 ISerializable::ISerializable()
 {
 }
 
-int ISerializable::toAsciiStream(std::ostream &stream) const
+int ISerializable::toAsciiStream(std::ostream& stream) const
 {
     LOG(WARNING) << "ascii serialization in base class has been called but nothing done. "
                     "this method must be overridden as needed";
@@ -23,4 +22,4 @@ EigenTablePtr ISerializable::asEigenTable() const
     return nullptr;
 }
 
-}//end nspace
+} //end nspace

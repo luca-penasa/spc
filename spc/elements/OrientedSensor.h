@@ -1,3 +1,4 @@
+#pragma once
 #ifndef ORIENTEDSENSOR_H
 #define ORIENTEDSENSOR_H
 #include <spc/elements/ElementBase.h>
@@ -41,7 +42,7 @@ public:
     private:
         friend class cereal::access;
 
-        template <class Archive> void serialize(Archive &ar)
+        template <class Archive> void serialize(Archive &ar, const std::uint32_t version)
         {
             ar(cereal::base_class<spc::ElementBase> (this),
                CEREAL_NVP(sensor_orientation_),

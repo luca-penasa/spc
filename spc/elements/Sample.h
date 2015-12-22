@@ -1,33 +1,30 @@
 #pragma once
+#pragma once
 #ifndef SAMPLE_H
 #define SAMPLE_H
 
 #include <spc/elements/StratigraphicPositionableElement.h>
-//#include <spc/elements/VariantPropertiesRecord.h>
-#include <spc/core/macros.h>
-//#include <spc/elements/ElementWithVariantProperties.h>
 
-namespace spc
-{
 
-class Sample : public StratigraphicPositionableElement
-{
+namespace spc {
+
+class Sample : public StratigraphicPositionableElement {
 
 public:
     SPC_ELEMENT(Sample)
     EXPOSE_TYPE
-    Sample(): StratigraphicPositionableElement()
+    Sample()
+        : StratigraphicPositionableElement()
     {
     }
 
-    Sample(const Sample &other) : StratigraphicPositionableElement(other)
+    Sample(const Sample& other)
+        : StratigraphicPositionableElement(other)
     {
-
     }
 
     ~Sample()
     {
-
     }
 
     Sample(const float x, const float y, const float z)
@@ -35,14 +32,16 @@ public:
     {
     }
 
-    Sample(const Eigen::Vector3f v) : StratigraphicPositionableElement(v)
+    Sample(const Eigen::Vector3f v)
+        : StratigraphicPositionableElement(v)
     {
     }
 
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+    template <class Archive>
+    void serialize(Archive& ar, const std::uint32_t version)
     {
         ar(cereal::base_class<StratigraphicPositionableElement>(this));
     }

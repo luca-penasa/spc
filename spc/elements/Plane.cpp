@@ -1,11 +1,9 @@
 #include <spc/elements/Plane.h>
 
 using namespace Eigen;
-namespace spc
-{
+namespace spc {
 
-DtiClassType Plane::Type ("Plane", &Point3D::Type);
-
+DtiClassType Plane::Type("Plane", &Point3D::Type);
 
 Transform<float, 3, Affine, AutoAlign> Plane::get2DArbitraryRefSystem() const
 {
@@ -16,12 +14,12 @@ Transform<float, 3, Affine, AutoAlign> Plane::get2DArbitraryRefSystem() const
     size_t min_id;
     n.array().abs().minCoeff(&min_id);
 
-    DLOG(INFO) << "min id is " << min_id ;
+    DLOG(INFO) << "min id is " << min_id;
     Vector3f proj_axis = Vector3f::Zero();
     proj_axis(min_id) = 1; // unity on that axis
 
     // project the selected axis on the plane
-	Vector3f second_ax = projectVectorOnPlane(proj_axis);
+    Vector3f second_ax = projectVectorOnPlane(proj_axis);
     second_ax.normalize();
 
     Translation3f translation(-getPosition());
@@ -31,7 +29,6 @@ Transform<float, 3, Affine, AutoAlign> Plane::get2DArbitraryRefSystem() const
     Transform<float, 3, Affine, AutoAlign> T = Rot * translation;
 
     DLOG(INFO) << "Transform computed \n " << T.matrix();
-
 
     return T;
 }

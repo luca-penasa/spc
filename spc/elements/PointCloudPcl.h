@@ -2,9 +2,9 @@
 #ifndef SPC_POINTCLOUDPCL_H
 #define SPC_POINTCLOUDPCL_H
 
-#include <spc/elements/PointCloudBase.h>
+#include <spc/elements/PointCloudBaseWithSensor.h>
 #include <spc/elements/point_types.h>
-#include <spc/elements/templated/PointSetBase.h>
+//#include <spc/elements/templated/PointSetBase.h>
 
 #ifdef SPC_WITH_PCL
 

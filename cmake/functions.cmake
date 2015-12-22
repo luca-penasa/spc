@@ -82,6 +82,10 @@ endif()
     spc_compile_and_link(spc_${libname} "${sources}" "${libs}")
     set_target_properties(spc_${libname} PROPERTIES PUBLIC_HEADER "${HEADERS};${IMPLS}")
 
+    if(SPC_USE_IWYU)
+        set_target_properties(spc_${libname} PROPERTIES CXX_INCLUDE_WHAT_YOU_USE "${iwyu_path}")
+    endif()
+
     if(SPC_ENABLE_INSTALL)
         spc_install_target_library_libs(${libname})
     endif()

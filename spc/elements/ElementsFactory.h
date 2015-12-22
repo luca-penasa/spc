@@ -3,17 +3,14 @@
 #define ELEMENTSFACTORY_H
 
 #include <spc/core/macros.h>
-namespace spc
-{
-class ElementBase;
-typedef spcSharedPtrMacro<ElementBase> ElementBasePtr;
+namespace spc {
 
-class ElementsFactory
-{
+spcFwdDeclSharedPtr(ElementBase)
+
+    class ElementsFactory {
 public:
     ElementBasePtr create(const std::string name);
 };
-
 }
 
 #endif // ELEMENTSFACTORY_H

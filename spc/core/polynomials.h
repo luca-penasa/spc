@@ -1,3 +1,4 @@
+#pragma once
 #ifndef SPC_POLYNOMIALS_H
 #define SPC_POLYNOMIALS_H
 

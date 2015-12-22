@@ -1,12 +1,15 @@
+#pragma once
 #ifndef SPC_CYLINDER_H
 #define SPC_CYLINDER_H
 
 #include <spc/elements/MovableElement.h>
 #include <spc/elements/Normal3D.h>
-#include <spc/elements/PointCloudBase.h>
+//#include <spc/elements/PointCloudBase.h>
 
 namespace spc
 {
+
+spcFwdDeclSharedPtr(PointCloudBase)
 
 ///
 /// \brief The Cylinder class represent a cylinder in space
@@ -69,7 +72,7 @@ EXPOSE_TYPE
     /// the test for inside/outside from the cyclinder.
     bool isPointWithinCylinder(const Eigen::Vector3f point) const;
 
-    std::vector<int> getIndicesInside(PointCloudBase::ConstPtr cloud);
+    std::vector<int> getIndicesInside(PointCloudBaseConstPtr cloud);
 
 private:
     Vector3D direction_;
@@ -81,7 +84,7 @@ private:
 private:
     friend class cereal::access;
 
-    template <class Archive> void sserialize(Archive &ar)
+    template <class Archive> void serialize(Archive &ar, const std::uint32_t version)
     {
         ar(cereal::base_class<spc::Point3D>(this),
            CEREAL_NVP(direction_), CEREAL_NVP(length_), CEREAL_NVP(radius_));

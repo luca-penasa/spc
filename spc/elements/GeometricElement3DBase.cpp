@@ -1,12 +1,6 @@
 #include "GeometricElement3DBase.h"
 
-namespace spc
-{
+namespace spc {
 
-DtiClassType GeometricElement3DBase::Type ("GeometricElement3DBase", &ElementBase::Type);
-
-
-
-
-
+DtiClassType GeometricElement3DBase::Type("GeometricElement3DBase", &ElementBase::Type);
 }

@@ -1,6 +1,12 @@
 #include "Normal3D.h"
-#include <spc/core/eigen_extensions.h>
+//#include <spc/core/eigen_extensions.h>
 #include <spc/elements/PointCloudBase.h>
+//#include <spc/elements/ElementBase.h>
+//#include <pcl/features/normal_3d.h>
+#include <cereal/types/polymorphic.hpp>
+#include <spc/elements/PointCloudBase.h>
+
+
 namespace spc
 {
 

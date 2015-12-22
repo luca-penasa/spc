@@ -1,6 +1,5 @@
 #include "CloudDataSourceOnDisk.h"
 
-
 //#include <spc/elements/PointCloudBase.h>
 #include <spc/elements/PointCloudPcl.h>
 #include <spc/elements/NewSpcPointCloud.h>
@@ -10,19 +9,16 @@
 
 #include <boost/filesystem.hpp>
 
-namespace spc
-{
+namespace spc {
 
-using   PathT = boost::filesystem::path;
+using PathT = boost::filesystem::path;
 
-
-DtiClassType CloudDataSourceOnDisk::Type ("CloudDataSourceOnDisk", &ElementBase::Type);
+DtiClassType CloudDataSourceOnDisk::Type("CloudDataSourceOnDisk", &ElementBase::Type);
 
 PointCloudBase::Ptr CloudDataSourceOnDisk::load() const
 {
 
-    if (!exists())
-    {
+    if (!exists()) {
         LOG(ERROR) << "Data source does not exists. maybe you moved it?  Please relocate also the reference here.";
         return NULL;
     }
@@ -47,13 +43,7 @@ std::string CloudDataSourceOnDisk::getExtension() const
     return p.extension().string();
 }
 
-
-
-
-
-
-}//end nspace
-
+} //end nspace
 
 #include <spc/core/spc_cereal.hpp>
 SPC_CEREAL_REGISTER_TYPE(spc::CloudDataSourceOnDisk)

@@ -1,3 +1,4 @@
+#pragma once
 #ifndef SPC_CEREAL_HPP
 #define SPC_CEREAL_HPP
 

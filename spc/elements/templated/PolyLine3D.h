@@ -1,3 +1,4 @@
+#pragma once
 #ifndef POLYLINE3D_H
 #define POLYLINE3D_H
 

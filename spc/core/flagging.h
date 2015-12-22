@@ -1,3 +1,4 @@
+#pragma once
 #ifndef GFLAGGING_H
 #define GFLAGGING_H
 #include <gflags/gflags.h>

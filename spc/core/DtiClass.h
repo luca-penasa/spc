@@ -3,13 +3,12 @@
 #define DTICLASS_H
 
 #include <string>
-//#include <iostream> //for debug
 
-class DtiClassType
-{
+namespace spc {
+
+class DtiClassType {
 public:
-
-    DtiClassType(std::string name,  DtiClassType * parent);
+    DtiClassType(const std::string &name, DtiClassType* parent);
 
     virtual ~DtiClassType();
 
@@ -20,24 +19,23 @@ public:
 
     bool hasParent() const
     {
-        return parent_ != NULL;
+        return parent_ != nullptr;
     }
 
-    DtiClassType *getParent() const
+    DtiClassType* getParent() const
     {
         return parent_;
     }
 
-
     // says it the two types are the same
-    bool operator==(const DtiClassType &other) const
+    bool operator==(const DtiClassType& other) const
     {
         return (class_name_ == other.class_name_);
     }
 
-    bool isA(const DtiClassType *other) const
+    bool isA(const DtiClassType* other) const
     {
-        DtiClassType const *start = this;
+        DtiClassType const* start = this;
         while (start) {
             if (*start == *other)
                 return true;
@@ -47,7 +45,7 @@ public:
         return false;
     }
 
-    DtiClassType &operator = (const DtiClassType &other)
+    DtiClassType& operator=(const DtiClassType& other)
     {
         this->parent_ = other.getParent();
         this->class_name_ = other.getClassName();
@@ -56,9 +54,9 @@ public:
 
 private:
     std::string class_name_;
-    DtiClassType *parent_;
-
-
+    DtiClassType* parent_;
 };
+
+} // end nspace
 
 #endif // DTICLASS_H

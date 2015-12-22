@@ -1,16 +1,13 @@
+#pragma once
 #ifndef SPC_PLANE_MODEL_H
 #define SPC_PLANE_MODEL_H
 
-//#include <spc/elements/ElementBase.h>
 #include <spc/elements/MovableElement.h>
 #include <spc/elements/Normal3D.h>
 #include <spc/core/spc_eigen.h>
 
-
-
 using namespace Eigen;
-namespace spc
-{
+namespace spc {
 
 ///
 /// \brief The PlaneModel class is the model of a plane in space
@@ -18,7 +15,7 @@ namespace spc
 ///
 class Plane : public Point3D
 
-{
+              {
 public:
     SPC_ELEMENT(Plane)
     EXPOSE_TYPE
@@ -28,13 +25,15 @@ public:
     }
 
     /// copy const
-    Plane(const Plane &plane) : Point3D(plane)
+    Plane(const Plane& plane)
+        : Point3D(plane)
     {
         normal_ = plane.normal_;
     }
 
     /// a Plane from direction of the normal and passing for a given point
-    Plane(const Vector3f normal, const Vector3f point) : Point3D(point)
+    Plane(const Vector3f normal, const Vector3f point)
+        : Point3D(point)
     {
         normal_.setNormal(normal);
     }
@@ -46,12 +45,10 @@ public:
         out.normal_.normalize();
         // this is a point which is obvisouly on the plane
         // but we may use any other point.
-        Eigen::Vector3f point_on_plane = -  hyperplane3.offset() * hyperplane3.normal();
+        Eigen::Vector3f point_on_plane = -hyperplane3.offset() * hyperplane3.normal();
         out.setPosition(point_on_plane);
         return out;
     }
-
-
 
     void setNormal(Vector3f n)
     {
@@ -68,32 +65,32 @@ public:
         return normal_.getNormal();
     }
 
-	//! get the component of v on the plane.
-	Vector3f projectVectorOnPlane(const Vector3f &v) const
+    //! get the component of v on the plane.
+    Vector3f projectVectorOnPlane(const Vector3f& v) const
     {
         Vector3f n = getUnitNormal();
         return v - v.dot(n) * n;
     }
 
-	//! project a point onto the plane
-    Vector3f projectPointOnPlane(const Vector3f &point)
+    //! project a point onto the plane
+    Vector3f projectPointOnPlane(const Vector3f& point)
     {
-		Vector3f n = getUnitNormal();
-		return point - (point  - getPosition()).dot(n) * n;
+        Vector3f n = getUnitNormal();
+        return point - (point - getPosition()).dot(n) * n;
     }
 
     /// distance of a point to this plane
     /// distance is signed (+ if in the same half-space of normal_)
-    float distanceTo(const Vector3f &point) const
+    float distanceTo(const Vector3f& point) const
     {
-		return getUnitNormal().dot(point) + getP();
+        return getUnitNormal().dot(point) + getP();
     }
 
     /// get the P parameters (distance of the plane from the origin)
     /// in normal hessian form: n.dot(x) = -P with n unit normal vector
     float getP() const
     {
-		return - getUnitNormal().dot(getPosition());
+        return -getUnitNormal().dot(getPosition());
     }
 
     /// get the matrix that would project a point on a two-d ref system
@@ -109,7 +106,8 @@ protected:
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+    template <class Archive>
+    void serialize(Archive& ar, const std::uint32_t version)
     {
         ar(cereal::base_class<spc::Point3D>(this), CEREAL_NVP(normal_));
     }

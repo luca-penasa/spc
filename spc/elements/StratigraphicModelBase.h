@@ -1,3 +1,4 @@
+#pragma once
 #ifndef STRATIGRAPHICMODELBASE_H
 #define STRATIGRAPHICMODELBASE_H
 

@@ -1,5 +1,4 @@
 #include "SelectionBase.h"
-namespace spc
-{
+namespace spc {
 
-}//end nspace
+} //end nspace

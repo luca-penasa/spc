@@ -1,3 +1,4 @@
+#pragma once
 #ifndef STD_HELPERS_H
 #define STD_HELPERS_H
 

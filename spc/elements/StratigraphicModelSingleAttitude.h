@@ -1,3 +1,4 @@
+#pragma once
 #ifndef SINGLE_PLANE_NORMAL_MODEL_H
 #define SINGLE_PLANE_NORMAL_MODEL_H
 

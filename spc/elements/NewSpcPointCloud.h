@@ -3,14 +3,17 @@
 #define NEWSPCPOINTCLOUD_H
 #include <spc/elements/ElementBase.h>
 #include <map>
-#include <spc/elements/PointCloudBase.h>
-
+//#include <spc/elements/PointCloudBase.h>
+#include <spc/core/nanoflann_adapters.hpp>
 
 #include <spc/core/spc_eigen.h>
 
 namespace spc {
 
 spcFwdDeclSharedPtr(OrientedSensor)
+
+spcFwdDeclSharedPtr(PointCloudBase)
+
 
 class FieldLabel {
 public:
@@ -38,7 +41,7 @@ private:
     friend class cereal::access;
 
     template <class Archive>
-    void serialize(Archive& ar)
+    void serialize(Archive& ar, const std::uint32_t version)
     {
         ar(CEREAL_NVP(field_name_),
             CEREAL_NVP(dimensionality_));
@@ -108,7 +111,7 @@ private:
     friend class cereal::access;
 
     template <class Archive>
-    void serialize(Archive& ar)
+    void serialize(Archive& ar, const std::uint32_t version)
     {
         ar(CEREAL_NVP(labels_));
     }
@@ -210,7 +213,7 @@ public:
         return searcher_;
     }
 
-    OrientedSensor::Ptr getSensor()
+    OrientedSensorPtr getSensor()
     {
         return sensor_;
     }
@@ -249,7 +252,7 @@ private:
     friend class cereal::access;
 
     template <class Archive>
-    void serialize(Archive& ar)
+    void serialize(Archive& ar, const std::uint32_t version)
     {
         ar(cereal::base_class<spc::ElementBase>(this),
             CEREAL_NVP(fields_),

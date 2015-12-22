@@ -1,3 +1,4 @@
+#pragma once
 #ifndef SPC_STD_HELPERS_IMPL_H
 #define SPC_STD_HELPERS_IMPL_H
 

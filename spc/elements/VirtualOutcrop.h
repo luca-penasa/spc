@@ -1,3 +1,4 @@
+#pragma once
 #ifndef VIRTUALOUTCROP_H
 #define VIRTUALOUTCROP_H
 #include <spc/elements/ElementBase.h>
@@ -53,7 +54,7 @@ public:
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+    template <class Archive> void serialize(Archive &ar, const std::uint32_t version)
     {
         ar(cereal::base_class<spc::ElementBase>(this));
     }

@@ -1,3 +1,4 @@
+#pragma once
 #ifndef SPC_PCL_HELPER_H
 #define SPC_PCL_HELPER_H
 

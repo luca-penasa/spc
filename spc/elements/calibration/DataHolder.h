@@ -1,3 +1,4 @@
+#pragma once
 #ifndef CALIBRATIONDATAHOLDER_H
 #define CALIBRATIONDATAHOLDER_H
 
@@ -92,7 +93,7 @@ protected:
 private:
     friend class cereal::access;
 
-    template <class Archive> void serialize(Archive &ar)
+    template <class Archive> void serialize(Archive &ar, const std::uint32_t version)
     {
         ar(cereal::base_class<spc::ElementBase>(this),
            CEREAL_NVP(keypoints_)
