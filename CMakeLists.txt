@@ -59,12 +59,17 @@ set(SPC_VERSION ${SPC_MAJOR_VERSION}.${SPC_MINOR_VERSION}.${SPC_PATCH_VERSION})
 
 
 ########################### COMPILER FLAGS ##################################
-if (WIN32)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP /bigobj" )
-else()
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fPIC -std=c++0x -Wno-narrowing " )
+if (MINGW)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ")
+
+elseif (MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP /bigobj" )
+elseif (UNIX)
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-narrowing " )
 endif()
 
+# we need c++11
+add_definitions(-std=c++11)
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
   add_definitions("-DBOOST_DISABLE_ASSERTS -DEIGEN_NO_DEBUG")
@@ -124,7 +129,7 @@ endif()
 #option(SPC_GFLAGS_IN_NAMESPACE_GOOGLE "says if gflags is expected to be into the google namespace" OFF)
 
 
-option(SPC_USE_PARALLEL_OPENMP "Enable paralellization of some algorithms via OpenMP" ON)
+option(SPC_USE_PARALLEL_OPENMP "Enable paralellization of some algorithms via OpenMP" OFF)
 option(SPC_BUILD_TESTING_TOOLS "Build the tools contained into the tests folder" OFF)
 #############################################################################################################
 
@@ -237,10 +242,10 @@ if(SPC_GFLAGS)
 
 else(SPC_GFLAGS) # gflags not requested.
     message("GFLAGS not enabled. All executables will be not build")
-    UPDATE_CACHE_VARIABLE(SPC_BUILD_TOOLS OFF)
-    UPDATE_CACHE_VARIABLE(SPC_BUILD_SANDBOX_TOOLS OFF)
-    UPDATE_CACHE_VARIABLE(SPC_BUILD_EXAMPLES_TOOLS OFF)
-    UPDATE_CACHE_VARIABLE(SPC_BUILD_TESTING_TOOLS OFF)
+#    UPDATE_CACHE_VARIABLE(SPC_BUILD_TOOLS OFF)
+#    UPDATE_CACHE_VARIABLE(SPC_BUILD_SANDBOX_TOOLS OFF)
+#    UPDATE_CACHE_VARIABLE(SPC_BUILD_EXAMPLES_TOOLS OFF)
+#    UPDATE_CACHE_VARIABLE(SPC_BUILD_TESTING_TOOLS OFF)
 endif(SPC_GFLAGS)
 
 
@@ -394,10 +399,12 @@ if(SPC_BUILD_TESTS)
 endif()
 
 
+
+if(SPC_USE_IWYU)
     find_program(iwyu_path NAMES include-what-you-use iwyu)
     if(NOT iwyu_path)
       message(FATAL_ERROR "Could not find the program include-what-you-use")
     endif()
-
+endif()
 
 

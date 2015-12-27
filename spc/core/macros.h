@@ -103,14 +103,14 @@ const std::uint32_t Version<TYPE>::version = \
 Version<TYPE>::registerVersion(); \
 } } // end namespaces
 
-#ifdef _WIN32
-	#ifdef SPC_LIB_EXPORTS
-		#define SPC_LIB_API __declspec(dllexport)
-	#else
-		#define SPC_LIB_API __declspec(dllimport)
-	#endif
-#else
-	#define SPC_LIB_API
-#endif
+//#ifdef _WIN32
+//	#ifdef SPC_LIB_EXPORTS
+//		#define SPC_LIB_API __declspec(dllexport)
+//	#else
+//		#define SPC_LIB_API __declspec(dllimport)
+//	#endif
+//#else
+//	#define SPC_LIB_API
+//#endif
 
 #endif // SPC_MACROS_H

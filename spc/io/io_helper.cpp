@@ -5,6 +5,7 @@
 #endif
 
 #include <spc/core/common.h>
+#include <boost/algorithm/string.hpp>
 
 #include <spc/io/element_io.h>
 //#include <spc/elements/PointCloudSpc.h>

@@ -2,6 +2,7 @@
 #ifndef SPC_COMMON_H
 #define SPC_COMMON_H
 
+
 #include <spc/core/macros.h>
 
 #ifdef SPC_WITH_PCL
