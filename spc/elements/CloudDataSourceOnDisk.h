@@ -30,9 +30,9 @@ public:
     std::string getExtension() const;
 
     spcSetMacro(Filename, filename_, std::string)
-        spcGetMacro(Filename, filename_, std::string)
+    spcGetMacro(Filename, filename_, std::string)
 
-            PointCloudBasePtr load() const;
+    PointCloudBasePtr load() const;
 
     NewSpcPointCloudPtr load2() const;
 

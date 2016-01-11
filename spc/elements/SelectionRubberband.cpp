@@ -70,7 +70,10 @@ bool SelectionRubberband::contains(const Vector3f& obj) const
 {
 
     if (proj_plane_->distanceTo(obj) > max_distance_)
+    {
+        LOG(WARNING) << "returning cause the point is outside";
         return false;
+    }
     else {
         Vector2f on_plane = (transform_ * obj).head(2);
         return isPointInPoly(on_plane, verts_2d_);

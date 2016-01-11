@@ -6,7 +6,11 @@ INCLUDE(cmake/UpdateCacheVariable.cmake) #courtesy of ceres-solver
 
 set(SPC_DEFINITIONS "") #my definitions
 
-#find_package(Qt5Widgets)
+
+
+
+
+
 
 # all libraries into a single dir for the build tree
 SET(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
@@ -16,6 +20,11 @@ LIST(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 if(UNIX)
     add_definitions(-fPIC)
+endif()
+
+# for some reason this is not defined in mingw, and I dont have the time to investigate
+if (MINGW)
+    add_definitions(-DM_LOG2E=1.4426950408889634074)
 endif()
 
 option(SPC_BUILD_WITH_CLANG "Build spc library using clang isntead of gcc." OFF)
@@ -100,6 +109,12 @@ set(CEREAL_IS_INTERNAL TRUE CACHE BOOL "if internal cereal is used")
 ############################################################################################################
 set(SPC_LIBRARIES CACHE INTERNAL "SPC libs" FORCE) #this will collect all the modular libs spc will create
 ############################################################################################################
+
+
+
+
+
+
 
 ############################# OPTIONS ######################################################################
 if (UNIX)

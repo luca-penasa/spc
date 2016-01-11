@@ -1,5 +1,8 @@
 #include <spc/elements/FieldProviderBase.h>
 #include <chrono>
+
+#include <spc/methods/ScalarFieldGaussianConvolver.h>
+
 using namespace spc;
 
 
