@@ -60,21 +60,21 @@ public:
         return polyline_rep_;
     }
 
-//    float getSquaredResidual() const
-//    {
-//        float sqres;
-//        StratigraphicPositionableElement::Ptr thisvert = vertices_.at(0);
-//        for(int i = 1 ; i < vertices_.size(); ++i)
-//        {
-//            StratigraphicPositionableElement::Ptr nextvert = vertices_.at(i);
-//            float diff = thisvert->getStratigraphicPosition() - nextvert->getStratigraphicPosition();
-//            sqres += diff*diff;
+    float getSquaredResidual() const
+    {
+        float sqres;
+        StratigraphicPositionableElement::Ptr thisvert = vertices_.at(0);
+        for(int i = 1 ; i < vertices_.size(); ++i)
+        {
+            StratigraphicPositionableElement::Ptr nextvert = vertices_.at(i);
+            float diff = thisvert->getStratigraphicPosition() - nextvert->getStratigraphicPosition();
+            sqres += diff*diff;
 
-//            thisvert = nextvert;
-//        }
+            thisvert = nextvert;
+        }
 
-//        return sqres;
-//    }
+        return sqres;
+    }
 
 protected:
     std::vector<StratigraphicPositionableElement::Ptr> vertices_;
