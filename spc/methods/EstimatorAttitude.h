@@ -79,10 +79,27 @@ public:
     /// please use getEstimatedAttitudes() for having an attitude for each input
     /// cloud.
     ///
-    Attitude getEstimatedAttitude()
+    Attitude getEstimatedAttitude(bool center = false)
     {
-        return model_->getAttitude();
+        Attitude out = model_->getAttitude();
+        if (center)
+        {
+            Eigen::Vector3f c = Eigen::Vector3f::Zero();
+            for (size_t i = 0; i < centroids_.size(); ++i)
+            {
+                c += centroids_.at(i);
+            }
+
+
+            c/= centroids_.size();
+
+            out.setPosition(c);
+        }
+
+        return out;
     }
+
+
 
     ///
     /// \brief getEstimatedAttitudes
@@ -182,6 +199,8 @@ public:
         start = model_->getAttitude().getUnitNormal();
         std::cout << "AFTER: " << start(0) << " " << start(1) << " " << start(2)
                   << "with info " << info << std::endl;
+
+
 
         return info;
     }

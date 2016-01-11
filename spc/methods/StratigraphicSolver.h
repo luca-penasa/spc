@@ -12,7 +12,7 @@ namespace spc
 {
 
 
-template <typename _Scalar, int NX = Dynamic, int NY = Dynamic> struct Functor
+template <typename _Scalar, int NX = Dynamic, int NY = Dynamic> struct FunctorSolver
 {
     typedef _Scalar Scalar;
     enum {
@@ -26,10 +26,10 @@ template <typename _Scalar, int NX = Dynamic, int NY = Dynamic> struct Functor
 
     const int m_inputs, m_values;
 
-    Functor() : m_inputs(InputsAtCompileTime), m_values(ValuesAtCompileTime)
+    FunctorSolver() : m_inputs(InputsAtCompileTime), m_values(ValuesAtCompileTime)
     {
     }
-    Functor(int inputs, int values) : m_inputs(inputs), m_values(values)
+    FunctorSolver(int inputs, int values) : m_inputs(inputs), m_values(values)
     {
     }
 
@@ -56,9 +56,9 @@ public:
     spcTypedefSharedPtrs(StratigraphicSolver);
 
 protected:
-    struct my_functor : Functor<float>
+    struct my_functor : FunctorSolver<float>
     {
-        my_functor(StratigraphicSolver * solver, int xsize, int ysize) : Functor<float>(xsize, ysize)
+        my_functor(StratigraphicSolver * solver, int xsize, int ysize) : FunctorSolver<float>(xsize, ysize)
         {
             solver_ = solver;
         }

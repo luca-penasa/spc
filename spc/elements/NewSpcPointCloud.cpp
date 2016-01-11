@@ -179,7 +179,7 @@ void NewSpcPointCloud::concatenate(const NewSpcPointCloud &other)
         FieldLabel lab = other.labels_.getLabel(i);
         if (!labels_.hasLabel(lab))
         {
-            LOG(WARNING) << "nothin done. some fields missing";
+            LOG(WARNING) << "nothing done. some fields were missing";
             return;
         }
     }

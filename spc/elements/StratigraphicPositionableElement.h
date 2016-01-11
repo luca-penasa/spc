@@ -86,7 +86,7 @@ public:
 
     float getStratigraphicPosition() const
     {
-        if (manual_ | strat_model_ == NULL)
+        if (manual_ | strat_model_ == nullptr)
             return stratigraphic_position_;
         else
             return strat_model_->predictStratigraphicPosition(this->getPosition());
@@ -106,7 +106,7 @@ public:
 
 
 private:
-    float stratigraphic_position_ = -1000;
+    float stratigraphic_position_ = 0;
 
     bool manual_ = true;
 

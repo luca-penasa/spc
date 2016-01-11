@@ -119,7 +119,12 @@ private:
     std::vector<FieldLabel> labels_;
 };
 
-class NewSpcPointCloud : public ElementBase {
+class SpcPointCloudBase: public ElementBase
+{
+
+};
+
+class NewSpcPointCloud : public SpcPointCloudBase {
 public:
     SPC_ELEMENT(NewSpcPointCloud)
     EXPOSE_TYPE
@@ -130,11 +135,8 @@ public:
     //! that will create bad stuff on reloading. (I verified this!!!)
     typedef Eigen::Matrix<ScalarT, Eigen::Dynamic, Eigen::Dynamic> MatrixT;
     typedef Eigen::Block<MatrixT> BlockT;
-
-    typedef Eigen::Hyperplane<ScalarT, 3> EigenPlaneT;
-
     typedef const Eigen::Block<const MatrixT> ConstBlockT;
-
+    typedef Eigen::Hyperplane<ScalarT, 3> EigenPlaneT;
     typedef NanoFlannEigenBlockAdaptor<MatrixT> SearcherT;
 
     NewSpcPointCloud();
