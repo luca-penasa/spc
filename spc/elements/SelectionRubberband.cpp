@@ -71,7 +71,7 @@ bool SelectionRubberband::contains(const Vector3f& obj) const
 
     if (proj_plane_->distanceTo(obj) > max_distance_)
     {
-        LOG(WARNING) << "returning cause the point is outside";
+//        LOG(WARNING) << "returning cause the point is outside";
         return false;
     }
     else {
@@ -89,7 +89,7 @@ void spc::SelectionRubberband::updateProjectionPlane()
     Vector3D n;
     n.normalFromBestFit(verts_);
     proj_plane_->setNormal(n.getNormal());
-    LOG(INFO) << "Prjection plane normal " << n.getNormal().transpose();
+    LOG(INFO) << "Projection plane normal " << n.getNormal().transpose();
 }
 
 void SelectionRubberband::updateTMatrix()

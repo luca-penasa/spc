@@ -22,11 +22,19 @@ Transform<float, 3, Affine, AutoAlign> Plane::get2DArbitraryRefSystem() const
     Vector3f second_ax = projectVectorOnPlane(proj_axis);
     second_ax.normalize();
 
+    Vector3f first_ax = n.cross(second_ax);
+
+    Transform<float, 3, Affine, AutoAlign> T;
+    T.matrix().col(0).head(3) = first_ax;
+    T.matrix().col(1).head(3) = second_ax;
+    T.matrix().col(2).head(3) = n;
+
+
     Translation3f translation(-getPosition());
 
     // create the actual rotation from two vectors
-    Eigen::Quaternion<float> Rot = Quaternionf().setFromTwoVectors(n, second_ax);
-    Transform<float, 3, Affine, AutoAlign> T = Rot * translation;
+//    Eigen::Quaternion<float> Rot = Quaternionf().setFromTwoVectors(n, second_ax);
+    T =T * translation;
 
     DLOG(INFO) << "Transform computed \n " << T.matrix();
 

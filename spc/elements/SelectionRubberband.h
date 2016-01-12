@@ -59,8 +59,8 @@ protected:
     void updateProjectionPlane();
 
     /// http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
-    inline bool isPointInPoly(const Eigen::Vector2f& P,
-                       const PolyLine2D& polyVertices) const
+    static inline bool isPointInPoly(const Eigen::Vector2f& P,
+                       const PolyLine2D& polyVertices)
     {
         int nvert = polyVertices.getNumberOfPoints();
         int i, j, c = 0;
