@@ -187,6 +187,13 @@ public:
 
     virtual bool getField(const std::string fieldname, Eigen::VectorXf& vector);
 
+    enum COLORS_ENUM {R, G, B, AVERAGE};
+
+
+    /////////////////////////////////// colors management ///////////////////////////
+    virtual bool getRGBField(const COLORS_ENUM &color, Eigen::VectorXf & vector, const std::vector<IndexT> & indices = std::vector<IndexT>()) const = 0;
+
+
 #ifdef SPC_WITH_PCL
     pcl::PointCloud<pcl::PointXYZ>
     applyTransform(const Eigen::Transform<float, 3, Eigen::Affine, Eigen::AutoAlign>& T);

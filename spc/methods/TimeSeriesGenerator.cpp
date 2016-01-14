@@ -13,7 +13,7 @@ namespace spc
 int TimeSeriesGenerator::compute()
 {
 
-    if (y_field_name_.empty()) {
+    if (y_field_name_.empty() && !colors_instead_of_field_) {
         LOG(ERROR) << "No scalar field name specified as values";
         return -1;
     }
@@ -92,6 +92,7 @@ int TimeSeriesGenerator::compute()
     }
     KernelSmoothing<ScalarT> ks(x_field_, y_field_);
     ks.setKernelSigma(bandwidth_);
+    ks.setMinNumberOfNeigbors(m_min_number_points);
 
     // and also init the output series
     if (min_x_ != max_x_)
@@ -124,6 +125,66 @@ void TimeSeriesGenerator::fillIndicesIfNeeded()
     if (indices_.size() == 0)
         for (int i = 0; i < in_cloud_->getNumberOfPoints(); ++i)
             indices_.push_back(i);
+}
+
+void TimeSeriesGenerator::extractFields()
+{
+
+    if (selection_ != NULL)
+    {
+        LOG(INFO) << "Extracting selection";
+        SelectionExtractor<Eigen::Vector3f, size_t> extractor;
+        extractor.setSelection(selection_);
+        extractor.setInputSet(in_cloud_);
+        extractor.compute();
+        indices_ = extractor.getInsideIds();
+
+        LOG(INFO) << "extracted the " << extractor.getPercentageInside() << "% of points";
+    }
+    else
+    {
+        LOG(INFO) << "no selection found";
+    }
+
+    fillIndicesIfNeeded();
+
+    if (do_autocalibration_)
+    {
+
+        LOG(INFO) << "going to compute an automatic calibration";
+        // get the fields used in the autocalibration process
+        if (in_cloud_->hasField(distance_field_name_))
+        {
+            in_cloud_->getField(distance_field_name_, indices_, distance_field_);
+            LOG(INFO) << "distance field found";
+        }
+
+        if (in_cloud_->hasField(angle_field_name_))
+        {
+            in_cloud_->getField(angle_field_name_, indices_, angle_field_);
+            LOG(INFO) << "angle field found";
+        }
+
+        LOG(INFO) << "fields for auto calibration extracted from cloud";
+
+    }
+
+
+
+    if (!x_field_name_.empty())
+        in_cloud_->getField(x_field_name_, indices_, x_field_);
+
+    else // we should have a stratigrahic model
+    {
+        x_field_ = evaluate_dynamic_scalar_field_generator<float,size_t>(in_cloud_,  model_, indices_);
+    }
+
+
+    // now the y field
+    if (colors_instead_of_field_) // using colors
+        in_cloud_->getRGBField(color_channel_,y_field_, indices_);
+    else
+        in_cloud_->getField(y_field_name_, indices_, y_field_);
 }
 
 } // end nspace

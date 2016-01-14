@@ -55,25 +55,63 @@ public:
         return transform_;
     }
 
-protected:
-    void updateProjectionPlane();
 
-    /// http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
     static inline bool isPointInPoly(const Eigen::Vector2f& P,
                        const PolyLine2D& polyVertices)
     {
         int nvert = polyVertices.getNumberOfPoints();
-        int i, j, c = 0;
+        int i, j = 0;
+        bool inside = false;
         for (i = 0, j = nvert - 1; i < nvert; j = i++) {
             if (((polyVertices.getPoint(i)(1) > P(1)) != (polyVertices.getPoint(j)(1) > P(1)))
                     && (P(0) < (polyVertices.getPoint(j)(0) - polyVertices.getPoint(i)(0))
                         * (P(1) - polyVertices.getPoint(i)(1))
                         / (polyVertices.getPoint(j)(1) - polyVertices.getPoint(i)(1))
                         + polyVertices.getPoint(i)(0)))
-                c = !c;
+                inside = !inside;
         }
-        return (bool)c;
+        return inside;
     }
+
+    //! from http://alienryderflex.com/polygon/ - we can implement their faster version with precompued vars
+    static inline bool isPointInPoly2(const Eigen::Vector2f& P,
+                                      const PolyLine2D& polyVertices) {
+
+        int   j=polyVertices.getNumberOfPoints()-1 ;
+        bool  oddNodes=false      ;
+
+        for (int i=0; i<polyVertices.getNumberOfPoints(); i++)
+        {
+            if ((polyVertices.getPoint(i)(1)< P(1) && polyVertices.getPoint(j)(1)>=P(1)
+                 ||   polyVertices.getPoint(j)(1)< P(1) && polyVertices.getPoint(i)(1)>=P(1))
+                    &&  (polyVertices.getPoint(i)(0)<=P(0) || polyVertices.getPoint(j)(0)<=P(0)))
+            {
+                oddNodes^=(polyVertices.getPoint(i)(0) + (P(1) - polyVertices.getPoint(i)(1)) /
+                           (polyVertices.getPoint(j)(1) - polyVertices.getPoint(i)(1)) *
+                           (polyVertices.getPoint(j)(0) - polyVertices.getPoint(i)(0)) < P(0));
+            }
+            j=i;
+        }
+
+        return oddNodes;
+    }
+
+
+protected:
+    void updateProjectionPlane();
+
+    /// http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+    /// int pnpoly(int nvert, float *vertx, float *verty, float testx, float testy)
+//{
+//  int i, j, c = 0;
+//  for (i = 0, j = nvert-1; i < nvert; j = i++) {
+//    if ( ((verty[i]>testy) != (verty[j]>testy)) &&
+//     (testx < (vertx[j]-vertx[i]) * (testy-verty[i]) / (verty[j]-verty[i]) + vertx[i]) )
+//       c = !c;
+//  }
+//  return c;
+//}
+
 
     void updateTMatrix();
 

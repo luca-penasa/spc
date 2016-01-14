@@ -57,9 +57,9 @@ int main(int argc, char ** argv)
 //    cloud.resize(10);
 //    LOG(INFO) << cloud.asEigenMatrix();
 
-    spc::PointCloudBase::Ptr out = cloud->extractIDS<spc::PointCloudPCL>(extractor.getInsideIds());
+//    spc::PointCloudBase::Ptr out = cloud->extractIDS<spc::PointCloudPCL>(extractor.getInsideIds());
 
-    pcl::io::savePCDFile("out.pcd", *out->getAsPclXyz());
+//    pcl::io::savePCDFile("out.pcd", *out->getAsPclXyz());
 
 
 

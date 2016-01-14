@@ -24,21 +24,20 @@ Transform<float, 3, Affine, AutoAlign> Plane::get2DArbitraryRefSystem() const
 
     Vector3f first_ax = n.cross(second_ax);
 
+    first_ax.normalize();
+
     Transform<float, 3, Affine, AutoAlign> T;
+//    T.matrix().fill(0);
     T.matrix().col(0).head(3) = first_ax;
     T.matrix().col(1).head(3) = second_ax;
     T.matrix().col(2).head(3) = n;
+//    T.matrix()(3, 3) = 1;
 
 
-    Translation3f translation(-getPosition());
+    DLOG(INFO) << "Transform computed \n " << T.inverse().matrix() << "normal was " << n;
 
-    // create the actual rotation from two vectors
-//    Eigen::Quaternion<float> Rot = Quaternionf().setFromTwoVectors(n, second_ax);
-    T =T * translation;
-
-    DLOG(INFO) << "Transform computed \n " << T.matrix();
-
-    return T;
+    DLOG(INFO) << "In fact T*n " <<T.inverse() *n;
+    return T.inverse();
 }
 
 } // end nspace

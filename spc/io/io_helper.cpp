@@ -273,35 +273,35 @@ PointCloudBase::Ptr loadPointCloud(const std::string &filename)
     }
 #ifdef SPC_WITH_PCL
 
-    else //// PCD FILES
-    {
-        // if we are here it must be a PCD file!
-        pcl::PCLPointCloud2::Ptr cloud_pcl (new pcl::PCLPointCloud2);
+//    else //// PCD FILES
+//    {
+//        // if we are here it must be a PCD file!
+//        pcl::PCLPointCloud2::Ptr cloud_pcl (new pcl::PCLPointCloud2);
 
-        Eigen::Vector4f origin;
-        Eigen::Quaternionf orientation;
-        int status = pcl::io::loadPCDFile(filename, *cloud_pcl, origin, orientation);
-        OrientedSensor sensor (origin, orientation);
+//        Eigen::Vector4f origin;
+//        Eigen::Quaternionf orientation;
+//        int status = pcl::io::loadPCDFile(filename, *cloud_pcl, origin, orientation);
+//        OrientedSensor sensor (origin, orientation);
 
-        DLOG(INFO) << "pcl cloud sucessfully loaded";
+//        DLOG(INFO) << "pcl cloud sucessfully loaded";
 
 
-        if (status < 0)
-        {
-            DLOG(WARNING)<< "Cannot deserialize the PCD file. Probably it is invalid.";
-            return NULL;
-        }
+//        if (status < 0)
+//        {
+//            DLOG(WARNING)<< "Cannot deserialize the PCD file. Probably it is invalid.";
+//            return NULL;
+//        }
 
-        else
-        {
+//        else
+//        {
 
-            PointCloudBase::Ptr out (new spc::PointCloudPCL(cloud_pcl));
-            out->setSensor(sensor);
-            return out;
-        }
-    }
+//            PointCloudBase::Ptr out (new spc::PointCloudPCL(cloud_pcl));
+//            out->setSensor(sensor);
+//            return out;
+//        }
+//    }
 #endif
-    return NULL; // this is just to be sure we return a null in case we are here (we should not) for some strange reason
+    return nullptr; // this is just to be sure we return a null in case we are here (we should not) for some strange reason
 }
 
 

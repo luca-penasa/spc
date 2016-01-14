@@ -81,6 +81,11 @@ public:
         sampling_step_ = sampling_step;
     }
 
+    void setMinNumberOfPoints(const size_t & min)
+    {
+        m_min_number_points = min;
+    }
+
     ///
     /// \brief setXFieldName
     /// \param field_name the field used as independen variable - x -
@@ -106,6 +111,14 @@ public:
     void setYFieldName(const std::string &field_name)
     {
         y_field_name_ = field_name;
+        colors_instead_of_field_ = false;
+    }
+
+
+    void setYFieldUseColor(const PointCloudBase::COLORS_ENUM & color)
+    {
+        color_channel_ = color;
+        colors_instead_of_field_ = true;
     }
 
     ///
@@ -161,60 +174,7 @@ public:
 protected:
     void fillIndicesIfNeeded();
 
-    void extractFields()
-    {
-
-        if (selection_ != NULL)
-        {
-            LOG(INFO) << "Extracting selection";
-            SelectionExtractor<Eigen::Vector3f, size_t> extractor;
-            extractor.setSelection(selection_);
-            extractor.setInputSet(in_cloud_);
-            extractor.compute();
-            indices_ = extractor.getInsideIds();
-
-            LOG(INFO) << "extracted the " << extractor.getPercentageInside() << "% of points";
-        }
-        else
-        {
-            LOG(INFO) << "no selection found";
-        }
-
-        fillIndicesIfNeeded();
-
-        if (do_autocalibration_)
-        {
-
-            LOG(INFO) << "going to compute an automatic calibration";
-            // get the fields used in the autocalibration process
-            if (in_cloud_->hasField(distance_field_name_))
-            {
-                in_cloud_->getField(distance_field_name_, indices_, distance_field_);
-                LOG(INFO) << "distance field found";
-            }
-
-            if (in_cloud_->hasField(angle_field_name_))
-            {
-                in_cloud_->getField(angle_field_name_, indices_, angle_field_);
-                LOG(INFO) << "angle field found";
-            }
-
-            LOG(INFO) << "fields for auto calibration extracted from cloud";
-
-        }
-
-
-
-        if (!x_field_name_.empty())
-            in_cloud_->getField(x_field_name_, indices_, x_field_);
-
-        else // we should have a stratigrahic model
-        {
-            x_field_ = evaluate_dynamic_scalar_field_generator<float,size_t>(in_cloud_,  model_, indices_);
-        }
-
-        in_cloud_->getField(y_field_name_, indices_, y_field_);
-    }
+    void extractFields();
 public:
     void setDoAutoCalibration(const bool & status)
     {
@@ -256,6 +216,10 @@ protected:
     int n_distance_splits_ = 4;
     int n_angle_splits_ = 4;
 
+
+    bool colors_instead_of_field_;
+    PointCloudBase::COLORS_ENUM color_channel_;
+
 private:
     ///
     /// \brief x_data field
@@ -268,7 +232,7 @@ private:
     VectorT y_field_;
 
 
-
+    size_t m_min_number_points = 0;
 
 
 };

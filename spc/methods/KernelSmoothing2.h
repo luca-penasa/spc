@@ -84,6 +84,10 @@ public:
         return 1;
     }
 
+    void setMinNumberOfNeigbors(const size_t &min)
+    {
+        min_number_of_neighbors = min;
+    }
 
 
 protected:
@@ -140,10 +144,10 @@ protected:
         MatchSetT matches;
         index_->radiusSearch(eval_point, search_support_squared_,  matches, pars);
 
-        //        LOG(INFO) << "N matches "<< matches.size();
-
-        if (matches.size() == 0)
+        if ((matches.size() == 0) || ((min_number_of_neighbors != 0) && (matches.size() < min_number_of_neighbors)))
             return std::numeric_limits<ScalarT>::quiet_NaN();
+
+
 
         ScalarT sum = 0;
         ScalarT val = 0;
@@ -174,6 +178,8 @@ protected:
     ScalarT search_support_squared_;
 
     ScalarT noncompact_support_multiplier_ = 4;
+
+    size_t min_number_of_neighbors = 0;
 };
 
 
