@@ -45,12 +45,20 @@ public:
     }
 
 
+    bool hasModel() const
+    {
+        if (strat_model_== nullptr)
+            return false;
+        else
+            return true;
+    }
+
 
     void modelFromParent()
     {
-        if (this->getParent()!=NULL && this->getParent()->isA(&spc::StratigraphicModelBase::Type))
+        if (this->getParent()!=nullptr && this->getParent()->isA(&spc::StratigraphicModelBase::Type))
         {
-            LOG(INFO) << "lading parent as model";
+            LOG(INFO) << "loading parent as model";
             strat_model_ = spcDynamicPointerCast<spc::StratigraphicModelBase>(this->getParent());
         }
     }
@@ -59,11 +67,10 @@ public:
 
     spcGetObjectMacro(StratigraphicModel, strat_model_, StratigraphicModelBase)
 
-
-    void setStratigraphicModel(StratigraphicModelBase::Ptr mod)
+    void setStratigraphicModel(const StratigraphicModelBase::Ptr & mod)
     {
-        if (mod == NULL)
-            this->setManual(true);
+        if (mod == nullptr)
+            return;
         else
             strat_model_ = mod;
     }
@@ -86,9 +93,13 @@ public:
 
     float getStratigraphicPosition() const
     {
-        if (manual_ | strat_model_ == nullptr)
+        if ( getManual() ) // in manual mode always give the user chosen sp
             return stratigraphic_position_;
-        else
+
+        else if (!hasModel()) // if we dont have a model just return nan;
+            return spcNANMacro;
+
+        else // we are not in manual and we have a strat model.
             return strat_model_->predictStratigraphicPosition(this->getPosition());
     }
 
@@ -110,7 +121,7 @@ private:
 
     bool manual_ = true;
 
-    StratigraphicModelBase::Ptr strat_model_;
+    StratigraphicModelBase::Ptr strat_model_ = nullptr;
 
 
 private:

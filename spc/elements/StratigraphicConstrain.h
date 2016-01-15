@@ -10,6 +10,8 @@
 #include <spc/elements/templated/PolyLine3D.h>
 
 #include <cereal/cereal.hpp>
+
+
 namespace spc
 {
 
@@ -36,6 +38,7 @@ public:
     {
         return vertices_.size();
     }
+
 
     void updatePointSetRepresentation()
     {
