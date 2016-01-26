@@ -103,18 +103,23 @@ public:
     Eigen::VectorXf getSquaredResiduals() const
     {
         Eigen::VectorXf out;
-        out.resize(constrains_.size() + positionables_.size());
+//        out.resize(constrains_.size() + positionables_.size());
 
-        size_t i = 0;
+//        size_t i = 0;
         for (spc::StratigraphicConstrain::Ptr c: constrains_)
         {
-            out(i++) = c->getSquaredResidual();
+            Eigen::VectorXf res = c->getSquaredResiduals();
+            out.resize(out.rows() + res.rows());
+            out.tail(res.rows()) = res;
         }
 
         for (StratigraphicPositionableElement::Ptr p: positionables_)
         {
-            out(i++) = p->getSquaredResidual();
+            out.resize(out.rows() + 1);
+            out.tail(1)(0) = p->getSquaredResidual();
         }
+
+        LOG(INFO) <<  "current residuals: \n" << out;
 
         return out;
     }
@@ -132,9 +137,9 @@ public:
         LOG(INFO) << "init x: " << init_x.transpose();
 
 
-        int outsize = constrains_.size() + positionables_.size();
+//        int outsize = constrains_.size() + positionables_.size();
 
-        my_functor Functor(this, init_x.rows(), outsize);
+        my_functor Functor(this, init_x.rows(), Eigen::Dynamic);
 
         Eigen::NumericalDiff<my_functor> numDiff(Functor);
         LevenbergMarquardt<Eigen::NumericalDiff<my_functor>, float> lm(numDiff);

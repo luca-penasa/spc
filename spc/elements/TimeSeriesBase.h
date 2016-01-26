@@ -4,10 +4,6 @@
 
 
 #include <spc/elements/ElementBase.h>
-//#include <cereal/types/vector.hpp>
-
-
-//#include <spc/elements/EigenTable.h>
 
 namespace spc
 {
@@ -18,12 +14,12 @@ class TimeSeriesBase : public ElementBase
 public:
     spcTypedefSharedPtrs(TimeSeriesBase)
     EXPOSE_TYPE
+
     TimeSeriesBase()
     {
     }
     typedef float ScalarT;
     typedef Eigen::Matrix<ScalarT, -1, 1> VectorT;
-
 
     void fill(const ScalarT value_ = std::numeric_limits<ScalarT>::quiet_NaN());
 
@@ -136,21 +132,13 @@ private:
         ar(cereal::base_class<spc::ElementBase>(this), CEREAL_NVP(y_));
     }
 
-    // ElementBase interface
 
-    // ISerializable interface
 public:
     virtual bool isAsciiSerializable() const override
     {
         return true;
     }
 
-    // ISerializable interface
-//public:
-//    virtual EigenTable::Ptr asEigenTable() const override;
-
-    // ISerializable interface
-public:
     virtual int toAsciiStream(std::ostream &stream) const override;
 };
 

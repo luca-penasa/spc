@@ -33,6 +33,7 @@
 // nan numbers
 #define spcNANMacro std::numeric_limits<float>::quiet_NaN()
 #define spcNANMacrod std::numeric_limits<double>::quiet_NaN()
+#define spcNANMacros std::numeric_limits<size_t>::quiet_NaN()
 
 // from vtkSetMacro :-)
 #define spcSetMacro(name, membername, type)                                    \

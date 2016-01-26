@@ -8,7 +8,7 @@
 namespace spc {
 /**
  * @brief The GeometricElement3DBase class is an element which has
- * three-d meanin and possibly representation in R^3
+ * three-d meaning and possibly a representation in R^3
  */
 class GeometricElement3DBase : public ElementBase {
 public:

@@ -95,7 +95,7 @@ public:
 
     float intensity_corrected = spcNANMacro; // we don't save this value
 
-    size_t cloud_id = spcNANMacro;  // we do not save this,
+    size_t cloud_id = spcNANMacros;  // we do not save this,
                                     // but the data holder can promply recompute it
     // when serializing
 

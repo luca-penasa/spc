@@ -63,20 +63,57 @@ public:
         return polyline_rep_;
     }
 
-    float getSquaredResidual() const
+    // each constrain may provide a variable number of residuals
+    // depending on the number of entities it is constraining
+    Eigen::VectorXf getSquaredResiduals() const
     {
-        float sqres;
-        StratigraphicPositionableElement::Ptr thisvert = vertices_.at(0);
-        for(int i = 1 ; i < vertices_.size(); ++i)
-        {
-            StratigraphicPositionableElement::Ptr nextvert = vertices_.at(i);
-            float diff = thisvert->getStratigraphicPosition() - nextvert->getStratigraphicPosition();
-            sqres += diff*diff;
 
-            thisvert = nextvert;
+        Eigen::VectorXf residuals;
+
+        std::map<spc::StratigraphicModelBase::Ptr, std::vector<spc::StratigraphicPositionableElement::Ptr>> per_model;
+
+        // we subdivide each vertex depending on the pertinent model
+        for(int i = 0 ; i < vertices_.size(); ++i)
+        {
+            StratigraphicPositionableElement::Ptr vert = vertices_.at(i);
+
+            StratigraphicModelBase::Ptr vert_model = vert->getStratigraphicModel();
+            per_model[vert_model].push_back(vert);
         }
 
-        return sqres;
+        size_t n_elements = per_model.size();
+        residuals.resize(n_elements - 1);
+
+        size_t counter = 0;
+        float previous_avg = 0;
+        for (std::pair<spc::StratigraphicModelBase::Ptr, std::vector<spc::StratigraphicPositionableElement::Ptr>>  group: per_model)
+        {
+            // for each vertex
+            float avg = 0;
+            for (StratigraphicPositionableElement::Ptr vert: group.second)
+            {
+                float mypos = vert->getStratigraphicPosition();
+                avg += mypos;
+            }
+
+            avg /= group.second.size(); // avg stratigraphic position for this group of vertexes
+
+            if (counter == 0)
+            {
+                counter++;
+                previous_avg = avg;
+            }
+            else
+            {
+                float diff = previous_avg - avg;
+                residuals(counter++) = diff*diff;
+            }
+        }
+
+
+
+
+        return residuals;
     }
 
 protected:
@@ -91,14 +128,14 @@ private:
 
 
 
-    template <class Archive> void load(Archive &ar)
+    template <class Archive> void load(Archive &ar, std::uint32_t const version)
     {
         ar(cereal::base_class<ElementBase>(this), CEREAL_NVP(vertices_));
         updatePointSetRepresentation();
 
     }
 
-    template <class Archive> void save(Archive &ar) const
+    template <class Archive> void save(Archive &ar, std::uint32_t const version) const
     {
         ar(cereal::base_class<ElementBase>(this), CEREAL_NVP(vertices_));
     }
@@ -108,5 +145,8 @@ private:
 
 
 }
+
+
+CEREAL_CLASS_VERSION(spc::StratigraphicConstrain, 1)
 
 #endif // STRATIGRAPHICLINK_H

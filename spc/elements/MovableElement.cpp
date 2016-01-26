@@ -17,7 +17,7 @@ DtiClassType Point3D::Type ("Point3D", &GeometricElement3DBase::Type);
 Point3D::Point3D()
 {
     position_.fill(spcNANMacro);
-    position_(3) = spcNANMacro;
+    position_(3) = 1;
 }
 
 Point3D::Point3D(const float x,

@@ -1,7 +1,5 @@
 #include <spc/elements/TimeSeriesBase.h>
-//#include <boost/random/random_device.hpp>
 
-//#include <boost/random/uniform_real_distribution.hpp>
 namespace spc
 {
 
@@ -26,23 +24,6 @@ int TimeSeriesBase::toAsciiStream(std::ostream &stream) const
     stream << mat;
 
 }
-
-//EigenTable::Ptr TimeSeriesBase::asEigenTable() const
-//{
-//    EigenTable::Ptr t(new EigenTable);
-
-//    VectorT x = this->getX();
-//    VectorT y = this->getY();
-
-//    t->resize(x.size());
-//    t->addNewComponent("x");
-//    t->addNewComponent("y");
-
-//    t->column("x") = x;
-//    t->column("y") = y;
-
-//    return t;
-//}
 
 
 }

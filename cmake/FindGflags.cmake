@@ -48,7 +48,7 @@
 #                           search for gflags includes, e.g: /timbuktu/include.
 # GFLAGS_LIBRARY_DIR_HINTS: List of additional directories in which to
 #                           search for gflags libraries, e.g: /timbuktu/lib.
-#
+#set(
 # The following variables are also defined by this module, but in line with
 # CMake recommended FindPackage() module style should NOT be referenced directly
 # by callers (use the plural variables detailed above instead).  These variables

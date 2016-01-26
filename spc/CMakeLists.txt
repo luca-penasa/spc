@@ -5,10 +5,7 @@
 
 ## these core modules are always build
 
-if(WIN32)
-#    add_definitions( -DSPC_LIB_EXPORTS )
-    add_definitions(-DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=TRUE)
-endif()
+
 
 option(SPC_MODULE_CERES_CALIBRATION "Build experimental code nonlinear intensity-calibration support" OFF)
 #option(SPC_MODULE_EXPERIMENTAL "Build experimental module." OFF)
