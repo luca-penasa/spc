@@ -45,8 +45,17 @@ private:
     template <class Archive>
     void serialize(Archive& ar, const std::uint32_t version)
     {
-        ar(cereal::base_class<PolyLine<float, 3>>(this));
-        ar(cereal::base_class<spc::GeometricElement3DBase>(this));
+        if (version == 0 ) // we migth still have older versions around
+        {
+            ar(data_);
+        }
+        else
+        {
+            ar(cereal::base_class<spc::GeometricElement3DBase>(this));
+            ar(cereal::base_class<PolyLine<float, 3>>(this));
+        }
+
+
     }
 };
 
@@ -56,6 +65,8 @@ private:
 //{
 
 //};
+
+//CEREAL_CLASS_VERSION(PolyLine3D, 2)
 
 
 

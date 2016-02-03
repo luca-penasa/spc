@@ -91,6 +91,8 @@ public:
         }
     }
 
+    float predictStratigraphicPoisition () const = 0;
+
     float getStratigraphicPosition() const
     {
         if ( getManual() ) // in manual mode always give the user chosen sp

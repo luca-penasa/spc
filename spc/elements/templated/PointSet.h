@@ -3,7 +3,7 @@
 #define POINTSET_H
 
 #include <spc/elements/templated/PointSetBase.h>
-
+#include <spc/core/spc_cereal.hpp>
 namespace spc
 {
 

@@ -6,7 +6,8 @@
 #include <spc/elements/PointCloudBase.h>
 
 namespace spc {
-//class PointCloudXYZBase;
+
+
 class Vector3D : public GeometricElement3DBase {
 
     SPC_ELEMENT(Vector3D)

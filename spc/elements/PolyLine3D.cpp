@@ -7,7 +7,8 @@ void PolyLine3D::applyTransform(const GeometricElement3DBase::TransformT &transf
 {
     for (int i = 0; i < this->getNumberOfPoints(); ++i)
     {
-        data_.row(i) = transform.dot(data.row(i));
+        Eigen::Vector3f p = data_.row(i);
+        data_.row(i) = transform * p;
     }
 }
 
