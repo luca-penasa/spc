@@ -55,6 +55,8 @@ public:
         return data_.rows();
     }
 
+
+
     virtual void addPoint(const PointT &p) override
     {
 

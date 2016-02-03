@@ -2,7 +2,7 @@
 #ifndef STRATIGRAPHICPOSITIONABLEELEMENT_H
 #define STRATIGRAPHICPOSITIONABLEELEMENT_H
 
-#include <spc/elements/MovableElement.h>
+#include <spc/elements/GeologicalElement.h>
 #include <spc/elements/StratigraphicModelBase.h>
 
 
@@ -10,18 +10,18 @@ namespace spc
 {
 
 
-class StratigraphicPositionableElement: public Point3D
+class StratigraphicPositionableElement: public GeologicalElement
 {
 public:
 
-    SPC_ELEMENT(StratigraphicPositionableElement)
+    spcTypedefSharedPtrs(StratigraphicPositionableElement)
     EXPOSE_TYPE
 
     StratigraphicPositionableElement()
     {
     }
 
-    StratigraphicPositionableElement(const StratigraphicPositionableElement & other): Point3D(other)
+    StratigraphicPositionableElement(const StratigraphicPositionableElement & other)
     {
         stratigraphic_position_ = other.stratigraphic_position_;
         manual_ = other.manual_;
@@ -34,15 +34,15 @@ public:
     }
 
 
-    StratigraphicPositionableElement(const float x, const float y, const float z): Point3D(x,y,z)
-    {
+//    StratigraphicPositionableElement(const float x, const float y, const float z): Point3D(x,y,z)
+//    {
 
-    }
+//    }
 
-    StratigraphicPositionableElement(const Eigen::Vector3f point): Point3D(point)
-    {
+//    StratigraphicPositionableElement(const Eigen::Vector3f point): Point3D(point)
+//    {
 
-    }
+//    }
 
 
     bool hasModel() const
@@ -86,12 +86,15 @@ public:
             return 0;
         else
         {
-            float out = strat_model_->predictStratigraphicPosition(this->getPosition()) - getStratigraphicPosition();
+            float out = predictStratigraphicPositionFromModel() - getStratigraphicPosition();
             return out*out;
         }
     }
 
-    float predictStratigraphicPoisition () const = 0;
+    /** a stratigraphic positionable element needs a method to predict its position
+     * in stratigraphy
+     **/
+    virtual float predictStratigraphicPositionFromModel () const = 0;
 
     float getStratigraphicPosition() const
     {
@@ -102,7 +105,7 @@ public:
             return spcNANMacro;
 
         else // we are not in manual and we have a strat model.
-            return strat_model_->predictStratigraphicPosition(this->getPosition());
+            return predictStratigraphicPositionFromModel();
     }
 
 
@@ -126,12 +129,13 @@ private:
     StratigraphicModelBase::Ptr strat_model_ = nullptr;
 
 
+
 private:
     friend class cereal::access;
 
     template <class Archive> void serialize(Archive &ar, const std::uint32_t version)
     {
-        ar(cereal::base_class<Point3D>(this),
+        ar(cereal::base_class<GeologicalElement>(this),
            CEREAL_NVP(stratigraphic_position_),
            CEREAL_NVP(strat_model_),
            CEREAL_NVP(manual_));

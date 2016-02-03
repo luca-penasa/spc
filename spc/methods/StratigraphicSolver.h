@@ -106,7 +106,7 @@ protected:
     std::vector<StratigraphicConstrain::Ptr> constrains_;
     std::vector<StratigraphicPositionableElement::Ptr> positionables_;
 
-    MODE mode_ = LINEAR;
+    MODE mode_ = NON_LINEAR;
 };
 }
 

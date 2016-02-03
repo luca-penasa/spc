@@ -3,6 +3,11 @@ namespace spc {
 
 DtiClassType Sample::Type("Sample", &StratigraphicPositionableElement::Type);
 
+void Sample::applyTransform(const GeometricElement3DBase::TransformT &transform)
+{
+    point_.applyTransform(transform);
+}
+
 } //end nspace
 
 #include <spc/core/spc_cereal.hpp>

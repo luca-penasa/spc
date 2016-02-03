@@ -78,9 +78,9 @@ void StratigraphicSolver::setInputFromChildren(ElementBase::Ptr root_element)
             if (p->getManual()) //! < only elements set to manual can provide a constrain
             {
                 positionables_.push_back(p);
+                LOG(INFO) << "found a positionable: " << el->getElementName();
             }
 
-            LOG(INFO) << "found a positionable: " << el->getElementName();
 
         }
 
