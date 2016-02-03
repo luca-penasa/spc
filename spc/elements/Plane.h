@@ -111,6 +111,10 @@ private:
     {
         ar(cereal::base_class<spc::Point3D>(this), CEREAL_NVP(normal_));
     }
+
+    // GeometricElement3DBase interface
+public:
+    virtual void applyTransform(const TransformT &transform) override;
 };
 
 // CEREAL_CLASS_VERSION( Plane, 1)

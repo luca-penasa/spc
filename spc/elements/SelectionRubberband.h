@@ -2,9 +2,9 @@
 #ifndef SPCPLANARSELECTION_H
 #define SPCPLANARSELECTION_H
 
-#include <spc/elements/ElementBase.h>
+#include <spc/elements/GeometricElement3DBase.h>
 #include <spc/elements/SelectionBase.h>
-#include <spc/elements/templated/PolyLine3D.h>
+#include <spc/elements/PolyLine3D.h>
 
 namespace spc {
 spcFwdDeclSharedPtr(StratigraphicModelBase)
@@ -13,7 +13,7 @@ spcFwdDeclSharedPtr(Plane)
 /// NOTE this class must be splitted in a filter and a serializable object
 /// it is not good that an object does operations on data. Filters do them.
 
-class SelectionRubberband : public ElementBase, public SelectionOfPointsBase {
+class SelectionRubberband : public GeometricElement3DBase, public SelectionOfPointsBase {
 public:
     SPC_ELEMENT(SelectionRubberband)
     EXPOSE_TYPE
@@ -154,7 +154,7 @@ private:
     template <class Archive>
     void load(Archive& ar, std::uint32_t const version)
     {
-        ar(cereal::base_class<spc::ElementBase>(this),
+        ar(cereal::base_class<spc::GeometricElement3DBase>(this),
             CEREAL_NVP(max_distance_),
             CEREAL_NVP(verts_),
             CEREAL_NVP(verts_2d_),
@@ -169,7 +169,7 @@ private:
     template <class Archive>
     void save(Archive& ar, std::uint32_t const version) const
     {
-        ar(cereal::base_class<spc::ElementBase>(this),
+        ar(cereal::base_class<spc::GeometricElement3DBase>(this),
             CEREAL_NVP(max_distance_),
             CEREAL_NVP(verts_),
             CEREAL_NVP(verts_2d_),
@@ -178,6 +178,10 @@ private:
         if (version >= 1)
             ar(CEREAL_NVP(model_));
     }
+
+    // GeometricElement3DBase interface
+    public:
+    virtual void applyTransform(const TransformT &transform) override;
 };
 
 } // end nspace

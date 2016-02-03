@@ -71,6 +71,7 @@ public:
         return out;
     }
 
+    //! FIND methods are recursive!
     std::vector<ElementBase::Ptr> findElementsThatAre(const DtiClassType* dti);
 
     std::vector<ElementBase::Ptr> findElementsInParents(const DtiClassType* dti) const;

@@ -113,4 +113,9 @@ if(SPC_USE_IWYU)
     endif()
 endif()
 
+OPTION(SPC_OSGTEST "Compile test application for point cloud visualization" ON)
+if(SPC_OSGTEST)
+    add_subdirectory(osg_test)
+endif()
+
 INCLUDE(PackageExport.cmake)

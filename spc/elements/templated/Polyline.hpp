@@ -1,8 +1,9 @@
 #pragma once
-#ifndef POLYLINE3D_H
-#define POLYLINE3D_H
+#ifndef POLYLINE_HPP
+#define POLYLINE_HPP
 
 #include <spc/elements/templated/PointSet.h>
+
 
 
 
@@ -34,9 +35,5 @@ public:
 
 
 
-typedef  PolyLine<float, 3> PolyLine3D;
-typedef PolyLine<float, 2> PolyLine2D;
-
-
 }
-#endif // POLYLINE3D_H
+#endif 

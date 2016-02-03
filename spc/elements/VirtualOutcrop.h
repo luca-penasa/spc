@@ -2,7 +2,6 @@
 #ifndef VIRTUALOUTCROP_H
 #define VIRTUALOUTCROP_H
 #include <spc/elements/ElementBase.h>
-#include <spc/methods/StratigraphicSolver.h>
 namespace spc
 {
 
@@ -26,28 +25,7 @@ public:
 
     }
 
-    void solveStratigraphy()
-    {
-        LOG(INFO) << "solve called!";
-
-       if ( findElementsThatAre(&spc::StratigraphicModelBase::Type).size() == 0)
-       {
-           LOG(WARNING) << "tried to solve stratigraphic constrains but no models are present in this outcrop";
-           return;
-       }
-
-        solver_.clear();
-        for (spc::ElementBase::Ptr el: findElementsThatAre(&spc::StratigraphicModelBase::Type))
-        {
-            solver_.addStratigraphicModel(spcDynamicPointerCast<spc::StratigraphicModelBase>(el));
-            solver_.extractInputFromChildrens();
-        }
-
-        solver_.solve();
-
-
-        LOG(INFO)<< "solve done";
-    }
+    void solveStratigraphy();
 
 
 
@@ -60,8 +38,8 @@ private:
     }
 
 
-protected:
-    spc::StratigraphicSolver solver_;
+
+
 
 };
 

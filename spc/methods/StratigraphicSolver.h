@@ -8,12 +8,10 @@
 #include <spc/core/spc_eigen.h>
 #include <unsupported/Eigen/NonLinearOptimization>
 #include <unsupported/Eigen/NumericalDiff>
-namespace spc
-{
+namespace spc {
 
-
-template <typename _Scalar, int NX = Dynamic, int NY = Dynamic> struct FunctorSolver
-{
+template <typename _Scalar, int NX = Dynamic, int NY = Dynamic>
+struct FunctorSolver {
     typedef _Scalar Scalar;
     enum {
         InputsAtCompileTime = NX,
@@ -21,15 +19,18 @@ template <typename _Scalar, int NX = Dynamic, int NY = Dynamic> struct FunctorSo
     };
     typedef Eigen::Matrix<Scalar, InputsAtCompileTime, 1> InputType;
     typedef Eigen::Matrix<Scalar, ValuesAtCompileTime, 1> ValueType;
-    typedef Eigen::Matrix
-    <Scalar, ValuesAtCompileTime, InputsAtCompileTime> JacobianType;
+    typedef Eigen::Matrix<Scalar, ValuesAtCompileTime, InputsAtCompileTime> JacobianType;
 
     const int m_inputs, m_values;
 
-    FunctorSolver() : m_inputs(InputsAtCompileTime), m_values(ValuesAtCompileTime)
+    FunctorSolver()
+        : m_inputs(InputsAtCompileTime)
+        , m_values(ValuesAtCompileTime)
     {
     }
-    FunctorSolver(int inputs, int values) : m_inputs(inputs), m_values(values)
+    FunctorSolver(int inputs, int values)
+        : m_inputs(inputs)
+        , m_values(values)
     {
     }
 
@@ -43,181 +44,70 @@ template <typename _Scalar, int NX = Dynamic, int NY = Dynamic> struct FunctorSo
     }
 };
 
-
-
-
-
-
-
-class StratigraphicSolver
-{
+class StratigraphicSolver {
 public:
+    spcTypedefSharedPtrs(StratigraphicSolver)
 
-    spcTypedefSharedPtrs(StratigraphicSolver);
+        enum MODE { NON_LINEAR = 0,
+            LINEAR };
 
 protected:
-    struct my_functor : FunctorSolver<float>
-    {
-        my_functor(StratigraphicSolver * solver, int xsize, int ysize) : FunctorSolver<float>(xsize, ysize)
+    struct my_functor : FunctorSolver<float> {
+        my_functor(StratigraphicSolver* solver, int xsize, int ysize)
+            : FunctorSolver<float>(xsize, ysize)
         {
             solver_ = solver;
         }
 
-        int operator()(const VectorXf &x, VectorXf &fvec) const
+        int operator()(const VectorXf& x, VectorXf& fvec) const
         {
-            LOG(INFO)<< "CALLED functor, new pars: " << x.transpose();
+            LOG(INFO) << "CALLED functor, new pars: " << x.transpose();
 
             int counter = 0;
-            for (spc::StratigraphicModelBase::Ptr mod: solver_->models_)
-            {
-
+            for (spc::StratigraphicModelBase::Ptr mod : solver_->models_) {
                 mod->setStratigraphicShift(x(counter++));
             }
 
-
             fvec = solver_->getSquaredResiduals();
 
-            LOG(INFO)<< "CALLED functor, residuals: " << fvec.transpose();
+            LOG(INFO) << "CALLED functor, residuals: " << fvec.transpose();
 
             return 0;
         }
 
         /// a pointer to the estimator itself
-        StratigraphicSolver * solver_;
+        StratigraphicSolver* solver_;
     };
 
 public:
-
     StratigraphicSolver()
     {
     }
 
+    /**
+     * @brief reset restores the StratigraphicSolver as new
+     */
+    void reset();
 
-    void clear()
-    {
-        models_.clear();
-        constrains_.clear();
-        positionables_.clear();
-    }
+    Eigen::VectorXf getSquaredResiduals() const;
 
-    Eigen::VectorXf getSquaredResiduals() const
-    {
-        Eigen::VectorXf out;
-//        out.resize(constrains_.size() + positionables_.size());
+    void solve();
 
-//        size_t i = 0;
-        for (spc::StratigraphicConstrain::Ptr c: constrains_)
-        {
-            Eigen::VectorXf res = c->getSquaredResiduals();
-            out.resize(out.rows() + res.rows());
-            out.tail(res.rows()) = res;
-        }
+    spcSetGetMacro(Mode, mode_, MODE);
 
-        for (StratigraphicPositionableElement::Ptr p: positionables_)
-        {
-            out.resize(out.rows() + 1);
-            out.tail(1)(0) = p->getSquaredResidual();
-        }
-
-        LOG(INFO) <<  "current residuals: \n" << out;
-
-        return out;
-    }
-
-
-    void solve()
-    {
-        VectorXf init_x(models_.size());
-
-        int counter = 0;
-        for (spc::StratigraphicModelBase::Ptr mod: models_)
-        {
-               init_x(counter++) = mod->getStratigraphicShift();
-        }
-        LOG(INFO) << "init x: " << init_x.transpose();
-
-
-//        int outsize = constrains_.size() + positionables_.size();
-
-        my_functor Functor(this, init_x.rows(), Eigen::Dynamic);
-
-        Eigen::NumericalDiff<my_functor> numDiff(Functor);
-        LevenbergMarquardt<Eigen::NumericalDiff<my_functor>, float> lm(numDiff);
-
-        LOG(INFO) << "lev marq initialized";
-
-
-        LOG(INFO) << "starting minimization";
-        int info = lm.minimize(init_x);
-
-        LOG(INFO) << "Done. Exit status: " << info;
-    }
-
-
-    void addStratigraphicModel(spc::StratigraphicModelBase::Ptr model)
-    {
-        models_.push_back(model);
-    }
-
-    void extractInputFromChildrens()
-    {
-
-        LOG(INFO) << "going to extract inputs from childs";
-        constrains_.clear();
-        positionables_.clear();
-
-        for(StratigraphicModelBase::Ptr mod: models_)
-        {
-            std::vector<spc::ElementBase::Ptr> pos = mod->findElementsThatAre(&spc::StratigraphicPositionableElement::Type);
-
-            for (spc::ElementBase::Ptr el: pos)
-            {
-                spc::StratigraphicPositionableElement::Ptr p = spcDynamicPointerCast<spc::StratigraphicPositionableElement>(el);
-                if (p->getManual()) //! < only elements set to manual can provide a constrain
-                {
-                    positionables_.push_back(p);
-                }
-
-                LOG(INFO) << "found a positionable: " << el->getElementName();
-
-            }
-
-            std::vector<spc::ElementBase::Ptr> constrains = mod->findElementsThatAre(&spc::StratigraphicConstrain::Type);
-
-
-            for (ElementBase::Ptr el: constrains)
-            {
-                spc::StratigraphicConstrain::Ptr p = spcDynamicPointerCast<StratigraphicConstrain>(el);
-                constrains_.push_back(p);
-
-                LOG(INFO) << "found a constrain: " << el->getElementName();
-
-            }
-
-
-        }
-
-        LOG(INFO) << "extraction done ";
-
-    }
-
-
-
-
+    void setInputFromChildren(ElementBase::Ptr root_element);
 
 protected:
+    void solve_nonlinear();
+
+    void solve_linear();
+
     std::vector<StratigraphicModelBase::Ptr> models_;
     std::vector<StratigraphicConstrain::Ptr> constrains_;
     std::vector<StratigraphicPositionableElement::Ptr> positionables_;
 
-
-
-
-
-
-
+    MODE mode_ = LINEAR;
 };
-
 }
 
 #endif // STRATIGRAPHICSOLVER_H

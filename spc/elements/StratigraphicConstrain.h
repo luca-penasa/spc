@@ -7,7 +7,7 @@
 
 #include <spc/elements/StratigraphicPositionableElement.h>
 
-#include <spc/elements/templated/PolyLine3D.h>
+#include <spc/elements/PolyLine3D.h>
 
 #include <cereal/cereal.hpp>
 
@@ -84,8 +84,10 @@ public:
         size_t n_elements = per_model.size();
         residuals.resize(n_elements - 1);
 
+        LOG(INFO) << "number of models for this constrain: " << n_elements;
+
         size_t counter = 0;
-        float previous_avg = 0;
+        float previous_avg = spcNANMacro;
         for (std::pair<spc::StratigraphicModelBase::Ptr, std::vector<spc::StratigraphicPositionableElement::Ptr>>  group: per_model)
         {
             // for each vertex
@@ -93,22 +95,34 @@ public:
             for (StratigraphicPositionableElement::Ptr vert: group.second)
             {
                 float mypos = vert->getStratigraphicPosition();
+                LOG(INFO) << "position of this vertex " << mypos;
                 avg += mypos;
             }
 
             avg /= group.second.size(); // avg stratigraphic position for this group of vertexes
 
+            LOG(INFO) << "avg position for this group " << avg;
+
             if (counter == 0)
             {
                 counter++;
                 previous_avg = avg;
+
+                LOG(INFO) << "setted previou_avg as " << previous_avg;
             }
             else
             {
                 float diff = previous_avg - avg;
-                residuals(counter++) = diff*diff;
+
+                LOG(INFO) << "diff is " << diff << " with avg " << avg << " and previous_avg " << previous_avg ;
+                residuals(counter - 1) = diff*diff;
+                counter++;
+
+
             }
         }
+
+        LOG(INFO) << "residuals for this constrain: " << residuals.transpose();
 
 
 

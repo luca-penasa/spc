@@ -34,7 +34,7 @@ public:
 
     float predictStratigraphicPosition(const Eigen::Vector3f & point) const override
     {
-        return this->getScalarFieldValue(point);
+        return this->getScalarFieldValue(point) ;
     }
 
     /// inherited from StratigraphicModelBase

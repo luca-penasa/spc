@@ -44,3 +44,11 @@ Transform<float, 3, Affine, AutoAlign> Plane::get2DArbitraryRefSystem() const
 
 #include <spc/core/spc_cereal.hpp>
 SPC_CEREAL_REGISTER_TYPE(spc::Plane);
+
+
+void spc::Plane::applyTransform(const spc::GeometricElement3DBase::TransformT &transform)
+{
+
+    spc::Point3D::applyTransform(transform);
+    this->normal_.applyTransform(transform);
+}

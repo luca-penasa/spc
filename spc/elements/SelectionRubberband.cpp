@@ -21,7 +21,7 @@
 
 namespace spc {
 
-DtiClassType SelectionRubberband::Type("SelectionRubberband", &ElementBase::Type);
+DtiClassType SelectionRubberband::Type("SelectionRubberband", &GeometricElement3DBase::Type);
 
 SelectionRubberband::SelectionRubberband()
     : proj_plane_(new Plane)
@@ -30,7 +30,7 @@ SelectionRubberband::SelectionRubberband()
 }
 
 SelectionRubberband::SelectionRubberband(const SelectionRubberband& other)
-    : ElementBase(other)
+    : GeometricElement3DBase(other)
     , SelectionOfPointsBase(other)
     , proj_plane_(new Plane)
 {
@@ -133,3 +133,11 @@ StratigraphicModelBasePtr SelectionRubberband::getLinkedStratigraphicModel() con
 } // end nspace
 
 SPC_CEREAL_REGISTER_TYPE(spc::SelectionRubberband)
+
+
+void spc::SelectionRubberband::applyTransform(const GeometricElement3DBase::TransformT &transform)
+{
+    verts_ = verts_.transform<spc::PolyLine3D>(transform);
+    updateProjectionPlane();
+    updatePolyVertices();
+}
