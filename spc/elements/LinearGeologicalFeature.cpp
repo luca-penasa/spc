@@ -22,8 +22,10 @@ float LinearGeologicalFeature::predictStratigraphicPositionFromModel() const
     for (int i =0; i < polyline_.getNumberOfPoints(); ++i)
     {
         av += this->getStratigraphicModel()->predictStratigraphicPosition(polyline_.getPoint(i));
-        av /= polyline_.getNumberOfPoints();
     }
+
+    av /= polyline_.getNumberOfPoints();
+
 
     return av;
 
@@ -33,6 +35,8 @@ void LinearGeologicalFeature::applyTransform(const GeometricElement3DBase::Trans
 {
     polyline_.applyTransform(transform);
 }
+
+
 
 }//end nspace
 

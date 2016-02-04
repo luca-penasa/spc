@@ -136,7 +136,114 @@ void StratigraphicSolver::solve_nonlinear()
 
 void StratigraphicSolver::solve_linear()
 {
+    Eigen::MatrixXf A;
+    Eigen::VectorXf b;
 
+    // we are assuming the constrained models are in models_
+    size_t n_models = models_.size();
+    size_t n_constr = constrains_.size();
+    size_t n_pos = positionables_.size();
+
+    std::map<spc::StratigraphicModelBase::Ptr, size_t> ptr_to_id_map;
+
+    size_t count = 0;
+    for (auto mod: models_)
+        ptr_to_id_map[mod] = count++;
+
+    A.resize(n_pos + n_constr, n_models);
+    b.resize(n_models);
+
+    A.fill(0.0);
+
+
+    size_t row_counter = 0;
+
+    for (spc::StratigraphicPositionableElement::Ptr pos: positionables_)
+    {
+
+        float ps = pos->predictStratigraphicPositionFromModel();
+
+        spc::StratigraphicModelBase::Ptr mymodel = pos->getStratigraphicModel();
+        float shift = mymodel->getStratigraphicShift();
+
+        float d = ps - shift;
+
+        size_t id = ptr_to_id_map.at(mymodel);
+
+        A(row_counter, id) = 1;
+        b(row_counter) = -d;
+
+        row_counter++;
+
+    }
+
+
+    for (spc::StratigraphicConstrain::Ptr cons: constrains_)
+    {
+        spc::StratigraphicPositionableElement::Ptr pos1 = cons->getVertices().at(0);
+        spc::StratigraphicPositionableElement::Ptr pos2 = cons->getVertices().at(1);
+
+        float sp1 = pos1->getStratigraphicPosition();
+        float sp2 = pos2->getStratigraphicPosition();
+
+        spc::StratigraphicModelBase::Ptr model1 = pos1->getStratigraphicModel();
+        spc::StratigraphicModelBase::Ptr model2 = pos2->getStratigraphicModel();
+
+
+        float shift1 = model1->getStratigraphicShift();
+        float shift2 = model2->getStratigraphicShift();
+
+        float d1 = sp1 - shift1;
+        float d2 = sp2 - shift2;
+
+        size_t id1 = ptr_to_id_map.at(model1);
+        size_t id2 = ptr_to_id_map.at(model2);
+
+        A(row_counter, id1) = 1;
+        A(row_counter, id2) = -1;
+
+        b(row_counter) = d2 - d1;
+
+        row_counter++;
+
+
+    }
+
+
+    LOG(INFO) << "matrix a \n" << A;
+
+    LOG(INFO) << "vector b \n" << b.transpose();
+
+    VectorXf solution;
+    solution.fill(spcNANMacro);
+
+    if (A.rows() == A.cols())
+    {
+        LOG(INFO) << "Problem looks perfectly constrained. Goind to find an exact solution.";
+        solution = A.colPivHouseholderQr().solve(b);
+    }
+    else if (A.rows() < A.cols())
+    {
+        LOG(ERROR) << "Cannot find a solution! The problem is under-constrained \n"
+                      "Please consider adding more constrains to your outcrop";
+    }
+    else if (A.rows() > A.cols())
+    {
+        LOG(WARNING) << "The problem is over-constrained. This might be or not an intended behavior"
+                        "Consider reducing the number of constrains";
+
+        solution = A.jacobiSvd(ComputeThinU | ComputeThinV).solve(b);
+    }
+
+    LOG(INFO) << "solution " << solution.transpose();
+
+
+    for (int i = 0; i < solution.rows(); ++i)
+    {
+
+        spc::StratigraphicModelBase::Ptr mod = models_.at(i);
+        mod->setStratigraphicShift(solution(i));
+    }
 }
 
 

@@ -174,7 +174,7 @@ public:
 protected:
     void fillIndicesIfNeeded();
 
-    void extractFields();
+    int extractFields();
 public:
     void setDoAutoCalibration(const bool & status)
     {

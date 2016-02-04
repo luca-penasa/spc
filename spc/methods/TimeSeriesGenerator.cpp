@@ -24,7 +24,12 @@ int TimeSeriesGenerator::compute()
     }
 
     // extract fields before to check
-    extractFields();
+    if (extractFields() != 1)
+    {
+        LOG(INFO) << "Error in fields extraction. Maybe we did not found any point in the selection? ";
+        return -1;
+    }
+
 
     // now check
     if ((!model_) && (x_field_.empty() || y_field_.empty())) {
@@ -127,7 +132,7 @@ void TimeSeriesGenerator::fillIndicesIfNeeded()
             indices_.push_back(i);
 }
 
-void TimeSeriesGenerator::extractFields()
+int TimeSeriesGenerator::extractFields()
 {
 
     if (selection_ != NULL)
@@ -138,6 +143,10 @@ void TimeSeriesGenerator::extractFields()
         extractor.setInputSet(in_cloud_);
         extractor.compute();
         indices_ = extractor.getInsideIds();
+        if (indices_.size() < 10)
+        {
+            return -1;
+        }
 
         LOG(INFO) << "extracted the " << extractor.getPercentageInside() << "% of points";
     }
@@ -185,6 +194,10 @@ void TimeSeriesGenerator::extractFields()
         in_cloud_->getRGBField(color_channel_,y_field_, indices_);
     else
         in_cloud_->getField(y_field_name_, indices_, y_field_);
+
+
+
+    return 1;
 }
 
 } // end nspace
