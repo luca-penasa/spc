@@ -18,6 +18,10 @@ public:
     TimeSeriesBase()
     {
     }
+
+    TimeSeriesBase(const TimeSeriesBase & other);
+
+
     typedef float ScalarT;
     typedef Eigen::Matrix<ScalarT, -1, 1> VectorT;
 

@@ -5,10 +5,11 @@ namespace spc
 DtiClassType TimeSeriesEquallySpaced::Type ("TimeSeriesEquallySpaced", &TimeSeriesBase::Type);
 
 
-TimeSeriesEquallySpaced::TimeSeriesEquallySpaced(const TimeSeriesEquallySpaced &other)
+TimeSeriesEquallySpaced::TimeSeriesEquallySpaced(const TimeSeriesEquallySpaced &other): TimeSeriesBase (other)
 {
     x_start = other.x_start;
     x_step = other.x_step;
+//    y_ = other.y_;
 }
 
 TimeSeriesEquallySpaced::TimeSeriesEquallySpaced(std::vector<ScalarT> y_, ScalarT x_step_,

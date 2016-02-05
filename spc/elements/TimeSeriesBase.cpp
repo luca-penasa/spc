@@ -25,6 +25,11 @@ int TimeSeriesBase::toAsciiStream(std::ostream &stream) const
 
 }
 
+TimeSeriesBase::TimeSeriesBase(const TimeSeriesBase &other)
+{
+    y_ = other.y_;
+}
+
 
 }
 

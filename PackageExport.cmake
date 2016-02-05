@@ -24,6 +24,8 @@ endforeach()
 # The interesting stuff goes here
 # ===============================
 
+
+#list(APPEND SPC_LIBRARIES ${AQUILA_LIBRARIES})
 # Add all targets to the build-tree export set - also binaries target should be added
 export(TARGETS ${SPC_LIBRARIES} FILE "${PROJECT_BINARY_DIR}/SPCTargets.cmake")
 
