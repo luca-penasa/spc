@@ -48,8 +48,9 @@ class StratigraphicSolver {
 public:
     spcTypedefSharedPtrs(StratigraphicSolver)
 
-        enum MODE { NON_LINEAR = 0,
-            LINEAR };
+    enum MODE { NON_LINEAR = 0,
+                LINEAR,
+                MIXED};
 
 protected:
     struct my_functor : FunctorSolver<float> {
@@ -64,8 +65,21 @@ protected:
             LOG(INFO) << "CALLED functor, new pars: " << x.transpose();
 
             int counter = 0;
-            for (spc::StratigraphicModelBase::Ptr mod : solver_->models_) {
+            for (spc::StratigraphicModelBase::Ptr mod : solver_->models_)
+
+
+            {
+                if (!mod->getIsFreezed())
+                {
+
+
                 mod->setStratigraphicShift(x(counter++));
+
+
+                    if ((mod->getIsElastic()) & (solver_->solve_elastic_))
+                        mod->setElasticParameter(x(counter++));
+
+                }
             }
 
             fvec = solver_->getSquaredResiduals();
@@ -102,11 +116,19 @@ protected:
 
     void solve_linear();
 
+    void solve_mixed();
+
+    /**
+     * @brief models_ containes all the involved models, also freezed models!
+     */
     std::vector<StratigraphicModelBase::Ptr> models_;
     std::vector<StratigraphicConstrain::Ptr> constrains_;
     std::vector<StratigraphicPositionableElement::Ptr> positionables_;
 
-    MODE mode_ = LINEAR;
+    MODE mode_ = MIXED;
+
+    // thi clearly has effect in mixed or non-linear modes
+    bool solve_elastic_ = true;
 };
 }
 

@@ -129,3 +129,7 @@ ENDIF (SPC_MINIGLOG)
 
 
 INCLUDE_DIRECTORIES(${GLOG_INCLUDE_DIRS})
+
+
+
+add_subdirectory(aquila)

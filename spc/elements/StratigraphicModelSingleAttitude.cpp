@@ -21,15 +21,19 @@ StratigraphicModelSingleAttitude::StratigraphicModelSingleAttitude(const Attitud
     attitude_ = new  Attitude(attitude);
 }
 
-//StratigraphicModelSingleAttitude::StratigraphicModelSingleAttitude(const Attitude::Ptr attitude)
-//{
-
-//    attitude_ = new Attitude(*attitude);
-//}
 
 float StratigraphicModelSingleAttitude::getScalarFieldValue(const Vector3f &point) const
 {
-    return attitude_->distanceTo(point) + getStratigraphicShift();
+    if (this->getIsElastic())
+    {
+        return (attitude_->distanceTo(point) * elastic_parameter_ + getStratigraphicShift()) ;
+    }
+    else
+    {
+        return attitude_->distanceTo(point) + getStratigraphicShift();
+    }
+
+
 }
 
 Vector3f StratigraphicModelSingleAttitude::getScalarFieldGradient(const Vector3f
