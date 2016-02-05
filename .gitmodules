@@ -10,9 +10,6 @@
 [submodule "submodules/googletest"]
 	path = submodules/googletest
 	url = git@github.com:google/googletest.git
-[submodule "aquila"]
-	path = aquila
-	url = git@github.com:zsiciarz/aquila.git
 [submodule "submodules/aquila"]
 	path = submodules/aquila
 	url = git@github.com:zsiciarz/aquila.git
