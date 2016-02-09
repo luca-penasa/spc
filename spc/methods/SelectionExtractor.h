@@ -46,7 +46,7 @@ public:
         }
 
 //#ifdef USE_OPENMP
-//#pragma omp parallel for private(selection_)
+//#pragma omp parallel for
 //#endif
         // not parallelized for now cause we does no know beforehand the number of inside points
         for (size_t i= 0; i <(size_t) in_set_->getNumberOfPoints(); ++i)

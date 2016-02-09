@@ -2,7 +2,7 @@
 #include <chrono>
 
 #include <spc/methods/ScalarFieldGaussianConvolver.h>
-#include <spc/elements/templated/PolyLine3D.h>
+#include <spc/elements/PolyLine3D.h>
 
 #include <spc/elements/SelectionRubberband.h>
 using namespace spc;

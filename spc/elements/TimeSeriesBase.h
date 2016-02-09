@@ -40,6 +40,17 @@ public:
         return y_.size();
     }
 
+
+    ScalarT getMean() const
+    {
+        return y_.mean();
+    }
+
+    void setMean(const ScalarT & value)
+    {
+        y_ = y_.array() - getMean() + value;
+    }
+
     ///
     /// \brief getX positions
     /// \return a vector of x positions

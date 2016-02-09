@@ -84,6 +84,11 @@ EXPOSE_TYPE
         return x_start;
     }
 
+    ScalarT getSamplingFrequency() const
+    {
+        return 1/getXStep();
+    }
+
     ///
     /// \brief getXStep
     /// \return the sampling step of the time series
