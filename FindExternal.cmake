@@ -132,10 +132,10 @@ INCLUDE_DIRECTORIES(${GLOG_INCLUDE_DIRS})
 
 
 
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/submodules/aquila")
-include_directories("${CMAKE_CURRENT_SOURCE_DIR}/submodules/aquila")
+#add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/submodules/aquila")
+#include_directories("${CMAKE_CURRENT_SOURCE_DIR}/submodules/aquila")
 
-set(AQUILA_LIBRARIES Aquila Ooura_fft)
+#set(AQUILA_LIBRARIES Aquila Ooura_fft)
 
-install(TARGETS ${AQUILA_LIRARIES} EXPORT Aquila RUNTIME DESTINATION "${SPC_INSTALL_LIB_DIR}" COMPONENT lib)
+#install(TARGETS ${AQUILA_LIRARIES} EXPORT Aquila RUNTIME DESTINATION "${SPC_INSTALL_LIB_DIR}" COMPONENT lib)
 

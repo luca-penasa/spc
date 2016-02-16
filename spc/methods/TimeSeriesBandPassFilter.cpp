@@ -1,7 +1,7 @@
 #include "TimeSeriesBandPassFilter.h"
 
-#include <aquila/aquila.h>
-#include <aquila/transform/FftFactory.h>
+//#include <aquila/aquila.h>
+//#include <aquila/transform/FftFactory.h>
 #include <unsupported/Eigen/FFT>
 #include <spc/elements/TimeSeriesEquallySpaced.h>
 
@@ -17,102 +17,102 @@ TimeSeriesEquallySpaced::Ptr TimeSeriesBandPassFilter::filter_aquila()
 
 {
 
-    LOG(INFO) << "beginning the filtering";
+//    LOG(INFO) << "beginning the filtering";
 
-    if (!series_)
-    {
-        LOG(WARNING) << "IN series was nullptr. returning nullptr";
-        return nullptr;
-    }
+//    if (!series_)
+//    {
+//        LOG(WARNING) << "IN series was nullptr. returning nullptr";
+//        return nullptr;
+//    }
 
-    Eigen::VectorXd y = series_->getY().cast<double>();
+//    Eigen::VectorXd y = series_->getY().cast<double>();
 
-    LOG(INFO) << "TS: "<< y.head(5);
-
-
+//    LOG(INFO) << "TS: "<< y.head(5);
 
 
 
 
 
 
-    size_t len = y.rows();
-    float f_sampling  = 1/ series_->getXStep();
+
+
+//    size_t len = y.rows();
+//    float f_sampling  = 1/ series_->getXStep();
 
 
 
 
-    Aquila::SineGenerator sineGenerator2(f_sampling);
-    sineGenerator2.setAmplitude(8).setFrequency(f_low_).setPhase(0.75).generate(len);
+//    Aquila::SineGenerator sineGenerator2(f_sampling);
+//    sineGenerator2.setAmplitude(8).setFrequency(f_low_).setPhase(0.75).generate(len);
 
 
 
 
 
-    auto fft = Aquila::FftFactory::getFft(len);
-//    Aquila::SpectrumType spectrum = fft->fft(y.data());
+//    auto fft = Aquila::FftFactory::getFft(len);
+////    Aquila::SpectrumType spectrum = fft->fft(y.data());
 
-        Aquila::SpectrumType spectrum = fft->fft(sineGenerator2.toArray());
+//        Aquila::SpectrumType spectrum = fft->fft(sineGenerator2.toArray());
 
-        LOG(INFO) << "spectrum computed";
-
-
-    Aquila::SpectrumType filterSpectrum(len);
-    for (std::size_t i = 0; i < len; ++i)
-    {
-        if (i < (len * f_low_ / f_sampling))
-        {
-            // passband
-            filterSpectrum[i] = 0;
-        }
-        else if (i >= (len * f_high_ / f_sampling))
-        {
-            // stopband
-            filterSpectrum[i] = 0;
-        }
-        else
-        {
-            filterSpectrum[i] = 1;
-        }
-    }
+//        LOG(INFO) << "spectrum computed";
 
 
-
-    std::transform(
-                std::begin(spectrum),
-                std::end(spectrum),
-                std::begin(filterSpectrum),
-                std::begin(spectrum),
-                [] (Aquila::ComplexType x, Aquila::ComplexType y) { return x * y; }
-    );
+//    Aquila::SpectrumType filterSpectrum(len);
+//    for (std::size_t i = 0; i < len; ++i)
+//    {
+//        if (i < (len * f_low_ / f_sampling))
+//        {
+//            // passband
+//            filterSpectrum[i] = 0;
+//        }
+//        else if (i >= (len * f_high_ / f_sampling))
+//        {
+//            // stopband
+//            filterSpectrum[i] = 0;
+//        }
+//        else
+//        {
+//            filterSpectrum[i] = 1;
+//        }
+//    }
 
 
 
-    Eigen::VectorXd x;
-    x.resize(len);
-
-    //           double x1[SIZE];
-
-
-
-    fft->ifft(spectrum, x.data());
-
-
-    Eigen::VectorXf xfloat = x.cast<float>();
-
-    LOG(INFO) << xfloat;
-
-
-    spc::TimeSeriesEquallySpaced::Ptr outseries (new spc::TimeSeriesEquallySpaced(*series_));
-
-    outseries->setY(xfloat);
-
-    LOG(INFO) << "bandpass filtering finished";
+//    std::transform(
+//                std::begin(spectrum),
+//                std::end(spectrum),
+//                std::begin(filterSpectrum),
+//                std::begin(spectrum),
+//                [] (Aquila::ComplexType x, Aquila::ComplexType y) { return x * y; }
+//    );
 
 
 
+//    Eigen::VectorXd x;
+//    x.resize(len);
 
-    return outseries;
+//    //           double x1[SIZE];
+
+
+
+//    fft->ifft(spectrum, x.data());
+
+
+//    Eigen::VectorXf xfloat = x.cast<float>();
+
+//    LOG(INFO) << xfloat;
+
+
+//    spc::TimeSeriesEquallySpaced::Ptr outseries (new spc::TimeSeriesEquallySpaced(*series_));
+
+//    outseries->setY(xfloat);
+
+//    LOG(INFO) << "bandpass filtering finished";
+
+
+
+
+//    return outseries;
 
 
 }
@@ -123,8 +123,18 @@ TimeSeriesEquallySpaced::Ptr TimeSeriesBandPassFilter::filter_eigen()
     float f_sampling = series_->getSamplingFrequency();
 
     Eigen::VectorXf timevec = series_->getY();
+    Eigen::Matrix<bool, -1, 1> good = series_->getNanMask();
+
 
     float mean = series_->getMean();
+
+
+    LOG(INFO) << "mean of signal: " << mean;
+
+    for (int i = 0 ; i < timevec.rows(); ++i)
+        if (good(i) == false)
+            timevec(i) = mean;
+
 
     Eigen::FFT<float> fft;
 
@@ -133,7 +143,7 @@ TimeSeriesEquallySpaced::Ptr TimeSeriesBandPassFilter::filter_eigen()
 
     fft.fwd( freqvec, timevec);
 
-    LOG(INFO) << freqvec;
+//    LOG(INFO) << freqvec;
 
 
     Eigen::VectorXcf filterSpectrum;
@@ -168,11 +178,19 @@ TimeSeriesEquallySpaced::Ptr TimeSeriesBandPassFilter::filter_eigen()
     fft.inv( timevec,convolved);
 
 
-    LOG(INFO) << "filtered " << timevec;
+    for (int i = 0 ; i < timevec.rows(); ++i)
+        if (good(i) == false)
+            timevec(i) = std::numeric_limits<float>::quiet_NaN();
+
+
+//    LOG(INFO) << "filtered " << timevec;
 
     spc::TimeSeriesEquallySpaced::Ptr outseries (new spc::TimeSeriesEquallySpaced(*series_));
 
     outseries->setY(timevec);
+
+
+
 
     return outseries;
 
@@ -211,9 +229,10 @@ void TimeSeriesBandPassFilter::doComputations()
     if (series_ != nullptr)
     {
 
-        if (backend == AQUILA)
-            out_series_ = this->filter_aquila();
-        else if (backend ==EIGENFFT)
+//        if (backend == AQUILA)
+//            out_series_ = this->filter_aquila();
+
+        if (backend ==EIGENFFT)
             out_series_ = this->filter_eigen();
 
 

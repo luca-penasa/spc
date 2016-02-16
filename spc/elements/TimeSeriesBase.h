@@ -43,7 +43,7 @@ public:
 
     ScalarT getMean() const
     {
-        return y_.mean();
+        return y_.select(getNanMask()).mean();
     }
 
     void setMean(const ScalarT & value)
@@ -69,6 +69,25 @@ public:
     VectorT &getY()
     {
         return y_;
+    }
+
+    /**
+     * @brief getNanMask
+     * @return a vector of bools, with true if the value is finite and false if not finite (nan)
+     */
+    Eigen::Matrix<bool, -1, 1> getNanMask() const
+    {
+        Eigen::Matrix<bool, -1, 1> mask;
+        mask.resizeLike(y_);
+        for (int i =0; i < y_.rows(); ++i)
+        {
+            if (!std::isfinite(y_(i)))
+                mask(i) = false;
+            else
+                mask(i) = true;
+        }
+
+        return mask;
     }
 
     template<class VEC>

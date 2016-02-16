@@ -16,6 +16,11 @@ namespace spc
 using namespace boost::python;
 
 
+//BOOST_PYTHON_FUNCTION_OVERLOADS(over1, spc::io::serializeToFile, 2, 7)
+//BOOST_PYTHON_FUNCTION_OVERLOADS(over2, spc::io::serializeToFile, 2, 6)
+
+
+//int (spc::io::serializeToFile)(A&) = &Foo::m1;
 
 BOOST_PYTHON_MODULE(io)
 {
@@ -30,10 +35,10 @@ BOOST_PYTHON_MODULE(io)
 			;
 
 
-    def("serializeToFile", &spc::io::serializeToFile);
+//    def("serializeToFile", &over1);
     def("deserializeFromFile", &spc::io::deserializeFromFile);
 
-	def("getV", &spc::getV);
+//	def("getV", &spc::getV);
 
 }
 

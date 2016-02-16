@@ -7,7 +7,7 @@
 
 #include <boost/python/manage_new_object.hpp>
 #include <boost/python/return_value_policy.hpp>
-
+#include <spc/methods/Sift1d.h>
 
 namespace spc
 {
@@ -44,6 +44,10 @@ BOOST_PYTHON_MODULE(methods)
 			.def("solveProblem", &RBFModelEstimatorF::solveProblem)
 			.def("getModel", &RBFModelEstimatorF::getModel)
 			;
+
+    def("gaussWindow", spc::Sift1d::gaussian_window);
+    def("blur", spc::Sift1d::blur);
+    def("fftshift", spc::Sift1d::fftshift);
 
 
 

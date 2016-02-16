@@ -36,6 +36,8 @@ public:
 
     virtual bool canCompute() const;
 
+    virtual void clearOutput();
+
 
     virtual std::vector<spc::ElementBase::Ptr>  getOutput() const ;
 protected:

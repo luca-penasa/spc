@@ -9,6 +9,7 @@ GenericFilter::GenericFilter()
 
 void GenericFilter::setInput(std::vector<ElementBase::Ptr> inelements)
 {
+    this->clearOutput();
     inelements_ = inelements;
 }
 
@@ -18,6 +19,9 @@ void GenericFilter::setInput(ElementBase::Ptr inobj)
     {
         LOG(WARNING) << "Input for filter is null";
     }
+
+    this->clearOutput();
+
     std::vector<spc::ElementBase::Ptr> inelements;
     inelements.push_back(inobj);
     inelements_ = inelements;
@@ -63,6 +67,11 @@ bool GenericFilter::canCompute() const
     }
 
 
+}
+
+void GenericFilter::clearOutput()
+{
+    outelements_.resize(0);
 }
 
 std::vector<ElementBase::Ptr> GenericFilter::getOutput() const

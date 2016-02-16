@@ -15,7 +15,8 @@ public:
 
     spcTypedefSharedPtrs(TimeSeriesBandPassFilter)
 
-    enum BACKEND {AQUILA = 0, EIGENFFT};
+    enum BACKEND { EIGENFFT};
+    enum NAN_MANAGEMENT {AVERAGE};
 
     TimeSeriesBandPassFilter();
 

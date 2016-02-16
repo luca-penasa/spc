@@ -175,7 +175,7 @@ void StratigraphicSolver::solve_linear()
             size_t id = model_to_par_id_map.at(mymodel);
 
             A.conservativeResize(A.rows() + 1, Eigen::NoChange);
-            A.row(row_counter + 1).fill(0);
+            A.row(row_counter).fill(0);
 
             b.conservativeResize(b.rows() + 1);
 
@@ -204,7 +204,7 @@ void StratigraphicSolver::solve_linear()
             size_t id = model_to_par_id_map.at(model2); // id of the unfreezen
 
             A.conservativeResize(A.rows() + 1, Eigen::NoChange);
-            A.row(row_counter + 1).fill(0);
+            A.row(row_counter ).fill(0);
             A(row_counter, id) = 1;
 
             float shift1 = model1->getStratigraphicShift(); // of unfreezed
@@ -224,7 +224,7 @@ void StratigraphicSolver::solve_linear()
             size_t id = model_to_par_id_map.at(model1); // id of the unfreezen
 
             A.conservativeResize(A.rows() + 1, Eigen::NoChange);
-            A.row(row_counter + 1).fill(0);
+            A.row(row_counter ).fill(0);
             A(row_counter, id) = 1;
 
             float shift1 = model1->getStratigraphicShift(); // of unfreezed
@@ -250,7 +250,7 @@ void StratigraphicSolver::solve_linear()
             size_t id2 = model_to_par_id_map.at(model2);
 
             A.conservativeResize(A.rows() + 1, Eigen::NoChange);
-            A.row(row_counter + 1).fill(0);
+            A.row(row_counter ).fill(0);
             b.conservativeResize(b.rows() + 1);
 
             A(row_counter, id1) = 1;
