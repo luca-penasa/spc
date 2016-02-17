@@ -47,15 +47,13 @@ public:
             }
         }
         else // is odd
+            // \todo do it in place
         {
-            for (int i =0 ; i <half_len+1;++i)
-            {
-                tmp = v(i);
-                v(i) = v(half_len + 1  + i);
-                if (i<half_len+1)
-                    v(half_len + i) = tmp;
+            Eigen::VectorXd head = v.head(half_len+1);
+            Eigen::VectorXd tail = v.tail(half_len ) ;
 
-            }
+            v.head(half_len) = tail;
+            v.tail(half_len+1) = head;
         }
 
         return v;
