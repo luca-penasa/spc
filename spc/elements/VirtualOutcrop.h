@@ -1,7 +1,7 @@
 #pragma once
 #ifndef VIRTUALOUTCROP_H
 #define VIRTUALOUTCROP_H
-#include <spc/elements/ElementBase.h>
+#include <spc/core/ElementBase.h>
 namespace spc
 {
 

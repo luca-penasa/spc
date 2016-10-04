@@ -38,7 +38,6 @@ option(SPC_USE_IWYU "Use include-what-you-use to notify about unused includes" O
 OPTION(SPC_GFLAGS "Enable Google Flags. Needed by the tools" ON)
 option(SPC_BUILD_TESTS "Do tests" OFF)
 option(SPC_ENABLE_INSTALL "Enable/Disable the install target" OFF)
-OPTION(SPC_MINIGLOG "Use a stripped down version of glog." ON)
 
 option(SPC_WITH_PCL "Compile SPC lib with PCL support - Many more dependencies" OFF)
 
@@ -49,7 +48,7 @@ endif()
 #option(SPC_GFLAGS_IN_NAMESPACE_GOOGLE "says if gflags is expected to be into the google namespace" OFF)
 
 
-option(SPC_USE_PARALLEL_OPENMP "Enable paralellization of some algorithms via OpenMP" OFF)
+option(SPC_USE_PARALLEL_OPENMP "Enable paralellization of some algorithms via OpenMP" ON)
 option(SPC_BUILD_TESTING_TOOLS "Build the tools contained into the tests folder" OFF)
 #############################################################################################################
 
@@ -113,7 +112,7 @@ if(SPC_USE_IWYU)
     endif()
 endif()
 
-OPTION(SPC_OSGTEST "Compile test application for point cloud visualization" ON)
+OPTION(SPC_OSGTEST "Compile test application for point cloud visualization" OFF)
 if(SPC_OSGTEST)
     add_subdirectory(osg_test)
 endif()

@@ -39,7 +39,7 @@ set (CONF_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}")
 set (CONF_CEREAL_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/submodules/cereal/include")
 set (CONF_LIBRARY_DIRS "${LIBRARY_OUTPUT_PATH}")
 set (CONF_NANOFLANN_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/submodules/nanoflann/include")
-set (CONF_MINIGLOG_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/miniglog")
+set (CONF_EASYLOGGINGPP_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/submodules/easyloggingpp/src")
 
 configure_file(SPCConfig.cmake.in "${PROJECT_BINARY_DIR}/SPCConfig.cmake" @ONLY)
 
@@ -53,7 +53,7 @@ if(SPC_ENABLE_INSTALL)
     set (CONF_CEREAL_INCLUDE_DIRS "${SPC_INSTALL_INCLUDE_DIR}/spc/3rdParty")
     set (CONF_NANOFLANN_INCLUDE_DIRS "${SPC_INSTALL_INCLUDE_DIR}/spc/3rdParty")
     set (CONF_LIBRARY_DIRS "${SPC_INSTALL_LIB_DIR}")
-    set (CONF_MINIGLOG_INCLUDE_DIRS "${SPC_INSTALL_INCLUDE_DIR}/spc/3rdParty/miniglog")
+    set (CONF_EASYLOGGINGPP_INCLUDE_DIRS "${SPC_INSTALL_INCLUDE_DIR}/spc/3rdParty/easiloggingpp/src")
 
 
     ## reconfigure the SPCConfig.cmake putting it in a subdirectory of the build tree
@@ -69,5 +69,5 @@ if(SPC_ENABLE_INSTALL)
     install(EXPORT SPCTargets DESTINATION
         "${INSTALL_CMAKE_DIR}" COMPONENT dev)
 
-    INSTALL( DIRECTORY miniglog DESTINATION "${SPC_INSTALL_INCLUDE_DIR}/spc/3rdParty" )
+    INSTALL( DIRECTORY submodules/easyloggingpp DESTINATION "${SPC_INSTALL_INCLUDE_DIR}/spc/3rdParty" )
 endif()

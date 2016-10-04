@@ -115,8 +115,11 @@ bool parse_orientation_file(const string filename, Eigen::Vector4f &origin, Eige
 
 }
 
-int main (int argc, char ** argv)
+INITIALIZE_EASYLOGGINGPP
+
+int main(int argc, char ** argv)
 {
+	START_EASYLOGGINGPP(argc, argv);
     pcl::console::TicToc tt;
     tt.tic();
 

@@ -7,7 +7,7 @@
 //#include <pcl/point_types.h>
 
 #include <spc/elements/PointCloudBase.h>
-#include <spc/elements/ElementBase.h>
+#include <spc/core/ElementBase.h>
 
 #include <spc/elements/GeometricElement3DBase.h>
 namespace spc

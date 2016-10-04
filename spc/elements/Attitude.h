@@ -87,7 +87,14 @@ private:
     {
         ar(cereal::base_class<spc::Plane>(this));
     }
+
+    // ISerializable interface
+public:
+    virtual bool isAsciiSerializable() const override;
+    virtual int toAsciiStream(std::ostream &stream) const override;
 };
+
+
 
 /// print out as stream
 //std::ostream &operator<<(std::ostream &os, const Attitude &obj);

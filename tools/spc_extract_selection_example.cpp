@@ -19,10 +19,11 @@ DEFINE_string(selection, "", "the spc file containing a selection");
 DEFINE_string(cloud, "", "the point cloud file to select from");
 
 
+INITIALIZE_EASYLOGGINGPP
+
 int main(int argc, char ** argv)
 {
-
-    google::InitGoogleLogging(argv[0]);
+	START_EASYLOGGINGPP(argc, argv);
 //    std::cout << "INIZIO" << std::endl;
 
 //    FLAGS_colorlogtostderr=1;

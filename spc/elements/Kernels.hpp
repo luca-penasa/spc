@@ -2,7 +2,7 @@
 #ifndef KERNELS_HPP
 #define KERNELS_HPP
 
-#include <spc/elements/ElementBase.h>
+#include <spc/core/ElementBase.h>
 #include <spc/core/spc_eigen.h>
 #include <spc/core/fastapprox.h>
 namespace spc {

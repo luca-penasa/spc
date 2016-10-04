@@ -25,8 +25,12 @@ option(SPC_BUILD_DOC "Build SPC doc" OFF)
 
 add_subdirectory(external)
 add_subdirectory(core)
-add_subdirectory(io)
+
 add_subdirectory(elements)
+
+add_subdirectory(io)
+
+
 
 add_subdirectory(methods)
 

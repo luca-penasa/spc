@@ -14,41 +14,11 @@ public:
 
     virtual float getInterpolatedValue(const float x_val) = 0;
 
-    std::vector<float> getInterpolatedValues(const std::vector<float> new_x)
-    {
-        std::vector<float> out(new_x.size());
+	std::vector<float> getInterpolatedValues(const std::vector<float> new_x);
 
-        int c = 0;
-		for (const float x : new_x) {
-            out.at(c++) = getInterpolatedValue(x);
-        }
-        return out;
-    }
+	virtual void setInputSeries(TimeSeriesBase::ConstPtr input);
 
-    virtual void setInputSeries(TimeSeriesBase::ConstPtr input)
-    {
-        if (!input) {
-            LOG(ERROR) <<"[ERROR] You are setting a null pointer";
-            return;
-        }
-        input_ = input;
-
-        this->updateInternals();
-    }
-
-	virtual void getValidityRange(float& min, float& max)
-    {
-
-        if (!input_) {
-			LOG(ERROR) << "You must define a valid input time series";
-            min = std::numeric_limits<float>::quiet_NaN();
-            max = std::numeric_limits<float>::quiet_NaN();
-            return;
-        }
-
-        min = input_->getMinX();
-        max = input_->getMaxX();
-    }
+	virtual void getValidityRange(float& min, float& max);
 
     // is automatically called after setting input
     virtual int updateInternals()

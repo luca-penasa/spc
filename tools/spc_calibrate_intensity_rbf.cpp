@@ -66,10 +66,11 @@ DEFINE_bool(init_data_correction, true, "sample the calibrated model at the poin
 
 DEFINE_bool(nonlin, false, "Do an additiona nonlinear optimization step to oeptimize the rbf model against additional constraints");
 
-int main (int argc, char ** argv)
-{
-    google::InitGoogleLogging(argv[0]);
+INITIALIZE_EASYLOGGINGPP
 
+int main(int argc, char ** argv)
+{
+	START_EASYLOGGINGPP(argc, argv);
     google::SetUsageMessage("Compute a rbf model for predicting a given scalar field (e.g. intensity) as function of any other scalar fields."
                             "call as: " + std::string(argv[0]) + " database.spc [or xml/json] [...]");
 

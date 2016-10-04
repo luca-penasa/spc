@@ -1,7 +1,7 @@
 #pragma once
 #ifndef NEWSPCPOINTCLOUD_H
 #define NEWSPCPOINTCLOUD_H
-#include <spc/elements/ElementBase.h>
+#include <spc/core/ElementBase.h>
 #include <map>
 //#include <spc/elements/PointCloudBase.h>
 #include <spc/core/nanoflann_adapters.hpp>

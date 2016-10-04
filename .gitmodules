@@ -13,3 +13,6 @@
 [submodule "submodules/aquila"]
 	path = submodules/aquila
 	url = git@github.com:zsiciarz/aquila.git
+[submodule "submodules/easyloggingpp"]
+	path = submodules/easyloggingpp
+	url = git@github.com:easylogging/easyloggingpp.git

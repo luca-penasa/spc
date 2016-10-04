@@ -2,6 +2,7 @@
 #ifndef RBFKERNELFACTORY_H
 #define RBFKERNELFACTORY_H
 #include <spc/elements/Kernels.hpp>
+#include <spc/core/logging.h>
 namespace spc
 {
 

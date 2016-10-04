@@ -15,8 +15,14 @@
 
 #include <pcl/filters/voxel_grid.h>
 
-int main(int argc, char *argv[])
+#include <spc/core/logging.h>
+
+INITIALIZE_EASYLOGGINGPP
+
+int main(int argc, char ** argv)
 {
+	START_EASYLOGGINGPP(argc, argv);
+
 
     float plane_normal[3] = {1,0,0};
     //input cloud

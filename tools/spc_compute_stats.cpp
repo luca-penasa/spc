@@ -3,6 +3,9 @@
 #include <pcl/io/pcd_io.h>
 #include <pcl/kdtree/kdtree_flann.h>
 #include <pcl/kdtree/impl/kdtree_flann.hpp>
+
+#include <spc/core/logging.h>
+
 struct PointStats
 	{
 		PCL_ADD_POINT4D;
@@ -33,8 +36,13 @@ float G(float x, float sigma)
 	return exp(-(x*x)/(2*sigma*sigma));
 }
 
-int main(int argc, char *argv[])
+INITIALIZE_EASYLOGGINGPP
+
+int main(int argc, char ** argv)
 {
+	START_EASYLOGGINGPP(argc, argv);
+
+
 	std::string incloudfile = argv[1];
 	std::string outcloudfile = argv[2];
 	float radius = atof(argv[3]);

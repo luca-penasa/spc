@@ -1,5 +1,5 @@
 #include "ElementsFactory.h"
-#include <spc/elements/ElementBase.h>
+#include <spc/core/ElementBase.h>
 #include <spc/elements/Attitude.h>
 namespace spc
 {

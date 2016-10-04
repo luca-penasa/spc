@@ -24,8 +24,13 @@ using namespace std;
 typedef vector<vector<float> > stdfieldT;
 typedef vector<stdfieldT> stdcloudT;
 
-int main (int argc, char ** argv)
+INITIALIZE_EASYLOGGINGPP
+
+int main(int argc, char ** argv)
 {
+	START_EASYLOGGINGPP(argc, argv);
+
+
     vector<int> pcd_indices = parse_file_extension_argument(argc, argv, ".pcd");
     vector<int> svd_indices = parse_file_extension_argument(argc, argv, ".svd");
 

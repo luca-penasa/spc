@@ -5,6 +5,8 @@
 #include <unsupported/Eigen/FFT>
 #include <spc/elements/TimeSeriesEquallySpaced.h>
 
+#include <spc/core/logging.h>
+
 namespace spc
 {
 

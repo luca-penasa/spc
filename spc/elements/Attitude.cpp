@@ -106,6 +106,17 @@ std::string Attitude::getDipAndDipAngleAsString() const
     return s.str();
 }
 
+bool spc::Attitude::isAsciiSerializable() const
+{
+    return true;
+}
+
+int Attitude::toAsciiStream(std::ostream &stream) const
+{
+    stream << getPosition().transpose() << std::endl;
+    stream << getUnitNormal().transpose() << std::endl;
+}
+
 } // end nspace
 
 #include <spc/core/spc_cereal.hpp>

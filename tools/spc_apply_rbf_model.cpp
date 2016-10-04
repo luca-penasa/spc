@@ -55,12 +55,11 @@ int getFields(const std::vector<std::string> names,
 }
 
 
+INITIALIZE_EASYLOGGINGPP
+
 int main(int argc, char ** argv)
 {
-
-    google::InitGoogleLogging(argv[0]);
-    google::SetUsageMessage("Calibrate the intensity field of input cloud using the RBF model provided");
-
+	START_EASYLOGGINGPP(argc, argv);
 //    LOG(INFO) << spc::fs::Path(argv[0]).stem();
 
 

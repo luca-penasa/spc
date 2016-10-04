@@ -2,7 +2,7 @@
 #ifndef FIELDPROVIDERBASE_H
 #define FIELDPROVIDERBASE_H
 
-#include <spc/elements/ElementBase.h>
+#include <spc/core/ElementBase.h>
 
 namespace spc
 

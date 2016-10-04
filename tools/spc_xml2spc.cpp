@@ -1,9 +1,15 @@
 #include <spc/io/element_io.h>
 #include <iostream>
+
+#include <spc/core/logging.h>
 using namespace spc;
+
+INITIALIZE_EASYLOGGINGPP
 
 int main(int argc, char ** argv)
 {
+	START_EASYLOGGINGPP(argc, argv);
+
 
     if (argc != 2)
     {

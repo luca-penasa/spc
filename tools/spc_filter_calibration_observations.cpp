@@ -51,9 +51,11 @@ namespace calibration {
 } // end calib
 } // end spc
 
-int main(int argc, char** argv)
+INITIALIZE_EASYLOGGINGPP
+
+int main(int argc, char ** argv)
 {
-	google::InitGoogleLogging(argv[0]);
+	START_EASYLOGGINGPP(argc, argv);
 
 	google::SetUsageMessage("Filter the observations for calibration");
 

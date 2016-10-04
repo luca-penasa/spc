@@ -1,4 +1,5 @@
 #include "GenericFilter.h"
+#include <spc/core/logging.h>
 namespace spc
 {
 

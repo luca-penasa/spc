@@ -6,7 +6,7 @@
 #undef ERROR
 #endif
 
-#include <glog/logging.h>
+#include <easylogging++.h>
 
 
 

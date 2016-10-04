@@ -1,6 +1,6 @@
 #include <Eigen/Eigen>
 #include <boost/numpy.hpp>
-#include <glog/logging.h>
+//#include <glog/logging.h>
 #include <numpy/arrayobject.h>
 
 

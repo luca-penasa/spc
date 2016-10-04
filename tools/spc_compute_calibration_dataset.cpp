@@ -72,10 +72,11 @@ DEFINE_bool(
 DEFINE_string(intensity_field, "intensity", "the intensity field");
 
 
-int main(int argc, char** argv)
-{
-	google::InitGoogleLogging(argv[0]);
+INITIALIZE_EASYLOGGINGPP
 
+int main(int argc, char ** argv)
+{
+	START_EASYLOGGINGPP(argc, argv);
 
 	google::SetUsageMessage(
 		"computes a dataset of sampled scalar fields for calibrating the device");

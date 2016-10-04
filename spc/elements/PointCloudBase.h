@@ -2,7 +2,7 @@
 #ifndef GENERIC_CLOUD_H
 #define GENERIC_CLOUD_H
 
-#include <spc/elements/ElementBase.h>
+#include <spc/core/ElementBase.h>
 #include <spc/elements/templated/PointSet.h>
 
 #ifdef SPC_WITH_PCL

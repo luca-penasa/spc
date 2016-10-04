@@ -14,11 +14,11 @@
 DEFINE_string(clouds, "", "a space separated list of clouds for which to compute scattering angles and sensor distance");
 
 DEFINE_string(postfix, "with_angles_distance", "a postfix string to add to the output filename");
+INITIALIZE_EASYLOGGINGPP
 
 int main(int argc, char ** argv)
 {
-    google::InitGoogleLogging(argv[0]);
-
+	START_EASYLOGGINGPP(argc, argv);
 //    FLAGS_logtostderr = 1;
 
 
