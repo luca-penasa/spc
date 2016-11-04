@@ -3,7 +3,8 @@ image: ubuntu
 build:
   stage: build
   script:
+    - apt-get install cmake
     - cd /builds/penasa/spc
     - mkdir build
-    - ccmake ../
+    - cmake ../
     
