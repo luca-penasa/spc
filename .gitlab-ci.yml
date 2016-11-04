@@ -4,7 +4,7 @@ build:
   stage: build
   script:
     - apt-get -qq update
-    - apt-get -y install build-essential cmake libeigen3-dev libboost-dev libgflags-dev
+    - apt-get -y install build-essential cmake libeigen3-dev libboost-all-dev libgflags-dev
     - cd /builds/penasa/spc
     - mkdir build
     - cd build
