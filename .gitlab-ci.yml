@@ -3,6 +3,7 @@ image: ubuntu
 build:
   stage: build
   script:
+    - apt-get -qq update
     - apt-get install build-essential
     - cd /builds/penasa/spc
     - mkdir build
