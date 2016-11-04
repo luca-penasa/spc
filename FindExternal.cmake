@@ -9,8 +9,8 @@ if (SPC_WITH_PCL)
     message("TESTING PCL !")
     #define the PCL_VER_1_6_OR_OLDER preprocessor to compile qPCL with older versions of PCL
     if( PCL_VERSION VERSION_LESS  1.7 ) # VERSION_GREATER Works just like "greater or equal"
-	message("You are using PCL 1.6 - the 1.7 is out !")
-	set(SPC_DEFINITIONS ${SPC_DEFINITIONS} "-DPCL_VER_LESS_1_7 -DSPC_WITH_PCL")
+        message("You are using PCL 1.6 - the 1.7 is out !")
+        set(SPC_DEFINITIONS ${SPC_DEFINITIONS} "-DPCL_VER_LESS_1_7 -DSPC_WITH_PCL")
     endif()
 
     list(APPEND SPC_DEFINITIONS -DSPC_WITH_PCL)
@@ -23,8 +23,8 @@ else()
 
 
     if(WIN32)
-	# also boost! please use static libs as def on win so that we dont have to move boost libs along with the app
-	set(Boost_USE_STATIC_LIBS   ON)
+        # also boost! please use static libs as def on win so that we dont have to move boost libs along with the app
+        set(Boost_USE_STATIC_LIBS   ON)
     endif()
 
     set(Boost_USE_MULTITHREADED ON)
@@ -36,13 +36,13 @@ endif()
 
 # always use openmp if possible
 FIND_PACKAGE( OpenMP)
-if(OPENMP_FOUND)
-    message("OPENMP FOUND")
-    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
-    set(SPC_DEFINITIONS ${SPC_DEFINITIONS} "-DUSE_OPENMP")
-    #        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -lpthread -lgcc_s" )
+    if(OPENMP_FOUND)
+        message("OPENMP FOUND")
+        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+        set(SPC_DEFINITIONS ${SPC_DEFINITIONS} "-DUSE_OPENMP")
+        #        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -lpthread -lgcc_s" )
 endif()
 
 
@@ -62,15 +62,8 @@ if(SPC_GFLAGS)
 	#        endif()
 
     else(gflags_FOUND)
-	message("GLFAGS requested but not found! Disabling Gflags support")
-
-#        find_package(Gflags REQUIRED) # now we try with the build in (from ceres) package find script!
-                                      # e.g. on ubuntu glfags is not shipped together its own cmake file
-
-
-
-
-	UPDATE_CACHE_VARIABLE(SPC_GFLAGS OFF)
+        message("GLFAGS requested but not found! Disabling Gflags support")
+        UPDATE_CACHE_VARIABLE(SPC_GFLAGS OFF)
     endif(gflags_FOUND)
 
 else(SPC_GFLAGS) # gflags not requested.
