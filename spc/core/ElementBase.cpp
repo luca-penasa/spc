@@ -3,7 +3,7 @@
 
 //#include <pcl/console/print.h>
 //#include <spc/elements/UniversalUniqueID.h>
-#include <spc/elements/SerializableInterface.h>
+#include <spc/core/SerializableInterface.h>
 
 #include <stack>
 

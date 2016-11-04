@@ -1,7 +1,7 @@
 #include "Observation.h"
 #include <spc/core/cerea_requested_types.hpp>
 
-#include <spc/elements/ElementBase.h>
+#include <spc/core/ElementBase.h>
 #include <spc/elements/CloudDataSourceOnDisk.h>
 
 

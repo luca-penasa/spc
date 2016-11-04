@@ -6,7 +6,7 @@
 
 #include <spc/core/spc_cereal.hpp>
 #include <spc/core/spc_eigen.h>
-#include <spc/elements/ElementBase.h>
+#include <spc/core/ElementBase.h>
 
 
 namespace spc

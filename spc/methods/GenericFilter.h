@@ -2,7 +2,7 @@
 #define GENERICFILTER_H
 
 #include <spc/core/common.h>
-#include <spc/elements/ElementBase.h>
+#include <spc/core/ElementBase.h>
 #include <vector>
 namespace spc
 {

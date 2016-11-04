@@ -8,6 +8,9 @@
 #include <boost/random/normal_distribution.hpp>
 //#include <pcl/filters/bilateral_omp.h>
 #include <pcl/filters/bilateral.h>
+
+#include <spc/core/logging.h>
+
 using namespace pcl;
 using namespace pcl::io;
 using namespace pcl::console;
@@ -121,9 +124,11 @@ saveCloud (const std::string &filename, const pcl::PCLPointCloud2 &output)
 }
 
 /* ---[ */
-int
-main (int argc, char** argv)
+INITIALIZE_EASYLOGGINGPP
+
+int main(int argc, char ** argv)
 {
+	START_EASYLOGGINGPP(argc, argv);
   print_info ("Smooth the intensity field of the cloud with a bilateral filter, use: %s -h\n", argv[0]);
 
   if (argc < 3)

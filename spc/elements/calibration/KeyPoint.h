@@ -1,7 +1,7 @@
 #pragma once
 #ifndef CALIBRATION_KEYPOINT_H
 #define CALIBRATION_KEYPOINT_H
-#include <spc/elements/ElementBase.h>
+#include <spc/core/ElementBase.h>
 //#include <spc/elements/calibration/Observation.h>
 
 #include <spc/elements/Plane.h>

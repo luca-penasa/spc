@@ -11,7 +11,7 @@ void VirtualOutcrop::solveStratigraphy()
 {
     LOG(INFO) << "solve called!";
 
-    spc::StratigraphicSolver solver_;
+	spc::StratigraphicSolver::Ptr solver_ = spc::StratigraphicSolver::Ptr(new spc::StratigraphicSolver);
 
 //    if ( findElementsThatAre(&spc::StratigraphicModelBase::Type).size() == 0)
 //    {
@@ -19,9 +19,9 @@ void VirtualOutcrop::solveStratigraphy()
 //        return;
 //    }
 
-    solver_.reset();
+	solver_->reset();
 
-    solver_.setInputFromChildren(getPtr());
+	solver_->setInputFromChildren(getPtr());
 
 
     //        for (spc::ElementBase::Ptr el: findElementsThatAre(&spc::StratigraphicModelBase::Type))
@@ -30,7 +30,7 @@ void VirtualOutcrop::solveStratigraphy()
     //            solver_.extractInputFromChildrens();
     //        }
 
-    solver_.solve();
+	solver_->solve();
 
 
     LOG(INFO)<< "solve done";

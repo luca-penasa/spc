@@ -2,7 +2,7 @@
 #ifndef CLOUDDATASOURCEONDISK_H
 #define CLOUDDATASOURCEONDISK_H
 
-#include <spc/elements/ElementBase.h>
+#include <spc/core/ElementBase.h>
 
 namespace spc {
 

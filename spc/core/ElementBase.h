@@ -2,7 +2,7 @@
 #ifndef SPC_OBJECT_H
 #define SPC_OBJECT_H
 #include <spc/core/macros.h>
-#include <spc/elements/SerializableInterface.h>
+#include <spc/core/SerializableInterface.h>
 #include <spc/core/spc_cereal.hpp>
 
 

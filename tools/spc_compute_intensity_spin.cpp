@@ -9,7 +9,7 @@
 
 #include <pcl/console/parse.h>
 
-
+#include <spc/core/logging.h>
 
 const int nr_intensity_bins = 5; //if using SPIN
 const int nr_distance_bins = 5;  //distance bins
@@ -33,8 +33,11 @@ void printHelp(int argc, char **argv)
     std::cout << "-h or --help for this help!" << std::endl;
 }
 
-int main(int argc, char *argv[])
+INITIALIZE_EASYLOGGINGPP
+
+int main(int argc, char ** argv)
 {
+	START_EASYLOGGINGPP(argc, argv);
 	std::cout << " QQQQQQQQQQ" << std::endl; 
 
     if ((argc < 4)

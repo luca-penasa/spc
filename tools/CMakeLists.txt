@@ -54,7 +54,7 @@ spc_add_executable(${MY_TOOLS_PREFIX}test_tool spc_test_tool.cpp)
 target_link_libraries(${MY_TOOLS_PREFIX}test_tool ${PCL_LIBRARIES} ${SPC_LIBRARIES})
 
 spc_add_executable(${MY_TOOLS_PREFIX}extract_selection_example spc_extract_selection_example.cpp)
-target_link_libraries(${MY_TOOLS_PREFIX}extract_selection_example ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${GLOG_LIBRARIES} ${GFLAGS_LIBRARIES})
+target_link_libraries(${MY_TOOLS_PREFIX}extract_selection_example ${PCL_LIBRARIES} ${SPC_LIBRARIES}  ${gflags_LIBRARIES})
 
 
 
@@ -155,9 +155,9 @@ target_link_libraries(${MY_TOOLS_PREFIX}subset_from_geometry ${PCL_LIBRARIES} ${
 spc_add_executable(${MY_TOOLS_PREFIX}append_orientations_to_pcd spc_append_orientations_to_pcd)
 target_link_libraries(${MY_TOOLS_PREFIX}append_orientations_to_pcd ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES})
 
-#message(" glfags libs::::: " ${GFLAGS_LIBRARIES}})
+#message(" glfags libs::::: " ${gflags_LIBRARIES}})
 spc_add_executable(${MY_TOOLS_PREFIX}compute_calibration_dataset spc_compute_calibration_dataset)
-target_link_libraries(${MY_TOOLS_PREFIX}compute_calibration_dataset ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES} ${GLOG_LIBRARIES} ${GFLAGS_LIBRARIES})
+target_link_libraries(${MY_TOOLS_PREFIX}compute_calibration_dataset ${PCL_LIBRARIES} ${SPC_LIBRARIES} ${VTK_LIBRARIES}  ${gflags_LIBRARIES})
 
 
 
@@ -183,43 +183,43 @@ if(SPC_MODULE_CERES_CALIBRATION)
 #    target_link_libraries(${MY_TOOLS_PREFIX}calibration_testing ${SPC_LIBRARIES}  ${CERES_LIBRARIES})
 
 #    spc_add_executable(${MY_TOOLS_PREFIX}calibration_testing2 spc_calibration_testing2.cpp)
-#    target_link_libraries(${MY_TOOLS_PREFIX}calibration_testing2 ${SPC_LIBRARIES}  ${CERES_LIBRARIES} ${GFLAGS_LIBRARIES})
+#    target_link_libraries(${MY_TOOLS_PREFIX}calibration_testing2 ${SPC_LIBRARIES}  ${CERES_LIBRARIES} ${gflags_LIBRARIES})
 endif()
 
 
 #spc_add_executable(${MY_TOOLS_PREFIX}calibrate_rbf spc_calibrate_rbf)
-#target_link_libraries(${MY_TOOLS_PREFIX}calibrate_rbf ${SPC_LIBRARIES} spc_methods ${GFLAGS_LIBRARIES})
+#target_link_libraries(${MY_TOOLS_PREFIX}calibrate_rbf ${SPC_LIBRARIES} spc_methods ${gflags_LIBRARIES})
 
 
 spc_add_executable(${MY_TOOLS_PREFIX}xml2spc spc_xml2spc.cpp)
-target_link_libraries(${MY_TOOLS_PREFIX}xml2spc ${SPC_LIBRARIES})
+target_link_libraries(${MY_TOOLS_PREFIX}xml2spc ${SPC_LIBRARIES}  ${gflags_LIBRARIES})
 
 
 #spc_add_executable(${MY_TOOLS_PREFIX} apply_rbf_model apply_rbf_model.cpp)
-#target_link_libraries(apply_rbf_model ${SPC_LIBRARIES} ${GLOG_LIBRARIES} ${GFLAGS_LIBRARIES})
+#target_link_libraries(apply_rbf_model ${SPC_LIBRARIES}  ${gflags_LIBRARIES})
 
 
 
 spc_add_executable(${MY_TOOLS_PREFIX}apply_rbf_model spc_apply_rbf_model.cpp)
-target_link_libraries(${MY_TOOLS_PREFIX}apply_rbf_model ${SPC_LIBRARIES} ${GLOG_LIBRARIES} ${GFLAGS_LIBRARIES})
+target_link_libraries(${MY_TOOLS_PREFIX}apply_rbf_model ${SPC_LIBRARIES}  ${gflags_LIBRARIES})
 
 
 
 spc_add_executable(${MY_TOOLS_PREFIX}transfer_fields spc_transfer_fields.cpp)
-target_link_libraries(${MY_TOOLS_PREFIX}transfer_fields ${SPC_LIBRARIES} ${GLOG_LIBRARIES} ${GFLAGS_LIBRARIES})
+target_link_libraries(${MY_TOOLS_PREFIX}transfer_fields ${SPC_LIBRARIES}  ${gflags_LIBRARIES})
 
 
 spc_add_executable(${MY_TOOLS_PREFIX}compute_angles_distances spc_compute_angles_distances.cpp)
-target_link_libraries(${MY_TOOLS_PREFIX}compute_angles_distances ${SPC_LIBRARIES} ${GLOG_LIBRARIES} ${GFLAGS_LIBRARIES})
+target_link_libraries(${MY_TOOLS_PREFIX}compute_angles_distances ${SPC_LIBRARIES}  ${gflags_LIBRARIES})
 
 
 spc_add_executable(spc_quad_example spc_quad_example.cpp)
-target_link_libraries(spc_quad_example)
+target_link_libraries(spc_quad_example ${SPC_LIBRARIES})
 
 
 spc_add_executable(${MY_TOOLS_PREFIX}calibrate_intensity_rbf spc_calibrate_intensity_rbf)
-target_link_libraries(${MY_TOOLS_PREFIX}calibrate_intensity_rbf ${SPC_LIBRARIES} spc_methods ${GFLAGS_LIBRARIES})
+target_link_libraries(${MY_TOOLS_PREFIX}calibrate_intensity_rbf ${SPC_LIBRARIES} spc_methods ${gflags_LIBRARIES})
 
 
 spc_add_executable(${MY_TOOLS_PREFIX}filter_calibration_observations spc_filter_calibration_observations)
-target_link_libraries(${MY_TOOLS_PREFIX}filter_calibration_observations ${SPC_LIBRARIES} ${GFLAGS_LIBRARIES})
+target_link_libraries(${MY_TOOLS_PREFIX}filter_calibration_observations ${SPC_LIBRARIES} ${gflags_LIBRARIES})

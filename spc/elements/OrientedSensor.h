@@ -1,7 +1,7 @@
 #pragma once
 #ifndef ORIENTEDSENSOR_H
 #define ORIENTEDSENSOR_H
-#include <spc/elements/ElementBase.h>
+#include <spc/core/ElementBase.h>
 
 
 namespace spc

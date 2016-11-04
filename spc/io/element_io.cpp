@@ -15,10 +15,10 @@
 
 #include <spc/core/timing.h>
 //#include <pcl/console/parse.h>
-#include <spc/elements/ElementBase.h>
+#include <spc/core/ElementBase.h>
 #include <fstream>
 #include <spc/core/strings.h>
-
+#include <spc/core/logging.h>
 namespace spc {
 namespace io {
 

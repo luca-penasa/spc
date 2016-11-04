@@ -6,6 +6,8 @@
 
 #include <pcl/common/common.h>
 
+#include <spc/core/logging.h>
+
 struct PointXYZId
     {
         PCL_ADD_POINT4D;
@@ -39,8 +41,11 @@ void printHelp()
     pcl::console::print_info("Where XYZ correspond to the points and the Id is the nearest point in cloud\n");
 }
 
-int main (int argc, char *argv[])
+INITIALIZE_EASYLOGGINGPP
+
+int main(int argc, char ** argv)
 {
+	START_EASYLOGGINGPP(argc, argv);
 
     std::vector<int> ids = pcl::console::parse_file_extension_argument (argc, argv, std::string("pcd"));
 

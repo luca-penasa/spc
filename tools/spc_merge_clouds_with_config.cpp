@@ -240,8 +240,11 @@ mergeAll(const vector<pcl::PCLPointCloud2> &clouds)
 
 ///////////////////////////// MAIN //////////////////////////////////////////////////////////
 
+INITIALIZE_EASYLOGGINGPP
+
 int main(int argc, char ** argv)
 {
+	START_EASYLOGGINGPP(argc, argv);
 
     vector<int> txt_indices = parse_file_extension_argument(argc, argv, ".txt");
 

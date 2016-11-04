@@ -26,12 +26,12 @@ struct NanoFlannEigenMatrixAdaptor
     {
         const size_t dims = mat.cols();
 
-        DLOG(INFO) << "nanoflann eigen matrix adaptor creation with dimension: " << dims;
+//        DLOG(INFO) << "nanoflann eigen matrix adaptor creation with dimension: " << dims;
         if (DIM>0 && static_cast<int>(dims)!=DIM)
             throw std::runtime_error("Data set dimensionality does not match the 'DIM' template argument");
         index = new index_t( dims, *this /* adaptor */, nanoflann::KDTreeSingleIndexAdaptorParams(leaf_max_size ) );
         index->buildIndex();
-        DLOG(INFO) << "nanoflann index done.";
+//        DLOG(INFO) << "nanoflann index done.";
     }
 
 
@@ -52,7 +52,7 @@ public:
                      const nanoflann::SearchParams &pars = nanoflann::SearchParams()) const
     {
 
-        DLOG(INFO) << "doing search at " << position.transpose();
+//        DLOG(INFO) << "doing search at " << position.transpose();
         return index->radiusSearch(position.data(), sq_radius, matches, pars);
     }
 
@@ -121,10 +121,10 @@ struct NanoFlannEigenBlockAdaptor
     {
         const size_t dims = block.cols();
 
-        DLOG(INFO) << "nanoflann eigen block adaptor creation with dimension: " << dims;
+//        DLOG(INFO) << "nanoflann eigen block adaptor creation with dimension: " << dims;
         index = new index_t( dims, *this /* adaptor */, nanoflann::KDTreeSingleIndexAdaptorParams(leaf_max_size) );
         index->buildIndex();
-        DLOG(INFO) << "nanoflann index done.";
+//        DLOG(INFO) << "nanoflann index done.";
     }
 
 

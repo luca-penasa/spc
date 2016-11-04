@@ -95,11 +95,11 @@ inline
     CEREAL_LOAD_FUNCTION_NAME(Archive& ar, Eigen::Matrix<T, _Rows, _Cols, _Options, _MaxRows, _MaxCols>& m)
 {
 
-    DLOG(INFO) << "loading matrix";
+//    DLOG(INFO) << "loading matrix";
     int n_rows, n_cols;
     ar(n_rows);
     ar(n_cols);
-    DLOG(INFO) << "size is " << n_rows << " per " << n_cols;
+//    DLOG(INFO) << "size is " << n_rows << " per " << n_cols;
 
     m.resize(n_rows, n_cols);
 
@@ -107,7 +107,7 @@ inline
         for (int j = 0; j < m.cols(); j++)
             ar(m(i, j));
 
-    DLOG(INFO) << "done";
+//    DLOG(INFO) << "done";
 }
 
 } // end nspace

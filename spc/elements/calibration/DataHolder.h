@@ -3,7 +3,7 @@
 #define CALIBRATIONDATAHOLDER_H
 
 #include <spc/core/macros_ptr.h>
-#include <spc/elements/ElementBase.h>
+#include <spc/core/ElementBase.h>
 
 namespace spc
 {

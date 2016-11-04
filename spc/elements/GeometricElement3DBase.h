@@ -2,7 +2,7 @@
 #ifndef GEOMETRICELEMENT3DBASE_H
 #define GEOMETRICELEMENT3DBASE_H
 
-#include <spc/elements/ElementBase.h>
+#include <spc/core/ElementBase.h>
 #include <spc/core/spc_eigen.h>
 
 namespace spc {

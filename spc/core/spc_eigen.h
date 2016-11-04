@@ -4,7 +4,8 @@
 
 #include <stdexcept>
 #include <spc/core/macros_ptr.h>
-#include <spc/core/logging.h>
+#include <vector>
+//#include <spc/core/logging.h>
 
 #define EIGEN_MATRIXBASE_PLUGIN <spc/core/eigen_matrix_base_plugin.h>
 

@@ -85,8 +85,10 @@ saveCloud (const std::string &filename, const pcl::PCLPointCloud2 &output, bool 
 
 
 
-int main(int argc, char *argv[] )
+int main(int argc, char ** argv)
 {
+	START_EASYLOGGINGPP(argc, argv);
+
 	if (argc < 2) // arguments need at least to be 1! else help
 	{
 		printHelp (argc, argv);

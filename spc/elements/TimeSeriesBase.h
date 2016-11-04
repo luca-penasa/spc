@@ -3,7 +3,7 @@
 #define SPC_BASE_TIME_SERIES_H
 
 
-#include <spc/elements/ElementBase.h>
+#include <spc/core/ElementBase.h>
 
 namespace spc
 {

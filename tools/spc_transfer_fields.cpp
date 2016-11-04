@@ -17,9 +17,11 @@ DEFINE_string(postfix, "with_transferred_fields", "a postfix string to add to th
 
 DEFINE_double(max_distance, 0.1, "nearest neighbor maximum distance considered as acceptable");
 
+INITIALIZE_EASYLOGGINGPP
+
 int main(int argc, char ** argv)
 {
-    google::InitGoogleLogging(argv[0]);
+	START_EASYLOGGINGPP(argc, argv);
 
 //    FLAGS_logtostderr = 1;
 

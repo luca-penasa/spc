@@ -6,6 +6,7 @@
 
 #include <nanoflann.hpp>
 
+#include <spc/core/logging.h>
 namespace spc {
 
 template <typename ScalarT = float, size_t DIM = 3>

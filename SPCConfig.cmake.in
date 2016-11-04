@@ -11,7 +11,7 @@ set(SPC_LIBRARY_DIRS "@CONF_LIBRARY_DIRS@")
 set(SPC_LIBRARIES "@SPC_LIBRARIES@" )
 set(SPC_DEFINITIONS "@SPC_DEFINITIONS@")
 
-set(SPC_MINIGLOG "@SPC_MINIGLOG@")
+#set(SPC_MINIGLOG "@SPC_MINIGLOG@")
 
 set(CEREAL_IS_INTERNAL @CEREAL_IS_INTERNAL@)
 
@@ -31,11 +31,11 @@ endif()
     set(SPC_INCLUDE_DIRS "${SPC_INCLUDE_DIRS}" "@CONF_NANOFLANN_INCLUDE_DIRS@")
 
 
-if (SPC_MINIGLOG)
-    message("SPC is using the miniglog version from ceres-solver instead that a real glog!")
-    #we add the miniglog dir to the list of the spc-include-dirs
-    set(SPC_INCLUDE_DIRS "${SPC_INCLUDE_DIRS}" "@CONF_MINIGLOG_INCLUDE_DIRS@")
-endif()
+#if (SPC_MINIGLOG)
+#    message("SPC is using the miniglog version from ceres-solver instead that a real glog!")
+#    #we add the miniglog dir to the list of the spc-include-dirs
+    set(SPC_INCLUDE_DIRS "${SPC_INCLUDE_DIRS}" "@CONF_EASYLOGGINGPP_INCLUDE_DIRS@")
+#endif()
 
 if (SPC_WITH_PCL)
     # we find pcl for you

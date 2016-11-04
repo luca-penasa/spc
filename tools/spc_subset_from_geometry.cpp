@@ -64,8 +64,11 @@ getCorrespondingIds(const PointCloud<PointXYZ>::Ptr  reference_cloud,
     }
 }
 
+INITIALIZE_EASYLOGGINGPP
+
 int main(int argc, char ** argv)
 {
+	START_EASYLOGGINGPP(argc, argv);
 
     vector<int> pcd_files_indices = parse_file_extension_argument(argc, argv, ".pcd"); //first is input second queries point
 

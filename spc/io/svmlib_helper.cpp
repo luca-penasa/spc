@@ -1,5 +1,6 @@
 #include "svmlib_helper.h"
 //#include <pcl/pcl_macros.h>
+#include <cmath> //for std::isnan
 
 namespace spc
 {

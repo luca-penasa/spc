@@ -27,7 +27,7 @@
  
  #include <pcl/search/kdtree.h>
  #include <pcl/features/normal_3d.h>
- 
+ #include <spc/core/logging.h>
  using namespace pcl;
  using namespace pcl::search;
  
@@ -311,8 +311,14 @@
 	 ptxFile.close();
 	 return 0;
  }
+
+
  
- int main(int argc, char* argv[]) {
+ INITIALIZE_EASYLOGGINGPP
+
+ int main(int argc, char ** argv)
+ {
+	 START_EASYLOGGINGPP(argc, argv);
 	 if(argc-1 < 1 || argc-1 > 2){
 		 cerr << "USAGE" << endl;
 		 cerr << "This program is used to convert Lidar ptx files into Point Cloud Library pcd files" << endl << endl;

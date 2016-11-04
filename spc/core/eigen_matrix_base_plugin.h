@@ -1,7 +1,13 @@
 #pragma once
+
+//#include <spc/core/logging.h>
+
+
 //! yes we add iterators! straight from mrpt project
 typedef Scalar* iterator;
 typedef const Scalar* const_iterator;
+
+
 
 EIGEN_STRONG_INLINE iterator begin() { return derived().data(); }
 EIGEN_STRONG_INLINE iterator end() { return (&(derived().data()[size()-1]))+1; }
@@ -131,7 +137,7 @@ template<typename OtherDerived>
 Eigen::Matrix<Scalar, -1, 1>
 select(const OtherDerived & selection_matrix) const
 {
-    DCHECK(selection_matrix.rows() == rows() && selection_matrix.cols() == cols());
+//    DCHECK(selection_matrix.rows() == rows() && selection_matrix.cols() == cols());
 
     size_t n = selection_matrix.template cast<int>().array().sum();
     Eigen::Matrix<Scalar, -1, 1> out(n);

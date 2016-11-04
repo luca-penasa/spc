@@ -24,8 +24,11 @@ int fillHeader(const string & filename, pcl::PCLPointCloud2 &cloud)
     return 1;
 }
 
+INITIALIZE_EASYLOGGINGPP
+
 int main(int argc, char ** argv)
 {
+	START_EASYLOGGINGPP(argc, argv);
     vector<int> pcd_indices = parse_file_extension_argument(argc, argv, ".pcd");
     vector<int> txt_indices = parse_file_extension_argument(argc, argv, ".txt");
 

@@ -2,7 +2,7 @@
 #define ELEMENT_IO_H
 #include <spc/core/macros_ptr.h>
 #include <spc/core/spc_eigen.h>
-#include <spc/elements/SerializableInterface.h>
+#include <spc/core/SerializableInterface.h>
 
 //#include <spc/elements/MovableElement.h>
 #include <boost/filesystem.hpp>
