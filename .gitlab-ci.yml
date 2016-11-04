@@ -3,7 +3,7 @@ image: ubuntu
 build:
   stage: build
   script:
-    - apt-get install cmake
+    - apt-get install build-essential
     - cd /builds/penasa/spc
     - mkdir build
     - cmake ../
