@@ -1,10 +1,11 @@
 image: ubuntu
 
 before_script:
-  - mkdir -p ~/.ssh
-  - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
-  - echo -e "$SSH_DEPLOY_KEY" > ~/.ssh/id_rsa
-  - chmod 600 ~/.ssh/id_rsa
+  #- mkdir -p ~/.ssh
+  #- echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+  #- echo -e "$SSH_DEPLOY_KEY" > ~/.ssh/id_rsa
+  #- chmod 600 ~/.ssh/id_rsa
+  - ssh-keyscan -H $GITLAB_URL >> ~gitlab_ci_runner/.ssh/known_hosts
 
 
 build:
