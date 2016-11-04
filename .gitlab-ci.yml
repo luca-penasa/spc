@@ -4,8 +4,7 @@ build:
   stage: build
   script:
     - apt-get -qq update
-    - apt-get -y install build-essential
-    - apt-get -y install cmake
+    - apt-get -y install build-essential cmake libeigen3-dev
     - cd /builds/penasa/spc
     - mkdir build
     - cd build
