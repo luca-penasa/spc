@@ -1,6 +1,9 @@
 SPC
 ===
 
+[![build 
+status](http://ns392452.ip-176-31-109.eu:808/penasa/spc/badges/master/build.svg)](http://ns392452.ip-176-31-109.eu:808/penasa/spc/commits/master)
+
 **Stratigraphy from Point Clouds**
 
 
