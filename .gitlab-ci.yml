@@ -40,6 +40,8 @@ build:
     - apt-get -qq update
     - apt-get -y install build-essential cmake libeigen3-dev libboost-all-dev libgflags-dev git ninja
     - cd "$CI_PROJECT_DIR"
+    - sed -i 's/git@github.com:/https:\/\/github.com\//' .gitmodules
+    - git submodule sync
     - git submodule update --init --recursive  
     - mkdir build
     - cd build
