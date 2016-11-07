@@ -6,7 +6,7 @@
 	url = git@github.com:jlblancoc/nanoflann.git
 [submodule "spc/pyspc/minieigen"]
 	path = spc/pyspc/minieigen
-	url = git@github.com:eudoxos/minieigen.git
+	url = git@github.com:luca-penasa/minieigen.git
 [submodule "submodules/googletest"]
 	path = submodules/googletest
 	url = git@github.com:google/googletest.git

@@ -1,16 +1,25 @@
-image: ubuntu
+image: ubuntu-dev-tools
 
 before_script:
   - echo "${SSH_PRIVATE_KEY}" 
   # Install ssh-agent if not already installed, it is required by Docker.
   # (change apt-get to yum if you use a CentOS-based image)
-  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+  - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client expect -y )'
 
   # Run ssh-agent (inside the build environment)
   - eval $(ssh-agent -s)
 
   # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
-  - ssh-add <(echo "$SSH_PRIVATE_KEY")
+#  - ssh-add -h
+  - echo "$SSH_PRIVATE_KEY" > key.keys
+  - chmod og-xrw key.keys
+
+  - ssh-add key.keys
+
+
+  #- ssh-add key.txt
+  - rm key.keys
+
 
   # For Docker builds disable host key checking. Be aware that by adding that
   # you are suspectible to man-in-the-middle attacks.
@@ -25,7 +34,7 @@ build:
   script:
     - apt-get -qq update
     - apt-get -y install build-essential cmake libeigen3-dev libboost-all-dev libgflags-dev git
-    - cd /builds/penasa/spc
+    - cd /builds/project-1
     - git submodule update --init --recursive
     - mkdir build
     - cd build
