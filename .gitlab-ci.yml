@@ -45,6 +45,6 @@ build:
     - git submodule update --init --recursive  
     - mkdir build
     - cd build
-    - cmake ../ -DSPC_ENABLE_INSTALL=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="/installed"-DSPC_BUILD_SHARED=ON -DSPC_INSTALL_LIB_DIR="lib" 
+    - cmake ../ -DSPC_ENABLE_INSTALL=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="/installed" -DSPC_BUILD_SHARED=ON 
     - make install
     
