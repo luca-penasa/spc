@@ -1,0 +1,41 @@
+sudo: required
+dist: trusty
+
+language:
+  cpp
+
+compiler:
+  #- clang # 3.5.0
+  - gcc # 4.8.4
+
+install:
+    # Install dependencies
+    - sudo apt-get update -qq
+    - sudo apt-get install -qy build-essential cmake libeigen3-dev libboost-all-dev libgflags-dev git ninja
+    # CC submodules
+    - git submodule init && git submodule update
+
+before_script:
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_BUILD_TYPE=Release
+    -DSPC_ENABLE_INSTALL=ON 
+    -DCMAKE_BUILD_TYPE=Release 
+    -DCMAKE_INSTALL_PREFIX="/installed"
+    -DSPC_BUILD_SHARED=ON 
+    -DSPC_INSTALL_LIB_DIR="lib"
+    ..
+
+      # -DOPTION_USE_GDAL=ON
+      # -DINSTALL_QKINECT_PLUGIN=ON
+      # -DLIBFREENECT_INCLUDE_DIR="/usr/include"
+      # -DLIBFREENECT_LIBRARY_FILE="/usr/lib/x86_64-linux-gnu/libfreenect.so"
+
+      # For now:
+      # - qRansacSD fails on Clang
+      # - no libav/FFMPEG. Version in repos is < 10.7 (no frame.h)
+      # - could not use CGAL from Ubuntu (< 4.3)
+
+script:
+  # We use only 4 core because gcc and clang can be memory hungry
+  - make -j2

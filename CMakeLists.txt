@@ -5,6 +5,12 @@ include(CompilerOptions.cmake)
 include(Versioning.cmake)
 
 
+################################## INSTALL OPTIONS #####################################################
+set(SPC_INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries")
+set(SPC_INSTALL_BIN_DIR bin CACHE PATH "Installation directory for executables")
+set(SPC_INSTALL_INCLUDE_DIR include CACHE PATH "Installation directory for header files")
+######################################################################################
+
 INCLUDE(cmake/UpdateCacheVariable.cmake) #courtesy of ceres-solver
 
 #my definitions

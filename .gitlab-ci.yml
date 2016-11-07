@@ -1,5 +1,8 @@
 image: mxe-docker-image-win64
 
+variables:
+  GIT_DEPTH: "1"
+
 before_script:
   - echo "${SSH_PRIVATE_KEY}" 
   # Install ssh-agent if not already installed, it is required by Docker.
@@ -35,11 +38,11 @@ build:
   stage: build
   script:
     - apt-get -qq update
-    - apt-get -y install build-essential cmake libeigen3-dev libboost-all-dev libgflags-dev git
-    - cd /builds/project-1
-    - git submodule update --init --recursive
+    - apt-get -y install build-essential cmake libeigen3-dev libboost-all-dev libgflags-dev git ninja
+    - cd "$CI_PROJECT_DIR"
+    - git submodule update --init --recursive  
     - mkdir build
     - cd build
-    - cmake ../ -DSPC_ENABLE_INSTALL=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/installed/ -DSPC_BUILD_SHARED=ON
-    - make -j 4 install
+    - cmake ../ -DSPC_ENABLE_INSTALL=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="/installed"-DSPC_BUILD_SHARED=ON -DSPC_INSTALL_LIB_DIR="lib" 
+    - make install
     
