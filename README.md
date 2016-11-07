@@ -1,8 +1,12 @@
 SPC
 ===
 
-[![build 
-status](http://ns392452.ip-176-31-109.eu:808/penasa/spc/badges/master/build.svg)](http://ns392452.ip-176-31-109.eu:808/penasa/spc/commits/master)
+[![Private 
+build](http://ns392452.ip-176-31-109.eu:808/penasa/spc/badges/master/build.svg)](http://ns392452.ip-176-31-109.eu:808/penasa/spc/commits/master)
+
+
+[![Travis build](https://travis-ci.org/luca-penasa/spc.svg?branch=master)](https://travis-ci.org/luca-penasa/spc)
+
 
 **Stratigraphy from Point Clouds**
 
