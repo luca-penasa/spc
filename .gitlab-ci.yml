@@ -1,4 +1,4 @@
-image: ubuntu-dev-tools
+image: mxe-docker-image-win64
 
 before_script:
   - echo "${SSH_PRIVATE_KEY}" 
@@ -11,7 +11,9 @@ before_script:
 
   # Add the SSH key stored in SSH_PRIVATE_KEY variable to the agent store
 #  - ssh-add -h
-  - echo "$SSH_PRIVATE_KEY" > key.keys
+  # echo "-----BEGIN RSA PRIVATE KEY-----" > key.keys
+  - echo "$SSH_PRIVATE_KEY" >> key.keys
+  # echo "-----END RSA PRIVATE KEY-----"  >> key.keys
   - chmod og-xrw key.keys
 
   - ssh-add key.keys
@@ -38,6 +40,6 @@ build:
     - git submodule update --init --recursive
     - mkdir build
     - cd build
-    - cmake ../
-    - make -j 4
+    - cmake ../ -DSPC_ENABLE_INSTALL=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/installed/ -DSPC_BUILD_SHARED=ON
+    - make -j 4 install
     
