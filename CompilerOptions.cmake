@@ -50,7 +50,13 @@ elseif (UNIX)
 endif()
 
 # we need c++11
-add_definitions(-std=c++11)
+
+
+if(MINGW)
+	add_definitions(-std=gnu++11)
+else()
+	add_definitions(-std=c++11)
+endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
   add_definitions("-DBOOST_DISABLE_ASSERTS -DEIGEN_NO_DEBUG")

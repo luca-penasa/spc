@@ -15,7 +15,7 @@ if (SPC_WITH_PCL)
 
     list(APPEND SPC_DEFINITIONS -DSPC_WITH_PCL)
 else()
-    message(WARNING "Not compiling with PCL")
+	message(WARNING "Not compiling with PCL")
     # we need to find some requirements by hand
     find_package(Eigen3 REQUIRED)
     include_directories(${EIGEN3_INCLUDE_DIR})
