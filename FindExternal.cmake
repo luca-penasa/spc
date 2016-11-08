@@ -17,7 +17,7 @@ if (SPC_WITH_PCL)
 else()
 	message(WARNING "Not compiling with PCL")
     # we need to find some requirements by hand
-    find_package(Eigen3 REQUIRED)
+	find_package(Eigen3 REQUIRED)
     include_directories(${EIGEN3_INCLUDE_DIR})
 
 
@@ -78,7 +78,7 @@ endif(SPC_GFLAGS)
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/submodules/nanoflann/include/")
 
 ############ CEREAL ####################################
-set(CEREAL_INCLUDE_DIRS "submodules/cereal/include")
+set(CEREAL_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/submodules/cereal/include")
 
 include_directories(${CEREAL_INCLUDE_DIRS})
 
