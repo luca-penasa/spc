@@ -28,14 +28,19 @@ public:
         fillNans();
     }
 
-    static Eigen::VectorXd fftshift(const Eigen::VectorXd &in)
+
+
+    template <typename vecT>
+    static vecT fftshift(const vecT &in)
     {
-        Eigen::VectorXd v = in;
+//          typedef typename Eigen::internal::plain_row_type<Derived>::type RowVectorType;
+
+        vecT v = in;
         int half_len = floor(v.rows() / 2);
 
         bool odd = v.rows() %2 ;
 
-        double tmp;
+        typename vecT::Scalar tmp;
         if (!odd) // even
         {
             for (int i =0 ; i <half_len;++i)
@@ -49,8 +54,8 @@ public:
         else // is odd
             // \todo do it in place
         {
-            Eigen::VectorXd head = v.head(half_len+1);
-            Eigen::VectorXd tail = v.tail(half_len ) ;
+            vecT head = v.head(half_len+1);
+            vecT tail = v.tail(half_len ) ;
 
             v.head(half_len) = tail;
             v.tail(half_len+1) = head;
@@ -67,10 +72,19 @@ public:
         Eigen::VectorXd w = gaussian_window(N, sigma);
         w /= w.sum();
         Eigen::VectorXcd sft = fft.fwd(v);
+
         Eigen::VectorXcd wft = fft.fwd(w);
+
+//        wft = fftshift(wft);
+//        sft = fftshift(sft);
+
+
+
         Eigen::VectorXcd filtered =  sft.array() * wft.array();
         Eigen::VectorXcd out = fft.inv(filtered);
-        return fftshift(out.array().real());
+
+        Eigen::VectorXd real = out.array().real();
+        return fftshift(real);
 
     }
 
@@ -137,7 +151,7 @@ public:
     }
 
 
-    static Eigen::VectorXd resample(const Eigen::VectorXf &v)
+    static Eigen::VectorXd resample(const Eigen::VectorXd &v)
     {
         size_t new_size = floor(v.rows()/2);
         Eigen::VectorXd out;
@@ -149,28 +163,62 @@ public:
         return out;
     }
 
-    void compute()
+    std::vector<std::vector<Eigen::VectorXd>> compute()
     {
+//        oStack = np.empty([numOctaves,stackSpace+3], dtype=object)
 
-        std::vector<Eigen::Matrix<double, -1, -1>> out;
 
-        for (int oct = 0; oct < n_octaves; ++oct)
+//    #compute the first octave. The initial image is resized and Interpolated by a factor of 2
+//    iDist = iDistMin
+
+//    oStack[0,0] = initImage
+//    for j in range(1,stackSpace+3):
+//        k = (2.0**(float(j)/float(stackSpace)))
+//        sigma = (iDist/iDistMin)*sigmaMin*k
+//        oStack[0,j] = GBlur(oStack[0,0], sigma)
+
+//    #build other octaves
+//    for i in range(1,numOctaves):
+//        iDist = iDistMin*(2**i)
+//        oStack[i,0] = resample(oStack[i-1,oStack[i-1].shape[0]-3])
+//        for j in range(1,stackSpace+3):
+//            k = (2**(float(j)/float(stackSpace)))
+//            sigma = (iDist/iDistMin)*sigmaMin*k
+//            oStack[i,j] = GBlur(oStack[i,0], sigma)
+
+        double dist = dist_min;
+
+
+        std::vector<std::vector<Eigen::VectorXd>> out;
+        out.resize(n_octaves);
+        for (int i =0 ; i < n_octaves; ++i)
+            out.at(i).resize(n_scales + 3);
+
+
+        out[0][0] = signal_;
+        for (int i = 1; i < n_scales + 3; ++i)
         {
-            int len = floor(signal_.rows() / (oct +1));
-
-            Eigen::MatrixXd octave;
-            octave.resize(n_scales, len);
-            octave.fill(spcNANMacrod);
-
-            for (int scal = 0; scal < n_scales; ++scal)
-            {
-
-//                double sigma = init_sigma * (scal+1) * sqrt(2)
-
-
-
-            }
+            double k = (pow(2.0,(float(i))/float(n_scales)));
+            double sigma = (dist/dist_min)*init_sigma*k;
+            out[0][i] =blur(signal_, sigma);
         }
+
+        //other octaves
+        for (int i = 1; i < n_octaves; ++i)
+        {
+            dist  = dist_min*(pow(2,i));
+            out[i][0] = resample(out[i-1][out[i-1].size() - 3]);
+             for (int j =1; j < n_scales + 3; ++j)
+             {
+                 double k = (pow(2.0,(float(j))/float(n_scales)));
+                 double sigma = (dist/dist_min)*init_sigma*k;
+                 out[i][j] = blur(out[i][0], sigma);
+
+             }
+        }
+
+
+       return out;
     }
 
 
@@ -179,6 +227,7 @@ protected:
     size_t n_octaves = 4;
     size_t n_scales = 5;
     double init_sigma  = 1.6;
+    double dist_min  = 0.5;
     double k = sqrt(2);
     double f_sampling;
 
