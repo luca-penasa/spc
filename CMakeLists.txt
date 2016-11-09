@@ -29,9 +29,8 @@ add_subdirectory(submodules)
 
 
 ############################# OPTIONS ######################################################################
-if (UNIX)
-    option(SPC_BUILD_SHARED "Build spc library as a shared lib." ON)
-endif()
+option(SPC_BUILD_SHARED "Build spc library as a shared lib." ON)
+
 
 
 

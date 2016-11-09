@@ -130,7 +130,8 @@ private:
     template <class Archive>
     void serialize(Archive& ar, const std::uint32_t version)
     {
-        ar(CEREAL_NVP(name_),
+        ar(cereal::base_class<spc::ISerializable>(this),
+                    CEREAL_NVP(name_),
             CEREAL_NVP(childs_));
     }
 
