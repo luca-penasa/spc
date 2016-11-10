@@ -40,11 +40,18 @@ set (CONF_CEREAL_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/submodules/cereal/inc
 set (CONF_LIBRARY_DIRS "${LIBRARY_OUTPUT_PATH}")
 set (CONF_NANOFLANN_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/submodules/nanoflann/include")
 set (CONF_EASYLOGGINGPP_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/submodules/easyloggingpp/src")
+set(SPC_ADDITIONAL_CMAKE_PATHS "${PROJECT_BINARY_DIR}/cmake")
+
 
 configure_file(SPCConfig.cmake.in "${PROJECT_BINARY_DIR}/SPCConfig.cmake" @ONLY)
 
 ## the ConfigVersion.cmake
 configure_file(SPCConfigVersion.cmake.in "${PROJECT_BINARY_DIR}/SPCConfigVersion.cmake" @ONLY)
+
+
+install(FILES "${PROJECT_SOURCE_DIR}/cmake/FindEigen3.cmake"
+	DESTINATION "${PROJECT_BINARY_DIR}/cmake" COMPONENT dev)
+
 
 #### INSTALL TREE
 if(SPC_ENABLE_INSTALL)
@@ -54,6 +61,8 @@ if(SPC_ENABLE_INSTALL)
     set (CONF_NANOFLANN_INCLUDE_DIRS "${SPC_INSTALL_INCLUDE_DIR}/spc/3rdParty")
     set (CONF_LIBRARY_DIRS "${SPC_INSTALL_LIB_DIR}")
     set (CONF_EASYLOGGINGPP_INCLUDE_DIRS "${SPC_INSTALL_INCLUDE_DIR}/spc/3rdParty/easiloggingpp/src")
+
+	set(SPC_ADDITIONAL_CMAKE_PATHS "${INSTALL_CMAKE_DIR}")
 
 
     ## reconfigure the SPCConfig.cmake putting it in a subdirectory of the build tree
@@ -68,6 +77,9 @@ if(SPC_ENABLE_INSTALL)
     ## Install the export set for use with the install-tree
     install(EXPORT SPCTargets DESTINATION
         "${INSTALL_CMAKE_DIR}" COMPONENT dev)
+
+	install(FILES "${PROJECT_SOURCE_DIR}/cmake/FindEigen3.cmake"
+		DESTINATION "${INSTALL_CMAKE_DIR}" COMPONENT dev)
 
     INSTALL( DIRECTORY submodules/easyloggingpp DESTINATION "${SPC_INSTALL_INCLUDE_DIR}/spc/3rdParty" )
 endif()
