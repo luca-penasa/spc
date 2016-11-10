@@ -48,9 +48,8 @@ configure_file(SPCConfig.cmake.in "${PROJECT_BINARY_DIR}/SPCConfig.cmake" @ONLY)
 ## the ConfigVersion.cmake
 configure_file(SPCConfigVersion.cmake.in "${PROJECT_BINARY_DIR}/SPCConfigVersion.cmake" @ONLY)
 
-
-install(FILES "${PROJECT_SOURCE_DIR}/cmake/FindEigen3.cmake"
-	DESTINATION "${PROJECT_BINARY_DIR}/cmake" COMPONENT dev)
+file(COPY  "${PROJECT_SOURCE_DIR}/cmake/FindEigen3.cmake"
+	 DESTINATION "${PROJECT_BINARY_DIR}/cmake")
 
 
 #### INSTALL TREE
