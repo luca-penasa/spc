@@ -9,26 +9,32 @@ if (SPC_WITH_PCL)
     message("TESTING PCL !")
     #define the PCL_VER_1_6_OR_OLDER preprocessor to compile qPCL with older versions of PCL
     if( PCL_VERSION VERSION_LESS  1.7 ) # VERSION_GREATER Works just like "greater or equal"
-        message("You are using PCL 1.6 - the 1.7 is out !")
-        set(SPC_DEFINITIONS ${SPC_DEFINITIONS} "-DPCL_VER_LESS_1_7 -DSPC_WITH_PCL")
+	message("You are using PCL 1.6 - the 1.7 is out !")
+	set(SPC_DEFINITIONS ${SPC_DEFINITIONS} "-DPCL_VER_LESS_1_7 -DSPC_WITH_PCL")
     endif()
 
     list(APPEND SPC_DEFINITIONS -DSPC_WITH_PCL)
 else()
-    message(WARNING "Not compiling with PCL")
+	message("Not compiling with PCL")
     # we need to find some requirements by hand
     find_package(Eigen3 REQUIRED)
     include_directories(${EIGEN3_INCLUDE_DIR})
 
+	message (" ------- --- -->>> eigen libs at ${EIGEN3_INCLUDE_DIR}")
 
 
-    if(WIN32)
-        # also boost! please use static libs as def on win so that we dont have to move boost libs along with the app
-        set(Boost_USE_STATIC_LIBS   ON)
-    endif()
+
+	if(WIN32 AND NOT MINGW)
+		# also boost! please use static libs as def on win so that we dont have to move boost libs along with the app
+		set(Boost_USE_STATIC_LIBS   ON)
+	endif()
+
+#	find_package(Boost REQUIRED)
+#	message("------->> found boost at: ${Boost_INCLUDE_DIRS}" )
+
 
     set(Boost_USE_MULTITHREADED ON)
-    find_package(Boost COMPONENTS filesystem system REQUIRED)
+	find_package(Boost COMPONENTS filesystem system REQUIRED)
     include_directories(${Boost_INCLUDE_DIRS})
     list(APPEND SPC_DEFINITIONS ${Boost_DEFINITIONS} ${EIGEN3_DEFINITIONS})
 endif()
@@ -36,19 +42,19 @@ endif()
 
 # always use openmp if possible
 FIND_PACKAGE( OpenMP)
-    if(OPENMP_FOUND)
-        message("OPENMP FOUND")
-        set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
-        set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
-        set(SPC_DEFINITIONS ${SPC_DEFINITIONS} "-DUSE_OPENMP")
-        #        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -lpthread -lgcc_s" )
+if(OPENMP_FOUND)
+    message("OPENMP FOUND")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${OpenMP_C_FLAGS}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} ${OpenMP_EXE_LINKER_FLAGS}")
+    set(SPC_DEFINITIONS ${SPC_DEFINITIONS} "-DUSE_OPENMP")
+    #        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fopenmp -lpthread -lgcc_s" )
 endif()
 
 
 # gflags is optional
 if(SPC_GFLAGS)
-    find_package(gflags )
+	find_package(gflags )
 
     if(gflags_FOUND)
 	message("---------->  GFLAGS FOUND")
@@ -62,8 +68,15 @@ if(SPC_GFLAGS)
 	#        endif()
 
     else(gflags_FOUND)
-        message("GLFAGS requested but not found! Disabling Gflags support")
-        UPDATE_CACHE_VARIABLE(SPC_GFLAGS OFF)
+	message("GLFAGS requested but not found! Disabling Gflags support")
+
+#        find_package(Gflags REQUIRED) # now we try with the build in (from ceres) package find script!
+                                      # e.g. on ubuntu glfags is not shipped together its own cmake file
+
+
+
+
+	UPDATE_CACHE_VARIABLE(SPC_GFLAGS OFF)
     endif(gflags_FOUND)
 
 else(SPC_GFLAGS) # gflags not requested.
@@ -78,7 +91,7 @@ endif(SPC_GFLAGS)
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/submodules/nanoflann/include/")
 
 ############ CEREAL ####################################
-set(CEREAL_INCLUDE_DIRS "submodules/cereal/include")
+set(CEREAL_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/submodules/cereal/include")
 
 include_directories(${CEREAL_INCLUDE_DIRS})
 
@@ -87,7 +100,7 @@ set(CEREAL_IS_INTERNAL TRUE CACHE BOOL "if internal cereal is used")
 ######################################################
 
 
-include_directories(${CMAKE_SOURCE_DIR}/submodules/easyloggingpp/src)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/submodules/easyloggingpp/src)
 
 
 #add_subdirectory(submodules/protogeom)

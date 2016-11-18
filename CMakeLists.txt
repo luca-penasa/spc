@@ -1,8 +1,12 @@
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 project(spc)
 
+
+
+
 include(CompilerOptions.cmake)
 include(Versioning.cmake)
+
 
 
 ################################## INSTALL OPTIONS #####################################################
@@ -41,7 +45,7 @@ option(SPC_BUILD_EXAMPLES_TOOLS "Build examples tools." OFF)
 
 option(SPC_USE_IWYU "Use include-what-you-use to notify about unused includes" OFF)
 
-OPTION(SPC_GFLAGS "Enable Google Flags. Needed by the tools" ON)
+OPTION(SPC_GFLAGS "Enable Google Flags. Needed by the tools" OFF)
 option(SPC_BUILD_TESTS "Do tests" OFF)
 option(SPC_ENABLE_INSTALL "Enable/Disable the install target" OFF)
 

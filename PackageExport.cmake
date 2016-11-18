@@ -1,7 +1,4 @@
-################################## INSTALL OPTIONS #####################################################
-set(SPC_INSTALL_LIB_DIR lib CACHE PATH "Installation directory for libraries")
-set(SPC_INSTALL_BIN_DIR bin CACHE PATH "Installation directory for executables")
-set(SPC_INSTALL_INCLUDE_DIR include CACHE PATH "Installation directory for header files")
+
 
 ##### def dir for cmake files on install
 if(WIN32 AND NOT CYGWIN)

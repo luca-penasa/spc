@@ -7,6 +7,8 @@
 
 
 
+
+
 option(SPC_MODULE_CERES_CALIBRATION "Build experimental code nonlinear intensity-calibration support" OFF)
 #option(SPC_MODULE_EXPERIMENTAL "Build experimental module." OFF)
 option(SPC_MODULE_MICMAC "Build MICMAC-related code." OFF)
