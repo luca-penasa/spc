@@ -1,18 +1,18 @@
 [submodule "submodules/cereal"]
 	path = submodules/cereal
-	url = git@github.com:USCiLab/cereal.git
+	url = https://github.com/USCiLab/cereal.git
 [submodule "submodules/nanoflann"]
 	path = submodules/nanoflann
-	url = git@github.com:jlblancoc/nanoflann.git
+	url = https://github.com/jlblancoc/nanoflann.git
 [submodule "spc/pyspc/minieigen"]
 	path = spc/pyspc/minieigen
-	url = git@github.com:luca-penasa/minieigen.git
+	url = https://github.com/luca-penasa/minieigen.git
 [submodule "submodules/googletest"]
 	path = submodules/googletest
-	url = git@github.com:google/googletest.git
+	url = https://github.com/google/googletest.git
 [submodule "submodules/aquila"]
 	path = submodules/aquila
-	url = git@github.com:zsiciarz/aquila.git
+	url = https://github.com/zsiciarz/aquila.git
 [submodule "submodules/easyloggingpp"]
 	path = submodules/easyloggingpp
-	url = git@github.com:easylogging/easyloggingpp.git
+	url = https://github.com/easylogging/easyloggingpp.git

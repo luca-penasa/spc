@@ -23,13 +23,16 @@ PointCloudBase::Ptr CloudDataSourceOnDisk::load() const
         return NULL;
     }
 
-    return io::loadPointCloud(filename_);
+    return nullptr;
+//    return io::loadPointCloud(filename_); todo fix this
+
 }
 
 NewSpcPointCloud::Ptr CloudDataSourceOnDisk::load2() const
 {
-    NewSpcPointCloud::Ptr out = NewSpcPointCloud::fromPointCloudBase(*io::loadPointCloud(filename_));
-    return out;
+//    NewSpcPointCloud::Ptr out = NewSpcPointCloud::fromPointCloudBase(*io::loadPointCloud(filename_)); // fix this
+//    return out;
+    return nullptr;
 }
 
 bool CloudDataSourceOnDisk::exists() const

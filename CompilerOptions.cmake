@@ -1,14 +1,9 @@
-get_property(dirs DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY INCLUDE_DIRECTORIES)
-foreach(dir ${dirs})
-  message(STATUS "dir='${dir}'")
-endforeach()
-
 
 if(UNIX)
     add_definitions(-fPIC)
 endif()
 
-if(WIN32 AND NOT MINGW)
+if(WIN32)
 #    add_definitions( -DSPC_LIB_EXPORTS )
     add_definitions(-DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=TRUE)
 endif()
@@ -56,7 +51,13 @@ elseif (UNIX)
 endif()
 
 # we need c++11
-add_definitions(-std=gnu++11)
+
+
+if(MINGW)
+	add_definitions(-std=gnu++11)
+else()
+	add_definitions(-std=c++11)
+endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
   add_definitions("-DBOOST_DISABLE_ASSERTS -DEIGEN_NO_DEBUG")
