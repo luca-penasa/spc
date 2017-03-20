@@ -83,7 +83,13 @@ public:
     /// distance is signed (+ if in the same half-space of normal_)
     float distanceTo(const Vector3f& point) const
     {
-        return getUnitNormal().dot(point) + getP();
+        DLOG(INFO) << "position is " << getPosition().transpose();
+
+        DLOG(INFO) << "computing distance to point " << point.transpose();
+        float value = getUnitNormal().dot(point) + getP();
+        DLOG(INFO) << "value is  "<< value << " P: " << getP();
+
+        return value;
     }
 
     /// get the P parameters (distance of the plane from the origin)

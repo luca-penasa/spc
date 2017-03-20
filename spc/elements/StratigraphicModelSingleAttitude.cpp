@@ -24,13 +24,21 @@ StratigraphicModelSingleAttitude::StratigraphicModelSingleAttitude(const Attitud
 
 float StratigraphicModelSingleAttitude::getScalarFieldValue(const Vector3f &point) const
 {
+
+    DLOG(INFO) << "evaluating scalar field at " << point.transpose();
+
     if (this->getIsElastic())
     {
+        DLOG(INFO) << "model is elastic";
         return (attitude_->distanceTo(point) * elastic_parameter_ + getStratigraphicShift()) ;
     }
     else
     {
-        return attitude_->distanceTo(point) + getStratigraphicShift();
+        DLOG(INFO) << "model is NOT elastic";
+        float d = attitude_->distanceTo(point);
+        float value =  d + getStratigraphicShift();
+        DLOG(INFO) << "d is " << d << " value is "<< value;
+        return value;
     }
 
 

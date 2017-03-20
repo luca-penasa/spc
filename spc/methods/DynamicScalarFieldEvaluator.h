@@ -53,9 +53,9 @@ public:
 
         output_.resize(indices_.size());
 
-#ifdef USE_OPENMP
-#pragma omp parallel for
-#endif
+//#ifdef USE_OPENMP
+//#pragma omp parallel for
+//#endif
         for (int i = 0; i < indices_.size(); ++i) {
             int id = indices_.at(i);
             Eigen::Vector3f point = in_cloud_->getPoint(id);
@@ -108,6 +108,8 @@ Eigen::Matrix<ScalarT, -1, 1> evaluate_dynamic_scalar_field_generator(const spc:
     eval.setGenerator(model);
     eval.compute();
     LOG(INFO) << "evaluating the scalar field. Done";
+    LOG(INFO) << "Values are: \n" <<eval.getOutput().transpose() ;
+
 
     return eval.getOutput();
 }

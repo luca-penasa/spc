@@ -88,7 +88,7 @@ set(CEREAL_IS_INTERNAL TRUE CACHE BOOL "if internal cereal is used")
 
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/submodules/easyloggingpp/src)
-
+add_definitions(-DELPP_THREAD_SAFE)
 
 #add_subdirectory(submodules/protogeom)
 

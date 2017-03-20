@@ -198,7 +198,7 @@ public:
 
         start = model_->getAttitude().getUnitNormal();
         std::cout << "AFTER: " << start(0) << " " << start(1) << " " << start(2)
-                  << "with info " << info << std::endl;
+                  << " with info " << info << std::endl;
 
 
 
@@ -248,7 +248,10 @@ protected:
         {
             CloudPtrT cloud = elem;
             if (cloud->getNumberOfPoints() < 3)
+            {
+                DLOG(INFO) << "not using this cloud cause it has less than 3 points. Skipping";
                 continue;
+            }
             else {
                 Vector3D n;
                 n.normalFromBestFit(*cloud);
@@ -272,10 +275,21 @@ protected:
     ///
     void updateSPs()
     {
+
+        DLOG(INFO) << "updating sp for each entity, current normal is \n"
+                   << model_->getNormal()
+                   << "\n elastic \n"
+                   << model_->getElasticParameter()
+                   << "\n sp \n"
+                   << model_->getStratigraphicShift();
+//                   << "\n P \n"
+//                   << model_->getP;
+
         s_positions_.clear();
         for(CloudPtrT cloud: clouds_)
         {
             VectorT vec =  spc::evaluate_dynamic_scalar_field_generator<float, size_t> (cloud, model_);
+
 
             //                model_.getScalarFieldValues(cloud);
             s_positions_.push_back(vec);
