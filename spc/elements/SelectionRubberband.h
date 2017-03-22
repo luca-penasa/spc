@@ -161,6 +161,9 @@ private:
             CEREAL_NVP(proj_plane_));
 
         this->updateTMatrix();
+        this->updatePolyVertices();
+        this->updateProjectionPlane();
+
 
         if (version >= 1)
             ar(CEREAL_NVP(model_));

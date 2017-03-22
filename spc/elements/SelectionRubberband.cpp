@@ -69,13 +69,19 @@ Plane::Ptr SelectionRubberband::getProjectionPlane() const
 bool SelectionRubberband::contains(const Vector3f& obj) const
 {
 
+    DLOG(INFO) << "max distance is " << max_distance_;
+    DLOG(INFO) << "distance is " << std::abs(proj_plane_->distanceTo(obj));
+
     if (std::abs(proj_plane_->distanceTo(obj)) > max_distance_)
     {
         return false;
     }
     else {
+        DLOG(INFO) << "checking with polyline";
         Vector2f on_plane = (transform_ * obj).head(2);
-        return isPointInPoly2(on_plane, verts_2d_);
+        bool status = isPointInPoly2(on_plane, verts_2d_);
+        DLOG(INFO) << "status is "<< status;
+        return status;
     }
 }
 
