@@ -122,6 +122,11 @@ private:
             ar(CEREAL_NVP(positionable_type_));
         }
     }
+
+    // ISerializable interface
+public:
+    virtual bool isAsciiSerializable() const override;
+    virtual int toAsciiStream(std::ostream &stream) const override;
 };
 
 } // end nspace

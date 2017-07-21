@@ -40,14 +40,18 @@ std::string concatenateFilenameWithSeparator(const std::string& file_name,
 
 std::string stripExtension(const std::string& file_name)
 {
-    for (int i = file_name.length(); i > 0; --i) {
-        if (file_name[i] == '.') {
-            return file_name.substr(0, i);
-        }
-    }
+    LOG(INFO) << "stripping " << file_name;
 
-    // if no "." were found just return the full name
-    return file_name;
+
+    boost::filesystem::path path(file_name);
+
+    std::string out =  (path.parent_path() / path.stem()).string();
+
+    LOG(INFO) << "stripped is " << out;
+    return out;
+
+
+
 }
 
 std::string getExtension(const std::string& file_name)

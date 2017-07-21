@@ -23,7 +23,8 @@ namespace spc {
 namespace io {
 
 int serializeToFile(const ISerializable::Ptr element, std::string filename,
-                    const ARCHIVE_TYPE& type /*= SPC*/, const bool timestamp_file /*= false*/,
+                    const ARCHIVE_TYPE& type /*= SPC*/,
+                    const bool timestamp_file /*= false*/,
                     const std::string& sidefile_string /*= std::string()*/,
                     const int progressive_number /*= -1*/,
                     const size_t number_of_digits /*= 3*/ )
@@ -42,6 +43,8 @@ int serializeToFile(const ISerializable::Ptr element, std::string filename,
 
         // strip any possible existent extension
         filename = spc::stripExtension(filename);
+
+        LOG(INFO) << "filename without extension is " << filename;
 
         if (progressive_number >= 0) {
             std::string progressiven = spc::fixedLength(progressive_number, number_of_digits);
