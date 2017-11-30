@@ -1,6 +1,9 @@
 #include "strings.h"
 #include <boost/tokenizer.hpp>
 #include <iomanip>
+
+#include <sstream>
+
 namespace spc
 {
 
