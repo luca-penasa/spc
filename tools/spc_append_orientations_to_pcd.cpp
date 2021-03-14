@@ -6,7 +6,7 @@
 #include <pcl/common/centroid.h>
 #include <spc/core/spc_eigen.h>
 
-#include <spc/core/strings.h>
+#include <spc/core/spc_strings.h>
 
 #include <pcl/features/normal_3d.h>
 

@@ -1,10 +1,11 @@
+#include <vector>
 #include <pcl/io/pcd_io.h>
 #include <pcl/console/parse.h>
 #include <pcl/console/print.h>
 #include <pcl/console/time.h>
 
 #include <spc/core/common.h>
-#include <spc/core/strings.h>
+#include <spc/core/spc_strings.h>
 #include <spc/io/io_helper.h>
 
 //#include <spc/methods/linear_interpolator.h>

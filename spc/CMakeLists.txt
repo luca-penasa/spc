@@ -23,13 +23,9 @@ option(SPC_BUILD_DOC "Build SPC doc" OFF)
 
 #option(SPC_BUILD_WRAPPINGS "Use swigs to generate wrappings for some methods" OFF)
 
-
-
 add_subdirectory(external)
 add_subdirectory(core)
-
 add_subdirectory(elements)
-
 add_subdirectory(io)
 
 

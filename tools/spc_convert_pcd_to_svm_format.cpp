@@ -4,7 +4,7 @@
 #include <pcl/console/time.h>
 
 #include <spc/core/common.h>
-#include <spc/core/strings.h>
+#include <spc/core/spc_strings.h>
 #include <spc/io/io_helper.h>
 
 #include <spc/core/pcl_helper.h>

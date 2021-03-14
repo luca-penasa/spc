@@ -2,7 +2,7 @@
 
 #include <spc/core/logging.h>
 #include <spc/core/flagging.h>
-#include <spc/core/strings.h>
+#include <spc/core/spc_strings.h>
 #include <spc/io/element_io.h>
 #include <spc/io/io_helper.h>
 

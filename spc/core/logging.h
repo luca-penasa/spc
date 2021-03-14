@@ -7,6 +7,7 @@
 #endif
 
 #include <easylogging++.h>
+//#include <easylogging++.cc>
 
 
 

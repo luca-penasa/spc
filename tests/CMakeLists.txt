@@ -47,8 +47,8 @@ link_directories(${GTEST_LIB_DIR})
 #add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND}
 #		  DEPENDS elements)
 
-add_executable(elements elements.cpp)
-target_link_libraries(elements ${GTEST_LIBRARIES} ${SPC_LIBRARIES})
+add_executable(test_elements elements.cpp)
+target_link_libraries(test_elements ${GTEST_LIBRARIES} ${SPC_LIBRARIES})
 
-add_test(AllTestsInElements elements)
+add_test(AllTestsInElements test_elements)
 

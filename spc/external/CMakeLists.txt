@@ -2,5 +2,5 @@
 
 
 
-spc_add_library()
+spc_add_library(external)
 

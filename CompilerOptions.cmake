@@ -1,11 +1,11 @@
 
 if(UNIX)
-    add_definitions(-fPIC)
+    list(APPEND SPC_COMPILER_OPTIONS -fPIC)
 endif()
 
 if(WIN32)
 #    add_definitions( -DSPC_LIB_EXPORTS )
-    add_definitions(-DCMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=TRUE)
+    list(APPEND SPC_COMPILER_DEFINITIONS CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=TRUE)
 endif()
 
 
@@ -36,38 +36,28 @@ if(SPC_BUILD_WITH_CLANG)
     message(WARNING "Using Clang as compiler! This may not work properly")
 
 
-    add_definitions(-DLIBCXX_CXX_ABI=libstdc++)
+    list(APPEND SPC_COMPILER_DEFINITIONS LIBCXX_CXX_ABI=libstdc++)
 endif()
 
 
 ########################### COMPILER FLAGS ##################################
-if (MINGW)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ")
-
-elseif (MSVC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP /bigobj" )
+if(MSVC)
+    list(APPEND SPC_COMPILER_OPTIONS /MP /bigobj)
 elseif (UNIX)
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-narrowing " )
+        list(APPEND SPC_COMPILER_OPTIONS  -Wno-narrowing )
 endif()
 
-# we need c++11
 
-
-if(MINGW)
-	add_definitions(-std=gnu++11)
-else()
-	add_definitions(-std=c++11)
-endif()
 
 if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
-  add_definitions("-DBOOST_DISABLE_ASSERTS -DEIGEN_NO_DEBUG")
+  list(APPEND SPC_COMPILER_DEFINITIONS BOOST_DISABLE_ASSERTS EIGEN_NO_DEBUG)
 endif()
 
 
 option(SPC_BUILD_WITH_GPROF "Build with -pg flags for profiling." OFF)
 
 if (SPC_BUILD_WITH_GPROF)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pg" )
+    list(APPEND SPC_COMPILER_OPTIONS -pg)
 endif()
 
 

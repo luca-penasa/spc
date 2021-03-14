@@ -2,7 +2,7 @@
 #define CLOUD_GAUSSIAN_CONVOLVER_H
 
 #ifdef SPC_WITH_PCL
-
+#include <vector>
 //#include <spc/elements/PointCloudBase.h>
 
 #include <spc/core/macros_ptr.h>
@@ -13,6 +13,7 @@
 #include <pcl/filters/voxel_grid.h>
 
 #include <pcl/search/kdtree.h>
+
 
 #include <pcl/io/pcd_io.h>
 

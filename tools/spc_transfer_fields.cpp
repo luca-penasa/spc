@@ -1,5 +1,5 @@
 #include <spc/methods/TransferFieldNN.h>
-#include <spc/core/strings.h>
+#include <spc/core/spc_strings.h>
 
 #include <pcl/io/file_io.h>
 #include <spc/core/flagging.h>

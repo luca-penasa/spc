@@ -1,24 +1,4 @@
-#compiles and link a spc_lib
-macro(spc_compile_and_link name files libs)
-    if(SPC_BUILD_SHARED)
-        add_library(${name} SHARED ${files})
-    else()
-        add_library(${name} STATIC ${files})
-    endif()
-
-    target_link_libraries(${name} ${libs})
-
-    #    spc_install_target_library_libs(${name})
-
-    #update the variable keeping the libarires
-    set(SPC_LIBRARIES ${SPC_LIBRARIES} ${name} CACHE INTERNAL "SPC libs")
-    set(SPC_BUILD_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR} CACHE INTERNAL "SPC include dirs at build time")
-endmacro()
-
-# this macro add a library to SPC
-macro(spc_add_library)
-    get_filename_component(libname ${CMAKE_CURRENT_SOURCE_DIR}  NAME)
-
+macro(collect_sources)
     # Auto add all subdirectories
     file(GLOB subdirectories *)
 
@@ -57,35 +37,76 @@ macro(spc_add_library)
     list(APPEND LIB_HEADERS ${HEADERS})
     list(APPEND LIB_IMPLS ${IMPLS})
 
-    list(APPEND LIB_SOURCES "${ADDITIONAL_SOURCES}")
-    message("->>> Additional sources found from within the macro for lib ${libname}:" "${ADDITIONAL_SOURCES}")
-
-
     set(sources ${LIB_SOURCES} ${LIB_HEADERS} ${LIB_IMPLS})
-    #${HEADERS} ${IMPLS})
-    set(libs ${SPC_LIBRARIES} ${PCL_COMMON_LIBRARIES} ${PCL_IO_LIBRARIES} ${PCL_FILTERS_LIBRARIES} ${GLOG_LIBRARIES} ${PCL_FEATURES_LIBRARIES} ${additional_libs})
+endmacro()
 
-    if(NOT SPC_WITH_PCL)
-        message("Appending: ${Boost_LIBRARIES}" )
-        list(APPEND libs ${Boost_LIBRARIES})
+# this macro add a library to SPC
+macro(spc_add_library libname)
+    get_filename_component(libname ${CMAKE_CURRENT_SOURCE_DIR}  NAME)
+    set(target_name "${libname}")
+
+    collect_sources()
+
+
+    if(SPC_BUILD_SHARED)
+        add_library(${target_name} SHARED ${sources})
+    else()
+        add_library(${target_name} STATIC ${sources})
     endif()
+    add_library(spc::${libname} ALIAS ${target_name})
 
-    spc_compile_and_link(spc_${libname} "${sources}" "${libs}")
-    set_target_properties(spc_${libname} PROPERTIES PUBLIC_HEADER "${HEADERS};${IMPLS}")
+
+    target_link_libraries(${target_name} PUBLIC ${SPC_LINK_TARGETS} ${libs})
+    target_compile_definitions(${target_name} PUBLIC EIGEN_MATRIXBASE_PLUGIN=<spc/core/eigen_matrix_base_plugin.h>)
+    #    target_compile_definitions(${name} PUBLIC ${PCL_DEFINITIONS})
+    target_compile_definitions(${target_name} PUBLIC ${SPC_COMPILER_DEFINITIONS})
+
+    message(" COMPILER OPTIONS ${SPC_COMPILER_OPTIONS}")
+#    set_target_properties(${target_name} PROPERTIES PREFIX "libspc")
+target_compile_options(${target_name} PUBLIC ${SPC_COMPILER_OPTIONS})
+target_compile_features(${target_name} PUBLIC ${SPC_COMPILER_FEATURES})
+
+    # TODO split build and install interface
+    target_sources(${target_name} PUBLIC "${CMAKE_SOURCE_DIR}/submodules/easyloggingpp/src/easylogging++.cc")
+
+    set(SPC_MODULES ${SPC_MODULES} ${target_name} CACHE INTERNAL "SPC libs")
+    #    set(SPC_BUILD_INCLUDE_DIRS ${CMAKE_CURRENT_BINARY_DIR} CACHE INTERNAL "SPC include dirs at build time")
+
+
+    target_include_directories(${target_name}
+        PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}>
+        $<INSTALL_INTERFACE:${SPC_INSTALL_INCLUDE_DIR}/spc/3rdParty> # TODO add
+        "$<BUILD_INTERFACE:${SPC_SUBMODULES_INCLUDES}>"
+#        ${SPC_SUBMODULES_INCLUDES}
+#        PRIVATE
+#        ${CMAKE_SOURCE_DIR}
+#        ${SPC_SUBMODULES_INCLUDES}
+
+
+        )
+
+    message("ABCC ${SPC_SUBMODULES_INCLUDES}")
+    #    set_target_properties(${target_name} PROPERTIES PUBLIC_HEADER "${HEADERS};${IMPLS}")
+
 
     if(SPC_USE_IWYU)
-        set_target_properties(spc_${libname} PROPERTIES CXX_INCLUDE_WHAT_YOU_USE "${iwyu_path}")
+        set_target_properties(${target_name} PROPERTIES CXX_INCLUDE_WHAT_YOU_USE "${iwyu_path}")
     endif()
 
+    export(TARGETS ${target_name} NAMESPACE spc:: FILE ${PROJECT_BINARY_DIR}/cmake/${libname}-export.cmake)
+
+
     if(SPC_ENABLE_INSTALL)
-        spc_install_target_library_libs(${libname})
+        spc_install_target_library_libs(${target_name})
     endif()
 
 endmacro()
 
 #add an executable
 macro(spc_add_executable name codefiles)
-    add_executable(${name} ${codefiles})
+    add_executable(${name} ${codefiles} )
+    target_link_libraries(${name} ${SPC_LINK_TARGETS} ${SPC_MODULES})
     install(TARGETS ${name} EXPORT ${name} RUNTIME DESTINATION "${SPC_INSTALL_BIN_DIR}" COMPONENT bin)
 endmacro()
 

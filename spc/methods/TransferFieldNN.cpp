@@ -102,7 +102,7 @@ int PointCloudHelpers::computeScatteringAngle(PointCloudBase::Ptr cloud, const s
         LOG(WARNING) << "looks like the sensor position is [0,0,0], going ahead considering this as sensor position";
     }
 
-    if (pcl_isnan(position(0)) || pcl_isnan(position(1)) ||pcl_isnan(position(2)))
+	if (std::isnan(position(0)) || std::isnan(position(1)) ||std::isnan(position(2)))
     {
         LOG(WARNING) << "sensor position contains NANS. Not valid.";
         return -1;
@@ -146,7 +146,7 @@ int PointCloudHelpers::computeDistanceFromSensor(PointCloudBase::Ptr cloud, std:
         LOG(WARNING) << "looks like the sensor position is [0,0,0], going ahead considering this as sensor position";
     }
 
-    if (pcl_isnan(position(0)) || pcl_isnan(position(1)) ||pcl_isnan(position(2)))
+	if (std::isnan(position(0)) || std::isnan(position(1)) ||std::isnan(position(2)))
     {
         LOG(WARNING) << "sensor position contains NANS. Not valid.";
         return -1;

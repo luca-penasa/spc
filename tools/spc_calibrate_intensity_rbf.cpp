@@ -1,4 +1,4 @@
-#include <spc/core/strings.h>
+#include <spc/core/spc_strings.h>
 
 #include <spc/methods/RBFModelEstimator.hpp>
 

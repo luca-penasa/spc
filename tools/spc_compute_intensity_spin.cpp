@@ -11,6 +11,8 @@
 
 #include <spc/core/logging.h>
 
+
+
 const int nr_intensity_bins = 5; //if using SPIN
 const int nr_distance_bins = 5;  //distance bins
 

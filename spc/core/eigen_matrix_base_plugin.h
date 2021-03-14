@@ -2,6 +2,7 @@
 
 //#include <spc/core/logging.h>
 
+
 //! yes we add iterators! straight from mrpt project
 typedef Scalar* iterator;
 typedef const Scalar* const_iterator;
@@ -150,30 +151,30 @@ select(const OtherDerived & selection_matrix) const
     return out;
 }
 
-/** Remove rows of the matrix. The unsafe version assumes that, the indices are sorted in ascending order. */
-EIGEN_STRONG_INLINE void unsafeRemoveRows(const std::vector<size_t> &idxs)
-{
-    size_t k = 1;
-    for (std::vector<size_t>::reverse_iterator it = idxs.rbegin(); it != idxs.rend(); ++it, ++k)
-    {
-        const size_t nR = rows() - *it - k;
-        if( nR > 0 )
-            derived().block(*it,0,nR,cols()) = derived().block(*it+1,0,nR,cols()).eval();
-    }
-    derived().conservativeResize(rows()-idxs.size(),NoChange);
-}
+///** Remove rows of the matrix. The unsafe version assumes that, the indices are sorted in ascending order. */
+//EIGEN_STRONG_INLINE void unsafeRemoveRows(const std::vector<size_t> &idxs)
+//{
+//    size_t k = 1;
+//    for (std::vector<size_t>::reverse_iterator it = idxs.rbegin(); it != idxs.rend(); ++it, ++k)
+//    {
+//        const size_t nR = rows() - *it - k;
+//        if( nR > 0 )
+//            derived().block(*it,0,nR,cols()) = derived().block(*it+1,0,nR,cols()).eval();
+//    }
+//    derived().conservativeResize(rows()-idxs.size(),NoChange);
+//}
 
 
-/** Remove rows of the matrix. */
- EIGEN_STRONG_INLINE void removeRows(const std::vector<size_t> &idxsToRemove)
-  {
-  std::vector<size_t> idxs = idxsToRemove;
-  std::sort( idxs.begin(), idxs.end() );
-  std::vector<size_t>::iterator itEnd = std::unique( idxs.begin(), idxs.end() );
-  idxs.resize( itEnd - idxs.begin() );
+///** Remove rows of the matrix. */
+// EIGEN_STRONG_INLINE void removeRows(const std::vector<size_t> &idxsToRemove)
+//  {
+//  std::vector<size_t> idxs = idxsToRemove;
+//  std::sort( idxs.begin(), idxs.end() );
+//  std::vector<size_t>::iterator itEnd = std::unique( idxs.begin(), idxs.end() );
+//  idxs.resize( itEnd - idxs.begin() );
 
-  unsafeRemoveRows( idxs );
-  }
+//  unsafeRemoveRows( idxs );
+//  }
 
 Eigen::Matrix<Scalar, -1, 1> unique() const
 {

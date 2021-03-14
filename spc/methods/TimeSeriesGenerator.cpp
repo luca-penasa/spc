@@ -32,7 +32,7 @@ int TimeSeriesGenerator::compute()
 
 
     // now check
-    if ((!model_) && (x_field_.empty() || y_field_.empty())) {
+	if ((!model_) && (x_field_.size() == 0 || y_field_.size() == 0)) {
         LOG(ERROR) << "No input model or no x/y field names ";
         return -1;
     }

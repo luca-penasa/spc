@@ -1,4 +1,6 @@
 #set(additional_libs )
-spc_add_library()
 
-target_link_libraries(spc_methods PRIVATE ${AQUILA_LIBRARIES})
+set(libs spc::core spc::elements ${AQUILA_LIBRARIES})
+spc_add_library(methods)
+
+#target_link_libraries(methods PRIVATE )

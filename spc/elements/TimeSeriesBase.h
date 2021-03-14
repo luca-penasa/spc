@@ -43,7 +43,10 @@ public:
 
     ScalarT getMean() const
     {
-        return y_.select(getNanMask()).mean();
+		return y_.select(getNanMask()).mean();
+
+//		return y_.array().isNaN().select(0, y_).mean()
+//		(to-from).array().isNaN().select(0,to-from).squaredNorm();
     }
 
     void setMean(const ScalarT & value)
